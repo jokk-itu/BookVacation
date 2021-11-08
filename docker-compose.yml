@@ -1,0 +1,110 @@
+version: '3.9'
+
+networks:
+  service_net:
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    hostname: api
+    container_name: api
+    env_file:
+      - ./EnvironmentFiles/eventbus.env 
+    ports: 
+      - 5000:80
+    depends_on:
+      - eventbus
+      - logger
+    networks:
+      - service_net
+
+  bookvacation:
+    build:
+      context: .
+      dockerfile: BookVacationService/Dockerfile
+    container_name: bookvacation
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+    depends_on:
+      - eventbus
+      - logger  
+    networks:
+      - service_net
+
+  bookflight:
+    build:
+      context: .
+      dockerfile: BookFlightService/Dockerfile
+    container_name: bookflight
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+    depends_on:
+      - eventbus
+      - logger  
+    networks:
+      - service_net
+      
+  bookhotel:
+    build:
+      context: .
+      dockerfile: BookHotelService/Dockerfile
+    container_name: bookhotel
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+    depends_on:
+      - eventbus
+      - logger  
+    networks:
+      - service_net
+      
+  rentcar:
+    build:
+      context: .
+      dockerfile: RentCarService/Dockerfile
+    container_name: bookcar
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+    depends_on:
+      - eventbus
+      - logger  
+    networks:
+      - service_net      
+
+  logger:
+    image: datalust/seq:latest
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+    container_name: logger
+    hostname: logger
+    networks:
+      - service_net
+
+  eventbus:
+    image: masstransit/rabbitmq
+    hostname: eventbus
+    container_name: eventbus
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+      - "./EventBus/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+    networks:
+      - service_net
+      
+  sagarepository:
+    image: mongo:5.0.1-focal
+    container_name: sagarepository
+    hostname: sagarepository
+    networks:
+      - service_net
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: bookflights
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin    

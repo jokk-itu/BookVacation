@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <UserSecretsId>dotnet-BookVacation-0900F463-3B52-4BB5-B5BC-FCED8BC937A2</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MassTransit" Version="7.2.4"/>
+        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.2.4"/>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="7.2.4"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0"/>
+        <PackageReference Include="Serilog" Version="2.10.0"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="4.1.2"/>
+        <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Contracts\Contracts.csproj"/>
+    </ItemGroup>
+</Project>
