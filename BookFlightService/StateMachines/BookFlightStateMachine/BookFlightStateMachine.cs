@@ -10,7 +10,7 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
         public BookFlightStateMachine(ILogger<BookFlightStateMachine> logger)
         {
             _logger = logger;
-            
+
             SetupEvents();
             SetupStates();
             SetupScheduling();

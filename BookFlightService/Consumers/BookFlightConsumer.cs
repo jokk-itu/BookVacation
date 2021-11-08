@@ -24,12 +24,12 @@ namespace BookFlightService.Consumers
             var price = context.Message.Price;
             await _scheduler.SchedulePublish<BookHotel>(TimeSpan.FromSeconds(10),
                 new
-            {
-                __CorrelationId = Guid.NewGuid(),
-                BookHotelId = bookFlightId,
-                Price = price
-            });
-            
+                {
+                    __CorrelationId = Guid.NewGuid(),
+                    BookHotelId = bookFlightId,
+                    Price = price
+                });
+
             await context.RespondAsync<BookedFlight>(new
             {
                 BookFlightId = bookFlightId,

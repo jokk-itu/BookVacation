@@ -12,8 +12,8 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
         private void SetupBehaviours()
         {
             Initially(When(CreateBookFlight)
-                    .Schedule(BookFlightExpiredSchedule, 
-                        context => context.Init<ExpireBookFlight>(new 
+                    .Schedule(BookFlightExpiredSchedule,
+                        context => context.Init<ExpireBookFlight>(new
                             { context.Data.BookFlightId, context.Data.Price }))
                     .ThenAsync(context =>
                     {
@@ -62,7 +62,7 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
                     .TransitionTo(Cancelled)
                     .Finalize());
 
-                SetCompletedWhenFinalized();
+            SetCompletedWhenFinalized();
         }
     }
 }

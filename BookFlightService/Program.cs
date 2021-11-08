@@ -1,4 +1,3 @@
-using System;
 using BookFlightService.Consumers;
 using BookFlightService.StateMachines.BookFlightStateMachine;
 using MassTransit;
@@ -48,7 +47,8 @@ namespace BookFlightService
                     services.AddHostedService<Worker>();
                 }).UseSerilog((context, serviceProvider, config) =>
                 {
-                    config.WriteTo.Seq("http://localhost:5341")
+                    var seqUri = context.Configuration["Logging:SeqUri"];
+                    config.WriteTo.Seq(seqUri)
                         .Enrich.FromLogContext()
                         .MinimumLevel.Override("BookFlightService", LogEventLevel.Information)
                         .MinimumLevel.Warning();

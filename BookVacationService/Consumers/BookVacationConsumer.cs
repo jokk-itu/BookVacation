@@ -44,8 +44,8 @@ namespace BookVacationService.Consumers
             await context.Execute(routingSlip);
 
             _logger.LogInformation("Executed Book Vacation");
-            
-            
+
+
             _logger.LogInformation("Execute CreateBookFlight");
             var correlationId = NewId.NextGuid();
             await context.Publish<CreateBookFlight>(new

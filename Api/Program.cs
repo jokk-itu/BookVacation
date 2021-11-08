@@ -18,8 +18,8 @@ namespace Api
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .UseSerilog((context, serviceProvider, config) =>
                 {
-                    config
-                        .WriteTo.Seq("http://localhost:5341")
+                    var seqUri = context.Configuration["Logging:SeqUri"];
+                    config.WriteTo.Seq(seqUri)
                         .Enrich.FromLogContext()
                         .MinimumLevel.Override("Api", LogEventLevel.Information)
                         .MinimumLevel.Warning();

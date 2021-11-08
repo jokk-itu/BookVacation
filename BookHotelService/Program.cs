@@ -1,4 +1,3 @@
-using System;
 using BookHotelService.Consumers;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +39,8 @@ namespace BookHotelService
                     services.AddHostedService<Worker>();
                 }).UseSerilog((context, serviceProvider, config) =>
                 {
-                    config.WriteTo.Seq("http://localhost:5341")
+                    var seqUri = context.Configuration["Logging:SeqUri"];
+                    config.WriteTo.Seq(seqUri)
                         .Enrich.FromLogContext()
                         .MinimumLevel.Override("BookHotelService", LogEventLevel.Information)
                         .MinimumLevel.Warning();
