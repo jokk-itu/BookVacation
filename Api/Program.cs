@@ -19,7 +19,9 @@ namespace Api
                 .UseSerilog((context, serviceProvider, config) =>
                 {
                     var seqUri = context.Configuration["Logging:SeqUri"];
-                    config.WriteTo.Seq(seqUri)
+                    config
+                        .WriteTo.Seq(seqUri)
+                        .WriteTo.Console(LogEventLevel.Debug)
                         .Enrich.FromLogContext()
                         .MinimumLevel.Override("Api", LogEventLevel.Information)
                         .MinimumLevel.Warning();

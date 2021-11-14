@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Api
 {
@@ -52,20 +53,25 @@ namespace Api
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+            app.UseSerilogRequestLogging();
+            
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 foreach (var version in provider.ApiVersionDescriptions)
                     options.SwaggerEndpoint(
                         $"/swagger/{version.GroupName}/swagger.json",
-                        version.GroupName.ToUpperInvariant());
+                        version.GroupName.ToLower());
             });
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

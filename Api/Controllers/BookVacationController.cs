@@ -11,7 +11,7 @@ namespace Api.Controllers
     [ApiController]
     [ApiVersion("1")]
     [ControllerName("bookvacation")]
-    [Route("v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class BookVacationController : ControllerBase
     {
         private readonly IBusControl _bus;
