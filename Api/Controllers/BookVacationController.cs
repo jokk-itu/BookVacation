@@ -32,7 +32,7 @@ namespace Api.Controllers
             {
                 BookFlight = new { request.BookFlightId, Price = request.FlightPrice },
                 BookHotel = new { request.BookHotelId, Price = request.HotelPrice },
-                RentCar = new { request.RentCarId, Price = request.RentCarId }
+                RentCar = new { request.RentCarId, Price = request.CarPrice }
             });
 
             return Accepted();

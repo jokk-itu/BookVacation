@@ -11,6 +11,6 @@ namespace Api
         public decimal HotelPrice { get; init; }
 
         public Guid RentCarId { get; init; }
-        public Guid CarPrice { get; init; }
+        public decimal CarPrice { get; init; }
     }
 }

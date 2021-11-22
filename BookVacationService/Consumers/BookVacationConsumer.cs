@@ -55,6 +55,7 @@ namespace BookVacationService.Consumers
                 bookFlight.Price
             });
             await Task.Delay(5000);
+            
             /*_logger.LogInformation("Execute CompleteBookFlight");
             await context.Publish<CompleteBookFlight>(new
             {

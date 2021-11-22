@@ -61,7 +61,7 @@ namespace Api
                 foreach (var version in provider.ApiVersionDescriptions)
                     options.SwaggerEndpoint(
                         $"/swagger/{version.GroupName}/swagger.json",
-                        version.GroupName.ToLower());
+                        version.GroupName.ToUpper());
             });
 
             app.UseRouting();
