@@ -1,4 +1,4 @@
-name: .NET
+name: Build, Test, Publish
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
         services: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService', 'BookVacationService']
         
     steps:
-      - uses: actions/checkout@2
+      - uses: actions/checkout@v2
       - name: Build and Publish Services
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
