@@ -12,26 +12,26 @@ namespace Api.Controllers
     [ApiVersion("1")]
     [ControllerName("bookvacation")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class BookVacationController : ControllerBase
+    public class VacationController : ControllerBase
     {
         private readonly IBusControl _bus;
-        private readonly ILogger<BookVacationController> _logger;
+        private readonly ILogger<VacationController> _logger;
 
-        public BookVacationController(IBusControl bus, ILogger<BookVacationController> logger)
+        public VacationController(IBusControl bus, ILogger<VacationController> logger)
         {
             _bus = bus;
             _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] BookVacationRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] VacationRequest request)
         {
             _logger.LogInformation("Sending Book Vacation {Message}", JsonSerializer.Serialize(request));
             var endpoint = await _bus.GetSendEndpoint(new Uri("exchange:book-vacation"));
             await endpoint.Send<BookVacation>(new
             {
-                BookFlight = new { request.BookFlightId, Price = request.FlightPrice },
-                BookHotel = new { request.BookHotelId, Price = request.HotelPrice },
+                BookFlight = new { request.FlightId, Price = request.FlightPrice },
+                BookHotel = new { request.HotelId, Price = request.HotelPrice },
                 RentCar = new { request.RentCarId, Price = request.CarPrice }
             });
 

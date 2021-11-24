@@ -2,12 +2,12 @@ using System;
 
 namespace Api
 {
-    public record BookVacationRequest
+    public record VacationRequest
     {
-        public Guid BookFlightId { get; init; }
+        public Guid FlightId { get; init; }
         public decimal FlightPrice { get; init; }
 
-        public Guid BookHotelId { get; init; }
+        public Guid HotelId { get; init; }
         public decimal HotelPrice { get; init; }
 
         public Guid RentCarId { get; init; }

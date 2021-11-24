@@ -14,7 +14,8 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
             Initially(When(CreateBookFlight)
                     .Schedule(BookFlightExpiredSchedule,
                         context => context.Init<ExpireBookFlight>(new
-                            { context.Data.BookFlightId, context.Data.Price }))
+                            {
+                                BookFlightId = context.Data.FlightId, context.Data.Price }))
                     .ThenAsync(context =>
                     {
                         _logger.LogInformation("From initial to create book flight {Message}",

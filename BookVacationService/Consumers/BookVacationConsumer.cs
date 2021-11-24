@@ -22,9 +22,9 @@ namespace BookVacationService.Consumers
 
             var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
-            var bookFlight = context.Message.BookFlight;
+            var bookFlight = context.Message.Flight;
 
-            var bookHotel = context.Message.BookHotel;
+            var bookHotel = context.Message.Hotel;
 
             var rentCar = context.Message.RentCar;
 
@@ -51,7 +51,7 @@ namespace BookVacationService.Consumers
             await context.Publish<CreateBookFlight>(new
             {
                 __CorrelationId = correlationId,
-                bookFlight.BookFlightId,
+                BookFlightId = bookFlight.FlightId,
                 bookFlight.Price
             });
             await Task.Delay(5000);

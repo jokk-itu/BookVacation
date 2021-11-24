@@ -17,7 +17,7 @@ namespace BookHotelService.Consumers
         public async Task Consume(ConsumeContext<BookHotel> context)
         {
             _logger.LogInformation("Received BookHotel message");
-            var bookHotelId = context.Message.BookHotelId;
+            var bookHotelId = context.Message.HotelId;
             var price = context.Message.Price;
 
             await context.RespondAsync<BookedHotel>(new

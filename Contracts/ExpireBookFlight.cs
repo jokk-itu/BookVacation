@@ -4,7 +4,7 @@ namespace Contracts
 {
     public interface ExpireBookFlight
     {
-        Guid BookFlightId { get; }
+        Guid FlightId { get; }
 
         decimal Price { get; }
     }

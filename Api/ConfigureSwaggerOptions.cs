@@ -26,7 +26,7 @@ namespace Api
                     Description = "API book a vacation, with flight, hotel and rental car"
                 };
                 if (description.IsDeprecated)
-                    info.Description += " This API version has been deprecated.";
+                    info.Description += "\nThis API version has been deprecated.";
 
                 options.SwaggerDoc(description.GroupName, info);
             }

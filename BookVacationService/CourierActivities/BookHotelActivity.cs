@@ -32,7 +32,7 @@ namespace BookVacationService.CourierActivities
             });
 
             _logger.LogInformation("Executed BookHotel");
-            return context.Completed(new { BookHotelId = bookHotelId });
+            return context.Completed(new { HotelId = bookHotelId });
         }
 
         public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
@@ -50,6 +50,6 @@ namespace BookVacationService.CourierActivities
 
     public interface BookHotelLog
     {
-        public Guid BookHotelId { get; }
+        public Guid HotelId { get; }
     }
 }

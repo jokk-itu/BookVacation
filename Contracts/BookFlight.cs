@@ -4,7 +4,7 @@ namespace Contracts
 {
     public interface BookFlight
     {
-        public Guid BookFlightId { get; }
+        public Guid FlightId { get; }
         public decimal Price { get; }
     }
 }

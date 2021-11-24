@@ -2,10 +2,10 @@ namespace Contracts
 {
     public interface BookVacation
     {
-        public BookFlight BookFlight { get; }
+        public BookFlight Flight { get; }
 
-        public BookHotel BookHotel { get; set; }
+        public BookHotel Hotel { get; }
 
-        public RentCar RentCar { get; set; }
+        public RentCar RentCar { get; }
     }
 }

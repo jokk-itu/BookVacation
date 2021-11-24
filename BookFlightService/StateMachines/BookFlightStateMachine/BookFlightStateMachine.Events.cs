@@ -16,16 +16,16 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
         private void SetupEvents()
         {
             Event(() => CreateBookFlight,
-                x => x.CorrelateById(c => c.Message.BookFlightId));
+                x => x.CorrelateById(c => c.Message.FlightId));
 
             Event(() => CancelBookFlight,
-                x => x.CorrelateById(c => c.Message.BookFlightId));
+                x => x.CorrelateById(c => c.Message.FlightId));
 
             Event(() => CompleteBookFlight,
-                x => x.CorrelateById(c => c.Message.BookFlightId));
+                x => x.CorrelateById(c => c.Message.FlightId));
 
             Event(() => ExpireBookFlight,
-                x => x.CorrelateById(c => c.Message.BookFlightId));
+                x => x.CorrelateById(c => c.Message.FlightId));
         }
     }
 }

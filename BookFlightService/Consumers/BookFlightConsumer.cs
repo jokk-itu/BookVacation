@@ -20,7 +20,7 @@ namespace BookFlightService.Consumers
         public async Task Consume(ConsumeContext<BookFlight> context)
         {
             _logger.LogInformation("Received BookFlight message");
-            var bookFlightId = context.Message.BookFlightId;
+            var bookFlightId = context.Message.FlightId;
             var price = context.Message.Price;
             await _scheduler.SchedulePublish<BookHotel>(TimeSpan.FromSeconds(10),
                 new
