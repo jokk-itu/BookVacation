@@ -33,8 +33,18 @@ jobs:
     
     strategy:
       matrix:
-        services: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService', 'BookVacationService']
-        repositories: ['api', 'bookflightservice', 'bookhotelservice', 'rentcarservice', 'bookvacationservice']
+        service: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService', 'BookVacationService']
+        include:
+          - service: Api
+            repository: api
+          - service: BookFlightService
+            repository: bookflightservice
+          - service: BookHotelService
+            repository: bookhotelservice
+          - service: RentCarService
+            repository: rentcarservice
+          - service: BookVacationService
+            repository: bookvacationservice
         
     steps:
       - name: Checkout  
@@ -50,7 +60,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: jokk/${{ matrix.repositories }}
+          images: jokk/${{ matrix.repository }}
       
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -62,4 +72,4 @@ jobs:
           build-args: |
             "Configuration=Release"
             "Environment=Production"
-          file: ${{ matrix.services }}/Dockerfile
+          file: ${{ matrix.service }}/Dockerfile
