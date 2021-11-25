@@ -59,6 +59,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            Configuration: Release
-            Environment: Production
+            "Configuration=Release"
+            "Environment=Production"
           file: ${{ matrix.services }}/Dockerfile
