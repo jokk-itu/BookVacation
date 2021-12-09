@@ -1,5 +1,7 @@
 # BookVacation
 
+[![Build, Test, Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/ci.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/ci.yml)
+
 ## Choreography
 
 Project to illustrate a Choreography architecture using Routing slips in Masstransit.
