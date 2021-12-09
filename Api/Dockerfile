@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM mcr.microsoft.com/dotnet/sdk:5.0.301-buster-slim-amd64 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
 WORKDIR /app
 COPY Api Api
@@ -7,7 +7,7 @@ COPY Contracts Contracts
 RUN dotnet publish Api/Api.csproj -c $Configuration -o out
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0.7-buster-slim-amd64 AS release
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
 ARG Environment
 WORKDIR /app
 EXPOSE 80

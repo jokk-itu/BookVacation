@@ -1,9 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <UserSecretsId>dotnet-RentCar-49559287-E153-4C3C-942F-79A0AD46F7F7</UserSecretsId>
-        <RootNamespace>RentCarService</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
