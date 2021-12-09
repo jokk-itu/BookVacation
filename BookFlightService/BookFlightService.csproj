@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <UserSecretsId>dotnet-BookFlight-7BEF24FA-70B0-4343-A303-8A0BDECFD5F3</UserSecretsId>
     </PropertyGroup>
 
