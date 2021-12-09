@@ -33,7 +33,7 @@ jobs:
     
     strategy:
       matrix:
-        service: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService', 'BookVacationService']
+        service: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService']
         include:
           - service: Api
             repository: api
