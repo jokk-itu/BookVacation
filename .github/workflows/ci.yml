@@ -43,8 +43,6 @@ jobs:
             repository: bookhotelservice
           - service: RentCarService
             repository: rentcarservice
-          - service: BookVacationService
-            repository: bookvacationservice
         
     steps:
       - name: Checkout  
