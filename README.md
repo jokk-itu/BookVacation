@@ -1,7 +1,30 @@
 # BookVacation
 
+## Choreography
+
 Project to illustrate a Choreography architecture using Routing slips in Masstransit.
-There has also been testing with Saga Statemachines and EventScheduling.
 It is illustrated by booking a vacation with a Flight, Hotel and Car.
 
-This flow is activated by the api on: http://localhost:5000/api/v1/bookvacation.
+This flow is activated by the api on: http://localhost:20001/api/v1/vacation.
+
+
+## Orchestrator
+
+The project also illustrates an Orchestrator architecture.
+By using a Saga Statemachine in Masstransit.
+There are three flows which can be triggered.
+
+
+### Complete Flight Booking
+
+api: http://localhost:20001/api/v1/flight/complete
+
+
+### Cancel Flight Booking
+
+api: http://localhost:20001/api/v1/flight/cancel
+
+
+### Expire Flight Booking
+
+api: http://localhost:20001/api/v1/flight/expire

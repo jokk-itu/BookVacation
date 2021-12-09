@@ -6,7 +6,7 @@ using MassTransit;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
 
-namespace BookVacationService.CourierActivities
+namespace BookHotelService.CourierActivities
 {
     public class BookHotelActivity : IActivity<BookHotelArguments, BookHotelLog>
     {

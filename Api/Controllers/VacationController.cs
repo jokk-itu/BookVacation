@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Contracts;
 using MassTransit;
+using MassTransit.Courier;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -10,7 +11,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [ApiVersion("1")]
-    [ControllerName("bookvacation")]
+    [ControllerName("vacation")]
     [Route("api/v{version:apiVersion}/[controller]")]
     public class VacationController : ControllerBase
     {
@@ -26,15 +27,26 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] VacationRequest request)
         {
-            _logger.LogInformation("Sending Book Vacation {Message}", JsonSerializer.Serialize(request));
-            var endpoint = await _bus.GetSendEndpoint(new Uri("exchange:book-vacation"));
-            await endpoint.Send<BookVacation>(new
-            {
-                BookFlight = new { request.FlightId, Price = request.FlightPrice },
-                BookHotel = new { request.HotelId, Price = request.HotelPrice },
-                RentCar = new { request.RentCarId, Price = request.CarPrice }
-            });
-
+            var builder = new RoutingSlipBuilder(NewId.NextGuid());
+            
+            builder.AddActivity("BookFlight",
+                new Uri("queue:book-flight_execute"),
+                new { request.FlightId, Price = request.FlightPrice });
+            
+            builder.AddActivity("BookHotel",
+                new Uri("queue:book-hotel_execute"),
+                new { request.HotelId, Price = request.HotelPrice });
+            
+            builder.AddActivity("RentCar",
+                new Uri("queue:rent-car_execute"),
+                new { request.RentCarId, Price = request.CarPrice });
+            
+            var routingSlip = builder.Build();
+            
+            _logger.LogInformation("Executing Book Vacation");
+            
+            await _bus.Execute(routingSlip);
+            
             return Accepted();
         }
     }

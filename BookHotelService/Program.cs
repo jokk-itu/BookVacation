@@ -1,4 +1,7 @@
+using System;
 using BookHotelService.Consumers;
+using BookHotelService.CourierActivities;
+using Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,8 +24,9 @@ namespace BookHotelService
                 {
                     services.AddMassTransit(configurator =>
                     {
-                        //configurator.AddMessageScheduler(new Uri("queue:book-hotel-scheduler"));
                         configurator.SetKebabCaseEndpointNameFormatter();
+                        configurator.AddRequestClient<BookHotel>(new Uri("queue:book-hotel"));
+                        configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                         configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();
                         configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
                         {

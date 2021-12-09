@@ -1,7 +1,10 @@
+using System;
+using Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RentCarService.Consumers;
+using RentCarService.CourierActivities;
 using Serilog;
 using Serilog.Events;
 
@@ -21,9 +24,10 @@ namespace RentCarService
                 {
                     services.AddMassTransit(configurator =>
                     {
-                        //configurator.AddMessageScheduler(new Uri("queue:rent-car-scheduler"));
                         configurator.SetKebabCaseEndpointNameFormatter();
+                        configurator.AddRequestClient<RentCar>(new Uri("queue:rent-car"));
                         configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();
+                        configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                         configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
                         {
                             var hostname = hostContext.Configuration["EventBus:Hostname"];

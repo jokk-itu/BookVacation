@@ -24,23 +24,6 @@ services:
     networks:
       - service_net
 
-  bookvacation:
-    build:
-      context: .
-      dockerfile: BookVacationService/Dockerfile
-      args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
-    container_name: bookvacation
-    env_file:
-      - ./EnvironmentFiles/eventbus.env
-      - ./EnvironmentFiles/logging.env
-    depends_on:
-      - eventbus
-      - logger  
-    networks:
-      - service_net
-
   bookflight:
     build:
       context: .

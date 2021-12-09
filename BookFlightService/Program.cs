@@ -1,5 +1,8 @@
+using System;
 using BookFlightService.Consumers;
+using BookFlightService.CourierActivities;
 using BookFlightService.StateMachines.BookFlightStateMachine;
+using Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +26,9 @@ namespace BookFlightService
                     services.AddMassTransit(configurator =>
                     {
                         configurator.SetKebabCaseEndpointNameFormatter();
+                        configurator.AddRequestClient<BookFlight>(new Uri("queue:book-flight"));
                         configurator.AddDelayedMessageScheduler();
+                        configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                         configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();
                         configurator.AddSagaStateMachine<BookFlightStateMachine, BookFlightStateMachineInstance>()
                             .MongoDbRepository(mongodbConfigurator =>
@@ -51,6 +56,7 @@ namespace BookFlightService
                     config.WriteTo.Seq(seqUri)
                         .Enrich.FromLogContext()
                         .MinimumLevel.Override("BookFlightService", LogEventLevel.Information)
+                        .MinimumLevel.Override("MassTransit", LogEventLevel.Debug)
                         .MinimumLevel.Warning();
                 });
         }

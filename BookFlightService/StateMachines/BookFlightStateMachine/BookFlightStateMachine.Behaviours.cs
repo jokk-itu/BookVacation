@@ -13,9 +13,10 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
         {
             Initially(When(CreateBookFlight)
                     .Schedule(BookFlightExpiredSchedule,
-                        context => context.Init<ExpireBookFlight>(new
+                        context => context.Init<ExpireFlight>(new
                             {
-                                BookFlightId = context.Data.FlightId, context.Data.Price }))
+                                context.Data.FlightId, context.Data.Price 
+                            }))
                     .ThenAsync(context =>
                     {
                         _logger.LogInformation("From initial to create book flight {Message}",
@@ -32,18 +33,21 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
                     })
                     .TransitionTo(Cancelled)
                     .Finalize(),
-                Ignore(BookFlightExpiredSchedule.Received));
+                Ignore(ExpireBookFlight));
 
             During(Pending,
                 When(CompleteBookFlight)
+                    .Unschedule(BookFlightExpiredSchedule)
                     .ThenAsync(context =>
                     {
                         _logger.LogInformation("From pending to complete book flight {Message}",
                             JsonSerializer.Serialize(context.Data));
                         return Task.CompletedTask;
                     })
+                    .TransitionTo(Created)
                     .Finalize(),
                 When(CancelBookFlight)
+                    .Unschedule(BookFlightExpiredSchedule)
                     .ThenAsync(context =>
                     {
                         _logger.LogInformation("From pending to cancel book flight {Message}",

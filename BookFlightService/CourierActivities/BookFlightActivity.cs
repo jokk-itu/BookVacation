@@ -6,7 +6,7 @@ using MassTransit;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
 
-namespace BookVacationService.CourierActivities
+namespace BookFlightService.CourierActivities
 {
     public class BookFlightActivity : IActivity<BookFlightArguments, BookFlightLog>
     {

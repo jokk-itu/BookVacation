@@ -2,7 +2,7 @@ using System;
 
 namespace Contracts
 {
-    public interface ExpireBookFlight
+    public interface ExpireFlight
     {
         Guid FlightId { get; }
 

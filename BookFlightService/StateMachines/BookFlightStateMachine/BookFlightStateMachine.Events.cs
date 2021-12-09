@@ -11,7 +11,7 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
 
         private Event<CompleteBookFlight> CompleteBookFlight { get; set; }
 
-        private Event<ExpireBookFlight> ExpireBookFlight { get; set; }
+        private Event<ExpireFlight> ExpireBookFlight { get; set; }
 
         private void SetupEvents()
         {
@@ -24,7 +24,7 @@ namespace BookFlightService.StateMachines.BookFlightStateMachine
             Event(() => CompleteBookFlight,
                 x => x.CorrelateById(c => c.Message.FlightId));
 
-            Event(() => ExpireBookFlight,
+            Event(() => ExpireBookFlight, 
                 x => x.CorrelateById(c => c.Message.FlightId));
         }
     }
