@@ -21,12 +21,14 @@ namespace BookFlightService
         {
             await _busControl.StartAsync(cancellationToken);
             await base.StartAsync(cancellationToken);
+            _logger.LogDebug("Bus started");
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
             await _busControl.StopAsync(cancellationToken);
             await base.StopAsync(cancellationToken);
+            _logger.LogDebug("Bus stopped");
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

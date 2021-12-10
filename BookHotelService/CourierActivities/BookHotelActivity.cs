@@ -10,12 +10,10 @@ namespace BookHotelService.CourierActivities
 {
     public class BookHotelActivity : IActivity<BookHotelArguments, BookHotelLog>
     {
-        private readonly IRequestClient<BookHotel> _client;
         private readonly ILogger<BookHotelActivity> _logger;
 
-        public BookHotelActivity(IRequestClient<BookHotel> client, ILogger<BookHotelActivity> logger)
+        public BookHotelActivity(ILogger<BookHotelActivity> logger)
         {
-            _client = client;
             _logger = logger;
         }
 
@@ -23,16 +21,10 @@ namespace BookHotelService.CourierActivities
         {
             _logger.LogInformation("Executing BookHotel");
             var price = context.Arguments.Price;
-            var bookHotelId = NewId.NextGuid();
-
-            var response = await _client.GetResponse<BookedHotel>(new
-            {
-                BookHotelId = bookHotelId,
-                Price = price
-            });
+            var bookHotelId = context.Arguments.HotelId;
 
             _logger.LogInformation("Executed BookHotel");
-            return context.Completed(new { HotelId = bookHotelId });
+            return context.Completed();
         }
 
         public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
@@ -45,11 +37,10 @@ namespace BookHotelService.CourierActivities
 
     public interface BookHotelArguments
     {
+        public Guid HotelId { get; }
         public decimal Price { get; }
     }
 
     public interface BookHotelLog
-    {
-        public Guid HotelId { get; }
-    }
+    {}
 }

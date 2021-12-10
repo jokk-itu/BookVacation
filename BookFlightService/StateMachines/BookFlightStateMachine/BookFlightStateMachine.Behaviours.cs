@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Automatonymous;
 using Contracts;
+using Contracts.BookFlightStateMachine;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 

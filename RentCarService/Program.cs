@@ -1,9 +1,7 @@
-using System;
-using Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RentCarService.Consumers;
+using Neo4j.Driver;
 using RentCarService.CourierActivities;
 using Serilog;
 using Serilog.Events;
@@ -25,8 +23,6 @@ namespace RentCarService
                     services.AddMassTransit(configurator =>
                     {
                         configurator.SetKebabCaseEndpointNameFormatter();
-                        configurator.AddRequestClient<RentCar>(new Uri("queue:rent-car"));
-                        configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                         configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
                         {
@@ -41,6 +37,11 @@ namespace RentCarService
                         });
                     });
                     services.AddHostedService<Worker>();
+                    services.AddSingleton(_ => GraphDatabase.Driver(
+                        "neo4j+s://ba36ce5c.databases.neo4j.io:7687",
+                        AuthTokens.Basic(
+                            "neo4j",
+                            "t-czGssSqfZL_ADeQdMF1nw4_23AhEhMypAUANleSCY")));
                 }).UseSerilog((context, serviceProvider, config) =>
                 {
                     var seqUri = context.Configuration["Logging:SeqUri"];

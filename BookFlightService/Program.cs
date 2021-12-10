@@ -1,11 +1,9 @@
-using System;
-using BookFlightService.Consumers;
 using BookFlightService.CourierActivities;
 using BookFlightService.StateMachines.BookFlightStateMachine;
-using Contracts;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Neo4j.Driver;
 using Serilog;
 using Serilog.Events;
 
@@ -26,10 +24,8 @@ namespace BookFlightService
                     services.AddMassTransit(configurator =>
                     {
                         configurator.SetKebabCaseEndpointNameFormatter();
-                        configurator.AddRequestClient<BookFlight>(new Uri("queue:book-flight"));
                         configurator.AddDelayedMessageScheduler();
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-                        configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();
                         configurator.AddSagaStateMachine<BookFlightStateMachine, BookFlightStateMachineInstance>()
                             .MongoDbRepository(mongodbConfigurator =>
                             {
@@ -50,6 +46,11 @@ namespace BookFlightService
                         });
                     });
                     services.AddHostedService<Worker>();
+                    services.AddSingleton(_ => GraphDatabase.Driver(
+                        "neo4j+s://ba36ce5c.databases.neo4j.io:7687",
+                        AuthTokens.Basic(
+                            "neo4j",
+                            "t-czGssSqfZL_ADeQdMF1nw4_23AhEhMypAUANleSCY")));
                 }).UseSerilog((context, serviceProvider, config) =>
                 {
                     var seqUri = context.Configuration["Logging:SeqUri"];

@@ -1,6 +1,7 @@
 using System;
 using Automatonymous;
 using Contracts;
+using Contracts.BookFlightStateMachine;
 
 namespace BookFlightService.StateMachines.BookFlightStateMachine
 {

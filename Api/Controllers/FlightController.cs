@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Contracts;
+using Contracts.BookFlightStateMachine;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

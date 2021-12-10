@@ -13,4 +13,9 @@
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="BookHotelActivity" />
+      <Folder Include="RentCarActivity" />
+    </ItemGroup>
+
 </Project>

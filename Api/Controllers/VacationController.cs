@@ -31,7 +31,7 @@ namespace Api.Controllers
             
             builder.AddActivity("BookFlight",
                 new Uri("queue:book-flight_execute"),
-                new { request.FlightId, Price = request.FlightPrice });
+                new { request.FlightId, request.SeatId });
             
             builder.AddActivity("BookHotel",
                 new Uri("queue:book-hotel_execute"),
@@ -39,7 +39,7 @@ namespace Api.Controllers
             
             builder.AddActivity("RentCar",
                 new Uri("queue:rent-car_execute"),
-                new { request.RentCarId, Price = request.CarPrice });
+                new { CarId = request.RentCarId, Price = request.CarPrice });
             
             var routingSlip = builder.Build();
             

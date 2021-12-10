@@ -1,8 +1,8 @@
 using System;
 
-namespace Contracts
+namespace Contracts.BookFlightStateMachine
 {
-    public interface CreateBookFlight
+    public record CancelBookFlight
     {
         public Guid FlightId { get; }
 
