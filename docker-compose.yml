@@ -37,7 +37,8 @@ services:
       - ./EnvironmentFiles/logging.env
     depends_on:
       - eventbus
-      - logger  
+      - logger
+      - sagarepository
     networks:
       - service_net
       

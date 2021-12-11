@@ -2,10 +2,10 @@ using System;
 
 namespace Api
 {
-    public class BookFlightRequest
+    public record BookFlightRequest
     {
-        public Guid FlightId { get; set; }
+        public Guid FlightId { get; init; }
 
-        public decimal Price { get; set; }
+        public decimal Price { get; init; }
     }
 }

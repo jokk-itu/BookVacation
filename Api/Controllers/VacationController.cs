@@ -35,7 +35,7 @@ namespace Api.Controllers
             
             builder.AddActivity("BookHotel",
                 new Uri("queue:book-hotel_execute"),
-                new { request.HotelId, Price = request.HotelPrice });
+                new { request.HotelId, Days = request.RentHotelDays, request.RoomId });
             
             builder.AddActivity("RentCar",
                 new Uri("queue:rent-car_execute"),

@@ -21,8 +21,10 @@ public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
     public async Task<ExecutionResult> Execute(ExecuteContext<BookHotelArgument> context)
     {
         _logger.LogInformation("Executing BookHotel");
-        var price = context.Arguments.Price;
-        var bookHotelId = context.Arguments.HotelId;
+        var days = context.Arguments.Days;
+        var roomId = context.Arguments.RoomId;
+        var hotelId = context.Arguments.HotelId;
+        var rentId = NewId.NextGuid();
 
         _logger.LogInformation("Executed BookHotel");
         return context.Completed();

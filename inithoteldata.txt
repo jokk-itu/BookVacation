@@ -1,0 +1,11 @@
+Room(id, people, floor, dayPrice)
+
+Hotel(id, stars)
+
+Rent(id)
+
+Hotel-[:Has()]->Room
+
+Rent-[:At()]->Hotel
+
+Rent-[:Renting(days)]->Room
