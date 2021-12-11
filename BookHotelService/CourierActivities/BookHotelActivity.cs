@@ -2,45 +2,36 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Contracts;
+using Contracts.BookHotelActivity;
 using MassTransit;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
 
-namespace BookHotelService.CourierActivities
+namespace BookHotelService.CourierActivities;
+
+public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
 {
-    public class BookHotelActivity : IActivity<BookHotelArguments, BookHotelLog>
+    private readonly ILogger<BookHotelActivity> _logger;
+
+    public BookHotelActivity(ILogger<BookHotelActivity> logger)
     {
-        private readonly ILogger<BookHotelActivity> _logger;
-
-        public BookHotelActivity(ILogger<BookHotelActivity> logger)
-        {
-            _logger = logger;
-        }
-
-        public async Task<ExecutionResult> Execute(ExecuteContext<BookHotelArguments> context)
-        {
-            _logger.LogInformation("Executing BookHotel");
-            var price = context.Arguments.Price;
-            var bookHotelId = context.Arguments.HotelId;
-
-            _logger.LogInformation("Executed BookHotel");
-            return context.Completed();
-        }
-
-        public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
-        {
-            await Task.Delay(500);
-            _logger.LogInformation("RentCar Compensated {Log}", JsonSerializer.Serialize(context.Log));
-            return context.Compensated();
-        }
+        _logger = logger;
     }
 
-    public interface BookHotelArguments
+    public async Task<ExecutionResult> Execute(ExecuteContext<BookHotelArgument> context)
     {
-        public Guid HotelId { get; }
-        public decimal Price { get; }
+        _logger.LogInformation("Executing BookHotel");
+        var price = context.Arguments.Price;
+        var bookHotelId = context.Arguments.HotelId;
+
+        _logger.LogInformation("Executed BookHotel");
+        return context.Completed();
     }
 
-    public interface BookHotelLog
-    {}
+    public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
+    {
+        await Task.Delay(500);
+        _logger.LogInformation("RentCar Compensated {Log}", JsonSerializer.Serialize(context.Log));
+        return context.Compensated();
+    }
 }

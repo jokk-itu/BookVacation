@@ -58,13 +58,39 @@ RETURN true AS IsSuccessful";
 
         _logger.LogInformation("Executed BookFlight");
 
-        return isSuccessful ? context.Completed() : context.Faulted();
+        return isSuccessful ? context.Completed(new { ReservationId = reservationId }) : context.Faulted();
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<BookFlightLog> context)
     {
-        await Task.Delay(500);
-        _logger.LogInformation("RentCar Compensated {Log}", JsonSerializer.Serialize(context.Log));
-        return context.Compensated();
+        _logger.LogInformation("Executing BookFlight");
+        var reservationId = context.Log.ReservationId;
+
+        var session = _driver.AsyncSession();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
+        {
+            const string command = @"
+MATCH (r:Reservation {id: $id})
+DETACH DELETE r
+RETURN true AS IsSuccessful";
+            var result = await transaction.RunAsync(command,
+                new
+                {
+                    id = reservationId.ToString().ToUpper()
+                });
+            var record = await result.FetchAsync();
+
+            if (record)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
+
+            await transaction.RollbackAsync();
+            return false;
+        });
+
+        _logger.LogInformation("BookFlight Compensated {Log}", JsonSerializer.Serialize(context.Log));
+        return isSuccessful ? context.Compensated() : context.Failed();
     }
 }
