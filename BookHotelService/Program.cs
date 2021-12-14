@@ -1,5 +1,6 @@
 
 using BookHotelService.CourierActivities;
+using EventBusTransmitting;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,33 +10,21 @@ using Serilog.Events;
 
 namespace BookHotelService
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddMassTransit(configurator =>
+                    services.AddEventBus(hostContext.Configuration, configurator =>
                     {
-                        configurator.SetKebabCaseEndpointNameFormatter();
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-                        configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
-                        {
-                            var hostname = hostContext.Configuration["EventBus:Hostname"];
-                            var port = hostContext.Configuration["EventBus:Port"];
-                            factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
-                            {
-                                hostConfigurator.Username(hostContext.Configuration["EventBus:Username"]);
-                                hostConfigurator.Password(hostContext.Configuration["EventBus:Password"]);
-                            });
-                            factoryConfigurator.ConfigureEndpoints(busContext);
-                        });
                     });
                     services.AddHostedService<Worker>();
                     services.AddSingleton(_ => GraphDatabase.Driver(

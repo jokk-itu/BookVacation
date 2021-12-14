@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -17,16 +19,16 @@ namespace Api
 
         public void Configure(SwaggerGenOptions options)
         {
+            const string validDescription = "API book a vacation, with flight, hotel and rental car";
+            var deprecatedDescription = $"API book a vacation, with flight, hotel and rental car.{Environment.NewLine}This API version has been deprecated";
             foreach (var description in _provider.ApiVersionDescriptions)
             {
                 var info = new OpenApiInfo
                 {
                     Title = "Book a Vacation",
                     Version = description.ApiVersion.ToString(),
-                    Description = "API book a vacation, with flight, hotel and rental car"
+                    Description = description.IsDeprecated ? deprecatedDescription : validDescription
                 };
-                if (description.IsDeprecated)
-                    info.Description += "\nThis API version has been deprecated.";
 
                 options.SwaggerDoc(description.GroupName, info);
             }

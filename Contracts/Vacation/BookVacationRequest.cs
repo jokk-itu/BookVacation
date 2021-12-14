@@ -1,6 +1,6 @@
 using System;
 
-namespace Api
+namespace Contracts.Vacation
 {
     public record VacationRequest
     {

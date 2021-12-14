@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Contracts;
+using Contracts.Vacation;
 using MassTransit;
 using MassTransit.Courier;
 using Microsoft.AspNetCore.Mvc;

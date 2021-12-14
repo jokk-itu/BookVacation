@@ -1,5 +1,6 @@
 using BookFlightService.CourierActivities;
 using BookFlightService.StateMachines.BookFlightStateMachine;
+using EventBusTransmitting;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,10 +22,8 @@ namespace BookFlightService
             return Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddMassTransit(configurator =>
+                    services.AddEventBus(hostContext.Configuration, configurator =>
                     {
-                        configurator.SetKebabCaseEndpointNameFormatter();
-                        configurator.AddDelayedMessageScheduler();
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                         configurator.AddSagaStateMachine<BookFlightStateMachine, BookFlightStateMachineInstance>()
                             .MongoDbRepository(mongodbConfigurator =>
@@ -32,32 +31,19 @@ namespace BookFlightService
                                 mongodbConfigurator.Connection = "mongodb://admin:admin@localhost:27017";
                                 mongodbConfigurator.DatabaseName = "bookflights";
                             });
-                        configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
-                        {
-                            factoryConfigurator.UseDelayedMessageScheduler();
-                            var hostname = hostContext.Configuration["EventBus:Hostname"];
-                            var port = hostContext.Configuration["EventBus:Port"];
-                            factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
-                            {
-                                hostConfigurator.Username(hostContext.Configuration["EventBus:Username"]);
-                                hostConfigurator.Password(hostContext.Configuration["EventBus:Password"]);
-                            });
-                            factoryConfigurator.ConfigureEndpoints(busContext);
-                        });
                     });
-                    services.AddHostedService<Worker>();
                     services.AddSingleton(_ => GraphDatabase.Driver(
                         "neo4j+s://ba36ce5c.databases.neo4j.io:7687",
                         AuthTokens.Basic(
                             "neo4j",
                             "t-czGssSqfZL_ADeQdMF1nw4_23AhEhMypAUANleSCY")));
+                    services.AddHostedService<Worker>();
                 }).UseSerilog((context, serviceProvider, config) =>
                 {
                     var seqUri = context.Configuration["Logging:SeqUri"];
                     config.WriteTo.Seq(seqUri)
                         .Enrich.FromLogContext()
                         .MinimumLevel.Override("BookFlightService", LogEventLevel.Information)
-                        .MinimumLevel.Override("MassTransit", LogEventLevel.Debug)
                         .MinimumLevel.Warning();
                 });
         }

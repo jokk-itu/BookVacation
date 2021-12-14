@@ -1,3 +1,4 @@
+using EventBusTransmitting;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +17,7 @@ namespace Api
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -32,19 +33,7 @@ namespace Api
             services.AddSwaggerGen();
             services.ConfigureOptions<ConfigureSwaggerOptions>();
 
-            services.AddMassTransit(configurator =>
-            {
-                configurator.UsingRabbitMq((context, factoryConfigurator) =>
-                {
-                    var hostname = Configuration["EventBus:Hostname"];
-                    var port = Configuration["EventBus:Port"];
-                    factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
-                    {
-                        hostConfigurator.Username(Configuration["EventBus:Username"]);
-                        hostConfigurator.Password(Configuration["EventBus:Password"]);
-                    });
-                });
-            });
+            services.AddEventBus(Configuration);
             services.AddMassTransitHostedService();
         }
 
