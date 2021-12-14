@@ -5,5 +5,6 @@ namespace Contracts.RentCarActivity;
 public record RentCarArgument
 {
     public Guid CarId { get; init; }
-    public decimal Price { get; init; }
+    public Guid RentingCompanyId { get; init; }
+    public int Days { get; init; }
 }

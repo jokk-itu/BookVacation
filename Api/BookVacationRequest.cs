@@ -17,12 +17,13 @@ namespace Api
         public Guid RoomId { get; init; }
         
         #endregion
-
+        
         #region RentCar
         
         public Guid RentCarId { get; init; }
-        public decimal CarPrice { get; init; }
-        
+        public Guid RentingCompanyId { get; init; }
+        public int RentCarDays { get; init; }
+
         #endregion
     }
 }

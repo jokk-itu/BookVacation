@@ -39,7 +39,7 @@ namespace Api.Controllers
             
             builder.AddActivity("RentCar",
                 new Uri("queue:rent-car_execute"),
-                new { CarId = request.RentCarId, Price = request.CarPrice });
+                new { CarId = request.RentCarId, request.RentingCompanyId, Days = request.RentCarDays });
             
             var routingSlip = builder.Build();
             
