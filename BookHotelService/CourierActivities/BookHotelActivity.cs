@@ -1,39 +1,98 @@
-using System;
-using System.Text.Json;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using Contracts;
 using Contracts.BookHotelActivity;
 using MassTransit;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
+using Neo4j.Driver;
 
 namespace BookHotelService.CourierActivities;
 
 public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
 {
     private readonly ILogger<BookHotelActivity> _logger;
+    private readonly IDriver _driver;
 
-    public BookHotelActivity(ILogger<BookHotelActivity> logger)
+    public BookHotelActivity(ILogger<BookHotelActivity> logger, IDriver driver)
     {
         _logger = logger;
+        _driver = driver;
     }
 
     public async Task<ExecutionResult> Execute(ExecuteContext<BookHotelArgument> context)
     {
-        _logger.LogInformation("Executing BookHotel");
         var days = context.Arguments.Days;
         var roomId = context.Arguments.RoomId;
         var hotelId = context.Arguments.HotelId;
         var rentId = NewId.NextGuid();
 
-        _logger.LogInformation("Executed BookHotel");
-        return context.Completed();
+        await using var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
+        {
+            const string command = @"
+MATCH (h:Hotel {id: $hotelId})-[:Has]->(r:Room {id: $roomId})
+WHERE NOT EXISTS {
+    MATCH 
+        (:Rent)-->(h),
+        (:Rent)-->(r)    
+}
+CREATE (r1:Rent {})-[:At]->(h)
+CREATE (r1)-[:Renting(days: $days)->(r)
+RETURN true as IsSuccessful
+";
+            var result = await  session.RunAsync(command, new
+            {
+                days, 
+                roomId = roomId.ToString().ToUpper(),
+                hotelId = hotelId.ToString().ToUpper(),
+                rentId = rentId.ToString().ToUpper()
+            });
+            var record = await result.FetchAsync();
+            if (record)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
+
+            await transaction.RollbackAsync();
+            return false;
+        });
+        watch.Stop();
+        
+        _logger.LogInformation("Executed BookHotel, took {Elapsed}", watch.ElapsedMilliseconds);
+        return isSuccessful ? context.Completed(new { RentId = rentId }) : context.Faulted();
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
     {
-        await Task.Delay(500);
-        _logger.LogInformation("RentCar Compensated {Log}", JsonSerializer.Serialize(context.Log));
-        return context.Compensated();
+        var id = context.Log.RentId;
+        var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
+        {
+            const string command = @"
+MATCH (r:Rent {id: $id})
+DETACH DELETE r
+RETURN true AS IsSuccessful";
+            var result = await transaction.RunAsync(command, new
+            {
+                id = id.ToString().ToUpper()
+            });
+            var record = await result.FetchAsync();
+            if (record)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
+
+            await transaction.RollbackAsync();
+            return false;
+        });
+        watch.Stop();
+        _logger.LogInformation("Compensated BookHotel, took {Elapsed}", watch.ElapsedMilliseconds);
+        return isSuccessful ?  context.Compensated() : context.Failed();
     }
 }

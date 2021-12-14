@@ -1,4 +1,4 @@
-using System.Text.Json;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Contracts.BookFlightActivity;
 using MassTransit;
@@ -21,18 +21,21 @@ public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
 
     public async Task<ExecutionResult> Execute(ExecuteContext<BookFlightArgument> context)
     {
-        _logger.LogInformation("Executing BookFlight");
         var seatId = context.Arguments.SeatId;
         var flightId = context.Arguments.FlightId;
         var reservationId = NewId.NextGuid();
 
         var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
             const string command = @"
 MATCH (f:Flight {id: $flightId})-[:With]->(ap:Airplane)-[:Has]->(s:Seat {id: $seatId})
 WHERE NOT EXISTS {
-    MATCH (r:Reservation)-->(f)
+    MATCH 
+        (:Reservation)-->(f),
+        (:Reservation)-->(s)
 }
 CREATE (r1:Reservation {id: $reservationId})-[:Reserves]->(s)
 CREATE (r1)-[:Buys]->(f)
@@ -55,8 +58,8 @@ RETURN true AS IsSuccessful";
             await transaction.RollbackAsync();
             return false;
         });
-
-        _logger.LogInformation("Executed BookFlight");
+        watch.Stop();
+        _logger.LogInformation("Executed BookFlight, took {Elapsed}", watch.ElapsedMilliseconds);
 
         return isSuccessful ? context.Completed(new { ReservationId = reservationId }) : context.Faulted();
     }
@@ -67,6 +70,8 @@ RETURN true AS IsSuccessful";
         var reservationId = context.Log.ReservationId;
 
         var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
             const string command = @"
@@ -89,8 +94,8 @@ RETURN true AS IsSuccessful";
             await transaction.RollbackAsync();
             return false;
         });
-
-        _logger.LogInformation("BookFlight Compensated {Log}", JsonSerializer.Serialize(context.Log));
+        watch.Stop();
+        _logger.LogInformation("Compensated BookFlight, took {Elapsed}", watch.ElapsedMilliseconds);
         return isSuccessful ? context.Compensated() : context.Failed();
     }
 }
