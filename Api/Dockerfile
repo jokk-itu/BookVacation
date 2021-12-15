@@ -4,6 +4,7 @@ ARG Configuration
 WORKDIR /app
 COPY Api Api
 COPY Contracts Contracts
+COPY EventBusTransmitting EventBusTransmitting
 RUN dotnet publish Api/Api.csproj -c $Configuration -o out
 
 

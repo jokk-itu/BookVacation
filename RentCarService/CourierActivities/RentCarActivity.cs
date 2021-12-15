@@ -1,55 +1,99 @@
-using System;
-using System.Text.Json;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using Contracts;
+using Contracts.RentCarActivity;
 using MassTransit;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
+using Neo4j.Driver;
 
-namespace RentCarService.CourierActivities
+namespace RentCarService.CourierActivities;
+
+public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
 {
-    public class RentCarActivity : IActivity<RentCarArguments, RentCarLog>
+    private readonly IDriver _driver;
+    private readonly ILogger<RentCarActivity> _logger;
+
+    public RentCarActivity(ILogger<RentCarActivity> logger, IDriver driver)
     {
-        private readonly IRequestClient<RentCar> _client;
-        private readonly ILogger<RentCarActivity> _logger;
+        _logger = logger;
+        _driver = driver;
+    }
 
-        public RentCarActivity(IRequestClient<RentCar> client, ILogger<RentCarActivity> logger)
+    public async Task<ExecutionResult> Execute(ExecuteContext<RentCarArgument> context)
+    {
+        var companyId = context.Arguments.RentingCompanyId;
+        var carId = context.Arguments.CarId;
+        var days = context.Arguments.Days;
+        var rentId = NewId.NextGuid();
+
+        await using var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
-            _client = client;
-            _logger = logger;
-        }
-
-        public async Task<ExecutionResult> Execute(ExecuteContext<RentCarArguments> context)
-        {
-            _logger.LogInformation("Executing RentCar");
-            var price = context.Arguments.Price;
-            var rentCarId = NewId.NextGuid();
-
-            var response = await _client.GetResponse<RentedCar>(new
+            const string command = @"
+MATCH (rc:RentingCompany {id: $companyId})-[:Owns]->[c:Car {id: $carId}]
+WHERE NOT EXISTS {
+    MATCH 
+        (r:RentCar)-->(rc),
+        (r)-->(c)
+}
+CREATE (r:RentCar {})-[:Renting]->(:Car {id: $carId})
+CREATE (r)-[:RentingFor]->rc
+RETURN true as IsSuccessful";
+            var result = await session.RunAsync(command, new
             {
-                RentCarId = rentCarId,
-                Price = price
+                companyId = companyId.ToString().ToUpper(),
+                carId = carId.ToString().ToUpper(),
+                days,
+                rentId = rentId.ToString().ToUpper()
             });
+            var record = await result.FetchAsync();
 
-            _logger.LogInformation("Executed RentCar");
-            return context.Completed(new { RentCarId = rentCarId });
-        }
+            if (record)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
 
-        public async Task<CompensationResult> Compensate(CompensateContext<RentCarLog> context)
+            await transaction.RollbackAsync();
+            return false;
+        });
+        watch.Stop();
+        _logger.LogInformation("Executed RentCar, took {Elapsed}", watch.ElapsedMilliseconds);
+        return isSuccessful ? context.Completed(new { RentId = rentId }) : context.Faulted();
+    }
+
+    public async Task<CompensationResult> Compensate(CompensateContext<RentCarLog> context)
+    {
+        var rentId = context.Log.RentCarId;
+
+        await using var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
-            await Task.Delay(500);
-            _logger.LogInformation("RentCar Compensated {Log}", JsonSerializer.Serialize(context.Log));
-            return context.Compensated();
-        }
-    }
+            const string command = @"
+MATCH (r:Rent {id: $rentCarId})
+DETACH DELETE r
+RETURN true as IsSuccessful";
+            var result = await session.RunAsync(command, new
+            {
+                rentId = rentId.ToString().ToUpper()
+            });
+            var record = await result.FetchAsync();
 
-    public interface RentCarArguments
-    {
-        public decimal Price { get; }
-    }
+            if (record)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
 
-    public interface RentCarLog
-    {
-        public Guid RentCarId { get; }
+            await transaction.RollbackAsync();
+            return false;
+        });
+        watch.Stop();
+        _logger.LogInformation("Compensated RentCar, took {Elapsed}", watch.ElapsedMilliseconds);
+        return isSuccessful ? context.Compensated() : context.Failed();
     }
 }

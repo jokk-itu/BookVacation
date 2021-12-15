@@ -4,6 +4,7 @@ ARG Configuration
 WORKDIR /app
 COPY RentCarService RentCarService
 COPY Contracts Contracts
+COPY EventBusTransmitting EventBusTransmitting
 RUN dotnet publish RentCarService/RentCarService.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim-amd64 AS release

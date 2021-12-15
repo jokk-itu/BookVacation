@@ -1,0 +1,18 @@
+CarCompany(id, name)
+
+Car(id, name, seats, color, year)
+
+RentingCompany(id, name)
+
+RentCar(id, days)
+
+
+
+
+CarCompany-[:Made]->Car
+
+RentingCompany-[:Owns(dayPrice)]->Car
+
+RentCar-[:Renting]->Car
+
+RentCar-[:RentingFor]->RentingCompany

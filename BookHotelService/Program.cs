@@ -1,54 +1,44 @@
-using System;
-using BookHotelService.Consumers;
 using BookHotelService.CourierActivities;
-using Contracts;
+using EventBusTransmitting;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Neo4j.Driver;
 using Serilog;
 using Serilog.Events;
 
-namespace BookHotelService
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+namespace BookHotelService;
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddMassTransit(configurator =>
+public static class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    private static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddEventBus(hostContext.Configuration,
+                    configurator =>
                     {
-                        configurator.SetKebabCaseEndpointNameFormatter();
-                        configurator.AddRequestClient<BookHotel>(new Uri("queue:book-hotel"));
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-                        configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();
-                        configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
-                        {
-                            var hostname = hostContext.Configuration["EventBus:Hostname"];
-                            var port = hostContext.Configuration["EventBus:Port"];
-                            factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
-                            {
-                                hostConfigurator.Username(hostContext.Configuration["EventBus:Username"]);
-                                hostConfigurator.Password(hostContext.Configuration["EventBus:Password"]);
-                            });
-                            factoryConfigurator.ConfigureEndpoints(busContext);
-                        });
                     });
-                    services.AddHostedService<Worker>();
-                }).UseSerilog((context, serviceProvider, config) =>
-                {
-                    var seqUri = context.Configuration["Logging:SeqUri"];
-                    config.WriteTo.Seq(seqUri)
-                        .Enrich.FromLogContext()
-                        .MinimumLevel.Override("BookHotelService", LogEventLevel.Information)
-                        .MinimumLevel.Warning();
-                });
-        }
+                services.AddHostedService<Worker>();
+                services.AddSingleton(_ => GraphDatabase.Driver(
+                    hostContext.Configuration["NEO4J:URI"],
+                    AuthTokens.Basic(
+                        hostContext.Configuration["NEO4J:USERNAME"],
+                        hostContext.Configuration["NEO4J:PASSWORD"])));
+            }).UseSerilog((context, serviceProvider, config) =>
+            {
+                var seqUri = context.Configuration["Logging:SeqUri"];
+                config.WriteTo.Seq(seqUri)
+                    .Enrich.FromLogContext()
+                    .MinimumLevel.Override("BookHotelService", LogEventLevel.Information)
+                    .MinimumLevel.Warning();
+            });
     }
 }

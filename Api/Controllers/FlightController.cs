@@ -1,76 +1,76 @@
 using System.Threading.Tasks;
-using Contracts;
+using Contracts.BookFlightStateMachine;
+using Contracts.Flight;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Api.Controllers
+namespace Api.Controllers;
+
+[ApiController]
+[ControllerName("flight")]
+[ApiVersion("1")]
+[Route("api/v{version:apiVersion}/[controller]")]
+public class FlightController : ControllerBase
 {
-    [ApiController]
-    [ControllerName("flight")]
-    [ApiVersion("1")]
-    [Route("api/v{version:apiVersion}/[controller]")]
-    public class FlightController : ControllerBase
+    private readonly IBusControl _bus;
+    private readonly ILogger<FlightController> _logger;
+
+    public FlightController(IBusControl bus, ILogger<FlightController> logger)
     {
-        private readonly IBusControl _bus;
-        private readonly ILogger<FlightController> _logger;
+        _bus = bus;
+        _logger = logger;
+    }
 
-        public FlightController(IBusControl bus, ILogger<FlightController> logger)
+    [HttpPost]
+    [Route("cancel")]
+    public async Task<IActionResult> CancelAsync([FromBody] BookFlightRequest request)
+    {
+        var correlationId = NewId.NextGuid();
+        var bookEvent = new
         {
-            _bus = bus;
-            _logger = logger;
-        }
+            __CorrelationId = correlationId,
+            request.FlightId,
+            request.Price
+        };
 
-        [HttpPost]
-        [Route("cancel")]
-        public async Task<IActionResult> CancelAsync([FromBody] BookFlightRequest request)
-        {
-            var correlationId = NewId.NextGuid();
-            var bookEvent = new
-            {
-                __CorrelationId = correlationId,
-                request.FlightId,
-                request.Price
-            };
-            
-            await _bus.Publish<CreateBookFlight>(bookEvent);
-            await Task.Delay(2000);
-            await _bus.Publish<CancelBookFlight>(bookEvent);
-            return Accepted();
-        }
+        await _bus.Publish<CreateBookFlight>(bookEvent);
+        await Task.Delay(2000);
+        await _bus.Publish<CancelBookFlight>(bookEvent);
+        return Accepted();
+    }
 
-        [HttpPost]
-        [Route("complete")]
-        public async Task<IActionResult> CompleteAsync([FromBody] BookFlightRequest request)
+    [HttpPost]
+    [Route("complete")]
+    public async Task<IActionResult> CompleteAsync([FromBody] BookFlightRequest request)
+    {
+        var correlationId = NewId.NextGuid();
+        var bookEvent = new
         {
-            var correlationId = NewId.NextGuid();
-            var bookEvent = new
-            {
-                __CorrelationId = correlationId,
-                request.FlightId,
-                request.Price
-            };
-            
-            await _bus.Publish<CreateBookFlight>(bookEvent);
-            await Task.Delay(2000);
-            await _bus.Publish<CompleteBookFlight>(bookEvent);
-            return Accepted();
-        }
-        
-        [HttpPost]
-        [Route("expire")]
-        public async Task<IActionResult> ExpireAsync([FromBody] BookFlightRequest request)
+            __CorrelationId = correlationId,
+            request.FlightId,
+            request.Price
+        };
+
+        await _bus.Publish<CreateBookFlight>(bookEvent);
+        await Task.Delay(2000);
+        await _bus.Publish<CompleteBookFlight>(bookEvent);
+        return Accepted();
+    }
+
+    [HttpPost]
+    [Route("expire")]
+    public async Task<IActionResult> ExpireAsync([FromBody] BookFlightRequest request)
+    {
+        var correlationId = NewId.NextGuid();
+        var bookEvent = new
         {
-            var correlationId = NewId.NextGuid();
-            var bookEvent = new
-            {
-                __CorrelationId = correlationId,
-                request.FlightId,
-                request.Price
-            };
-            
-            await _bus.Publish<CreateBookFlight>(bookEvent);
-            return Accepted();
-        }
+            __CorrelationId = correlationId,
+            request.FlightId,
+            request.Price
+        };
+
+        await _bus.Publish<CreateBookFlight>(bookEvent);
+        return Accepted();
     }
 }

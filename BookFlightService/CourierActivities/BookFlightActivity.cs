@@ -1,56 +1,101 @@
-using System;
-using System.Text.Json;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using Contracts;
+using Contracts.BookFlightActivity;
 using MassTransit;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
+using Neo4j.Driver;
 
-namespace BookFlightService.CourierActivities
+namespace BookFlightService.CourierActivities;
+
+public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
 {
-    public class BookFlightActivity : IActivity<BookFlightArguments, BookFlightLog>
+    private readonly IDriver _driver;
+    private readonly ILogger<BookFlightActivity> _logger;
+
+    public BookFlightActivity(ILogger<BookFlightActivity> logger, IDriver driver)
     {
-        private readonly IRequestClient<BookFlight> _client;
-        private readonly ILogger<BookFlightActivity> _logger;
+        _logger = logger;
+        _driver = driver;
+    }
 
-        public BookFlightActivity(IRequestClient<BookFlight> client, ILogger<BookFlightActivity> logger)
+    public async Task<ExecutionResult> Execute(ExecuteContext<BookFlightArgument> context)
+    {
+        var seatId = context.Arguments.SeatId;
+        var flightId = context.Arguments.FlightId;
+        var reservationId = NewId.NextGuid();
+
+        var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
-            _client = client;
-            _logger = logger;
-        }
+            const string command = @"
+MATCH (f:Flight {id: $flightId})-[:With]->(ap:Airplane)-[:Has]->(s:Seat {id: $seatId})
+WHERE NOT EXISTS {
+    MATCH 
+        (:Reservation)-->(f),
+        (:Reservation)-->(s)
+}
+CREATE (r1:Reservation {id: $reservationId})-[:Reserves]->(s)
+CREATE (r1)-[:Buys]->(f)
+RETURN true AS IsSuccessful";
+            var result = await transaction.RunAsync(command,
+                new
+                {
+                    flightId = flightId.ToString().ToUpper(),
+                    seatId,
+                    reservationId = reservationId.ToString().ToUpper()
+                });
+            var record = await result.FetchAsync();
 
-        public async Task<ExecutionResult> Execute(ExecuteContext<BookFlightArguments> context)
-        {
-            _logger.LogInformation("Executing BookFlight");
-            var price = context.Arguments.Price;
-            var bookFlightId = NewId.NextGuid();
-
-            var response = await _client.GetResponse<BookedFlight>(new
+            if (record)
             {
-                BookFlightId = bookFlightId,
-                Price = price
-            });
+                await transaction.CommitAsync();
+                return true;
+            }
 
-            _logger.LogInformation("Executed BookFlight");
+            await transaction.RollbackAsync();
+            return false;
+        });
+        watch.Stop();
+        _logger.LogInformation("Executed BookFlight, took {Elapsed}", watch.ElapsedMilliseconds);
 
-            return context.Completed(new { BookFlightId = bookFlightId });
-        }
+        return isSuccessful ? context.Completed(new { ReservationId = reservationId }) : context.Faulted();
+    }
 
-        public async Task<CompensationResult> Compensate(CompensateContext<BookFlightLog> context)
+    public async Task<CompensationResult> Compensate(CompensateContext<BookFlightLog> context)
+    {
+        _logger.LogInformation("Executing BookFlight");
+        var reservationId = context.Log.ReservationId;
+
+        var session = _driver.AsyncSession();
+        var watch = new Stopwatch();
+        watch.Start();
+        var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
-            await Task.Delay(500);
-            _logger.LogInformation("RentCar Compensated {Log}", JsonSerializer.Serialize(context.Log));
-            return context.Compensated();
-        }
-    }
+            const string command = @"
+MATCH (r:Reservation {id: $id})
+DETACH DELETE r
+RETURN true AS IsSuccessful";
+            var result = await transaction.RunAsync(command,
+                new
+                {
+                    id = reservationId.ToString().ToUpper()
+                });
+            var record = await result.FetchAsync();
 
-    public interface BookFlightArguments
-    {
-        public decimal Price { get; }
-    }
+            if (record)
+            {
+                await transaction.CommitAsync();
+                return true;
+            }
 
-    public interface BookFlightLog
-    {
-        public Guid BookFlightId { get; }
+            await transaction.RollbackAsync();
+            return false;
+        });
+        watch.Stop();
+        _logger.LogInformation("Compensated BookFlight, took {Elapsed}", watch.ElapsedMilliseconds);
+        return isSuccessful ? context.Compensated() : context.Failed();
     }
 }

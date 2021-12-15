@@ -1,40 +1,41 @@
+using System;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Api
+namespace Api;
+
+public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
 {
-    public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
+    private readonly IApiVersionDescriptionProvider _provider;
+
+    public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
     {
-        private readonly IApiVersionDescriptionProvider _provider;
+        _provider = provider;
+    }
 
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider)
+    public void Configure(SwaggerGenOptions options)
+    {
+        const string validDescription = "API book a vacation, with flight, hotel and rental car";
+        var deprecatedDescription =
+            $"API book a vacation, with flight, hotel and rental car.{Environment.NewLine}This API version has been deprecated";
+        foreach (var description in _provider.ApiVersionDescriptions)
         {
-            _provider = provider;
-        }
-
-        public void Configure(SwaggerGenOptions options)
-        {
-            foreach (var description in _provider.ApiVersionDescriptions)
+            var info = new OpenApiInfo
             {
-                var info = new OpenApiInfo
-                {
-                    Title = "Book a Vacation",
-                    Version = description.ApiVersion.ToString(),
-                    Description = "API book a vacation, with flight, hotel and rental car"
-                };
-                if (description.IsDeprecated)
-                    info.Description += "\nThis API version has been deprecated.";
+                Title = "Book a Vacation",
+                Version = description.ApiVersion.ToString(),
+                Description = description.IsDeprecated ? deprecatedDescription : validDescription
+            };
 
-                options.SwaggerDoc(description.GroupName, info);
-            }
+            options.SwaggerDoc(description.GroupName, info);
         }
+    }
 
-        public void Configure(string name, SwaggerGenOptions options)
-        {
-            Configure(options);
-        }
+    public void Configure(string name, SwaggerGenOptions options)
+    {
+        Configure(options);
     }
 }
