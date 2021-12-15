@@ -43,9 +43,7 @@ namespace Api.Controllers
                 new { CarId = request.RentCarId, request.RentingCompanyId, Days = request.RentCarDays });
             
             var routingSlip = builder.Build();
-            
-            _logger.LogInformation("Executing Book Vacation");
-            
+
             await _bus.Execute(routingSlip);
             
             return Accepted();

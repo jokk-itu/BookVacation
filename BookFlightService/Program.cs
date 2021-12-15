@@ -33,10 +33,10 @@ namespace BookFlightService
                             });
                     });
                     services.AddSingleton(_ => GraphDatabase.Driver(
-                        "neo4j+s://ba36ce5c.databases.neo4j.io:7687",
+                        hostContext.Configuration["NEO4J:URI"],
                         AuthTokens.Basic(
-                            "neo4j",
-                            "t-czGssSqfZL_ADeQdMF1nw4_23AhEhMypAUANleSCY")));
+                            hostContext.Configuration["NEO4J:USERNAME"],
+                            hostContext.Configuration["NEO4J:PASSWORD"])));
                     services.AddHostedService<Worker>();
                 }).UseSerilog((context, serviceProvider, config) =>
                 {

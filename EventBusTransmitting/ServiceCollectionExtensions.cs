@@ -1,4 +1,4 @@
-using BookFlightService;
+using EventBusTransmitting.Filters;
 using EventBusTransmitting.Observers;
 using MassTransit;
 using MassTransit.ExtensionsDependencyInjectionIntegration;

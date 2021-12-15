@@ -1,10 +1,9 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
 using GreenPipes;
 using MassTransit.Courier;
 using Microsoft.Extensions.Logging;
 
-namespace BookFlightService;
+namespace EventBusTransmitting.Filters;
 
 public class LogExecuteFilter<T> : IFilter<ExecuteContext<T>> where T: class
 {

@@ -35,6 +35,7 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
     depends_on:
       - eventbus
       - logger
@@ -53,6 +54,7 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
     depends_on:
       - eventbus
       - logger  
@@ -70,6 +72,7 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
     depends_on:
       - eventbus
       - logger  
@@ -111,4 +114,18 @@ services:
     environment:
       MONGO_INITDB_DATABASE: bookflights
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin    
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    hostname: neo4j
+    environment:
+      - NEO4J_AUTH=neo4j/test
+    networks:
+      - service_net
+    volumes:
+      - ./Neo4j/neo4j.conf:/conf  
+    ports:
+      - "7474:7474"
+      - "7687:7687"     
