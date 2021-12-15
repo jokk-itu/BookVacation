@@ -2,6 +2,7 @@ using EventBusTransmitting.Filters;
 using EventBusTransmitting.Observers;
 using MassTransit;
 using MassTransit.ExtensionsDependencyInjectionIntegration;
+using MassTransit.PrometheusIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,6 +39,8 @@ public static class ServiceCollectionExtensions
                     new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
 
                 factoryConfigurator.UseDelayedMessageScheduler();
+                
+                factoryConfigurator.UsePrometheusMetrics(serviceName: configuration["ServiceName"]);
 
                 var hostname = configuration["EventBus:Hostname"];
                 var port = configuration["EventBus:Port"];

@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{FCE4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusTransmitting", "EventBusTransmitting\EventBusTransmitting.csproj", "{C00635A7-2F9F-48E9-B723-5FE21963DEDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrometheusWorker", "PrometheusWorker\PrometheusWorker.csproj", "{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,18 @@ Global
 		{C00635A7-2F9F-48E9-B723-5FE21963DEDD}.Release|x64.Build.0 = Release|Any CPU
 		{C00635A7-2F9F-48E9-B723-5FE21963DEDD}.Release|x86.ActiveCfg = Release|Any CPU
 		{C00635A7-2F9F-48E9-B723-5FE21963DEDD}.Release|x86.Build.0 = Release|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Debug|x86.Build.0 = Debug|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x64.Build.0 = Release|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D0517445-0378-479E-8E3F-610B4FB7CBD2} = {FCE480FB-82D3-4ADB-AB7E-9656B470A9E0}

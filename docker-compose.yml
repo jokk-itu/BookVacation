@@ -128,4 +128,23 @@ services:
       - ./Neo4j/neo4j.conf:/conf  
     ports:
       - "7474:7474"
-      - "7687:7687"     
+      - "7687:7687"
+      
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    container_name: prometheus
+    hostname: prometheus
+    volumes:
+      - ./Monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - service_net
+          
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    networks:
+      - service_net    

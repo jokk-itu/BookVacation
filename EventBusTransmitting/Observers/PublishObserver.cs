@@ -14,19 +14,19 @@ public class PublishObserver : IPublishObserver
 
     public Task PrePublish<T>(PublishContext<T> context) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PrePublish");
         return Task.CompletedTask;
     }
 
     public Task PostPublish<T>(PublishContext<T> context) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostPublish");
         return Task.CompletedTask;
     }
 
     public Task PublishFault<T>(PublishContext<T> context, Exception exception) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultPublish");
         return Task.CompletedTask;
     }
 }

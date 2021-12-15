@@ -3,6 +3,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
+using PrometheusWorker;
 using RentCarService.CourierActivities;
 using Serilog;
 using Serilog.Events;
@@ -26,12 +27,13 @@ public static class Program
                     {
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                     });
-                services.AddHostedService<Worker>();
                 services.AddSingleton(_ => GraphDatabase.Driver(
                     hostContext.Configuration["NEO4J:URI"],
                     AuthTokens.Basic(
                         hostContext.Configuration["NEO4J:USERNAME"],
                         hostContext.Configuration["NEO4J:PASSWORD"])));
+                services.AddHostedService<EventBusWorker>();
+                services.AddMetricServer();
             }).UseSerilog((context, serviceProvider, config) =>
             {
                 var seqUri = context.Configuration["Logging:SeqUri"];
