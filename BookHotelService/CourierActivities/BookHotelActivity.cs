@@ -10,8 +10,8 @@ namespace BookHotelService.CourierActivities;
 
 public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
 {
-    private readonly ILogger<BookHotelActivity> _logger;
     private readonly IDriver _driver;
+    private readonly ILogger<BookHotelActivity> _logger;
 
     public BookHotelActivity(ILogger<BookHotelActivity> logger, IDriver driver)
     {
@@ -42,9 +42,9 @@ CREATE (r1:Rent {})-[:At]->(h)
 CREATE (r1)-[:Renting(days: $days)->(r)
 RETURN true as IsSuccessful
 ";
-            var result = await  session.RunAsync(command, new
+            var result = await session.RunAsync(command, new
             {
-                days, 
+                days,
                 roomId = roomId.ToString().ToUpper(),
                 hotelId = hotelId.ToString().ToUpper(),
                 rentId = rentId.ToString().ToUpper()
@@ -60,7 +60,7 @@ RETURN true as IsSuccessful
             return false;
         });
         watch.Stop();
-        
+
         _logger.LogInformation("Executed BookHotel, took {Elapsed}", watch.ElapsedMilliseconds);
         return isSuccessful ? context.Completed(new { RentId = rentId }) : context.Faulted();
     }
@@ -93,6 +93,6 @@ RETURN true AS IsSuccessful";
         });
         watch.Stop();
         _logger.LogInformation("Compensated BookHotel, took {Elapsed}", watch.ElapsedMilliseconds);
-        return isSuccessful ?  context.Compensated() : context.Failed();
+        return isSuccessful ? context.Compensated() : context.Failed();
     }
 }

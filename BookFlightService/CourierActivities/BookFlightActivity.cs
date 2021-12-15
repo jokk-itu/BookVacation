@@ -10,8 +10,8 @@ namespace BookFlightService.CourierActivities;
 
 public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
 {
-    private readonly ILogger<BookFlightActivity> _logger;
     private readonly IDriver _driver;
+    private readonly ILogger<BookFlightActivity> _logger;
 
     public BookFlightActivity(ILogger<BookFlightActivity> logger, IDriver driver)
     {

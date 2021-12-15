@@ -10,8 +10,10 @@ namespace EventBusTransmitting;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration, Action<IServiceCollectionBusConfigurator>? callback = null)
-        => services.AddMassTransit(configurator =>
+    public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration,
+        Action<IServiceCollectionBusConfigurator>? callback = null)
+    {
+        return services.AddMassTransit(configurator =>
         {
             callback?.Invoke(configurator);
             configurator.SetKebabCaseEndpointNameFormatter();
@@ -24,14 +26,19 @@ public static class ServiceCollectionExtensions
                 factoryConfigurator.UseExecuteActivityFilter(typeof(LogExecuteFilter<>), busContext);
                 factoryConfigurator.UseCompensateActivityFilter(typeof(LogCompensateFilter<>), busContext);
 
-                factoryConfigurator.ConnectBusObserver(new BusObserver(busContext.GetRequiredService<ILogger<BusObserver>>()));
-                factoryConfigurator.ConnectSendObserver(new SendObserver(busContext.GetRequiredService<ILogger<SendObserver>>()));
-                factoryConfigurator.ConnectPublishObserver(new PublishObserver(busContext.GetRequiredService<ILogger<PublishObserver>>()));
-                factoryConfigurator.ConnectConsumeObserver(new ConsumeObserver(busContext.GetRequiredService<ILogger<ConsumeObserver>>()));
-                factoryConfigurator.ConnectReceiveObserver(new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
-                
+                factoryConfigurator.ConnectBusObserver(
+                    new BusObserver(busContext.GetRequiredService<ILogger<BusObserver>>()));
+                factoryConfigurator.ConnectSendObserver(
+                    new SendObserver(busContext.GetRequiredService<ILogger<SendObserver>>()));
+                factoryConfigurator.ConnectPublishObserver(
+                    new PublishObserver(busContext.GetRequiredService<ILogger<PublishObserver>>()));
+                factoryConfigurator.ConnectConsumeObserver(
+                    new ConsumeObserver(busContext.GetRequiredService<ILogger<ConsumeObserver>>()));
+                factoryConfigurator.ConnectReceiveObserver(
+                    new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
+
                 factoryConfigurator.UseDelayedMessageScheduler();
-                
+
                 var hostname = configuration["EventBus:Hostname"];
                 var port = configuration["EventBus:Port"];
                 factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
@@ -42,4 +49,5 @@ public static class ServiceCollectionExtensions
                 factoryConfigurator.ConfigureEndpoints(busContext);
             });
         });
+    }
 }

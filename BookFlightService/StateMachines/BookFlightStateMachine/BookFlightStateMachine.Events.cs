@@ -1,31 +1,30 @@
 using Automatonymous;
 using Contracts.BookFlightStateMachine;
 
-namespace BookFlightService.StateMachines.BookFlightStateMachine
+namespace BookFlightService.StateMachines.BookFlightStateMachine;
+
+public partial class BookFlightStateMachine
 {
-    public partial class BookFlightStateMachine
+    private Event<CreateBookFlight> CreateBookFlight { get; set; }
+
+    private Event<CancelBookFlight> CancelBookFlight { get; set; }
+
+    private Event<CompleteBookFlight> CompleteBookFlight { get; set; }
+
+    private Event<ExpireFlight> ExpireBookFlight { get; set; }
+
+    private void SetupEvents()
     {
-        private Event<CreateBookFlight> CreateBookFlight { get; set; }
+        Event(() => CreateBookFlight,
+            x => x.CorrelateById(c => c.Message.FlightId));
 
-        private Event<CancelBookFlight> CancelBookFlight { get; set; }
+        Event(() => CancelBookFlight,
+            x => x.CorrelateById(c => c.Message.FlightId));
 
-        private Event<CompleteBookFlight> CompleteBookFlight { get; set; }
+        Event(() => CompleteBookFlight,
+            x => x.CorrelateById(c => c.Message.FlightId));
 
-        private Event<ExpireFlight> ExpireBookFlight { get; set; }
-
-        private void SetupEvents()
-        {
-            Event(() => CreateBookFlight,
-                x => x.CorrelateById(c => c.Message.FlightId));
-
-            Event(() => CancelBookFlight,
-                x => x.CorrelateById(c => c.Message.FlightId));
-
-            Event(() => CompleteBookFlight,
-                x => x.CorrelateById(c => c.Message.FlightId));
-
-            Event(() => ExpireBookFlight, 
-                x => x.CorrelateById(c => c.Message.FlightId));
-        }
+        Event(() => ExpireBookFlight,
+            x => x.CorrelateById(c => c.Message.FlightId));
     }
 }

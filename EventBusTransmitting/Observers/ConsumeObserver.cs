@@ -11,7 +11,7 @@ public class ConsumeObserver : IConsumeObserver
     {
         _logger = logger;
     }
-    
+
     public Task PreConsume<T>(ConsumeContext<T> context) where T : class
     {
         _logger.LogDebug("");

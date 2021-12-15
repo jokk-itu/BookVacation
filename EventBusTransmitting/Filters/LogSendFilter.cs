@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EventBusTransmitting.Filters;
 
-public class LogSendFilter<T> : IFilter<SendContext<T>> where T: class
+public class LogSendFilter<T> : IFilter<SendContext<T>> where T : class
 {
     private readonly ILogger<LogSendFilter<T>> _logger;
 
@@ -13,7 +13,7 @@ public class LogSendFilter<T> : IFilter<SendContext<T>> where T: class
     {
         _logger = logger;
     }
-    
+
     public async Task Send(SendContext<T> context, IPipe<SendContext<T>> next)
     {
         _logger.LogDebug("Sending message");

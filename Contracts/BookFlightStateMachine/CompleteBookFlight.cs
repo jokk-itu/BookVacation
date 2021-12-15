@@ -1,11 +1,10 @@
 using System;
 
-namespace Contracts.BookFlightStateMachine
-{
-    public record CompleteBookFlight
-    {
-        public Guid FlightId { get; }
+namespace Contracts.BookFlightStateMachine;
 
-        public decimal Price { get; }
-    }
+public record CompleteBookFlight
+{
+    public Guid FlightId { get; }
+
+    public decimal Price { get; }
 }

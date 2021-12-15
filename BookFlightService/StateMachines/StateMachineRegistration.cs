@@ -1,6 +1,5 @@
-namespace BookFlightService.StateMachines
+namespace BookFlightService.StateMachines;
+
+public struct StateMachineRegistration
 {
-    public struct StateMachineRegistration
-    {
-    }
 }

@@ -10,8 +10,8 @@ namespace RentCarService.CourierActivities;
 
 public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
 {
-    private readonly ILogger<RentCarActivity> _logger;
     private readonly IDriver _driver;
+    private readonly ILogger<RentCarActivity> _logger;
 
     public RentCarActivity(ILogger<RentCarActivity> logger, IDriver driver)
     {
@@ -25,7 +25,7 @@ public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
         var carId = context.Arguments.CarId;
         var days = context.Arguments.Days;
         var rentId = NewId.NextGuid();
-        
+
         await using var session = _driver.AsyncSession();
         var watch = new Stopwatch();
         watch.Start();
@@ -49,7 +49,7 @@ RETURN true as IsSuccessful";
                 rentId = rentId.ToString().ToUpper()
             });
             var record = await result.FetchAsync();
-            
+
             if (record)
             {
                 await transaction.CommitAsync();
@@ -67,7 +67,7 @@ RETURN true as IsSuccessful";
     public async Task<CompensationResult> Compensate(CompensateContext<RentCarLog> context)
     {
         var rentId = context.Log.RentCarId;
-        
+
         await using var session = _driver.AsyncSession();
         var watch = new Stopwatch();
         watch.Start();
@@ -82,7 +82,7 @@ RETURN true as IsSuccessful";
                 rentId = rentId.ToString().ToUpper()
             });
             var record = await result.FetchAsync();
-            
+
             if (record)
             {
                 await transaction.CommitAsync();

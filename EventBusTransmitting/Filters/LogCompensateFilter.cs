@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EventBusTransmitting.Filters;
 
-public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T: class
+public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T : class
 {
     private readonly ILogger<LogCompensateFilter<T>> _logger;
 
@@ -13,7 +13,7 @@ public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T: cla
     {
         _logger = logger;
     }
-    
+
     public async Task Send(CompensateContext<T> context, IPipe<CompensateContext<T>> next)
     {
         _logger.LogDebug("Compensating message");

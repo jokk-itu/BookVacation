@@ -11,7 +11,7 @@ public class ReceiveObserver : IReceiveObserver
     {
         _logger = logger;
     }
-    
+
     public Task PreReceive(ReceiveContext context)
     {
         _logger.LogDebug("");
@@ -30,7 +30,8 @@ public class ReceiveObserver : IReceiveObserver
         return Task.CompletedTask;
     }
 
-    public Task ConsumeFault<T>(ConsumeContext<T> context, TimeSpan duration, string consumerType, Exception exception) where T : class
+    public Task ConsumeFault<T>(ConsumeContext<T> context, TimeSpan duration, string consumerType, Exception exception)
+        where T : class
     {
         _logger.LogDebug("");
         return Task.CompletedTask;

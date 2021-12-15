@@ -1,7 +1,5 @@
-namespace RentCarService.CourierActivities
+namespace RentCarService.CourierActivities;
+
+public struct CourierActivitiesRegistration
 {
-    public struct CourierActivitiesRegistration
-    {
-        
-    }
 }

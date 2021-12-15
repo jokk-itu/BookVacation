@@ -1,11 +1,10 @@
 using System;
 
-namespace Contracts.BookFlightStateMachine
-{
-    public record ExpireFlight
-    {
-        public Guid FlightId { get; }
+namespace Contracts.BookFlightStateMachine;
 
-        public decimal Price { get; }
-    }
+public record ExpireFlight
+{
+    public Guid FlightId { get; }
+
+    public decimal Price { get; }
 }

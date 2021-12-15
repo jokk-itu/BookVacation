@@ -1,7 +1,5 @@
-namespace BookFlightService.CourierActivities
+namespace BookFlightService.CourierActivities;
+
+public struct CourierActivitiesRegistration
 {
-    public struct CourierActivitiesRegistration
-    {
-        
-    }
 }

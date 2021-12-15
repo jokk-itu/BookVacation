@@ -1,7 +1,5 @@
-namespace BookHotelService.CourierActivities
+namespace BookHotelService.CourierActivities;
+
+public struct CourierActivitiesRegistration
 {
-    public struct CourierActivitiesRegistration
-    {
-        
-    }
 }

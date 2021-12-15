@@ -11,7 +11,7 @@ public class BusObserver : IBusObserver
     {
         _logger = logger;
     }
-    
+
     public void PostCreate(IBus bus)
     {
         _logger.LogDebug("");

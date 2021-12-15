@@ -1,11 +1,10 @@
 using System;
 
-namespace Contracts.Flight
-{
-    public record BookFlightRequest
-    {
-        public Guid FlightId { get; init; }
+namespace Contracts.Flight;
 
-        public decimal Price { get; init; }
-    }
+public record BookFlightRequest
+{
+    public Guid FlightId { get; init; }
+
+    public decimal Price { get; init; }
 }

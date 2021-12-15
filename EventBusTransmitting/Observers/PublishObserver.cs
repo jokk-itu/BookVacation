@@ -11,7 +11,7 @@ public class PublishObserver : IPublishObserver
     {
         _logger = logger;
     }
-    
+
     public Task PrePublish<T>(PublishContext<T> context) where T : class
     {
         _logger.LogDebug("");

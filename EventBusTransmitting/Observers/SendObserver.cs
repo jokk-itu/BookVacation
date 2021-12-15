@@ -11,7 +11,7 @@ public class SendObserver : ISendObserver
     {
         _logger = logger;
     }
-    
+
     public Task PreSend<T>(SendContext<T> context) where T : class
     {
         _logger.LogDebug("");
