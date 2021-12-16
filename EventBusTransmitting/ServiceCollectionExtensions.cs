@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
 
                 factoryConfigurator.UseDelayedMessageScheduler();
                 
-                factoryConfigurator.UsePrometheusMetrics(serviceName: configuration["ServiceName"]);
+                factoryConfigurator.UsePrometheusMetrics();
 
                 var hostname = configuration["EventBus:Hostname"];
                 var port = configuration["EventBus:Port"];
