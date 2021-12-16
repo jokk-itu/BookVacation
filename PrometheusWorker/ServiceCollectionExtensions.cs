@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IMetricServer>(sp => new MetricServer(
             new MetricServerOptions
             {
+                Port = 80,
                 CollectorRegistryInstance = sp.GetRequiredService<ICollectorRegistry>(),
                 UseDefaultCollectors = true
             }));
