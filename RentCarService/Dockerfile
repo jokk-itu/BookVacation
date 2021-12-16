@@ -10,6 +10,7 @@ RUN dotnet publish RentCarService/RentCarService.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim-amd64 AS release
 ARG Environment
+EXPOSE 80
 WORKDIR /app
 ENV DOTNET_ENVIRONMENT=$Environment
 COPY --from=build /app/out .
