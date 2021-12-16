@@ -5,6 +5,7 @@ WORKDIR /app
 COPY BookHotelService BookHotelService
 COPY Contracts Contracts
 COPY EventBusTransmitting EventBusTransmitting
+COPY PrometheusWorker PrometheusWorker
 RUN dotnet publish BookHotelService/BookHotelService.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim-amd64 AS release
