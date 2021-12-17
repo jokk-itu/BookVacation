@@ -28,12 +28,12 @@ public static class Program
                         configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
                     });
                 services.AddSingleton(_ => GraphDatabase.Driver(
-                    hostContext.Configuration["NEO4J:URI"],
+                    hostContext.Configuration["Neo4j:Uri"],
                     AuthTokens.Basic(
-                        hostContext.Configuration["NEO4J:USERNAME"],
-                        hostContext.Configuration["NEO4J:PASSWORD"])));
+                        hostContext.Configuration["Neo4j:Username"],
+                        hostContext.Configuration["Neo4j:Password"])));
                 services.AddHostedService<EventBusWorker>();
-                services.AddMetricServer();
+                services.AddMetricServer(hostContext.Configuration);
             }).UseSerilog((context, serviceProvider, config) =>
             {
                 var seqUri = context.Configuration["Logging:SeqUri"];

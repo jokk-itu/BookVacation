@@ -8,7 +8,7 @@
 Project to illustrate a Choreography architecture using Routing slips in Masstransit.
 It is illustrated by booking a vacation with a Flight, Hotel and Car.
 
-This flow is activated by the api on: http://localhost:20001/api/v1/vacation.
+This flow is activated by the api on: http://localhost:5000/api/v1/vacation.
 
 
 ## Orchestrator
@@ -20,14 +20,14 @@ There are three flows which can be triggered.
 
 ### Complete Flight Booking
 
-api: http://localhost:20001/api/v1/flight/complete
+api: http://localhost:5000/api/v1/flight/complete
 
 
 ### Cancel Flight Booking
 
-api: http://localhost:20001/api/v1/flight/cancel
+api: http://localhost:5000/api/v1/flight/cancel
 
 
 ### Expire Flight Booking
 
-api: http://localhost:20001/api/v1/flight/expire
+api: http://localhost:5000/api/v1/flight/expire

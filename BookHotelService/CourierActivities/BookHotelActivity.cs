@@ -45,9 +45,9 @@ RETURN true as IsSuccessful
             var result = await session.RunAsync(command, new
             {
                 days,
-                roomId = roomId.ToString().ToUpper(),
-                hotelId = hotelId.ToString().ToUpper(),
-                rentId = rentId.ToString().ToUpper()
+                roomId = roomId.ToString(),
+                hotelId = hotelId.ToString(),
+                rentId = rentId.ToString()
             });
             var record = await result.FetchAsync();
             if (record)
@@ -79,7 +79,7 @@ DETACH DELETE r
 RETURN true AS IsSuccessful";
             var result = await transaction.RunAsync(command, new
             {
-                id = id.ToString().ToUpper()
+                id = id.ToString()
             });
             var record = await result.FetchAsync();
             if (record)

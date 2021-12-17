@@ -14,17 +14,17 @@ public class BusObserver : IBusObserver
 
     public void PostCreate(IBus bus)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostCreate");
     }
 
     public void CreateFaulted(Exception exception)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultCreated");
     }
 
     public Task PreStart(IBus bus)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PreStart");
         return Task.CompletedTask;
     }
 

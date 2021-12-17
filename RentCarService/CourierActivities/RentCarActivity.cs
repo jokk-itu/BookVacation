@@ -43,10 +43,10 @@ CREATE (r)-[:RentingFor]->rc
 RETURN true as IsSuccessful";
             var result = await session.RunAsync(command, new
             {
-                companyId = companyId.ToString().ToUpper(),
-                carId = carId.ToString().ToUpper(),
+                companyId = companyId.ToString(),
+                carId = carId.ToString(),
                 days,
-                rentId = rentId.ToString().ToUpper()
+                rentId = rentId.ToString()
             });
             var record = await result.FetchAsync();
 
@@ -79,7 +79,7 @@ DETACH DELETE r
 RETURN true as IsSuccessful";
             var result = await session.RunAsync(command, new
             {
-                rentId = rentId.ToString().ToUpper()
+                rentId = rentId.ToString()
             });
             var record = await result.FetchAsync();
 
