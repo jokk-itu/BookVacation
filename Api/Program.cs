@@ -24,6 +24,7 @@ public static class Program
                     .WriteTo.Console(LogEventLevel.Debug)
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("Api", LogEventLevel.Information)
+                    .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

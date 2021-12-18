@@ -40,6 +40,7 @@ public static class Program
                 config.WriteTo.Seq(seqUri)
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("BookHotelService", LogEventLevel.Information)
+                    .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

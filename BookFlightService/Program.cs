@@ -46,6 +46,7 @@ public static class Program
                 config.WriteTo.Seq(seqUri)
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("BookFlightService", LogEventLevel.Information)
+                    .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

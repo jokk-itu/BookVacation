@@ -90,7 +90,30 @@ services:
       - eventbus
       - logger  
     networks:
-      - service_net      
+      - service_net
+      
+  routingslipmonitor:
+    build:
+      context: .
+      dockerfile: RoutingSlipMonitorService/Dockerfile
+      args:
+        - Configuration=${Configuration}
+        - Environment=${Environment}
+    container_name: routingslipmonitor
+    hostname: routingslipmonitor
+    ports:
+      - 5004:80
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+      - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
+    depends_on:
+      - eventbus
+      - logger
+      - sagarepository
+    networks:
+      - service_net           
 
   logger:
     image: datalust/seq:latest
