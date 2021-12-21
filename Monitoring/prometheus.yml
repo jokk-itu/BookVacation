@@ -41,4 +41,10 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-    - targets: ['rentcar:80']  
+    - targets: ['rentcar:80']
+    
+  - job_name: 'routingslipmonitor'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['routingslipmonitor:80']  
