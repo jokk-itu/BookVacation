@@ -1,6 +1,8 @@
 # BookVacation
 
-[![Build, Test, Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/ci.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/ci.yml)
+[![Build](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml)
+
+[![Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml)
 
 
 ## Choreography
@@ -31,3 +33,14 @@ api: http://localhost:5000/api/v1/flight/cancel
 ### Expire Flight Booking
 
 api: http://localhost:5000/api/v1/flight/expire
+
+
+
+## How to run
+
+```
+##The env file could also be development, depending on your scenario
+docker-compose build --env-file production.env
+
+docker-compose up -d
+```
