@@ -4,17 +4,13 @@ namespace RoutingSlipMonitorService.StateMachines.RoutingSlipStateMachine;
 
 public partial class RoutingSlipStateMachine
 {
-    private State FaultyStart { get; init; }
-
-    private State Executing { get; init; }
-
-    private State Compensating { get; init; }
-    
-    private State FaultyCompensation { get; init; }
+    private State Executing { get; set; }
+    private State Completed { get; set; }
+    private State Faulted { get; set; }
+    private State CompensationFailed { get; set; }
     
     private void SetupStates()
     {
-        InstanceState(x =>
-            x.CurrentState, FaultyStart, Executing, Compensating, FaultyCompensation);
+        InstanceState(x => x.CurrentState, Executing, Completed, Faulted, CompensationFailed);
     }
 }

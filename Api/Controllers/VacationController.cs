@@ -1,9 +1,12 @@
 using System;
 using System.Threading.Tasks;
+using Contracts;
 using Contracts.Vacation;
 using MassTransit;
 using MassTransit.Courier;
+using MassTransit.Courier.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers;
@@ -16,11 +19,13 @@ public class VacationController : ControllerBase
 {
     private readonly IBusControl _bus;
     private readonly ILogger<VacationController> _logger;
+    private readonly IConfiguration _configuration;
 
-    public VacationController(IBusControl bus, ILogger<VacationController> logger)
+    public VacationController(IBusControl bus, ILogger<VacationController> logger, IConfiguration configuration)
     {
         _bus = bus;
         _logger = logger;
+        _configuration = configuration;
     }
 
     [HttpPost]
@@ -40,10 +45,20 @@ public class VacationController : ControllerBase
             new Uri("queue:rent-car_execute"),
             new { CarId = request.RentCarId, request.RentingCompanyId, Days = request.RentCarDays });
 
+        builder.AddSubscription(
+            new Uri("queue:routing-slip-state-machine-instance"),
+            RoutingSlipEvents.Completed|RoutingSlipEvents.Faulted|RoutingSlipEvents.CompensationFailed, RoutingSlipEventContents.None);
+
         var routingSlip = builder.Build();
 
         await _bus.Execute(routingSlip);
 
+        await _bus.Publish<RoutingSlipCreated>(new
+        {
+            TrackingNumber = routingSlip.TrackingNumber,
+            TimeStamp = routingSlip.CreateTimestamp
+        });
+        
         return Accepted();
     }
 }

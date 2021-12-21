@@ -1,32 +1,21 @@
 using Automatonymous;
+using Contracts;
 using MassTransit.Courier.Contracts;
 
 namespace RoutingSlipMonitorService.StateMachines.RoutingSlipStateMachine;
 
 public partial class RoutingSlipStateMachine
 {
-    private Event<RoutingSlipCompleted> Completed { get; init; }
-
-    private Event<RoutingSlipFaulted> Faulted { get; init; }
-
-    private Event<RoutingSlipCompensationFailed> CompensationFailed { get; init; }
-
-    private Event<RoutingSlipActivityCompleted> ActivityCompleted { get; init; }
-
-    private Event<RoutingSlipActivityFaulted> ActivityFaulted { get; init; }
-
-    private Event<RoutingSlipActivityCompensated> ActivityCompensated { get; init; }
-
-    private Event<RoutingSlipActivityCompensationFailed> ActivityCompensationFailed { get; init; }
+    private Event<RoutingSlipCreated> SlipCreated { get; set; }
+    private Event<RoutingSlipCompleted> SlipCompleted { get; set; }
+    private Event<RoutingSlipFaulted> SlipFaulted { get; set; }
+    private Event<RoutingSlipCompensationFailed> SlipCompensationFailed { get; set; }
 
     private void SetupEvents()
     {
-        Event(() => Completed, configurator => configurator.CorrelateById(context => context.Message.TrackingNumber));
-        Event(() => Faulted, configurator => configurator.CorrelateById(context => context.Message.TrackingNumber));
-        Event(() => CompensationFailed, configurator => configurator.CorrelateById(context => context.Message.TrackingNumber));
-        Event(() => ActivityCompleted, configurator => configurator.CorrelateById(context => context.Message.TrackingNumber));
-        Event(() => ActivityFaulted, configurator => configurator.CorrelateById(c => c.Message.TrackingNumber));
-        Event(() => ActivityCompensated, configurator => configurator.CorrelateById(context => context.Message.TrackingNumber));
-        Event(() => ActivityCompensationFailed, configurator => configurator.CorrelateById(context => context.Message.TrackingNumber));
+        Event(() => SlipCreated, x => x.CorrelateById(context => context.Message.TrackingNumber));
+        Event(() => SlipCompleted, x => x.CorrelateById(context => context.Message.TrackingNumber));
+        Event(() => SlipFaulted, x => x.CorrelateById(context => context.Message.TrackingNumber));
+        Event(() => SlipCompensationFailed, x => x.CorrelateById(context => context.Message.TrackingNumber));
     }
 }

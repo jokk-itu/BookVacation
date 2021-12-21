@@ -42,7 +42,7 @@ public static class Program
                 var seqUri = context.Configuration["Logging:SeqUri"];
                 config.WriteTo.Seq(seqUri)
                     .Enrich.FromLogContext()
-                    .MinimumLevel.Override("RentCarService", LogEventLevel.Information)
+                    .MinimumLevel.Override("RoutingSlipMonitorService", LogEventLevel.Information)
                     .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });

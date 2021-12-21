@@ -21,7 +21,7 @@ public class LogPublishFilter<T> : IFilter<PublishContext<T>> where T : class
         watch.Start();
         await next.Send(context);
         watch.Stop();
-        _logger.LogInformation("Published message, took {Elapsed}", watch.ElapsedMilliseconds);
+        _logger.LogInformation("Published {Message} with {MessageId}, took {Elapsed} ms", context.Message.GetType().Name, context.MessageId, watch.ElapsedMilliseconds);
     }
 
     public void Probe(ProbeContext context)

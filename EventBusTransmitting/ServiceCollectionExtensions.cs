@@ -42,7 +42,7 @@ public static class ServiceCollectionExtensions
                 
                 factoryConfigurator.UsePrometheusMetrics();
 
-                var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();;
+                var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();
                 var port = configuration["EventBus:Port"] ?? throw new ArgumentNullException();
                 factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
                 {
