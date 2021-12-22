@@ -185,8 +185,8 @@ services:
       - "3000:3000"
     container_name: grafana
     volumes:
-      - ./Monitoring/grafana/datasources/:/provisioning/datasources/
-      - ./Monitoring/grafana/dashboards/:/provisioning/dasboards/
-      - ./Graphana/dashboards/:/provisioning/dashboards/
+      - ./Monitoring/grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/
+      - ./Monitoring/grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+      - ./Monitoring/grafana/dashboards/:/dashboards/rabbitmq/
     networks:
       - service_net

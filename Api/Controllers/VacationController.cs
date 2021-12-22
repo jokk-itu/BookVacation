@@ -46,19 +46,13 @@ public class VacationController : ControllerBase
             new { CarId = request.RentCarId, request.RentingCompanyId, Days = request.RentCarDays });
 
         builder.AddSubscription(
-            new Uri("queue:routing-slip-state-machine-instance"),
-            RoutingSlipEvents.Completed|RoutingSlipEvents.Faulted|RoutingSlipEvents.CompensationFailed, RoutingSlipEventContents.None);
+            new Uri("queue:routing-slip-event"),
+            RoutingSlipEvents.All, RoutingSlipEventContents.None);
 
         var routingSlip = builder.Build();
 
         await _bus.Execute(routingSlip);
 
-        await _bus.Publish<RoutingSlipCreated>(new
-        {
-            TrackingNumber = routingSlip.TrackingNumber,
-            TimeStamp = routingSlip.CreateTimestamp
-        });
-        
         return Accepted();
     }
 }
