@@ -2,7 +2,7 @@ using EventBusTransmitting;
 using MassTransit;
 using Neo4j.Driver;
 using PrometheusWorker;
-using RoutingSlipMonitorService.StateMachines.RoutingSlipStateMachine;
+using RoutingSlipMonitorService.Consumers;
 using Serilog;
 using Serilog.Events;
 
@@ -23,12 +23,7 @@ public static class Program
                 services.AddEventBus(hostContext.Configuration,
                     configurator =>
                     {
-                        configurator.AddSagaStateMachine<RoutingSlipStateMachine, RoutingSlipStateMachineInstance>()
-                            .MongoDbRepository(mongodbConfigurator =>
-                            {
-                                mongodbConfigurator.Connection = hostContext.Configuration["Mongo:Uri"];
-                                mongodbConfigurator.DatabaseName = hostContext.Configuration["Mongo:Database"];
-                            });
+                        configurator.AddConsumersFromNamespaceContaining<RoutingSlipEventConsumer>();
                     });
                 services.AddSingleton(_ => GraphDatabase.Driver(
                     hostContext.Configuration["Neo4j:Uri"],
