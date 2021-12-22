@@ -3,6 +3,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
+using Prometheus.Client.MetricServer;
 using PrometheusWorker;
 using RentCarService.CourierActivities;
 using Serilog;
@@ -41,6 +42,7 @@ public static class Program
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("RentCarService", LogEventLevel.Information)
                     .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+                    .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

@@ -43,7 +43,7 @@ public class VacationController : ControllerBase
 
         builder.AddActivity("RentCar",
             new Uri("queue:rent-car_execute"),
-            new { CarId = request.RentCarId, request.RentingCompanyId, Days = request.RentCarDays });
+            new { request.CarId, request.RentingCompanyId, Days = request.RentCarDays });
 
         builder.AddSubscription(
             new Uri("queue:routing-slip-event"),

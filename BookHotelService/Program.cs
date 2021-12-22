@@ -41,6 +41,7 @@ public static class Program
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("BookHotelService", LogEventLevel.Information)
                     .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+                    .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

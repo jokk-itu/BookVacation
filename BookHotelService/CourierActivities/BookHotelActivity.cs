@@ -38,11 +38,11 @@ WHERE NOT EXISTS {
         (:Rent)-->(h),
         (:Rent)-->(r)    
 }
-CREATE (r1:Rent {})-[:At]->(h)
-CREATE (r1)-[:Renting(days: $days)->(r)
+CREATE (r1:Rent {id: $rentId})-[:At]->(h)
+CREATE (r1)-[:Renting {days: $days}]->(r)
 RETURN true as IsSuccessful
 ";
-            var result = await session.RunAsync(command, new
+            var result = await transaction.RunAsync(command, new
             {
                 days,
                 roomId = roomId.ToString(),
@@ -60,7 +60,6 @@ RETURN true as IsSuccessful
             return false;
         });
         watch.Stop();
-
         _logger.LogInformation("Executed BookHotel, took {Elapsed}", watch.ElapsedMilliseconds);
         return isSuccessful ? context.Completed(new { RentId = rentId }) : context.Faulted();
     }

@@ -1,6 +1,5 @@
 using EventBusTransmitting;
 using MassTransit;
-using Neo4j.Driver;
 using PrometheusWorker;
 using RoutingSlipMonitorService.Consumers;
 using Serilog;
@@ -25,11 +24,6 @@ public static class Program
                     {
                         configurator.AddConsumersFromNamespaceContaining<RoutingSlipEventConsumer>();
                     });
-                services.AddSingleton(_ => GraphDatabase.Driver(
-                    hostContext.Configuration["Neo4j:Uri"],
-                    AuthTokens.Basic(
-                        hostContext.Configuration["Neo4j:Username"],
-                        hostContext.Configuration["Neo4j:Password"])));
                 services.AddHostedService<EventBusWorker>();
                 services.AddMetricServer(hostContext.Configuration);
             }).UseSerilog((context, serviceProvider, config) =>

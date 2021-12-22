@@ -25,7 +25,7 @@ public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
         var flightId = context.Arguments.FlightId;
         var reservationId = NewId.NextGuid();
 
-        var session = _driver.AsyncSession();
+        await using var session = _driver.AsyncSession();
         var watch = new Stopwatch();
         watch.Start();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
@@ -67,7 +67,7 @@ RETURN true AS IsSuccessful";
     {
         var reservationId = context.Log.ReservationId;
 
-        var session = _driver.AsyncSession();
+        await using var session = _driver.AsyncSession();
         var watch = new Stopwatch();
         watch.Start();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>

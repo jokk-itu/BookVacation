@@ -21,6 +21,10 @@ public static class ServiceCollectionExtensions
             configurator.AddDelayedMessageScheduler();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
             {
+                factoryConfigurator.UsePrometheusMetrics(options =>
+                {
+                }, configuration["ServiceName"]);
+                
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);
@@ -39,10 +43,6 @@ public static class ServiceCollectionExtensions
                     new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
 
                 factoryConfigurator.UseDelayedMessageScheduler();
-                
-                factoryConfigurator.UsePrometheusMetrics(options =>
-                {
-                }, configuration["ServiceName"]);
 
                 var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();
                 var port = configuration["EventBus:Port"] ?? throw new ArgumentNullException();

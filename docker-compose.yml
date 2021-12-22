@@ -77,7 +77,7 @@ services:
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    container_name: bookcar
+    container_name: rentcar
     hostname: rentcar
     ports:
       - 5003:80
@@ -163,6 +163,7 @@ services:
       - service_net
     volumes:
       - ./Neo4j/neo4j.conf:/conf  
+      - ./Neo4j/initialize.cypher:/initialize.cypher
     ports:
       - "7474:7474"
       - "7687:7687"

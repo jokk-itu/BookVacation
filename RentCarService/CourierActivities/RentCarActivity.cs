@@ -1,9 +1,7 @@
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Contracts.RentCarActivity;
 using MassTransit;
 using MassTransit.Courier;
-using Microsoft.Extensions.Logging;
 using Neo4j.Driver;
 
 namespace RentCarService.CourierActivities;
@@ -32,16 +30,16 @@ public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
             const string command = @"
-MATCH (rc:RentingCompany {id: $companyId})-[:Owns]->[c:Car {id: $carId}]
+MATCH (rc:RentingCompany {id: $companyId})-[:Owns]->(c:Car {id: $carId})
 WHERE NOT EXISTS {
     MATCH 
-        (r:RentCar)-->(rc),
-        (r)-->(c)
+        (:RentCar)-->(rc),
+        (:RentCar)-->(c)
 }
-CREATE (r:RentCar {})-[:Renting]->(:Car {id: $carId})
-CREATE (r)-[:RentingFor]->rc
+CREATE (r:RentCar {id: $rentId})-[:Renting]->(:Car {id: $carId})
+CREATE (r)-[:RentingFor]->(rc)
 RETURN true as IsSuccessful";
-            var result = await session.RunAsync(command, new
+            var result = await transaction.RunAsync(command, new
             {
                 companyId = companyId.ToString(),
                 carId = carId.ToString(),
