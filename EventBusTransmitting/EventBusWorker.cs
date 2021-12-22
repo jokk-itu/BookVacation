@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 
 namespace EventBusTransmitting;
 
-public class Worker : BackgroundService
+public class EventBusWorker : BackgroundService
 {
     private readonly IBusControl _busControl;
-    private readonly ILogger<Worker> _logger;
+    private readonly ILogger<EventBusWorker> _logger;
 
-    public Worker(ILogger<Worker> logger, IBusControl busControl)
+    public EventBusWorker(ILogger<EventBusWorker> logger, IBusControl busControl)
     {
         _logger = logger;
         _busControl = busControl;
@@ -31,6 +31,9 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested) await Task.Delay(1000, stoppingToken);
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await Task.Delay(1000, stoppingToken);
+        }
     }
 }

@@ -14,19 +14,19 @@ public class ConsumeObserver : IConsumeObserver
 
     public Task PreConsume<T>(ConsumeContext<T> context) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PreConsume");
         return Task.CompletedTask;
     }
 
     public Task PostConsume<T>(ConsumeContext<T> context) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostConsume");
         return Task.CompletedTask;
     }
 
     public Task ConsumeFault<T>(ConsumeContext<T> context, Exception exception) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultConsume");
         return Task.CompletedTask;
     }
 }

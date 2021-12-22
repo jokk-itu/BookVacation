@@ -25,7 +25,7 @@ public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
         var flightId = context.Arguments.FlightId;
         var reservationId = NewId.NextGuid();
 
-        var session = _driver.AsyncSession();
+        await using var session = _driver.AsyncSession();
         var watch = new Stopwatch();
         watch.Start();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
@@ -43,9 +43,9 @@ RETURN true AS IsSuccessful";
             var result = await transaction.RunAsync(command,
                 new
                 {
-                    flightId = flightId.ToString().ToUpper(),
+                    flightId = flightId.ToString(),
                     seatId,
-                    reservationId = reservationId.ToString().ToUpper()
+                    reservationId = reservationId.ToString()
                 });
             var record = await result.FetchAsync();
 
@@ -60,16 +60,14 @@ RETURN true AS IsSuccessful";
         });
         watch.Stop();
         _logger.LogInformation("Executed BookFlight, took {Elapsed}", watch.ElapsedMilliseconds);
-
         return isSuccessful ? context.Completed(new { ReservationId = reservationId }) : context.Faulted();
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<BookFlightLog> context)
     {
-        _logger.LogInformation("Executing BookFlight");
         var reservationId = context.Log.ReservationId;
 
-        var session = _driver.AsyncSession();
+        await using var session = _driver.AsyncSession();
         var watch = new Stopwatch();
         watch.Start();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
@@ -81,7 +79,7 @@ RETURN true AS IsSuccessful";
             var result = await transaction.RunAsync(command,
                 new
                 {
-                    id = reservationId.ToString().ToUpper()
+                    id = reservationId.ToString()
                 });
             var record = await result.FetchAsync();
 

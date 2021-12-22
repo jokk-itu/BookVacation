@@ -11,7 +11,7 @@ jobs:
     
     strategy:
       matrix:
-        service: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService']
+        service: ['Api', 'BookFlightService', 'BookHotelService', 'RentCarService', 'RoutingSlipMonitorService']
         include:
           - service: Api
             repository: api
@@ -21,6 +21,8 @@ jobs:
             repository: bookhotelservice
           - service: RentCarService
             repository: rentcarservice
+          - service: RoutingSlipMonitorService
+            repository: routingslipmonitorservice  
         
     steps:
       - name: Checkout  

@@ -14,19 +14,19 @@ public class SendObserver : ISendObserver
 
     public Task PreSend<T>(SendContext<T> context) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PreSend");
         return Task.CompletedTask;
     }
 
     public Task PostSend<T>(SendContext<T> context) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostSend");
         return Task.CompletedTask;
     }
 
     public Task SendFault<T>(SendContext<T> context, Exception exception) where T : class
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultSend");
         return Task.CompletedTask;
     }
 }

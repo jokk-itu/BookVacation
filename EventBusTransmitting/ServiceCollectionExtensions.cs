@@ -2,6 +2,7 @@ using EventBusTransmitting.Filters;
 using EventBusTransmitting.Observers;
 using MassTransit;
 using MassTransit.ExtensionsDependencyInjectionIntegration;
+using MassTransit.PrometheusIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,10 @@ public static class ServiceCollectionExtensions
             configurator.AddDelayedMessageScheduler();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
             {
+                factoryConfigurator.UsePrometheusMetrics(options =>
+                {
+                }, configuration["ServiceName"]);
+                
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);
@@ -39,12 +44,12 @@ public static class ServiceCollectionExtensions
 
                 factoryConfigurator.UseDelayedMessageScheduler();
 
-                var hostname = configuration["EventBus:Hostname"];
-                var port = configuration["EventBus:Port"];
+                var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();
+                var port = configuration["EventBus:Port"] ?? throw new ArgumentNullException();
                 factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
                 {
-                    hostConfigurator.Username(configuration["EventBus:Username"]);
-                    hostConfigurator.Password(configuration["EventBus:Password"]);
+                    hostConfigurator.Username(configuration["EventBus:Username"] ?? throw new ArgumentNullException());
+                    hostConfigurator.Password(configuration["EventBus:Password"] ?? throw new ArgumentNullException());
                 });
                 factoryConfigurator.ConfigureEndpoints(busContext);
             });

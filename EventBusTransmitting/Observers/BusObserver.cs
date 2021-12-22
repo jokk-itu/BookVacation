@@ -14,47 +14,47 @@ public class BusObserver : IBusObserver
 
     public void PostCreate(IBus bus)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostCreate");
     }
 
     public void CreateFaulted(Exception exception)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultCreated");
     }
 
     public Task PreStart(IBus bus)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PreStart");
         return Task.CompletedTask;
     }
 
     public Task PostStart(IBus bus, Task<BusReady> busReady)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostStart");
         return Task.CompletedTask;
     }
 
     public Task StartFaulted(IBus bus, Exception exception)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultStart");
         return Task.CompletedTask;
     }
 
     public Task PreStop(IBus bus)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PreStop");
         return Task.CompletedTask;
     }
 
     public Task PostStop(IBus bus)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("PostStop");
         return Task.CompletedTask;
     }
 
     public Task StopFaulted(IBus bus, Exception exception)
     {
-        _logger.LogDebug("");
+        _logger.LogDebug("FaultStop");
         return Task.CompletedTask;
     }
 }

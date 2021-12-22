@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Net.Mime;
 using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -21,7 +22,7 @@ public class LogConsumeFilter<T> : IFilter<ConsumeContext<T>> where T : class
         watch.Start();
         await next.Send(context);
         watch.Stop();
-        _logger.LogInformation("Consumed message, took {Elapsed}", watch.ElapsedMilliseconds);
+        _logger.LogInformation("Consumed {Message} with {MessageId}, took {Elapsed} ms", context.Message.GetType().Name, context.MessageId, watch.ElapsedMilliseconds);
     }
 
     public void Probe(ProbeContext context)

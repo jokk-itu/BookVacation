@@ -32,10 +32,15 @@ services:
         - Configuration=${Configuration}
         - Environment=${Environment}
     container_name: bookflight
+    hostname: bookflight
+    ports:
+      - 5001:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
+      - ./EnvironmentFiles/mongo.env
     depends_on:
       - eventbus
       - logger
@@ -51,10 +56,14 @@ services:
         - Configuration=${Configuration}
         - Environment=${Environment}
     container_name: bookhotel
+    hostname: bookhotel
+    ports:
+      - 5002:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
     depends_on:
       - eventbus
       - logger  
@@ -68,16 +77,43 @@ services:
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    container_name: bookcar
+    container_name: rentcar
+    hostname: rentcar
+    ports:
+      - 5003:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
     depends_on:
       - eventbus
       - logger  
     networks:
-      - service_net      
+      - service_net
+      
+  routingslipmonitor:
+    build:
+      context: .
+      dockerfile: RoutingSlipMonitorService/Dockerfile
+      args:
+        - Configuration=${Configuration}
+        - Environment=${Environment}
+    container_name: routingslipmonitor
+    hostname: routingslipmonitor
+    ports:
+      - 5004:80
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+      - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
+    depends_on:
+      - eventbus
+      - logger
+      - sagarepository
+    networks:
+      - service_net           
 
   logger:
     image: datalust/seq:latest
@@ -97,6 +133,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+      - "15692:15692"
     volumes:
       - "./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins"
       - "./EventBus/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
@@ -126,6 +163,31 @@ services:
       - service_net
     volumes:
       - ./Neo4j/neo4j.conf:/conf  
+      - ./Neo4j/initialize.cypher:/initialize.cypher
     ports:
       - "7474:7474"
-      - "7687:7687"     
+      - "7687:7687"
+      - "2200:2200"
+      
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    container_name: prometheus
+    hostname: prometheus
+    volumes:
+      - ./Monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - service_net
+          
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    volumes:
+      - ./Monitoring/grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/
+      - ./Monitoring/grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+      - ./Monitoring/grafana/dashboards/:/dashboards/rabbitmq/
+    networks:
+      - service_net

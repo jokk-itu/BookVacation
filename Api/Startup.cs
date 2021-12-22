@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Prometheus;
+using Prometheus.SystemMetrics;
 using Serilog;
 
 namespace Api;
@@ -35,6 +37,7 @@ public class Startup
 
         services.AddEventBus(Configuration);
         services.AddMassTransitHostedService();
+        services.AddSystemMetrics();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,9 +57,15 @@ public class Startup
         });
 
         app.UseRouting();
+        
+        app.UseHttpMetrics();
 
         app.UseAuthorization();
 
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+            endpoints.MapMetrics();
+        });
     }
 }

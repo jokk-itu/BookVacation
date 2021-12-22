@@ -5,6 +5,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Neo4j.Driver;
+using PrometheusWorker;
 using Serilog;
 using Serilog.Events;
 
@@ -28,22 +29,25 @@ public static class Program
                     configurator.AddSagaStateMachine<BookFlightStateMachine, BookFlightStateMachineInstance>()
                         .MongoDbRepository(mongodbConfigurator =>
                         {
-                            mongodbConfigurator.Connection = "mongodb://admin:admin@localhost:27017";
-                            mongodbConfigurator.DatabaseName = "bookflights";
+                            mongodbConfigurator.Connection = hostContext.Configuration["Mongo:Uri"];
+                            mongodbConfigurator.DatabaseName = hostContext.Configuration["Mongo:Database"];
                         });
                 });
                 services.AddSingleton(_ => GraphDatabase.Driver(
-                    hostContext.Configuration["NEO4J:URI"],
+                    hostContext.Configuration["Neo4j:Uri"],
                     AuthTokens.Basic(
-                        hostContext.Configuration["NEO4J:USERNAME"],
-                        hostContext.Configuration["NEO4J:PASSWORD"])));
-                services.AddHostedService<Worker>();
+                        hostContext.Configuration["Neo4j:Username"],
+                        hostContext.Configuration["Neo4j:Password"])));
+                services.AddHostedService<EventBusWorker>();
+                services.AddMetricServer(hostContext.Configuration);
             }).UseSerilog((context, serviceProvider, config) =>
             {
                 var seqUri = context.Configuration["Logging:SeqUri"];
                 config.WriteTo.Seq(seqUri)
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("BookFlightService", LogEventLevel.Information)
+                    .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+                    .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

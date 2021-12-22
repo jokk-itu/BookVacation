@@ -14,14 +14,14 @@ public record VacationRequest
     #region Hotel
 
     public Guid HotelId { get; init; }
-    public uint RentHotelDays { get; init; }
+    public int RentHotelDays { get; init; }
     public Guid RoomId { get; init; }
 
     #endregion
 
     #region RentCar
 
-    public Guid RentCarId { get; init; }
+    public Guid CarId { get; init; }
     public Guid RentingCompanyId { get; init; }
     public int RentCarDays { get; init; }
 
