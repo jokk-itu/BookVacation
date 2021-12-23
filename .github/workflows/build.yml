@@ -2,13 +2,18 @@ name: Build & Test
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/**
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/**
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
-
+    name: Build and Test
     runs-on: ubuntu-latest
     
     env:
