@@ -19,32 +19,32 @@ scrape_configs:
     static_configs:
     - targets: ['neo4j:2200']  
 
-  - job_name: 'api'
+  - job_name: 'vacationservice'
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-    - targets: ['api:80']
+    - targets: ['vacationservice:80']
     
-  - job_name: 'bookflight'
+  - job_name: 'flightservice'
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-    - targets: ['bookflight:80']
+    - targets: ['flightservice:80']
  
-  - job_name: 'bookhotel'
+  - job_name: 'hotelservice'
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-    - targets: ['bookhotel:80']
+    - targets: ['hotelservice:80']
     
-  - job_name: 'rentcar'
+  - job_name: 'carservice'
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-    - targets: ['rentcar:80']
+    - targets: ['carservice:80']
     
   - job_name: 'routingslipmonitor'
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-      - targets: ['routingslipmonitor:80']  
+      - targets: ['routingslipmonitor:80']

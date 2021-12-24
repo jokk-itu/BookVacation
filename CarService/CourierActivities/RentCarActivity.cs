@@ -4,7 +4,7 @@ using MassTransit;
 using MassTransit.Courier;
 using Neo4j.Driver;
 
-namespace RentCarService.CourierActivities;
+namespace CarService.CourierActivities;
 
 public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
 {

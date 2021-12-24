@@ -1,4 +1,4 @@
-namespace RentCarService.CourierActivities;
+namespace CarService.CourierActivities;
 
 public struct CourierActivitiesRegistration
 {

@@ -48,15 +48,15 @@ services:
     networks:
       - service_net
       
-  bookhotel:
+  hotelservice:
     build:
       context: .
-      dockerfile: BookHotelService/Dockerfile
+      dockerfile: HotelService/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    container_name: bookhotel
-    hostname: bookhotel
+    container_name: hotelservice
+    hostname: hotelservice
     ports:
       - 5002:80
     env_file:
@@ -70,15 +70,15 @@ services:
     networks:
       - service_net
       
-  rentcar:
+  carservice:
     build:
       context: .
-      dockerfile: RentCarService/Dockerfile
+      dockerfile: CarService/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    container_name: rentcar
-    hostname: rentcar
+    container_name: carservice
+    hostname: carservice
     ports:
       - 5003:80
     env_file:
