@@ -4,15 +4,15 @@ networks:
   service_net:
 
 services:
-  api:
+  vacationservice:
     build:
       context: .
-      dockerfile: Api/Dockerfile
+      dockerfile: VacationService/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    hostname: api
-    container_name: api
+    hostname: vacationservice
+    container_name: vacationservice
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
@@ -24,15 +24,15 @@ services:
     networks:
       - service_net
 
-  bookflight:
+  flightservice:
     build:
       context: .
-      dockerfile: BookFlightService/Dockerfile
+      dockerfile: FlightService/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    container_name: bookflight
-    hostname: bookflight
+    container_name: flightservice
+    hostname: flightservice
     ports:
       - 5001:80
     env_file:

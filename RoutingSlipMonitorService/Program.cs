@@ -1,5 +1,6 @@
 using EventBusTransmitting;
 using MassTransit;
+using Prometheus.Client.MetricServer;
 using PrometheusWorker;
 using RoutingSlipMonitorService.Consumers;
 using Serilog;
@@ -11,7 +12,11 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        CreateHostBuilder(args).Build().Run();
+        var builder = CreateHostBuilder(args).Build();
+        var metricServer = builder.Services.GetRequiredService<IMetricServer>();
+        metricServer.Start();
+        builder.Run();
+        metricServer.Stop();
     }
 
     private static IHostBuilder CreateHostBuilder(string[] args)
