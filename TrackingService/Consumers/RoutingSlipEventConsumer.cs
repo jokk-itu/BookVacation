@@ -1,7 +1,7 @@
 using MassTransit;
 using MassTransit.Courier.Contracts;
 
-namespace RoutingSlipMonitorService.Consumers;
+namespace TrackingService.Consumers;
 
 public class RoutingSlipEventConsumer : 
     IConsumer<RoutingSlipCompleted>,

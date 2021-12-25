@@ -46,14 +46,17 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseSerilogRequestLogging();
+app.UseHttpMetrics();
 
 app.UseAuthorization();
 
 app.MapMetrics();
 app.MapControllers();
+
 
 app.Run();

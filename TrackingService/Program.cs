@@ -2,11 +2,11 @@ using EventBusTransmitting;
 using MassTransit;
 using Prometheus.Client.MetricServer;
 using PrometheusWorker;
-using RoutingSlipMonitorService.Consumers;
 using Serilog;
 using Serilog.Events;
+using TrackingService.Consumers;
 
-namespace RoutingSlipMonitorService;
+namespace TrackingService;
 
 public static class Program
 {
@@ -36,7 +36,7 @@ public static class Program
                 var seqUri = context.Configuration["Logging:SeqUri"];
                 config.WriteTo.Seq(seqUri)
                     .Enrich.FromLogContext()
-                    .MinimumLevel.Override("RoutingSlipMonitorService", LogEventLevel.Information)
+                    .MinimumLevel.Override("TrackingService", LogEventLevel.Information)
                     .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });

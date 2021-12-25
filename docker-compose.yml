@@ -92,15 +92,15 @@ services:
     networks:
       - service_net
       
-  routingslipmonitor:
+  trackingservice:
     build:
       context: .
-      dockerfile: RoutingSlipMonitorService/Dockerfile
+      dockerfile: TrackingService/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
-    container_name: routingslipmonitor
-    hostname: routingslipmonitor
+    container_name: trackingservice
+    hostname: trackingservice
     ports:
       - 5004:80
     env_file:
@@ -111,7 +111,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - sagarepository
     networks:
       - service_net           
 

@@ -5,13 +5,9 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{CA65A5D9-3480-489C-8CE4-87813ACAF9EB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{FCE480FB-82D3-4ADB-AB7E-9656B470A9E0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusTransmitting", "EventBusTransmitting\EventBusTransmitting.csproj", "{C00635A7-2F9F-48E9-B723-5FE21963DEDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrometheusWorker", "PrometheusWorker\PrometheusWorker.csproj", "{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutingSlipMonitorService", "RoutingSlipMonitorService\RoutingSlipMonitorService.csproj", "{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationService", "VacationService\VacationService.csproj", "{E4A11142-5C8C-4488-A364-117FA9E17622}"
 EndProject
@@ -20,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService", "HotelService\HotelService.csproj", "{7D7792AC-492D-49D7-9E88-D7817D43CBD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService", "CarService\CarService.csproj", "{DA065C51-55AA-4356-8FB0-BE0B37EB6B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService", "TrackingService\TrackingService.csproj", "{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,18 +68,6 @@ Global
 		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x64.Build.0 = Release|Any CPU
 		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{080F7CAF-56CC-4A6A-B18D-5A02BF8845AE}.Release|x86.Build.0 = Release|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Debug|x64.Build.0 = Debug|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Debug|x86.Build.0 = Debug|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Release|Any CPU.Build.0 = Release|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Release|x64.ActiveCfg = Release|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Release|x64.Build.0 = Release|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Release|x86.ActiveCfg = Release|Any CPU
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501}.Release|x86.Build.0 = Release|Any CPU
 		{E4A11142-5C8C-4488-A364-117FA9E17622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4A11142-5C8C-4488-A364-117FA9E17622}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4A11142-5C8C-4488-A364-117FA9E17622}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -130,8 +116,19 @@ Global
 		{DA065C51-55AA-4356-8FB0-BE0B37EB6B76}.Release|x64.Build.0 = Release|Any CPU
 		{DA065C51-55AA-4356-8FB0-BE0B37EB6B76}.Release|x86.ActiveCfg = Release|Any CPU
 		{DA065C51-55AA-4356-8FB0-BE0B37EB6B76}.Release|x86.Build.0 = Release|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Debug|x64.Build.0 = Debug|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Debug|x86.Build.0 = Debug|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Release|x64.ActiveCfg = Release|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Release|x64.Build.0 = Release|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Release|x86.ActiveCfg = Release|Any CPU
+		{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{659B7B64-36CA-41AB-8D0F-A74AA3AFF501} = {FCE480FB-82D3-4ADB-AB7E-9656B470A9E0}
 	EndGlobalSection
 EndGlobal

@@ -2,11 +2,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
 WORKDIR /app
-COPY RoutingSlipMonitorService RoutingSlipMonitorService
+COPY TrackingService TrackingService
 COPY Contracts Contracts
 COPY EventBusTransmitting EventBusTransmitting
 COPY PrometheusWorker PrometheusWorker
-RUN dotnet publish RoutingSlipMonitorService/RoutingSlipMonitorService.csproj -c $Configuration -o out
+RUN dotnet publish TrackingService/TrackingService.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
 ARG Environment
@@ -15,4 +15,4 @@ WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=$Environment
 ENV DOTNET_ENVIRONMENT=$Environment
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "RoutingSlipMonitorService.dll"]
+ENTRYPOINT ["dotnet", "TrackingService.dll"]
