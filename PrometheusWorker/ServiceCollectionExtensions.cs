@@ -25,7 +25,6 @@ public static class ServiceCollectionExtensions
                 CollectorRegistryInstance = sp.GetRequiredService<ICollectorRegistry>(),
                 UseDefaultCollectors = true
             }));
-        services.AddHostedService<MetricServerWorker>();
         return services;
     }
 }
