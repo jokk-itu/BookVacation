@@ -135,8 +135,8 @@ services:
       - "15672:15672"
       - "15692:15692"
     volumes:
-      - "./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins"
-      - "./EventBus/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
+      - ./EventBus/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins
     networks:
       - service_net
       
@@ -167,7 +167,6 @@ services:
     ports:
       - "7474:7474"
       - "7687:7687"
-      - "2200:2200"
       
   prometheus:
     image: prom/prometheus
@@ -176,7 +175,7 @@ services:
     container_name: prometheus
     hostname: prometheus
     volumes:
-      - ./Monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./Monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - service_net
           
@@ -188,6 +187,6 @@ services:
     volumes:
       - ./Monitoring/grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/
       - ./Monitoring/grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
-      - ./Monitoring/grafana/dashboards/:/dashboards/rabbitmq/
+      - ./Monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
     networks:
       - service_net

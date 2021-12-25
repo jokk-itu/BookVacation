@@ -11,13 +11,7 @@ scrape_configs:
     metrics_path: /metrics
     scrape_interval: 5s
     static_configs:
-    - targets: ['eventbus:15692']  
-    
-  - job_name: 'neo4j'
-    metrics_path: /metrics
-    scrape_interval: 5s
-    static_configs:
-    - targets: ['neo4j:2200']  
+    - targets: ['eventbus:15692']   
 
   - job_name: 'vacationservice'
     metrics_path: '/metrics'
