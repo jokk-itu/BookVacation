@@ -1,7 +1,9 @@
 using EventBusTransmitting;
 using MassTransit;
+using Prometheus.Client.Collectors;
+using Prometheus.Client.DependencyInjection;
 using Prometheus.Client.MetricServer;
-using PrometheusWorker;
+using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
 using TrackingService.Consumers;
@@ -30,7 +32,21 @@ public static class Program
                         configurator.AddConsumersFromNamespaceContaining<RoutingSlipEventConsumer>();
                     });
                 services.AddHostedService<EventBusWorker>();
-                services.AddMetricServer(hostContext.Configuration);
+                
+                var isValidPort = int.TryParse(hostContext.Configuration["Prometheus:Port"], out var port);
+                if (!isValidPort)
+                    throw new ArgumentException();
+        
+                services.AddSystemMetrics();
+                services.AddMetricFactory();
+                services.AddSingleton<IMetricServer>(sp => new MetricServer(
+                    new MetricServerOptions
+                    {
+                        MapPath = "/metrics",
+                        Port = port,
+                        CollectorRegistryInstance = sp.GetRequiredService<ICollectorRegistry>(),
+                        UseDefaultCollectors = true
+                    }));
             }).UseSerilog((context, serviceProvider, config) =>
             {
                 var seqUri = context.Configuration["Logging:SeqUri"];

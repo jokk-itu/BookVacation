@@ -3,3 +3,7 @@
 Monitoring
 EventBus
 Neo4j
+.run
+.sonarqube
+.git
+.github

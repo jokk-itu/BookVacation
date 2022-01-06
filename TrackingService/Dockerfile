@@ -5,7 +5,6 @@ WORKDIR /app
 COPY TrackingService TrackingService
 COPY Contracts Contracts
 COPY EventBusTransmitting EventBusTransmitting
-COPY PrometheusWorker PrometheusWorker
 RUN dotnet publish TrackingService/TrackingService.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
