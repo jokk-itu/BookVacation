@@ -30,5 +30,6 @@ builder.Services.AddCors(options =>
 
 //PIPELINE SETUP
 var app = builder.Build();
+app.UseSerilogRequestLogging();
 app.MapReverseProxy();
 app.Run();
