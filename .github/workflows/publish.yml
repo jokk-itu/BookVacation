@@ -11,7 +11,7 @@ jobs:
     
     strategy:
       matrix:
-        service: ['VacationService', 'FlightService', 'HotelService', 'CarService', 'TrackingService']
+        service: ['VacationService', 'FlightService', 'HotelService', 'CarService', 'TrackingService', 'GatewayService']
         include:
           - service: VacationService
             repository: vacationservice
@@ -22,7 +22,9 @@ jobs:
           - service: CarService
             repository: carservice
           - service: TrackingService
-            repository: trackingservice  
+            repository: trackingservice
+          - service: GatewayService
+            repository: gatewayservice  
         
     steps:
       - name: Checkout  
