@@ -42,3 +42,9 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['trackingservice:80']
+
+  - job_name: 'gatewayservice'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['gatewayservice:80']    
