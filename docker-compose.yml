@@ -21,6 +21,7 @@ services:
     depends_on:
       - eventbus
       - logger
+      - prometheus
     networks:
       - service_net
 
@@ -45,6 +46,7 @@ services:
       - eventbus
       - logger
       - sagarepository
+      - prometheus
     networks:
       - service_net
       
@@ -66,7 +68,8 @@ services:
       - ./EnvironmentFiles/prometheus.env
     depends_on:
       - eventbus
-      - logger  
+      - logger
+      - prometheus  
     networks:
       - service_net
       
@@ -88,7 +91,8 @@ services:
       - ./EnvironmentFiles/prometheus.env
     depends_on:
       - eventbus
-      - logger  
+      - logger
+      - prometheus 
     networks:
       - service_net
       
@@ -112,7 +116,29 @@ services:
       - eventbus
       - logger
     networks:
-      - service_net           
+      - service_net
+      
+  gatewayservice:
+    build:
+      context: .
+      dockerfile: GatewayService/Dockerfile
+      args:
+        - Configuration=${Configuration}
+        - Environment=${Environment}
+    container_name: gatewayservice
+    hostname: gatewayservice
+    ports:
+      - 5005:80
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+      - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
+    depends_on: 
+      - logger
+      - prometheus
+    networks:
+      - service_net          
 
   logger:
     image: datalust/seq:latest
