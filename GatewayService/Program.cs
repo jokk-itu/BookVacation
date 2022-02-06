@@ -13,7 +13,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
         .MinimumLevel.Warning();
 });
 
-//ADD SERVICES
+//Add services
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
@@ -28,8 +28,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-//PIPELINE SETUP
+//Add pipeline setup
 var app = builder.Build();
 app.UseSerilogRequestLogging();
+app.UseHttpsRedirection();
+app.UseCors();
 app.MapReverseProxy();
 app.Run();
