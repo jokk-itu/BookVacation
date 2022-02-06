@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService", "Tracking
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService", "GatewayService\GatewayService.csproj", "{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTest", "LoadTest\LoadTest.csproj", "{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +130,18 @@ Global
 		{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}.Release|x64.Build.0 = Release|Any CPU
 		{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}.Release|x86.ActiveCfg = Release|Any CPU
 		{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}.Release|x86.Build.0 = Release|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Debug|x64.Build.0 = Debug|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Debug|x86.Build.0 = Debug|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x64.ActiveCfg = Release|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x64.Build.0 = Release|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x86.ActiveCfg = Release|Any CPU
+		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

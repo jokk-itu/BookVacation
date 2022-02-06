@@ -40,7 +40,6 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/prometheus.env
       - ./EnvironmentFiles/mongo.env
     depends_on:
       - eventbus
@@ -65,7 +64,6 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/prometheus.env
     depends_on:
       - eventbus
       - logger
@@ -88,7 +86,6 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/prometheus.env
     depends_on:
       - eventbus
       - logger
@@ -130,11 +127,9 @@ services:
     ports:
       - 5005:80
     env_file:
-      - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/prometheus.env
-    depends_on: 
+      - ./EnvironmentFiles/gateway.env
+    depends_on:
       - logger
       - prometheus
     networks:
