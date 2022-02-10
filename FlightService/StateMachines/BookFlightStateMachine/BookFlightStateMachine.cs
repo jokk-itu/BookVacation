@@ -1,4 +1,5 @@
 using Automatonymous;
+#nullable disable
 
 namespace FlightService.StateMachines.BookFlightStateMachine;
 
@@ -6,6 +7,7 @@ public partial class BookFlightStateMachine : MassTransitStateMachine<BookFlight
 {
     private readonly ILogger<BookFlightStateMachine> _logger;
 
+    // ReSharper disable once NotNullMemberIsNotInitialized
     public BookFlightStateMachine(ILogger<BookFlightStateMachine> logger)
     {
         _logger = logger;
