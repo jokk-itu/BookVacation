@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService", "GatewaySe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadTest", "LoadTest\LoadTest.csproj", "{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swagger", "Swagger\Swagger.csproj", "{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +144,18 @@ Global
 		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x64.Build.0 = Release|Any CPU
 		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x86.ActiveCfg = Release|Any CPU
 		{7985E1D6-8715-4B3D-BA77-AFF805DBA90F}.Release|x86.Build.0 = Release|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x64.Build.0 = Debug|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x86.Build.0 = Debug|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x64.ActiveCfg = Release|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x64.Build.0 = Release|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x86.ActiveCfg = Release|Any CPU
+		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

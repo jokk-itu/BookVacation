@@ -4,6 +4,7 @@ using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
+using Swagger;
 using VacationService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +58,5 @@ app.UseAuthorization();
 
 app.MapMetrics();
 app.MapControllers();
-
 
 app.Run();

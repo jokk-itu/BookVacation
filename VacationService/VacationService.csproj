@@ -22,6 +22,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Contracts\Contracts.csproj" />
       <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
+      <ProjectReference Include="..\Swagger\Swagger.csproj" />
     </ItemGroup>
 
 </Project>

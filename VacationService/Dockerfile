@@ -5,6 +5,7 @@ WORKDIR /app
 COPY VacationService VacationService
 COPY Contracts Contracts
 COPY EventBusTransmitting EventBusTransmitting
+COPY Swagger Swagger
 RUN dotnet publish VacationService/VacationService.csproj -c $Configuration -o out
 
 

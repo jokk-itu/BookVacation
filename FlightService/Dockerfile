@@ -5,6 +5,7 @@ WORKDIR /app
 COPY FlightService FlightService
 COPY Contracts Contracts
 COPY EventBusTransmitting EventBusTransmitting
+COPY Swagger Swagger
 RUN dotnet publish FlightService/FlightService.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release

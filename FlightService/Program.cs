@@ -7,6 +7,7 @@ using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
+using Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +24,17 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
 });
 
 // Add services to the container.
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
+builder.Services.AddVersionedApiExplorer(config =>
+{
+    config.GroupNameFormat = "'v'VVV";
+    config.SubstituteApiVersionInUrl = true;
+});
 builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddEventBus(builder.Configuration, configurator =>
 {
     configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
