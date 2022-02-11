@@ -38,7 +38,6 @@ WHERE NOT EXISTS {
 }
 CREATE (r1:Rent {id: $rentId})-[:At]->(h)
 CREATE (r1)-[:Renting {days: $days}]->(r)
-RETURN true as IsSuccessful
 ";
             var result = await transaction.RunAsync(command, new
             {
@@ -72,8 +71,7 @@ RETURN true as IsSuccessful
         {
             const string command = @"
 MATCH (r:Rent {id: $id})
-DETACH DELETE r
-RETURN true AS IsSuccessful";
+DETACH DELETE r";
             var result = await transaction.RunAsync(command, new
             {
                 id = id.ToString()

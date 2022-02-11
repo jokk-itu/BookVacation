@@ -1,7 +1,9 @@
 using EventBusTransmitting;
 using FlightService.CourierActivities;
 using FlightService.StateMachines.BookFlightStateMachine;
+using FluentValidation.AspNetCore;
 using MassTransit;
+using MediatR;
 using Neo4j.Driver;
 using Prometheus;
 using Prometheus.SystemMetrics;
@@ -26,6 +28,13 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
+builder.Services.AddFluentValidation(options =>
+{
+    options.DisableDataAnnotationsValidation = false;
+    options.AutomaticValidationEnabled = true;
+    options.RegisterValidatorsFromAssemblyContaining<FlightService.Validators.AssemblyRegistration>();
+});
+builder.Services.AddMediatR(typeof(FlightService.Requests.AssemblyRegistration).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
 builder.Services.AddVersionedApiExplorer(config =>
