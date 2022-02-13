@@ -14,7 +14,7 @@ public record VacationRequest
     #region Hotel
 
     public Guid HotelId { get; init; }
-    public int RentHotelDays { get; init; }
+    public uint RentHotelDays { get; init; }
     public Guid RoomId { get; init; }
 
     #endregion

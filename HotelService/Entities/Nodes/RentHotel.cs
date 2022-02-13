@@ -1,6 +1,6 @@
 namespace HotelService.Entities.Nodes;
 
-public class Rent
+public class RentHotel
 {
     public Guid Id { get; init; }
 }

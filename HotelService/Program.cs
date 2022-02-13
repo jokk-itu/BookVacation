@@ -1,6 +1,8 @@
 using EventBusTransmitting;
 using HotelService.CourierActivities;
+using HotelService.Requests;
 using MassTransit;
+using MediatR;
 using Neo4j.Driver;
 using Prometheus;
 using Prometheus.SystemMetrics;
@@ -25,6 +27,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
+builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
 builder.Services.AddVersionedApiExplorer(config =>
