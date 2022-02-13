@@ -3,4 +3,4 @@ using MediatR;
 
 namespace FlightService.Requests.CreateFlight;
 
-public record CreateFlightRequest(DateTime From, DateTime To) : IRequest<(Response, Flight)>;
+public record CreateFlightRequest(DateTime From, DateTime To) : IRequest<(RequestResult, Flight?)>;

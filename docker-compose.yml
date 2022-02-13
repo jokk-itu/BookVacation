@@ -46,6 +46,7 @@ services:
       - logger
       - sagarepository
       - prometheus
+      - neo4j
     networks:
       - service_net
       
@@ -67,7 +68,8 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus  
+      - prometheus
+      - neo4j
     networks:
       - service_net
       
@@ -89,7 +91,8 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus 
+      - prometheus
+      - neo4j
     networks:
       - service_net
       
@@ -126,6 +129,7 @@ services:
     hostname: gatewayservice
     ports:
       - 5005:80
+      - 5006:443
     env_file:
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/gateway.env

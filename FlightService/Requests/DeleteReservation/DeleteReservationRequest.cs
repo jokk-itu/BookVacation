@@ -1,6 +1,5 @@
+using MediatR;
+
 namespace FlightService.Requests.DeleteReservation;
 
-public class DeleteReservationRequest
-{
-    
-}
+public record DeleteReservationRequest(Guid ReservationId) : IRequest<RequestResult>;
