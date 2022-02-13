@@ -23,7 +23,7 @@ public record VacationRequest
 
     public Guid CarId { get; init; }
     public Guid RentingCompanyId { get; init; }
-    public int RentCarDays { get; init; }
+    public uint RentCarDays { get; init; }
 
     #endregion
 }

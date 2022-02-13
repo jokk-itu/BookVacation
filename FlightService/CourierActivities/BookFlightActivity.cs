@@ -19,12 +19,12 @@ public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
 
     public async Task<ExecutionResult> Execute(ExecuteContext<BookFlightArgument> context)
     {
-        var seatId = context.Arguments.SeatId;
-        var flightId = context.Arguments.FlightId;
         var reservationId = NewId.NextGuid();
-        var result = await _mediator.Send(new CreateReservationRequest(seatId, flightId, reservationId));
-        return result == RequestResult.Ok 
-            ? context.Completed(new { ReservationId = reservationId }) 
+        var result =
+            await _mediator.Send(new CreateReservationRequest(context.Arguments.SeatId, context.Arguments.FlightId,
+                reservationId));
+        return result == RequestResult.Ok
+            ? context.Completed(new { ReservationId = reservationId })
             : context.Faulted();
     }
 
@@ -32,8 +32,8 @@ public class BookFlightActivity : IActivity<BookFlightArgument, BookFlightLog>
     {
         var reservationId = context.Log.ReservationId;
         var result = await _mediator.Send(new DeleteReservationRequest(reservationId));
-        return result == RequestResult.Ok 
-            ? context.Compensated() 
+        return result == RequestResult.Ok
+            ? context.Compensated()
             : context.Failed();
     }
 }
