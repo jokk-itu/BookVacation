@@ -4,7 +4,7 @@ using Neo4j.Driver;
 
 namespace FlightService.Requests.ReadFlights;
 
-public class ReadFlightsRequestHandler : IRequestHandler<ReadFlightsRequest, (Response, IEnumerable<Flight>)>
+public class ReadFlightsRequestHandler : IRequestHandler<ReadFlightsRequest, (RequestResult, IEnumerable<Flight>)>
 {
     private readonly IDriver _driver;
 
@@ -13,7 +13,7 @@ public class ReadFlightsRequestHandler : IRequestHandler<ReadFlightsRequest, (Re
         _driver = driver;
     }
     
-    public async Task<(Response, IEnumerable<Flight>)> Handle(ReadFlightsRequest request, CancellationToken cancellationToken)
+    public async Task<(RequestResult, IEnumerable<Flight>)> Handle(ReadFlightsRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

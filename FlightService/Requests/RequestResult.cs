@@ -1,10 +1,11 @@
 namespace FlightService.Requests;
 
-public enum Response
+public enum RequestResult
 {
     NotFound,
     Ok,
     BadRequest,
     Conflict,
-    Created
+    Created,
+    Error
 }

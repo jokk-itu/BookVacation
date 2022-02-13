@@ -4,7 +4,7 @@ using Neo4j.Driver;
 
 namespace FlightService.Requests.ReadFlight;
 
-public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Response, Flight)>
+public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (RequestResult, Flight)>
 {
     private readonly IDriver _driver;
 
@@ -13,7 +13,7 @@ public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Resp
         _driver = driver;
     }
     
-    public async Task<(Response, Flight)> Handle(ReadFlightRequest request, CancellationToken cancellationToken)
+    public async Task<(RequestResult, Flight)> Handle(ReadFlightRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();
         var flight = await session.ReadTransactionAsync(async transaction =>
@@ -25,6 +25,6 @@ RETURN f";
             var record = await result.SingleAsync();
             return record.As<Flight>();
         });
-        return (Response.Ok, flight);
+        return (RequestResult.Ok, flight);
     }
 }

@@ -1,9 +1,8 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Contracts.BookFlightStateMachine;
 using FlightService.Contracts.DTO;
 using FlightService.Contracts.GetFlight;
 using FlightService.Contracts.GetFlights;
 using FlightService.Contracts.PostFlight;
+using FlightService.Requests;
 using FlightService.Requests.CreateFlight;
 using FlightService.Requests.ReadFlight;
 using FlightService.Requests.ReadFlights;
@@ -35,9 +34,9 @@ public class FlightController : ControllerBase
         var (result, flight) = await _mediator.Send(request, cancellationToken);
         return result switch
         {
-            Requests.Response.NotFound => NotFound(),
-            Requests.Response.Ok => Ok(new GetFlightResponse { Id = flight.Id, From = flight.From, To = flight.To }),
-            Requests.Response.BadRequest => BadRequest()
+            RequestResult.NotFound => NotFound(),
+            RequestResult.Ok => Ok(new GetFlightResponse { Id = flight.Id, From = flight.From, To = flight.To }),
+            RequestResult.BadRequest => BadRequest()
         };
     }
 
@@ -45,15 +44,15 @@ public class FlightController : ControllerBase
     [ProducesResponseType(typeof(GetFlightsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetFlightsAsync(
-        GetFlightsRequest request,
+        [FromQuery] GetFlightsRequest request,
         CancellationToken cancellationToken = default)
     {
         var (result, flights) =
             await _mediator.Send(new ReadFlightsRequest(request.Amount, request.Offset), cancellationToken);
         return result switch
         {
-            Requests.Response.Ok => Ok(flights.Select(flight => new Flight(flight.Id, flight.From, flight.To))),
-            Requests.Response.BadRequest => BadRequest()
+            RequestResult.Ok => Ok(flights.Select(flight => new Flight(flight.Id, flight.From, flight.To))),
+            RequestResult.BadRequest => BadRequest()
         };
     }
 
@@ -62,12 +61,14 @@ public class FlightController : ControllerBase
         [FromBody] PostFlightRequest request,
         CancellationToken cancellationToken = default)
     {
-        var (result, flight) = await _mediator.Send(new CreateFlightRequest(request.From, request.To), cancellationToken);
+        var (result, flight) =
+            await _mediator.Send(new CreateFlightRequest(request.From, request.To), cancellationToken);
         return result switch
         {
-            Requests.Response.Created => Created($"http://localhost:5001/api/v1/{flight.Id}", new Flight(flight.Id, flight.From, flight.To)),
-            Requests.Response.Conflict => Conflict(),
-            Requests.Response.BadRequest => BadRequest()
+            RequestResult.Created => Created($"http://localhost:5001/api/v1/{flight.Id}",
+                new Flight(flight.Id, flight.From, flight.To)),
+            RequestResult.Conflict => Conflict(),
+            RequestResult.BadRequest => BadRequest()
         };
     }
 }
