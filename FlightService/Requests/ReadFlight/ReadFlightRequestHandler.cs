@@ -12,7 +12,7 @@ public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Requ
     {
         _driver = driver;
     }
-    
+
     public async Task<(RequestResult, Flight)> Handle(ReadFlightRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();
@@ -21,7 +21,7 @@ public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Requ
             const string query = @"
 MATCH (f:Flight {id: $id})
 RETURN f";
-            var result = await transaction.RunAsync(query, new {id = request.Id});
+            var result = await transaction.RunAsync(query, new { id = request.Id });
             var record = await result.SingleAsync();
             return record.As<Flight>();
         });

@@ -1,6 +1,4 @@
-using System;
-
-namespace Contracts.BookHotelActivity;
+namespace CarService.Contracts.BookHotelActivity;
 
 public record BookHotelArgument
 {

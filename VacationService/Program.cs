@@ -5,7 +5,6 @@ using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
 using Swagger;
-using VacationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,10 +42,7 @@ builder.Services.AddSystemMetrics();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
 app.UseSwagger();
 app.UseSwaggerUI();

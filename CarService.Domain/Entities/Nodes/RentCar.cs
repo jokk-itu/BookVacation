@@ -1,4 +1,4 @@
-namespace CarService.Entities.Nodes;
+namespace CarService.Domain.Entities.Nodes;
 
 public record RentCar
 {

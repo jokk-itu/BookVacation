@@ -11,7 +11,7 @@ public class CreateRentHotelRequestHandler : IRequestHandler<CreateRentHotelRequ
     {
         _driver = driver;
     }
-    
+
     public async Task<RequestResult> Handle(CreateRentHotelRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();

@@ -1,7 +1,7 @@
 using MediatR;
 using Neo4j.Driver;
 
-namespace CarService.Requests.DeleteRentCar;
+namespace CarService.Infrastructure.Requests.DeleteRentCar;
 
 public class DeleteRentCarRequestHandler : IRequestHandler<DeleteRentCarRequest, RequestResult>
 {
@@ -11,7 +11,7 @@ public class DeleteRentCarRequestHandler : IRequestHandler<DeleteRentCarRequest,
     {
         _driver = driver;
     }
-    
+
     public async Task<RequestResult> Handle(DeleteRentCarRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();

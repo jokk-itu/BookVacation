@@ -1,4 +1,5 @@
-using CarService.CourierActivities;
+using CarService.Infrastructure.CourierActivities;
+using CarService.Infrastructure.Requests;
 using EventBusTransmitting;
 using MassTransit;
 using MediatR;
@@ -26,7 +27,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
-builder.Services.AddMediatR(typeof(CarService.Requests.AssemblyRegistration).Assembly);
+builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
 builder.Services.AddVersionedApiExplorer(config =>
@@ -37,10 +38,7 @@ builder.Services.AddVersionedApiExplorer(config =>
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddEventBus(builder.Configuration,
-    configurator =>
-    {
-        configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-    });
+    configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
 builder.Services.AddSingleton(_ => GraphDatabase.Driver(
     builder.Configuration["Neo4j:Uri"],
     AuthTokens.Basic(
@@ -52,10 +50,7 @@ builder.Services.AddSystemMetrics();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI();
 

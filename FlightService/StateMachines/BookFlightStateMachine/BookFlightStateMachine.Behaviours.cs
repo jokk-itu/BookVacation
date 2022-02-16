@@ -57,7 +57,7 @@ public partial class BookFlightStateMachine
                     JsonSerializer.Serialize(context.Data));
                 return Task.CompletedTask;
             }).TransitionTo(Cancelled).Finalize());
-        
+
         SetCompletedWhenFinalized();
     }
 }

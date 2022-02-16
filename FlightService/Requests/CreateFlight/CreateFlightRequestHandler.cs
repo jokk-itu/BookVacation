@@ -18,7 +18,7 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, (
 
     public async Task<(RequestResult, Flight?)> Handle(CreateFlightRequest request, CancellationToken cancellationToken)
     {
-        if(await IsFlightConflicting(cancellationToken))
+        if (await IsFlightConflicting(cancellationToken))
             return (RequestResult.Conflict, null);
 
         await using var session = _driver.AsyncSession();
@@ -44,7 +44,7 @@ RETURN f)";
             await transaction.RollbackAsync();
             return null;
         });
-        
+
         return flight is null ? (RequestResult.Error, null) : (RequestResult.Created, flight);
     }
 

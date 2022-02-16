@@ -1,6 +1,6 @@
-using CarService.Entities.Nodes;
+using CarService.Domain.Entities.Nodes;
 
-namespace CarService.Entities.Edges;
+namespace CarService.Domain.Entities.Edges;
 
 public record RentingCompanyOwnsCar
 {

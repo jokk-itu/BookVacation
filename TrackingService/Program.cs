@@ -27,16 +27,13 @@ public static class Program
             .ConfigureServices((hostContext, services) =>
             {
                 services.AddEventBus(hostContext.Configuration,
-                    configurator =>
-                    {
-                        configurator.AddConsumersFromNamespaceContaining<RoutingSlipEventConsumer>();
-                    });
+                    configurator => { configurator.AddConsumersFromNamespaceContaining<RoutingSlipEventConsumer>(); });
                 services.AddHostedService<EventBusWorker>();
-                
+
                 var isValidPort = int.TryParse(hostContext.Configuration["Prometheus:Port"], out var port);
                 if (!isValidPort)
                     throw new ArgumentException();
-        
+
                 services.AddSystemMetrics();
                 services.AddMetricFactory();
                 services.AddSingleton<IMetricServer>(sp => new MetricServer(

@@ -11,7 +11,7 @@ public class DeleteReservationRequestHandler : IRequestHandler<DeleteReservation
     {
         _driver = driver;
     }
-    
+
     public async Task<RequestResult> Handle(DeleteReservationRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();

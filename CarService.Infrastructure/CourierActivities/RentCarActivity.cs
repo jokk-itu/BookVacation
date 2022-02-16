@@ -1,12 +1,12 @@
-using CarService.Requests;
-using CarService.Requests.CreateRentCar;
-using CarService.Requests.DeleteRentCar;
+using CarService.Infrastructure.Requests;
+using CarService.Infrastructure.Requests.CreateRentCar;
+using CarService.Infrastructure.Requests.DeleteRentCar;
 using Contracts.RentCarActivity;
 using MassTransit;
 using MassTransit.Courier;
 using MediatR;
 
-namespace CarService.CourierActivities;
+namespace CarService.Infrastructure.CourierActivities;
 
 public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
 {
@@ -25,8 +25,8 @@ public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
         var rentId = NewId.NextGuid();
 
         var result = await _mediator.Send(new CreateRentCarRequest(companyId, carId, days, rentId));
-        return result == RequestResult.Ok 
-            ? context.Completed(new { RentId = rentId }) 
+        return result == RequestResult.Ok
+            ? context.Completed(new { RentId = rentId })
             : context.Faulted();
     }
 
@@ -34,8 +34,8 @@ public class RentCarActivity : IActivity<RentCarArgument, RentCarLog>
     {
         var rentId = context.Log.RentCarId;
         var result = await _mediator.Send(new DeleteRentCarRequest(rentId));
-        return result == RequestResult.Ok 
-            ? context.Compensated() 
+        return result == RequestResult.Ok
+            ? context.Compensated()
             : context.Failed();
     }
 }

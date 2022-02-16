@@ -21,10 +21,8 @@ public static class ServiceCollectionExtensions
             configurator.AddDelayedMessageScheduler();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
             {
-                factoryConfigurator.UsePrometheusMetrics(options =>
-                {
-                }, configuration["ServiceName"]);
-                
+                factoryConfigurator.UsePrometheusMetrics(options => { }, configuration["ServiceName"]);
+
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);

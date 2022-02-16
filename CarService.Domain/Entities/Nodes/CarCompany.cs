@@ -1,6 +1,6 @@
-namespace CarService.Entities.Nodes;
+namespace CarService.Domain.Entities.Nodes;
 
-public record RentingCompany
+public record CarCompany
 {
     public Guid Id { get; init; }
 

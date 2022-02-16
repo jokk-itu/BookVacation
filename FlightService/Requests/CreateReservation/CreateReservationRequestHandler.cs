@@ -11,10 +11,10 @@ public class CreateReservationRequestHandler : IRequestHandler<CreateReservation
     {
         _driver = driver;
     }
-    
+
     public async Task<RequestResult> Handle(CreateReservationRequest request, CancellationToken cancellationToken)
     {
-        await using var session = _driver.AsyncSession(); 
+        await using var session = _driver.AsyncSession();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
         {
             const string command = @"

@@ -1,12 +1,10 @@
-using System.Diagnostics;
-using Contracts.BookHotelActivity;
+using CarService.Contracts.BookHotelActivity;
 using HotelService.Requests;
 using HotelService.Requests.CreateRentHotel;
 using HotelService.Requests.DeleteRentHotel;
 using MassTransit;
 using MassTransit.Courier;
 using MediatR;
-using Neo4j.Driver;
 
 namespace HotelService.CourierActivities;
 
@@ -29,16 +27,16 @@ public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
         var rentId = NewId.NextGuid();
 
         var result = await _mediator.Send(new CreateRentHotelRequest(hotelId, roomId, days, rentId));
-        return result == RequestResult.Ok 
-            ? context.Completed(new { RentId = rentId }) 
+        return result == RequestResult.Ok
+            ? context.Completed(new { RentId = rentId })
             : context.Faulted();
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
     {
         var result = await _mediator.Send(new DeleteRentHotelRequest(context.Log.RentId));
-        return result == RequestResult.Ok 
-            ? context.Compensated() 
+        return result == RequestResult.Ok
+            ? context.Compensated()
             : context.Failed();
     }
 }

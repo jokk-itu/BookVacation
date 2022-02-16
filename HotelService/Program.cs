@@ -38,10 +38,7 @@ builder.Services.AddVersionedApiExplorer(config =>
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddEventBus(builder.Configuration,
-    configurator =>
-    {
-        configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-    });
+    configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
 builder.Services.AddSingleton(_ => GraphDatabase.Driver(
     builder.Configuration["Neo4j:Uri"],
     AuthTokens.Basic(
@@ -52,10 +49,7 @@ builder.Services.AddSystemMetrics();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
 app.UseSwagger();
 app.UseSwaggerUI();

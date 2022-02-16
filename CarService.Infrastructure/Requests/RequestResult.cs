@@ -1,4 +1,4 @@
-namespace CarService.Requests;
+namespace CarService.Infrastructure.Requests;
 
 public enum RequestResult
 {

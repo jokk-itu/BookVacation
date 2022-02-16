@@ -7,6 +7,6 @@ public record Room
     public uint People { get; init; }
 
     public int Floor { get; init; }
-    
+
     public uint DayPrice { get; init; }
 }

@@ -1,4 +1,5 @@
 using Automatonymous;
+
 #nullable disable
 
 namespace FlightService.StateMachines.BookFlightStateMachine;

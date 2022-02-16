@@ -1,7 +1,7 @@
 using MediatR;
 using Neo4j.Driver;
 
-namespace CarService.Requests.CreateRentCar;
+namespace CarService.Infrastructure.Requests.CreateRentCar;
 
 public class CreateRentCarRequestHandler : IRequestHandler<CreateRentCarRequest, RequestResult>
 {
@@ -11,7 +11,7 @@ public class CreateRentCarRequestHandler : IRequestHandler<CreateRentCarRequest,
     {
         _driver = driver;
     }
-    
+
     public async Task<RequestResult> Handle(CreateRentCarRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();
@@ -44,8 +44,8 @@ CREATE (r)-[:RentingFor]->(rc)";
             await transaction.RollbackAsync();
             return false;
         });
-        return isSuccessful 
-            ? RequestResult.Ok 
+        return isSuccessful
+            ? RequestResult.Ok
             : RequestResult.Error;
     }
 }

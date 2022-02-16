@@ -1,5 +1,6 @@
 using EventBusTransmitting;
 using FlightService.CourierActivities;
+using FlightService.Requests;
 using FlightService.StateMachines.BookFlightStateMachine;
 using FluentValidation.AspNetCore;
 using MassTransit;
@@ -34,7 +35,7 @@ builder.Services.AddFluentValidation(options =>
     options.AutomaticValidationEnabled = true;
     options.RegisterValidatorsFromAssemblyContaining<FlightService.Validators.AssemblyRegistration>();
 });
-builder.Services.AddMediatR(typeof(FlightService.Requests.AssemblyRegistration).Assembly);
+builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
 builder.Services.AddVersionedApiExplorer(config =>
@@ -64,10 +65,7 @@ builder.Services.AddSystemMetrics();
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
 app.UseSwagger();
 app.UseSwaggerUI();

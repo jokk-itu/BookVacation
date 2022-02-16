@@ -3,7 +3,7 @@ using MassTransit.Courier.Contracts;
 
 namespace TrackingService.Consumers;
 
-public class RoutingSlipEventConsumer : 
+public class RoutingSlipEventConsumer :
     IConsumer<RoutingSlipCompleted>,
     IConsumer<RoutingSlipFaulted>,
     IConsumer<RoutingSlipCompensationFailed>,
@@ -18,23 +18,13 @@ public class RoutingSlipEventConsumer :
     {
         _logger = logger;
     }
-    
-    public async Task Consume(ConsumeContext<RoutingSlipCompleted> context)
-    {
-        await LogPerformance(context, context.Message.Duration);
-    }
-
-    public async Task Consume(ConsumeContext<RoutingSlipFaulted> context)
-    {
-        await LogPerformance(context, context.Message.Duration);
-    }
-
-    public async Task Consume(ConsumeContext<RoutingSlipCompensationFailed> context)
-    {
-        await LogPerformance(context, context.Message.Duration);
-    }
 
     public async Task Consume(ConsumeContext<RoutingSlipActivityCompensated> context)
+    {
+        await LogPerformance(context, context.Message.Duration);
+    }
+
+    public async Task Consume(ConsumeContext<RoutingSlipActivityCompensationFailed> context)
     {
         await LogPerformance(context, context.Message.Duration);
     }
@@ -49,14 +39,24 @@ public class RoutingSlipEventConsumer :
         await LogPerformance(context, context.Message.Duration);
     }
 
-    public async Task Consume(ConsumeContext<RoutingSlipActivityCompensationFailed> context)
+    public async Task Consume(ConsumeContext<RoutingSlipCompensationFailed> context)
     {
         await LogPerformance(context, context.Message.Duration);
     }
 
-    private Task LogPerformance<T>(ConsumeContext<T> context, TimeSpan elapsed) where T: class
+    public async Task Consume(ConsumeContext<RoutingSlipCompleted> context)
+    {
+        await LogPerformance(context, context.Message.Duration);
+    }
+
+    public async Task Consume(ConsumeContext<RoutingSlipFaulted> context)
+    {
+        await LogPerformance(context, context.Message.Duration);
+    }
+
+    private Task LogPerformance<T>(ConsumeContext<T> context, TimeSpan elapsed) where T : class
     {
         _logger.LogInformation("{RoutingSlipEvent} took {Elapsed} ms", context.Message.GetType().Name, elapsed);
         return Task.CompletedTask;
-    } 
+    }
 }

@@ -12,8 +12,9 @@ public class ReadFlightsRequestHandler : IRequestHandler<ReadFlightsRequest, (Re
     {
         _driver = driver;
     }
-    
-    public async Task<(RequestResult, IEnumerable<Flight>)> Handle(ReadFlightsRequest request, CancellationToken cancellationToken)
+
+    public async Task<(RequestResult, IEnumerable<Flight>)> Handle(ReadFlightsRequest request,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

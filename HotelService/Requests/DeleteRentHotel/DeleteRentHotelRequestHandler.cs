@@ -11,7 +11,7 @@ public class DeleteRentHotelRequestHandler : IRequestHandler<DeleteRentHotelRequ
     {
         _driver = driver;
     }
-    
+
     public async Task<RequestResult> Handle(DeleteRentHotelRequest request, CancellationToken cancellationToken)
     {
         var session = _driver.AsyncSession();
