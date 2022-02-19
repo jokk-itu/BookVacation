@@ -23,4 +23,9 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj" />
+      <ProjectReference Include="..\CarService.Infrastructure\CarService.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

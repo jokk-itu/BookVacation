@@ -20,7 +20,7 @@ public class DeleteRentCarRequestHandler : IRequestHandler<DeleteRentCarRequest,
             const string command = @"
 MATCH (r:Rent {id: $rentCarId})
 DETACH DELETE r";
-            var result = await session.RunAsync(command, new
+            var result = await transaction.RunAsync(command, new
             {
                 rentId = request.RentCarId.ToString()
             });
