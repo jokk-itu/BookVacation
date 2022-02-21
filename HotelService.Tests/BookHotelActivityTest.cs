@@ -43,9 +43,9 @@ public class BookHotelActivityTest
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompleted>();
             var completedContext = harness.SubscribeHandler<RoutingSlipCompleted>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, completedContext);
             
             //Assert
@@ -87,9 +87,9 @@ public class BookHotelActivityTest
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityFaulted>();
             var completedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, completedContext);
             
             //Assert
@@ -142,9 +142,9 @@ public class BookHotelActivityTest
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, bookHotelArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensated>();
             var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
@@ -197,9 +197,9 @@ public class BookHotelActivityTest
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, bookHotelArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();
             var faultedContext = harness.SubscribeHandler<RoutingSlipCompensationFailed>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert

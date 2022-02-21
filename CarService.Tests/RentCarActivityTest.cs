@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using CarService.Contracts.RentCarActivity;
 using CarService.Infrastructure.CourierActivities;
 using CarService.Infrastructure.Requests;
@@ -46,11 +43,11 @@ public class RentCarActivityTest
             };
             builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompleted>();
             var completedContext = harness.SubscribeHandler<RoutingSlipCompleted>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, completedContext);
-
+            
             //Assert
             fakeMediator.Verify();
             Assert.Equal(trackingNumber, completedContext.Result.Message.TrackingNumber);
@@ -90,9 +87,9 @@ public class RentCarActivityTest
             };
             builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityFaulted>();
             var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
@@ -144,9 +141,9 @@ public class RentCarActivityTest
             builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, rentCarArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensated>();
             var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
@@ -199,9 +196,9 @@ public class RentCarActivityTest
             builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, rentCarArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            await harness.Bus.Execute(builder.Build());
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();
             var faultedContext = harness.SubscribeHandler<RoutingSlipCompensationFailed>();
+            await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
