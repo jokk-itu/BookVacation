@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="FlightService.Contracts" Version="1.0.0" />
         <PackageReference Include="MassTransit.AspNetCore" Version="7.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
@@ -22,7 +23,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
-        <ProjectReference Include="..\FlightService.Contracts\FlightService.Contracts.csproj" />
         <ProjectReference Include="..\Swagger\Swagger.csproj" />
         <ProjectReference Include="..\VacationService.Contracts\VacationService.Contracts.csproj" />
     </ItemGroup>

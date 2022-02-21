@@ -1,12 +1,14 @@
 # syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
+ARG GithubToken
 WORKDIR /app
 COPY VacationService.Api VacationService.Api
 COPY VacationService.Contracts VacationService.Contracts
 COPY EventBusTransmitting EventBusTransmitting
 COPY Swagger Swagger
-RUN dotnet publish VacationService/VacationService.csproj -c $Configuration -o out
+RUN dotnet nuget add source --username jokk-itu --password $GithubToken --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jokk-itu/index.json"
+RUN dotnet publish VacationService.Api/VacationService.Api.csproj -c $Configuration -o out
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
@@ -15,4 +17,4 @@ WORKDIR /app
 EXPOSE 80
 ENV ASPNETCORE_ENVIRONMENT=$Environment
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "VacationService.dll"]
+ENTRYPOINT ["dotnet", "VacationService.Api.dll"]

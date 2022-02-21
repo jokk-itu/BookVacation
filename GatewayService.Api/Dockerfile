@@ -1,9 +1,11 @@
 # syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
+ARG GithubToken
 WORKDIR /app
 COPY GatewayService.Api GatewayService.Api
-RUN dotnet publish GatewayService/GatewayService.csproj -c $Configuration -o out
+RUN dotnet nuget add source --username jokk-itu --password $GithubToken --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jokk-itu/index.json"
+RUN dotnet publish GatewayService.Api/GatewayService.Api.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
 ARG Environment
@@ -11,4 +13,4 @@ EXPOSE 80 443
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT=$Environment
 COPY --from=build /app/out .
-ENTRYPOINT ["dotnet", "GatewayService.dll"]
+ENTRYPOINT ["dotnet", "GatewayService.Api.dll"]

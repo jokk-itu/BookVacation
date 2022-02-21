@@ -1,0 +1,36 @@
+name: Push to Github
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  CONFIGURATION: Release 
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts']
+    steps:
+    - name: Checkout
+      uses: actions/checkout/@v2
+    - name: Setup BuildNumber
+      run: |
+        BuildNumber="${{ GITHUB_RUN_NUMBER }}${{ GITHUB_RUN_ATTEMPT }}"
+        echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c ${{ $CONFIGURATION }} --no-restore
+    - name: Authenticate to Github Nuget Repository
+      run: dotnet nuget add source --username jokk-itu --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jokk-itu/index.json"
+    - name: Push package to Github Nuget Repository
+      run: |
+        package=$(ls ${{ matrix.projects }}/bin/$CONFIGURATION/*nupkg)
+        dotnet nuget push "$package" --source "github" --skip-duplicate
