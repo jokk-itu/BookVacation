@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>CarService.Infrastructure</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -15,7 +16,6 @@
     <ItemGroup>
         <ProjectReference Include="..\CarService.Contracts\CarService.Contracts.csproj"/>
         <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj"/>
-        <ProjectReference Include="..\Contracts\Contracts.csproj"/>
     </ItemGroup>
 
 </Project>

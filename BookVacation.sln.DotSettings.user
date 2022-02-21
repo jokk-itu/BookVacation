@@ -11,6 +11,7 @@
     &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.BookHotelActivityTest.Compensate_ExpectCompensated&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.BookHotelActivityTest.Compensate_ExpectCompensationFailed&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.BookHotelActivityTest&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::974143DF-FA81-495E-99A6-7F8A3E133FC4::net6.0::FlightService.Tests.BookFlightActivityTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

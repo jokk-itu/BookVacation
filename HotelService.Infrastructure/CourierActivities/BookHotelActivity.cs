@@ -1,4 +1,3 @@
-using Contracts.BookHotelActivity;
 using HotelService.Contracts.BookHotelActivity;
 using HotelService.Infrastructure.Requests;
 using HotelService.Infrastructure.Requests.CreateBookHotel;

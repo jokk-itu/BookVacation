@@ -1,6 +1,6 @@
-using HotelService.Api.Entities.Nodes;
+using HotelService.Domain.Entities.Nodes;
 
-namespace HotelService.Api.Entities.Edges;
+namespace HotelService.Domain.Entities.Edges;
 
 public class RentHotelRentingRoom
 {

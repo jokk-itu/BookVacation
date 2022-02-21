@@ -18,33 +18,22 @@ namespace CarService.Tests;
 
 public class RentCarActivityTest
 {
-    private readonly Mock<IMediator> _fakeMediator;
-    private readonly InMemoryTestHarness _harness;
-    private readonly ActivityTestHarness<RentCarActivity, RentCarArgument, RentCarLog> _rentCarActivityHarness;
-    private readonly ActivityTestHarness<TestActivity, TestArgument, TestLog> _testActivityHarness;
-
-    public RentCarActivityTest()
-    {
-        _fakeMediator = new Mock<IMediator>();
-        _harness = new InMemoryTestHarness();
-        var rentCarActivity = new RentCarActivity(_fakeMediator.Object);
-        _rentCarActivityHarness =
-            _harness.Activity<RentCarActivity, RentCarArgument, RentCarLog>(_ => rentCarActivity, _ => rentCarActivity);
-        _testActivityHarness =
-            _harness.Activity<TestActivity, TestArgument, TestLog>();
-    }
-
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Execute_ExpectCompleted()
     {
         //Arrange
-        _fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
+        var fakeMediator = new Mock<IMediator>();
+        var harness = new InMemoryTestHarness();
+        var rentCarActivity = new RentCarActivity(fakeMediator.Object);
+        var rentCarActivityHarness =
+            harness.Activity<RentCarActivity, RentCarArgument, RentCarLog>(_ => rentCarActivity, _ => rentCarActivity);
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
 
         //Act
-        await _harness.Start();
+        await harness.Start();
         try
         {
             var trackingNumber = Guid.NewGuid();
@@ -55,21 +44,21 @@ public class RentCarActivityTest
                 Days = 10u,
                 RentingCompanyId = Guid.NewGuid()
             };
-            builder.AddActivity(_rentCarActivityHarness.Name, _rentCarActivityHarness.ExecuteAddress, argument);
-            builder.AddSubscription(_harness.Bus.Address, RoutingSlipEvents.All);
-            await _harness.Bus.Execute(builder.Build());
-            var activityContext = _harness.SubscribeHandler<RoutingSlipActivityCompleted>();
-            var completedContext = _harness.SubscribeHandler<RoutingSlipCompleted>();
+            builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, argument);
+            builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
+            await harness.Bus.Execute(builder.Build());
+            var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompleted>();
+            var completedContext = harness.SubscribeHandler<RoutingSlipCompleted>();
             Task.WaitAll(activityContext, completedContext);
 
             //Assert
-            _fakeMediator.Verify();
+            fakeMediator.Verify();
             Assert.Equal(trackingNumber, completedContext.Result.Message.TrackingNumber);
             Assert.Equal(trackingNumber, activityContext.Result.Message.TrackingNumber);
         }
         finally
         {
-            await _harness.Stop();
+            await harness.Stop();
         }
     }
 
@@ -78,12 +67,17 @@ public class RentCarActivityTest
     public async Task Execute_ExpectFaulted()
     {
         //Arrange
-        _fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
+        var fakeMediator = new Mock<IMediator>();
+        var harness = new InMemoryTestHarness();
+        var rentCarActivity = new RentCarActivity(fakeMediator.Object);
+        var rentCarActivityHarness =
+            harness.Activity<RentCarActivity, RentCarArgument, RentCarLog>(_ => rentCarActivity, _ => rentCarActivity);
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
             .Verifiable();
 
         //Act
-        await _harness.Start();
+        await harness.Start();
         try
         {
             var trackingNumber = Guid.NewGuid();
@@ -94,21 +88,21 @@ public class RentCarActivityTest
                 Days = 10u,
                 RentingCompanyId = Guid.NewGuid()
             };
-            builder.AddActivity(_rentCarActivityHarness.Name, _rentCarActivityHarness.ExecuteAddress, argument);
-            builder.AddSubscription(_harness.Bus.Address, RoutingSlipEvents.All);
-            await _harness.Bus.Execute(builder.Build());
-            var activityContext = _harness.SubscribeHandler<RoutingSlipActivityFaulted>();
-            var faultedContext = _harness.SubscribeHandler<RoutingSlipFaulted>();
+            builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, argument);
+            builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
+            await harness.Bus.Execute(builder.Build());
+            var activityContext = harness.SubscribeHandler<RoutingSlipActivityFaulted>();
+            var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
-            _fakeMediator.Verify();
+            fakeMediator.Verify();
             Assert.Equal(trackingNumber, faultedContext.Result.Message.TrackingNumber);
             Assert.Equal(trackingNumber, activityContext.Result.Message.TrackingNumber);
         }
         finally
         {
-            await _harness.Stop();
+            await harness.Stop();
         }
     }
 
@@ -117,15 +111,22 @@ public class RentCarActivityTest
     public async Task Compensate_ExpectCompensated()
     {
         //Arrange
-        _fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
+        var fakeMediator = new Mock<IMediator>();
+        var harness = new InMemoryTestHarness();
+        var rentCarActivity = new RentCarActivity(fakeMediator.Object);
+        var rentCarActivityHarness =
+            harness.Activity<RentCarActivity, RentCarArgument, RentCarLog>(_ => rentCarActivity, _ => rentCarActivity);
+        var testActivityHarness =
+            harness.Activity<TestActivity, TestArgument, TestLog>();
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
 
-        _fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentCarRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok).Verifiable();
         
         //Act
-        await _harness.Start();
+        await harness.Start();
         try
         {
             var trackingNumber = Guid.NewGuid();
@@ -140,22 +141,22 @@ public class RentCarActivityTest
             {
                 IsExecuteFaulty = true
             };
-            builder.AddActivity(_rentCarActivityHarness.Name, _rentCarActivityHarness.ExecuteAddress, rentCarArgument);
-            builder.AddActivity(_testActivityHarness.Name, _testActivityHarness.ExecuteAddress, testArgument);
-            builder.AddSubscription(_harness.Bus.Address, RoutingSlipEvents.All);
-            await _harness.Bus.Execute(builder.Build());
-            var activityContext = _harness.SubscribeHandler<RoutingSlipActivityCompensated>();
-            var faultedContext = _harness.SubscribeHandler<RoutingSlipFaulted>();
+            builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, rentCarArgument);
+            builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
+            builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
+            await harness.Bus.Execute(builder.Build());
+            var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensated>();
+            var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
-            _fakeMediator.Verify();
+            fakeMediator.Verify();
             Assert.Equal(trackingNumber, faultedContext.Result.Message.TrackingNumber);
             Assert.Equal(trackingNumber, activityContext.Result.Message.TrackingNumber);
         }
         finally
         {
-            await _harness.Stop();
+            await harness.Stop();
         }
     }
 
@@ -164,16 +165,23 @@ public class RentCarActivityTest
     public async Task Compensate_ExpectCompensationFailed()
     {
         //Arrange
-        _fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
+        var fakeMediator = new Mock<IMediator>();
+        var harness = new InMemoryTestHarness();
+        var rentCarActivity = new RentCarActivity(fakeMediator.Object);
+        var rentCarActivityHarness =
+            harness.Activity<RentCarActivity, RentCarArgument, RentCarLog>(_ => rentCarActivity, _ => rentCarActivity);
+        var testActivityHarness =
+            harness.Activity<TestActivity, TestArgument, TestLog>();
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
 
-        _fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentCarRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
             .Verifiable();
         
         //Act
-        await _harness.Start();
+        await harness.Start();
         try
         {
             var trackingNumber = Guid.NewGuid();
@@ -188,22 +196,22 @@ public class RentCarActivityTest
             {
                 IsExecuteFaulty = true
             };
-            builder.AddActivity(_rentCarActivityHarness.Name, _rentCarActivityHarness.ExecuteAddress, rentCarArgument);
-            builder.AddActivity(_testActivityHarness.Name, _testActivityHarness.ExecuteAddress, testArgument);
-            builder.AddSubscription(_harness.Bus.Address, RoutingSlipEvents.All);
-            await _harness.Bus.Execute(builder.Build());
-            var activityContext = _harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();
-            var faultedContext = _harness.SubscribeHandler<RoutingSlipCompensationFailed>();
+            builder.AddActivity(rentCarActivityHarness.Name, rentCarActivityHarness.ExecuteAddress, rentCarArgument);
+            builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
+            builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
+            await harness.Bus.Execute(builder.Build());
+            var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();
+            var faultedContext = harness.SubscribeHandler<RoutingSlipCompensationFailed>();
             Task.WaitAll(activityContext, faultedContext);
 
             //Assert
-            _fakeMediator.Verify();
+            fakeMediator.Verify();
             Assert.Equal(trackingNumber, faultedContext.Result.Message.TrackingNumber);
             Assert.Equal(trackingNumber, activityContext.Result.Message.TrackingNumber);
         }
         finally
         {
-            await _harness.Stop();
+            await harness.Stop();
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace HotelService.Api.Entities.Nodes;
+namespace HotelService.Domain.Entities.Nodes;
 
 public record Room
 {

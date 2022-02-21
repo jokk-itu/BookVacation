@@ -1,6 +1,4 @@
-using System;
-
-namespace Contracts.BookHotelActivity;
+namespace HotelService.Contracts.BookHotelActivity;
 
 public record BookHotelLog
 {

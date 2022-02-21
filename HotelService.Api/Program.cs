@@ -1,5 +1,5 @@
 using EventBusTransmitting;
-using HotelService.Api.CourierActivities;
+using HotelService.Infrastructure.CourierActivities;
 using HotelService.Infrastructure.Requests;
 using MassTransit;
 using MediatR;
