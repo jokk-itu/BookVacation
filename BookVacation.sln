@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Domain", "CarService.Domain\CarService.Domain.csproj", "{963C43A7-FDD8-4F11-B63F-204526FC7626}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Test", "CarService.Test\CarService.Test.csproj", "{5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Tests", "CarService.Tests\CarService.Tests.csproj", "{5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Contracts", "CarService.Contracts\CarService.Contracts.csproj", "{B10DED4E-1826-4045-A727-6A6F28926147}"
 EndProject

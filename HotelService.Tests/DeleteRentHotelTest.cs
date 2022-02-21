@@ -1,15 +1,15 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CarService.Infrastructure.Requests;
-using CarService.Infrastructure.Requests.CreateRentCar;
+using HotelService.Infrastructure.Requests;
+using HotelService.Infrastructure.Requests.DeleteBookHotel;
 using Moq;
 using Neo4j.Driver;
 using Xunit;
 
-namespace CarService.Test;
+namespace HotelService.Tests;
 
-public class CreateRentCarRequestHandlerTest
+public class DeleteRentHotelTest
 {
     private readonly Mock<IDriver> _fakeDriver;
 
@@ -18,8 +18,8 @@ public class CreateRentCarRequestHandlerTest
     private readonly Mock<IAsyncTransaction> _fakeTransaction;
 
     private readonly Mock<IResultCursor> _fakeResultCursor;
-
-    public CreateRentCarRequestHandlerTest()
+    
+    public DeleteRentHotelTest()
     {
         _fakeDriver = new Mock<IDriver>();
         _fakeSession = new Mock<IAsyncSession>();
@@ -36,14 +36,9 @@ public class CreateRentCarRequestHandlerTest
     [Fact]
     public async Task Handle_ExpectOk()
     {
-        //Arrange
-        var companyId = Guid.NewGuid();
-        var carId = Guid.NewGuid();
-        var days = 10u;
-        var rentId = Guid.NewGuid();
-        var command = new CreateRentCarRequest(companyId, carId, days, rentId);
-        var expected = RequestResult.Ok;
-
+        var command = new DeleteBookHotelRequest(Guid.NewGuid());
+        const RequestResult expected = RequestResult.Ok;
+        
         _fakeTransaction.Setup(t => t.CommitAsync())
             .Verifiable();
         _fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(true)
@@ -59,9 +54,9 @@ public class CreateRentCarRequestHandlerTest
             .Verifiable();
         
         //Act
-        var handler = new CreateRentCarRequestHandler(_fakeDriver.Object);
+        var handler = new DeleteRentHotelRequestHandler(_fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-
+        
         //Assert
         _fakeDriver.Verify();
         _fakeSession.Verify();
@@ -70,17 +65,14 @@ public class CreateRentCarRequestHandlerTest
         Assert.Equal(expected, actual);
     }
 
+    
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectError()
     {
         //Arrange
-        var companyId = Guid.NewGuid();
-        var carId = Guid.NewGuid();
-        var days = 10u;
-        var rentId = Guid.NewGuid();
-        var command = new CreateRentCarRequest(companyId, carId, days, rentId);
-        var expected = RequestResult.Error;
+        var command = new DeleteBookHotelRequest(Guid.NewGuid());
+        const RequestResult expected = RequestResult.Error;
         
         _fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
@@ -97,7 +89,7 @@ public class CreateRentCarRequestHandlerTest
             .Verifiable();
         
         //Act
-        var handler = new CreateRentCarRequestHandler(_fakeDriver.Object);
+        var handler = new DeleteRentHotelRequestHandler(_fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
         
         //Assert

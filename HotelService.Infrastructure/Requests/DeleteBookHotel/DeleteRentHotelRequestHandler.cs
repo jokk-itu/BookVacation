@@ -1,9 +1,9 @@
 using MediatR;
 using Neo4j.Driver;
 
-namespace HotelService.Infrastructure.Requests.DeleteRentHotel;
+namespace HotelService.Infrastructure.Requests.DeleteBookHotel;
 
-public class DeleteRentHotelRequestHandler : IRequestHandler<DeleteRentHotelRequest, RequestResult>
+public class DeleteRentHotelRequestHandler : IRequestHandler<DeleteBookHotelRequest, RequestResult>
 {
     private readonly IDriver _driver;
 
@@ -12,7 +12,7 @@ public class DeleteRentHotelRequestHandler : IRequestHandler<DeleteRentHotelRequ
         _driver = driver;
     }
 
-    public async Task<RequestResult> Handle(DeleteRentHotelRequest request, CancellationToken cancellationToken)
+    public async Task<RequestResult> Handle(DeleteBookHotelRequest request, CancellationToken cancellationToken)
     {
         var session = _driver.AsyncSession();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>

@@ -1,7 +1,8 @@
 using Contracts.BookHotelActivity;
+using HotelService.Contracts.BookHotelActivity;
 using HotelService.Infrastructure.Requests;
-using HotelService.Infrastructure.Requests.CreateRentHotel;
-using HotelService.Infrastructure.Requests.DeleteRentHotel;
+using HotelService.Infrastructure.Requests.CreateBookHotel;
+using HotelService.Infrastructure.Requests.DeleteBookHotel;
 using MassTransit;
 using MassTransit.Courier;
 using MediatR;
@@ -24,7 +25,7 @@ public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
         var days = context.Arguments.Days;
         var rentId = NewId.NextGuid();
 
-        var result = await _mediator.Send(new CreateRentHotelRequest(hotelId, roomId, days, rentId));
+        var result = await _mediator.Send(new CreateBookHotelRequest(hotelId, roomId, days, rentId));
         return result == RequestResult.Ok
             ? context.Completed(new { RentId = rentId })
             : context.Faulted();
@@ -32,7 +33,7 @@ public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
 
     public async Task<CompensationResult> Compensate(CompensateContext<BookHotelLog> context)
     {
-        var result = await _mediator.Send(new DeleteRentHotelRequest(context.Log.RentId));
+        var result = await _mediator.Send(new DeleteBookHotelRequest(context.Log.RentId));
         return result == RequestResult.Ok
             ? context.Compensated()
             : context.Failed();

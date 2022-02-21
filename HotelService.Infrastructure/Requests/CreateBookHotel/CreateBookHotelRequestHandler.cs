@@ -1,18 +1,18 @@
 using MediatR;
 using Neo4j.Driver;
 
-namespace HotelService.Infrastructure.Requests.CreateRentHotel;
+namespace HotelService.Infrastructure.Requests.CreateBookHotel;
 
-public class CreateRentHotelRequestHandler : IRequestHandler<CreateRentHotelRequest, RequestResult>
+public class CreateBookHotelRequestHandler : IRequestHandler<CreateBookHotelRequest, RequestResult>
 {
     private readonly IDriver _driver;
 
-    public CreateRentHotelRequestHandler(IDriver driver)
+    public CreateBookHotelRequestHandler(IDriver driver)
     {
         _driver = driver;
     }
 
-    public async Task<RequestResult> Handle(CreateRentHotelRequest request, CancellationToken cancellationToken)
+    public async Task<RequestResult> Handle(CreateBookHotelRequest request, CancellationToken cancellationToken)
     {
         await using var session = _driver.AsyncSession();
         var isSuccessful = await session.WriteTransactionAsync(async transaction =>
