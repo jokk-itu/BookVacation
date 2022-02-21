@@ -1,4 +1,4 @@
-namespace HotelService.Entities.Nodes;
+namespace HotelService.Api.Entities.Nodes;
 
 public class RentHotel
 {

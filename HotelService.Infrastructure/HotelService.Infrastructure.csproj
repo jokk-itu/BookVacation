@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="7.3.1" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="Neo4j.Driver" Version="4.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HotelService.Contracts\HotelService.Contracts.csproj" />
+    <ProjectReference Include="..\HotelService.Domain\HotelService.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-namespace HotelService.CourierActivities;
+namespace HotelService.Api.CourierActivities;
 
 public struct CourierActivitiesRegistration
 {

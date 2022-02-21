@@ -1,7 +1,7 @@
 using MediatR;
 using Neo4j.Driver;
 
-namespace HotelService.Requests.DeleteRentHotel;
+namespace HotelService.Infrastructure.Requests.DeleteRentHotel;
 
 public class DeleteRentHotelRequestHandler : IRequestHandler<DeleteRentHotelRequest, RequestResult>
 {

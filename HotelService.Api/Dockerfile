@@ -2,8 +2,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
 WORKDIR /app
-COPY HotelService HotelService
-COPY Contracts Contracts
+COPY HotelService.Api HotelService.Api
+COPY HotelService.Domain HotelService.Domain
+COPY HotelService.Contracts HotelService.Contracts
+COPY HotelService.Infrastructure HotelService.Infrastucture
 COPY EventBusTransmitting EventBusTransmitting
 COPY Swagger Swagger
 RUN dotnet publish HotelService/HotelService.csproj -c $Configuration -o out

@@ -2,8 +2,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
 WORKDIR /app
-COPY CarService CarService
-COPY Contracts Contracts
+COPY CarService.Api CarService.Api
+COPY CarService.Contracts CarService.Contracts
+COPY CarService.Domain CarService.Domain
+COPY CarService.Infrastructure CarService.Infrastructure
 COPY EventBusTransmitting EventBusTransmitting
 COPY Swagger Swagger
 RUN dotnet publish CarService/CarService.csproj -c $Configuration -o out

@@ -1,6 +1,6 @@
 using EventBusTransmitting;
-using HotelService.CourierActivities;
-using HotelService.Requests;
+using HotelService.Api.CourierActivities;
+using HotelService.Infrastructure.Requests;
 using MassTransit;
 using MediatR;
 using Neo4j.Driver;

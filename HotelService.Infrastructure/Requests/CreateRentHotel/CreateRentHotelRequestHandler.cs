@@ -1,7 +1,7 @@
 using MediatR;
 using Neo4j.Driver;
 
-namespace HotelService.Requests.CreateRentHotel;
+namespace HotelService.Infrastructure.Requests.CreateRentHotel;
 
 public class CreateRentHotelRequestHandler : IRequestHandler<CreateRentHotelRequest, RequestResult>
 {

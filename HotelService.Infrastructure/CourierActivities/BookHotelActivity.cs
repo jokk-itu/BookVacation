@@ -1,21 +1,19 @@
 using Contracts.BookHotelActivity;
-using HotelService.Requests;
-using HotelService.Requests.CreateRentHotel;
-using HotelService.Requests.DeleteRentHotel;
+using HotelService.Infrastructure.Requests;
+using HotelService.Infrastructure.Requests.CreateRentHotel;
+using HotelService.Infrastructure.Requests.DeleteRentHotel;
 using MassTransit;
 using MassTransit.Courier;
 using MediatR;
 
-namespace HotelService.CourierActivities;
+namespace HotelService.Infrastructure.CourierActivities;
 
 public class BookHotelActivity : IActivity<BookHotelArgument, BookHotelLog>
 {
-    private readonly ILogger<BookHotelActivity> _logger;
     private readonly IMediator _mediator;
 
-    public BookHotelActivity(ILogger<BookHotelActivity> logger, IMediator mediator)
+    public BookHotelActivity(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 

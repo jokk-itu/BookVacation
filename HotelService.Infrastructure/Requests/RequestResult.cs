@@ -1,4 +1,4 @@
-namespace HotelService.Requests;
+namespace HotelService.Infrastructure.Requests;
 
 public enum RequestResult
 {
