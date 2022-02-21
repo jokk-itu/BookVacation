@@ -1,6 +1,4 @@
-using System;
-
-namespace Contracts.RentCarActivity;
+namespace CarService.Contracts.RentCarActivity;
 
 public record RentCarLog
 {

@@ -1,7 +1,7 @@
+using CarService.Contracts.RentCarActivity;
 using CarService.Infrastructure.Requests;
 using CarService.Infrastructure.Requests.CreateRentCar;
 using CarService.Infrastructure.Requests.DeleteRentCar;
-using Contracts.RentCarActivity;
 using MassTransit;
 using MassTransit.Courier;
 using MediatR;

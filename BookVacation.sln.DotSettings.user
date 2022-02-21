@@ -4,5 +4,8 @@
     &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Test.CreateRentCarRequestHandlerTest&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Test.DeleteRentCarRequestHandlerTest.Handle_ExpectOk&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Test.DeleteRentCarRequestHandlerTest.Handle_ExpectError&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Test.RentCarActivityTest.Execute_ExpectCompleted&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Test.RentCarActivityTest.Execute_ExpectFaulted&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Test.RentCarActivityTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

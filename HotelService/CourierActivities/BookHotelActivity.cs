@@ -1,4 +1,4 @@
-using CarService.Contracts.BookHotelActivity;
+using Contracts.BookHotelActivity;
 using HotelService.Requests;
 using HotelService.Requests.CreateRentHotel;
 using HotelService.Requests.DeleteRentHotel;

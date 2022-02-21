@@ -8,7 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.5.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="Moq" Version="4.16.1" />
         <PackageReference Include="NBomber.Http" Version="2.0.1" />
@@ -26,6 +25,7 @@
     <ItemGroup>
       <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj" />
       <ProjectReference Include="..\CarService.Infrastructure\CarService.Infrastructure.csproj" />
+      <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
     </ItemGroup>
 
 </Project>
