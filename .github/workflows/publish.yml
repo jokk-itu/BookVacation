@@ -11,20 +11,26 @@ jobs:
     
     strategy:
       matrix:
-        service: ['VacationService', 'FlightService', 'HotelService', 'CarService', 'TrackingService', 'GatewayService']
+        services: ['VacationService', 'FlightService', 'HotelService', 'CarService', 'TrackingService', 'GatewayService']
         include:
-          - service: VacationService
+          - services: VacationService
             repository: vacationservice
-          - service: FlightService
+            folder: VacationService.Api
+          - services: FlightService
             repository: flightservice
-          - service: HotelService
+            folder: FlightService.Api
+          - services: HotelService
             repository: hotelservice
-          - service: CarService
+            folder: HotelService.Api
+          - services: CarService
             repository: carservice
-          - service: TrackingService
+            folder: CarService.Api
+          - services: TrackingService
             repository: trackingservice
-          - service: GatewayService
-            repository: gatewayservice  
+            folder: TrackingService.Worker
+          - services: GatewayService
+            repository: gatewayservice
+            folder: GatewayService.Api
         
     steps:
       - name: Checkout  
@@ -52,4 +58,4 @@ jobs:
           build-args: |
             "Configuration=Release"
             "Environment=Production"
-          file: ${{ matrix.service }}/Dockerfile
+          file: ${{ matrix.folder }}/Dockerfile

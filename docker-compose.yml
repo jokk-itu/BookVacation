@@ -7,7 +7,7 @@ services:
   vacationservice:
     build:
       context: .
-      dockerfile: VacationService/Dockerfile
+      dockerfile: VacationService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -28,7 +28,7 @@ services:
   flightservice:
     build:
       context: .
-      dockerfile: FlightService/Dockerfile
+      dockerfile: FlightService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -53,7 +53,7 @@ services:
   hotelservice:
     build:
       context: .
-      dockerfile: HotelService/Dockerfile
+      dockerfile: HotelService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -76,7 +76,7 @@ services:
   carservice:
     build:
       context: .
-      dockerfile: CarService/Dockerfile
+      dockerfile: CarService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -99,7 +99,7 @@ services:
   trackingservice:
     build:
       context: .
-      dockerfile: TrackingService/Dockerfile
+      dockerfile: TrackingService.Worker/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -121,7 +121,7 @@ services:
   gatewayservice:
     build:
       context: .
-      dockerfile: GatewayService/Dockerfile
+      dockerfile: GatewayService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
