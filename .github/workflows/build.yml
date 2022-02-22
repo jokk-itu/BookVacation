@@ -26,12 +26,14 @@ jobs:
       run: |
         BuildNumber="$(echo $GITHUB_RUN_NUMBER)$(echo $GITHUB_RUN_ATTEMP)"
         echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
+    - name: Setup GithubToken
+      run: |
+        GithubToken=${{ secrets.GITHUB_TOKEN }}
+        echo "GithubToken=$GithubToken" >> $GITHUB_ENV    
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
-    - name: Authenticate to Github Nuget Repository
-      run: dotnet nuget add source --username jokk-itu --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jokk-itu/index.json"    
+        dotnet-version: 6.0.x    
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
