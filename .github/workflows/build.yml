@@ -20,7 +20,12 @@ jobs:
         DOTNET_NOLOGO: true
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup BuildNumber
+      run: |
+        BuildNumber="${{ GITHUB_RUN_NUMBER }}${{ GITHUB_RUN_ATTEMPT }}"
+        echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
