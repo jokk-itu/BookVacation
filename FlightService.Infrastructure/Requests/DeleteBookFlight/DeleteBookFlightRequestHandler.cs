@@ -26,9 +26,8 @@ RETURN true AS IsSuccessful";
                 {
                     id = request.ReservationId.ToString()
                 });
-            var record = await result.FetchAsync();
 
-            if (record)
+            if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();
                 return true;

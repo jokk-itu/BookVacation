@@ -24,9 +24,8 @@ DETACH DELETE r";
             {
                 rentId = request.RentCarId.ToString()
             });
-            var isSuccessful = await result.FetchAsync();
 
-            if (isSuccessful)
+            if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();
                 return true;

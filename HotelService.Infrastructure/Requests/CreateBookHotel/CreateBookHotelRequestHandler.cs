@@ -34,8 +34,8 @@ CREATE (r1)-[:Renting {days: $days}]->(r)
                 hotelId = request.HotelId.ToString(),
                 rentId = request.RentId.ToString()
             });
-            var isSuccessful = await result.FetchAsync();
-            if (isSuccessful)
+            
+            if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();
                 return true;

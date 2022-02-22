@@ -1,12 +1,15 @@
-using HotelService.Infrastructure.Requests;
-using HotelService.Infrastructure.Requests.CreateBookHotel;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FlightService.Infrastructure.Requests;
+using FlightService.Infrastructure.Requests.CreateBookFlight;
 using Moq;
 using Neo4j.Driver;
 using Xunit;
 
-namespace HotelService.Tests;
+namespace FlightService.Tests;
 
-public class CreateRentHotelTest
+public class CreateBookFlightRequestHandlerTest
 {
     [Trait("Category", "Unit")]
     [Fact]
@@ -20,9 +23,9 @@ public class CreateRentHotelTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        var command = new CreateBookHotelRequest(Guid.NewGuid(), Guid.NewGuid(),10u, Guid.NewGuid());
-        const RequestResult expected = RequestResult.Ok;
-        
+        var command = new CreateBookFlightRequest(1, Guid.NewGuid(), Guid.NewGuid());
+        var expected = RequestResult.Ok;
+
         fakeTransaction.Setup(t => t.CommitAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(true)
@@ -38,9 +41,9 @@ public class CreateRentHotelTest
             .Verifiable();
         
         //Act
-        var handler = new CreateBookHotelRequestHandler(fakeDriver.Object);
+        var handler = new CreateBookFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();
@@ -48,7 +51,7 @@ public class CreateRentHotelTest
         fakeResultCursor.Verify();
         Assert.Equal(expected, actual);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectError()
@@ -61,12 +64,13 @@ public class CreateRentHotelTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        var command = new CreateBookHotelRequest(Guid.NewGuid(), Guid.NewGuid(),10u, Guid.NewGuid());
-        const RequestResult expected = RequestResult.Error;
+        var command = new CreateBookFlightRequest(1, Guid.NewGuid(), Guid.NewGuid());
+        var expected = RequestResult.Error;
         
         fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
-        fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(false)
+        fakeResultCursor.Setup(rc => rc.FetchAsync())
+            .ReturnsAsync(false)
             .Verifiable();
         fakeTransaction.Setup(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>()))
             .ReturnsAsync(fakeResultCursor.Object)
@@ -79,7 +83,7 @@ public class CreateRentHotelTest
             .Verifiable();
         
         //Act
-        var handler = new CreateBookHotelRequestHandler(fakeDriver.Object);
+        var handler = new CreateBookFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
         
         //Assert

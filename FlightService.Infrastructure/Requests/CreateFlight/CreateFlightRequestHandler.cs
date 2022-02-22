@@ -33,12 +33,16 @@ RETURN f)";
                 from = request.From,
                 to = request.To
             });
-            var isSuccessful = await result.FetchAsync();
 
-            if (isSuccessful)
+            if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();
-                return result.SingleAsync().As<Flight>();
+                return new Flight
+                {
+                    Id = (Guid)result.Current["id"],
+                    From = (DateTime)result.Current["from"],
+                    To = (DateTime)result.Current["to"]
+                };
             }
 
             await transaction.RollbackAsync();

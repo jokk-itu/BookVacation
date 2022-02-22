@@ -6,7 +6,7 @@ using Xunit;
 
 namespace HotelService.Tests;
 
-public class DeleteRentHotelTest
+public class DeleteBookHotelRequestHandlerTest
 {
     [Trait("Category", "Unit")]
     [Fact]

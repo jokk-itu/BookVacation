@@ -33,9 +33,8 @@ CREATE (r1)-[:Buys]->(f)";
                     seatId = request.SeatId,
                     reservationId = request.ReservationId.ToString()
                 });
-            var isSuccessful = await result.FetchAsync();
 
-            if (isSuccessful)
+            if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();
                 return true;
@@ -44,6 +43,6 @@ CREATE (r1)-[:Buys]->(f)";
             await transaction.RollbackAsync();
             return false;
         });
-        return isSuccessful ? RequestResult.Error : RequestResult.Ok;
+        return isSuccessful ? RequestResult.Ok : RequestResult.Error;
     }
 }

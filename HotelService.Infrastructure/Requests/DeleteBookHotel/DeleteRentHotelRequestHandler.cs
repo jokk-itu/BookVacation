@@ -24,8 +24,8 @@ DETACH DELETE r";
             {
                 id = request.RentId.ToString()
             });
-            var isSuccessful = await result.FetchAsync();
-            if (isSuccessful)
+            
+            if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();
                 return true;
