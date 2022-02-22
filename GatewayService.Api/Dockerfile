@@ -2,9 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
 ARG GithubToken
+ENV GithubToken=$GithubToken
 WORKDIR /app
 COPY GatewayService.Api GatewayService.Api
-RUN dotnet nuget add source --username jokk-itu --password $GithubToken --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jokk-itu/index.json"
 RUN dotnet publish GatewayService.Api/GatewayService.Api.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release

@@ -2,12 +2,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
 ARG Configuration
 ARG GithubToken
+ENV GithubToken=$GithubToken
 WORKDIR /app
 COPY VacationService.Api VacationService.Api
 COPY VacationService.Contracts VacationService.Contracts
 COPY EventBusTransmitting EventBusTransmitting
 COPY Swagger Swagger
-RUN dotnet nuget add source --username jokk-itu --password $GithubToken --store-password-in-clear-text --name github "https://nuget.pkg.github.com/jokk-itu/index.json"
 RUN dotnet publish VacationService.Api/VacationService.Api.csproj -c $Configuration -o out
 
 
