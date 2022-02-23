@@ -170,19 +170,6 @@ services:
     networks:
       - service_net
       
-  sagarepository:
-    image: mongo:5.0.1-focal
-    container_name: sagarepository
-    hostname: sagarepository
-    networks:
-      - service_net
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_DATABASE: bookflights
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
-      
   neo4j:
     image: neo4j:latest
     container_name: neo4j

@@ -1,7 +1,6 @@
 using EventBusTransmitting;
 using FlightService.Api.Validators;
 using FlightService.Infrastructure.CourierActivities;
-using FlightService.Infrastructure.StateMachines.BookFlightStateMachine;
 using FluentValidation.AspNetCore;
 using MassTransit;
 using MediatR;
@@ -48,12 +47,6 @@ builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddEventBus(builder.Configuration, configurator =>
 {
     configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-    configurator.AddSagaStateMachine<BookFlightStateMachine, BookFlightStateMachineInstance>()
-        .MongoDbRepository(mongodbConfigurator =>
-        {
-            mongodbConfigurator.Connection = builder.Configuration["Mongo:Uri"];
-            mongodbConfigurator.DatabaseName = builder.Configuration["Mongo:Database"];
-        });
 });
 builder.Services.AddSingleton(_ => GraphDatabase.Driver(
     builder.Configuration["Neo4j:Uri"],
