@@ -1,7 +1,7 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace EventBusTransmitting.Observers;
+namespace EventDispatcher.Observers;
 
 public class BusObserver : IBusObserver
 {

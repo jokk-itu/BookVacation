@@ -40,7 +40,7 @@ public class CreateFlightRequestHandlerTest
             From = DateTime.Now,
             To = DateTime.Now
         };
-        (RequestResult, Flight?) expected = (RequestResult.Created, flight);
+        var (expectedResult, expectedFlight) = (RequestResult.Created, flight);
 
         fakeResult.Setup(r => r["id"])
             .Returns(flight.Id)
@@ -71,17 +71,18 @@ public class CreateFlightRequestHandlerTest
         
         //Act
         var handler = new CreateFlightRequestHandler(fakeDriver.Object, fakeMediator.Object);
-        var actual = await handler.Handle(command, CancellationToken.None);
+        var (actualResult, actualFlight) = await handler.Handle(command, CancellationToken.None);
 
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();
         fakeTransaction.Verify();
         fakeResultCursor.Verify();
-        Assert.Equal(expected.Item1, actual.Item1);
-        Assert.Equal(expected.Item2.Id, actual.Item2.Id);
-        Assert.Equal(expected.Item2.To, actual.Item2.To);
-        Assert.Equal(expected.Item2.From, actual.Item2.From);
+        Assert.NotNull(actualFlight);
+        Assert.Equal(expectedResult, actualResult);
+        Assert.Equal(expectedFlight.Id, actualFlight!.Id);
+        Assert.Equal(expectedFlight.To, actualFlight.To);
+        Assert.Equal(expectedFlight.From, actualFlight.From);
     }
     
     [Trait("Category", "Unit")]

@@ -1,4 +1,4 @@
-using EventBusTransmitting.Test;
+using EventDispatcher.Test;
 using HotelService.Contracts.BookHotelActivity;
 using HotelService.Infrastructure.CourierActivities;
 using HotelService.Infrastructure.Requests;

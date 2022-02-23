@@ -3,7 +3,7 @@ using CarService.Infrastructure.CourierActivities;
 using CarService.Infrastructure.Requests;
 using CarService.Infrastructure.Requests.CreateRentCar;
 using CarService.Infrastructure.Requests.DeleteRentCar;
-using EventBusTransmitting.Test;
+using EventDispatcher.Test;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;

@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EventBusTransmitting.Test;
+using EventDispatcher.Test;
 using FlightService.Contracts.BookFlightActivity;
 using FlightService.Infrastructure.CourierActivities;
 using FlightService.Infrastructure.Requests;

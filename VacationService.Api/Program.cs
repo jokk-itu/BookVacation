@@ -1,10 +1,10 @@
-using EventBusTransmitting;
+using EventDispatcher;
 using MassTransit;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
-using Swagger;
+using VacationService.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
         .WriteTo.Console(LogEventLevel.Debug)
         .Enrich.FromLogContext()
         .MinimumLevel.Override("VacationService", LogEventLevel.Information)
-        .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+        .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
         .MinimumLevel.Warning();
 });
 

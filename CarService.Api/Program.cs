@@ -1,6 +1,7 @@
+using CarService.Api;
 using CarService.Infrastructure.CourierActivities;
 using CarService.Infrastructure.Requests;
-using EventBusTransmitting;
+using EventDispatcher;
 using MassTransit;
 using MediatR;
 using Neo4j.Driver;
@@ -8,7 +9,6 @@ using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
-using Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +19,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
     config.WriteTo.Seq(seqUri)
         .Enrich.FromLogContext()
         .MinimumLevel.Override("CarService", LogEventLevel.Information)
-        .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+        .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
         .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
         .MinimumLevel.Warning();
 });

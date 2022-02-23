@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>EventDispatcher</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>EventDispatcher</PackageId>
+        <AssemblyName>EventDispatcher</AssemblyName>
+        <Title>EventDispatcher</Title>
+        <Authors>Joachim Køcher Kelsen</Authors>
+        <Company>jokk-itu</Company>
+        <PackageDescription>Masstransit wrapper to send and consume events.</PackageDescription>
+        <PackageProjectUrl>https://github.com/jokk-itu/BookVacation</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jokk-itu/BookVacation</RepositoryUrl>
+        <VersionPrefix Condition="$(CI) != ''">$([System.DateTime]::UtcNow.ToString("yyyyMMdd").Insert(4, ".").Insert(7, ".").Insert(10, "."))$(BuildNumber)</VersionPrefix>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MassTransit" Version="7.3.0" />
+        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.0" />
+        <PackageReference Include="MassTransit.Prometheus" Version="7.3.0" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    </ItemGroup>
+</Project>

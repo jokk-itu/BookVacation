@@ -30,8 +30,7 @@
         <ProjectReference Include="..\CarService.Contracts\CarService.Contracts.csproj" />
         <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj" />
         <ProjectReference Include="..\CarService.Infrastructure\CarService.Infrastructure.csproj" />
-        <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
-        <ProjectReference Include="..\Swagger\Swagger.csproj" />
+        <ProjectReference Include="..\EventDispatcher\EventDispatcher.csproj" />
     </ItemGroup>
 
 </Project>

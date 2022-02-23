@@ -1,6 +1,6 @@
 using MassTransit.Courier;
 
-namespace EventBusTransmitting.Test;
+namespace EventDispatcher.Test;
 
 public class TestActivity : IActivity<TestArgument, TestLog>
 {

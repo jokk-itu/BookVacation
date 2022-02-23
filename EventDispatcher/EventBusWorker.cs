@@ -2,7 +2,7 @@ using MassTransit;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace EventBusTransmitting;
+namespace EventDispatcher;
 
 public class EventBusWorker : BackgroundService
 {

@@ -1,4 +1,5 @@
-using EventBusTransmitting;
+using EventDispatcher;
+using HotelService.Api;
 using HotelService.Infrastructure.CourierActivities;
 using HotelService.Infrastructure.Requests;
 using MassTransit;
@@ -8,7 +9,6 @@ using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using Serilog.Events;
-using Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +19,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
     config.WriteTo.Seq(seqUri)
         .Enrich.FromLogContext()
         .MinimumLevel.Override("HotelService", LogEventLevel.Information)
-        .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+        .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
         .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
         .MinimumLevel.Warning();
 });

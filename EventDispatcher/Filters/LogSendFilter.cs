@@ -3,7 +3,7 @@ using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace EventBusTransmitting.Filters;
+namespace EventDispatcher.Filters;
 
 public class LogSendFilter<T> : IFilter<SendContext<T>> where T : class
 {

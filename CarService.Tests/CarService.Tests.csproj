@@ -27,7 +27,7 @@
       <ProjectReference Include="..\CarService.Api\CarService.Api.csproj" />
       <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj" />
       <ProjectReference Include="..\CarService.Infrastructure\CarService.Infrastructure.csproj" />
-      <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
+      <ProjectReference Include="..\EventDispatcher\EventDispatcher.csproj" />
     </ItemGroup>
 
 </Project>

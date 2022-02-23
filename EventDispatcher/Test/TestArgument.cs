@@ -1,4 +1,4 @@
-namespace EventBusTransmitting.Test;
+namespace EventDispatcher.Test;
 
 public class TestArgument
 {

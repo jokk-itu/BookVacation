@@ -1,5 +1,5 @@
-using EventBusTransmitting.Filters;
-using EventBusTransmitting.Observers;
+using EventDispatcher.Filters;
+using EventDispatcher.Observers;
 using MassTransit;
 using MassTransit.ExtensionsDependencyInjectionIntegration;
 using MassTransit.PrometheusIntegration;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace EventBusTransmitting;
+namespace EventDispatcher;
 
 public static class ServiceCollectionExtensions
 {

@@ -27,11 +27,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
+        <ProjectReference Include="..\EventDispatcher\EventDispatcher.csproj" />
         <ProjectReference Include="..\HotelService.Contracts\HotelService.Contracts.csproj" />
         <ProjectReference Include="..\HotelService.Domain\HotelService.Domain.csproj" />
         <ProjectReference Include="..\HotelService.Infrastructure\HotelService.Infrastructure.csproj" />
-        <ProjectReference Include="..\Swagger\Swagger.csproj" />
     </ItemGroup>
 
 </Project>

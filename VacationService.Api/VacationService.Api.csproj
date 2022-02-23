@@ -22,8 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
-        <ProjectReference Include="..\Swagger\Swagger.csproj" />
+        <ProjectReference Include="..\EventDispatcher\EventDispatcher.csproj" />
         <ProjectReference Include="..\VacationService.Contracts\VacationService.Contracts.csproj" />
     </ItemGroup>
 

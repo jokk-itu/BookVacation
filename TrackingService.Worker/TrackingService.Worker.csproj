@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EventBusTransmitting\EventBusTransmitting.csproj" />
+        <ProjectReference Include="..\EventDispatcher\EventDispatcher.csproj" />
         <ProjectReference Include="..\TrackingService.Infrastructure\TrackingService.Infrastructure.csproj" />
     </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-using EventBusTransmitting;
+using EventDispatcher;
 using MassTransit;
 using Prometheus.Client.Collectors;
 using Prometheus.Client.DependencyInjection;
@@ -50,7 +50,7 @@ public static class Program
                 config.WriteTo.Seq(seqUri)
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("TrackingService", LogEventLevel.Information)
-                    .MinimumLevel.Override("EventBusTransmitting", LogEventLevel.Information)
+                    .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
                     .MinimumLevel.Warning();
             });
     }

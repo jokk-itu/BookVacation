@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBusTransmitting", "EventBusTransmitting\EventBusTransmitting.csproj", "{C00635A7-2F9F-48E9-B723-5FE21963DEDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventDispatcher", "EventDispatcher\EventDispatcher.csproj", "{C00635A7-2F9F-48E9-B723-5FE21963DEDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationService.Api", "VacationService.Api\VacationService.Api.csproj", "{E4A11142-5C8C-4488-A364-117FA9E17622}"
 EndProject
@@ -16,8 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Worker", "TrackingService.Worker\TrackingService.Worker.csproj", "{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Api", "GatewayService.Api\GatewayService.Api.csproj", "{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swagger", "Swagger\Swagger.csproj", "{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CarService", "CarService", "{DB91B133-B4A7-4A75-AE07-1E5A41349975}"
 EndProject
@@ -156,18 +154,6 @@ Global
 		{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}.Release|x64.Build.0 = Release|Any CPU
 		{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}.Release|x86.ActiveCfg = Release|Any CPU
 		{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}.Release|x86.Build.0 = Release|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x64.Build.0 = Debug|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Debug|x86.Build.0 = Debug|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x64.ActiveCfg = Release|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x64.Build.0 = Release|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x86.ActiveCfg = Release|Any CPU
-		{3C36E7F9-DBA1-43E2-BBD6-CB6356B2E8D6}.Release|x86.Build.0 = Release|Any CPU
 		{BDE23CA2-F1EF-4EC5-BA77-2DCFF3BE3A7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDE23CA2-F1EF-4EC5-BA77-2DCFF3BE3A7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDE23CA2-F1EF-4EC5-BA77-2DCFF3BE3A7C}.Debug|x64.ActiveCfg = Debug|Any CPU
