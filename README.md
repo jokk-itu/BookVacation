@@ -3,9 +3,9 @@
 ![Architecture](architecture.png "Architecture")
 
 
-|Build|Dockerhub|
-|-----|---------|
-| [![Build](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml) | [![Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml) |
+|Build|Dockerhub|Nuget|
+|-----|---------|-----|
+| [![Build](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml) | [![Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml) ||
 
 
 ## Choreography
@@ -15,28 +15,35 @@ It is illustrated by booking a vacation with a Flight, Hotel and Car.
 
 This flow is activated by the api on: http://localhost:5000/api/v1/vacation.
 
+## CarService
+To rent cars.
 
-## Orchestrator
+## HotelService
+To book a hotel room.
 
-The project also illustrates an Orchestrator architecture.
-By using a Saga Statemachine in Masstransit.
-There are three flows which can be triggered.
+## FlightService
+To buy a flight ticket.
 
+## VacationService
+To buy a complete vacation with flight ticket, hotel room and car.
 
-### Complete Flight Booking
+## GatewayService
+A reverse proxy to route a request to different services.
 
-api: http://localhost:5000/api/v1/flight/complete
+## TrackingService
+Subscribes to routing slip events and logs them.
 
+## Prometheus and Grafana
+Masstransit and Api data to illustrate in grafana.
 
-### Cancel Flight Booking
+## Seq
+Sends all logs to Seq as a sink in Serilog.
 
-api: http://localhost:5000/api/v1/flight/cancel
+## Neo4j
+The DBMS for all data. There is currently only one database, which is the limit for the community edition.
 
-
-### Expire Flight Booking
-
-api: http://localhost:5000/api/v1/flight/expire
-
+## RabbitMQ
+The broker to handle messages between services.
 
 
 ## How to run

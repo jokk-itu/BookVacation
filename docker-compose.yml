@@ -7,10 +7,11 @@ services:
   vacationservice:
     build:
       context: .
-      dockerfile: VacationService/Dockerfile
+      dockerfile: VacationService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
+        - GithubToken=${NUGET_API}
     hostname: vacationservice
     container_name: vacationservice
     env_file:
@@ -28,10 +29,11 @@ services:
   flightservice:
     build:
       context: .
-      dockerfile: FlightService/Dockerfile
+      dockerfile: FlightService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
+        - GithubToken=${NUGET_API}
     container_name: flightservice
     hostname: flightservice
     ports:
@@ -46,16 +48,18 @@ services:
       - logger
       - sagarepository
       - prometheus
+      - neo4j
     networks:
       - service_net
       
   hotelservice:
     build:
       context: .
-      dockerfile: HotelService/Dockerfile
+      dockerfile: HotelService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
+        - GithubToken=${NUGET_API}
     container_name: hotelservice
     hostname: hotelservice
     ports:
@@ -67,17 +71,19 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus  
+      - prometheus
+      - neo4j
     networks:
       - service_net
       
   carservice:
     build:
       context: .
-      dockerfile: CarService/Dockerfile
+      dockerfile: CarService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
+        - GithubToken=${NUGET_API}
     container_name: carservice
     hostname: carservice
     ports:
@@ -89,17 +95,19 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus 
+      - prometheus
+      - neo4j
     networks:
       - service_net
       
   trackingservice:
     build:
       context: .
-      dockerfile: TrackingService/Dockerfile
+      dockerfile: TrackingService.Worker/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
+        - GithubToken=${NUGET_API}
     container_name: trackingservice
     hostname: trackingservice
     ports:
@@ -118,14 +126,16 @@ services:
   gatewayservice:
     build:
       context: .
-      dockerfile: GatewayService/Dockerfile
+      dockerfile: GatewayService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
+        - GithubToken=${NUGET_API}
     container_name: gatewayservice
     hostname: gatewayservice
     ports:
       - 5005:80
+      - 5006:443
     env_file:
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/gateway.env
@@ -159,19 +169,6 @@ services:
       - ./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins
     networks:
       - service_net
-      
-  sagarepository:
-    image: mongo:5.0.1-focal
-    container_name: sagarepository
-    hostname: sagarepository
-    networks:
-      - service_net
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_DATABASE: bookflights
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
       
   neo4j:
     image: neo4j:latest
