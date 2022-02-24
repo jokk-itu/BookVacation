@@ -18,13 +18,14 @@ jobs:
     
     env:
         DOTNET_NOLOGO: true
+        CONFIGURATION: Release
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Setup BuildNumber
       run: |
-        BuildNumber="$(echo $GITHUB_RUN_NUMBER)$(echo $GITHUB_RUN_ATTEMP)"
+        BuildNumber="$(echo $GITHUB_RUN_NUMBER)$(echo $GITHUB_RUN_ATTEMPT)"
         echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
     - name: Setup GithubToken
       run: |
@@ -33,10 +34,10 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x    
+        dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build -c $CONFIGURATION --no-restore
     - name: Test
       run: dotnet test --no-build

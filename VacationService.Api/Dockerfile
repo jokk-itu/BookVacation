@@ -6,8 +6,7 @@ ENV GithubToken=$GithubToken
 WORKDIR /app
 COPY VacationService.Api VacationService.Api
 COPY VacationService.Contracts VacationService.Contracts
-COPY EventBusTransmitting EventBusTransmitting
-COPY Swagger Swagger
+COPY EventDispatcher EventDispatcher
 RUN dotnet publish VacationService.Api/VacationService.Api.csproj -c $Configuration -o out
 
 

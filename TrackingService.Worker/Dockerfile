@@ -6,7 +6,7 @@ ENV GithubToken=$GithubToken
 WORKDIR /app
 COPY TrackingService.Worker TrackingService.Worker
 COPY TrackingService.Infrastructure TrackingService.Infrastructure
-COPY EventBusTransmitting EventBusTransmitting
+COPY EventDispatcher EventDispatcher
 RUN dotnet publish TrackingService.Worker/TrackingService.Worker.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release

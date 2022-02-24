@@ -8,8 +8,7 @@ COPY HotelService.Api HotelService.Api
 COPY HotelService.Domain HotelService.Domain
 COPY HotelService.Contracts HotelService.Contracts
 COPY HotelService.Infrastructure HotelService.Infrastructure
-COPY EventBusTransmitting EventBusTransmitting
-COPY Swagger Swagger
+COPY EventDispatcher EventDispatcher
 RUN dotnet publish HotelService.Api/HotelService.Api.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release

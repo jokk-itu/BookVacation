@@ -8,8 +8,7 @@ COPY CarService.Api CarService.Api
 COPY CarService.Contracts CarService.Contracts
 COPY CarService.Domain CarService.Domain
 COPY CarService.Infrastructure CarService.Infrastructure
-COPY EventBusTransmitting EventBusTransmitting
-COPY Swagger Swagger
+COPY EventDispatcher EventDispatcher
 RUN dotnet publish CarService.Api/CarService.Api.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
