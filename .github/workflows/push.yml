@@ -18,7 +18,7 @@ jobs:
       uses: actions/checkout/@v2
     - name: Setup BuildNumber
       run: |
-        BuildNumber="$(echo GITHUB_RUN_NUMBER)$(echo GITHUB_RUN_ATTEMPT)"
+        BuildNumber="$GITHUB_RUN_NUMBER$GITHUB_RUN_ATTEMPT"
         echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
     - name: Setup GithubToken
       run: |
