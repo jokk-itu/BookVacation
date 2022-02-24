@@ -16,14 +16,14 @@ public class ConfigureSwaggerOptions : IConfigureNamedOptions<SwaggerGenOptions>
 
     public void Configure(SwaggerGenOptions options)
     {
-        const string validDescription = "API book a vacation, with flight, hotel and rental car";
+        const string validDescription = "Api to handle flights";
         var deprecatedDescription =
-            $"API book a vacation, with flight, hotel and rental car.{Environment.NewLine}This API version has been deprecated";
+            $"{validDescription}{Environment.NewLine}This Api version has been deprecated";
         foreach (var description in _provider.ApiVersionDescriptions)
         {
             var info = new OpenApiInfo
             {
-                Title = "Book a Vacation",
+                Title = "Flights",
                 Version = description.ApiVersion.ToString(),
                 Description = description.IsDeprecated ? deprecatedDescription : validDescription
             };
