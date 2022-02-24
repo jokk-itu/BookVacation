@@ -33,6 +33,8 @@ RETURN f";
             };
 
         });
-        return (RequestResult.Ok, flight);
+        return flight is null 
+            ? (RequestResult.NotFound, null) 
+            : (RequestResult.Ok, flight);
     }
 }

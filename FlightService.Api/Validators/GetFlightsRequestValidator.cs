@@ -9,6 +9,6 @@ public class GetFlightsRequestValidator : AbstractValidator<GetFlightsRequest>
     {
         RuleFor(x => x.Amount)
             .InclusiveBetween(1u, 200u)
-            .WithMessage("Amount must be greater than 1 not exceed 200");
+            .WithMessage("Amount must be greater than 1 and not exceed 200");
     }
 }

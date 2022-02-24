@@ -35,7 +35,7 @@ public class FlightController : ControllerBase
         return result switch
         {
             RequestResult.NotFound => NotFound(),
-            RequestResult.Ok => Ok(new GetFlightResponse { Id = flight.Id, From = flight.From, To = flight.To }),
+            RequestResult.Ok => Ok(new GetFlightResponse { Id = flight!.Id, From = flight.From, To = flight.To }),
             RequestResult.BadRequest => BadRequest(),
             _ => throw new NotSupportedException()
         };
@@ -52,8 +52,8 @@ public class FlightController : ControllerBase
             await _mediator.Send(new ReadFlightsRequest(request.Amount, request.Offset), cancellationToken);
         return result switch
         {
-            RequestResult.Ok => Ok(flights.Select(flight => new Flight(flight.Id, flight.From, flight.To))),
-            RequestResult.BadRequest => BadRequest(),
+            RequestResult.Ok => Ok(flights!.Select(flight => new Flight(flight.Id, flight.From, flight.To))),
+            RequestResult.Error => BadRequest(),
             _ => throw new NotSupportedException()
         };
     }
