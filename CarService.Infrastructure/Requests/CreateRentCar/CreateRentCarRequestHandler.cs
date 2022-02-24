@@ -25,12 +25,13 @@ WHERE NOT EXISTS {
         (:RentCar)-->(c)
 }
 CREATE (r:RentCar {id: $rentId})-[:Renting]->(:Car {id: $carId})
-CREATE (r)-[:RentingFor]->(rc)";
+CREATE (r)-[:RentingFor]->(rc)
+RETURN true";
             var result = await transaction.RunAsync(command, new
             {
                 companyId = request.CompanyId.ToString(),
                 carId = request.CarId.ToString(),
-                days = request.Days,
+                days = (int)request.Days,
                 rentId = request.RentId.ToString()
             });
 

@@ -46,7 +46,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - sagarepository
       - prometheus
       - neo4j
     networks:

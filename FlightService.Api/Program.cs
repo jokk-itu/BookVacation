@@ -44,6 +44,7 @@ builder.Services.AddVersionedApiExplorer(config =>
 });
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+builder.Services.AddMediatR(typeof(FlightService.Infrastructure.Requests.AssemblyRegistration));
 builder.Services.AddEventBus(builder.Configuration, configurator =>
 {
     configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
@@ -71,3 +72,5 @@ app.MapMetrics();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program {}

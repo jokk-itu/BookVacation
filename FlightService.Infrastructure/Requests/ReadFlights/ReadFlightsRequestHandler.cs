@@ -22,7 +22,7 @@ public class ReadFlightsRequestHandler : IRequestHandler<ReadFlightsRequest, (Re
         {
             const string query = @"
 MATCH (f:Flight {id: $id})
-RETURN f
+RETURN f.id AS id, f.from AS from, f.to AS to
 ORDER BY f.id
 SKIP $offset
 LIMIT $amount";
@@ -50,7 +50,7 @@ LIMIT $amount";
         });
 
         return flights is null 
-            ? (RequestResult.Error, null) 
+            ? (RequestResult.NotFound, null) 
             : (RequestResult.Ok, flights);
     }
 }

@@ -26,10 +26,10 @@ WHERE NOT EXISTS {
 }
 CREATE (r1:RentHotel {id: $rentId})-[:At]->(h)
 CREATE (r1)-[:Renting {days: $days}]->(r)
-";
+RETURN true";
             var result = await transaction.RunAsync(command, new
             {
-                days = request.Days,
+                days = (int)request.Days,
                 roomId = request.RoomId.ToString(),
                 hotelId = request.HotelId.ToString(),
                 rentId = request.RentId.ToString()

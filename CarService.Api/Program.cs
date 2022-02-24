@@ -37,6 +37,7 @@ builder.Services.AddVersionedApiExplorer(config =>
 });
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
 builder.Services.AddEventBus(builder.Configuration,
     configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
 builder.Services.AddSingleton(_ => GraphDatabase.Driver(

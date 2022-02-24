@@ -23,7 +23,7 @@ builder.Host.UseSerilog((context, serviceProvider, config) =>
 
 // Add services to the container.
 builder.Services.AddControllers();
-
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
 builder.Services.AddVersionedApiExplorer(config =>

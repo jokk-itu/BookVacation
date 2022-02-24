@@ -20,7 +20,7 @@ public class DeleteBookFlightRequestHandler : IRequestHandler<DeleteBookFlightRe
             const string command = @"
 MATCH (r:Reservation {id: $id})
 DETACH DELETE r
-RETURN true AS IsSuccessful";
+RETURN true";
             var result = await transaction.RunAsync(command,
                 new
                 {

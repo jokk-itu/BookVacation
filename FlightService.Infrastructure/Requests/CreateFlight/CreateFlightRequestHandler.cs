@@ -18,31 +18,29 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, (
 
     public async Task<(RequestResult, Flight?)> Handle(CreateFlightRequest request, CancellationToken cancellationToken)
     {
-        if (await IsFlightConflicting(cancellationToken))
-            return (RequestResult.Conflict, null);
-
         await using var session = _driver.AsyncSession();
         var flight = await session.WriteTransactionAsync(async transaction =>
         {
             const string command = @"
-CREATE (f:Flight {id: $id, from: $from, to: $to}
-RETURN f)";
+CREATE (f:Flight {id: $id, from: $from, to: $to})
+RETURN f.id AS id, f.from AS from, f.to AS to";
             var result = await transaction.RunAsync(command, new
             {
-                id = Guid.NewGuid(),
+                id = Guid.NewGuid().ToString(),
                 from = request.From,
                 to = request.To
             });
 
             if (await result.FetchAsync())
             {
-                await transaction.CommitAsync();
-                return new Flight
+                var flight = new Flight
                 {
-                    Id = (Guid)result.Current["id"],
-                    From = (DateTime)result.Current["from"],
-                    To = (DateTime)result.Current["to"]
+                    Id = Guid.Parse(result.Current.Values["id"].ToString()),
+                    From = DateTime.Parse(result.Current.Values["from"].ToString()),
+                    To = DateTime.Parse(result.Current.Values["to"].ToString())
                 };
+                await transaction.CommitAsync();
+                return flight;
             }
 
             await transaction.RollbackAsync();
@@ -50,11 +48,5 @@ RETURN f)";
         });
 
         return flight is null ? (RequestResult.Error, null) : (RequestResult.Created, flight);
-    }
-
-    private async Task<bool> IsFlightConflicting(CancellationToken cancellationToken)
-    {
-        var (result, _) = await _mediator.Send(new ReadFlightRequest(Guid.Empty), cancellationToken);
-        return result == RequestResult.Conflict;
     }
 }

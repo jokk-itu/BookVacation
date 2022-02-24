@@ -21,7 +21,7 @@ public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Requ
             const string query = @"
 MATCH (f:Flight {id: $id})
 RETURN f";
-            var result = await transaction.RunAsync(query, new { id = request.Id });
+            var result = await transaction.RunAsync(query, new { id = request.Id.ToString() });
             if (!await result.FetchAsync()) 
                 return null;
             

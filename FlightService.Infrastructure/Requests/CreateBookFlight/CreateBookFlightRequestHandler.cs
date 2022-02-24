@@ -25,15 +25,15 @@ WHERE NOT EXISTS {
         (:Reservation)-->(s)
 }
 CREATE (r1:Reservation {id: $reservationId})-[:Reserves]->(s)
-CREATE (r1)-[:Buys]->(f)";
+CREATE (r1)-[:Buys]->(f)
+RETURN true";
             var result = await transaction.RunAsync(command,
                 new
                 {
                     flightId = request.FlightId.ToString(),
                     seatId = request.SeatId,
                     reservationId = request.ReservationId.ToString()
-                });
-
+                }); 
             if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();

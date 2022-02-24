@@ -19,7 +19,8 @@ public class DeleteRentHotelRequestHandler : IRequestHandler<DeleteBookHotelRequ
         {
             const string command = @"
 MATCH (r:Rent {id: $id})
-DETACH DELETE r";
+DETACH DELETE r
+RETURN true";
             var result = await transaction.RunAsync(command, new
             {
                 id = request.RentId.ToString()
