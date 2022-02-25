@@ -5,57 +5,57 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventDispatcher", "EventDispatcher\EventDispatcher.csproj", "{C00635A7-2F9F-48E9-B723-5FE21963DEDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationService.Api", "VacationService.Api\VacationService.Api.csproj", "{E4A11142-5C8C-4488-A364-117FA9E17622}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationService.Api", "VacationService/VacationService.Api\VacationService.Api.csproj", "{E4A11142-5C8C-4488-A364-117FA9E17622}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Api", "FlightService.Api\FlightService.Api.csproj", "{2F6E0EFB-DB8A-4F91-8BAA-BD64C3E7C3CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Api", "FlightService/FlightService.Api\FlightService.Api.csproj", "{2F6E0EFB-DB8A-4F91-8BAA-BD64C3E7C3CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Api", "HotelService.Api\HotelService.Api.csproj", "{7D7792AC-492D-49D7-9E88-D7817D43CBD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Api", "HotelService/HotelService.Api\HotelService.Api.csproj", "{7D7792AC-492D-49D7-9E88-D7817D43CBD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Api", "CarService.Api\CarService.Api.csproj", "{DA065C51-55AA-4356-8FB0-BE0B37EB6B76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Api", "CarService/CarService.Api\CarService.Api.csproj", "{DA065C51-55AA-4356-8FB0-BE0B37EB6B76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Worker", "TrackingService.Worker\TrackingService.Worker.csproj", "{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Worker", "TrackingService/TrackingService.Worker\TrackingService.Worker.csproj", "{7EF7A21A-8C8D-4F75-B55B-EB0BED95E266}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Api", "GatewayService.Api\GatewayService.Api.csproj", "{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService.Api", "GatewayService/GatewayService.Api\GatewayService.Api.csproj", "{458A80E2-1EA9-4E1E-AD83-66B0EDC73AF4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CarService", "CarService", "{DB91B133-B4A7-4A75-AE07-1E5A41349975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Infrastructure", "CarService.Infrastructure\CarService.Infrastructure.csproj", "{BDE23CA2-F1EF-4EC5-BA77-2DCFF3BE3A7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Infrastructure", "CarService/CarService.Infrastructure\CarService.Infrastructure.csproj", "{BDE23CA2-F1EF-4EC5-BA77-2DCFF3BE3A7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Domain", "CarService.Domain\CarService.Domain.csproj", "{963C43A7-FDD8-4F11-B63F-204526FC7626}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Domain", "CarService/CarService.Domain\CarService.Domain.csproj", "{963C43A7-FDD8-4F11-B63F-204526FC7626}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Tests", "CarService.Tests\CarService.Tests.csproj", "{5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Tests", "CarService/CarService.Tests\CarService.Tests.csproj", "{5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Contracts", "CarService.Contracts\CarService.Contracts.csproj", "{B10DED4E-1826-4045-A727-6A6F28926147}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarService.Contracts", "CarService/CarService.Contracts\CarService.Contracts.csproj", "{B10DED4E-1826-4045-A727-6A6F28926147}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HotelService", "HotelService", "{9C7B04AD-541F-4DF1-9432-54433B99F280}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Domain", "HotelService.Domain\HotelService.Domain.csproj", "{6AD71726-22DD-4F3C-85AC-75A4E69D4DC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Domain", "HotelService/HotelService.Domain\HotelService.Domain.csproj", "{6AD71726-22DD-4F3C-85AC-75A4E69D4DC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Infrastructure", "HotelService.Infrastructure\HotelService.Infrastructure.csproj", "{D373EAA7-42B9-48E0-83C0-D9D3D31AD9DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Infrastructure", "HotelService/HotelService.Infrastructure\HotelService.Infrastructure.csproj", "{D373EAA7-42B9-48E0-83C0-D9D3D31AD9DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Tests", "HotelService.Tests\HotelService.Tests.csproj", "{3022A739-E1FF-48B6-8517-631CC47E481E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Tests", "HotelService/HotelService.Tests\HotelService.Tests.csproj", "{3022A739-E1FF-48B6-8517-631CC47E481E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Contracts", "HotelService.Contracts\HotelService.Contracts.csproj", "{F6D40BF2-41C5-42E8-93C1-710A98406459}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelService.Contracts", "HotelService/HotelService.Contracts\HotelService.Contracts.csproj", "{F6D40BF2-41C5-42E8-93C1-710A98406459}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FlightService", "FlightService", "{C6AA2E79-00D2-4EBE-9BB3-EEB714DA6BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Contracts", "FlightService.Contracts\FlightService.Contracts.csproj", "{125E6E9E-D6FB-45D6-AA10-ECBADD78E623}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Contracts", "FlightService/FlightService.Contracts\FlightService.Contracts.csproj", "{125E6E9E-D6FB-45D6-AA10-ECBADD78E623}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Domain", "FlightService.Domain\FlightService.Domain.csproj", "{D511E27A-D834-4DDA-9259-3DC989454554}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Domain", "FlightService/FlightService.Domain\FlightService.Domain.csproj", "{D511E27A-D834-4DDA-9259-3DC989454554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Infrastructure", "FlightService.Infrastructure\FlightService.Infrastructure.csproj", "{2EA9C0CE-6A7D-4504-A972-96A129F67872}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Infrastructure", "FlightService/FlightService.Infrastructure\FlightService.Infrastructure.csproj", "{2EA9C0CE-6A7D-4504-A972-96A129F67872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Tests", "FlightService.Tests\FlightService.Tests.csproj", "{974143DF-FA81-495E-99A6-7F8A3E133FC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightService.Tests", "FlightService/FlightService.Tests\FlightService.Tests.csproj", "{974143DF-FA81-495E-99A6-7F8A3E133FC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GatewayService", "GatewayService", "{7B62C146-EAA2-4B43-BD43-AC359407A42F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TrackingService", "TrackingService", "{206E1704-5230-4F31-9B2D-69F310BFFC6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Infrastructure", "TrackingService.Infrastructure\TrackingService.Infrastructure.csproj", "{20D76BBD-A33B-499C-BD98-7A184598A292}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Infrastructure", "TrackingService/TrackingService.Infrastructure\TrackingService.Infrastructure.csproj", "{20D76BBD-A33B-499C-BD98-7A184598A292}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VacationService", "VacationService", "{17C4760F-7243-4FDB-AAF8-0FD757852377}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationService.Contracts", "VacationService.Contracts\VacationService.Contracts.csproj", "{4D95CD4B-0F31-454E-99CD-B2BF4125A3CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VacationService.Contracts", "VacationService/VacationService.Contracts\VacationService.Contracts.csproj", "{4D95CD4B-0F31-454E-99CD-B2BF4125A3CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

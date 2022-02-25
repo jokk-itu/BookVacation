@@ -2,14 +2,16 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>CarService.Tests</RootNamespace>
         <Nullable>enable</Nullable>
-
+        <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="EventDispatcher" Version="2022.2.24.51" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-        <PackageReference Include="NBomber" Version="2.1.3" />
+        <PackageReference Include="Moq" Version="4.16.1" />
         <PackageReference Include="NBomber.Http" Version="2.0.1" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -20,6 +22,12 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CarService.Api\CarService.Api.csproj" />
+      <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj" />
+      <ProjectReference Include="..\CarService.Infrastructure\CarService.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
