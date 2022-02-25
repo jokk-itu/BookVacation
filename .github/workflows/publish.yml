@@ -59,4 +59,4 @@ jobs:
             "Configuration=Release"
             "Environment=Production"
             "GithubToken=${{ secrets.GITHUB_TOKEN }}"
-          file: ${{ matrix.folder }}/Dockerfile
+          file: ${{ matrix.services }}/${{ matrix.folder }}/Dockerfile

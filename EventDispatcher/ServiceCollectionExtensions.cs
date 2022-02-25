@@ -18,7 +18,6 @@ public static class ServiceCollectionExtensions
         {
             callback?.Invoke(configurator);
             configurator.SetKebabCaseEndpointNameFormatter();
-            configurator.AddDelayedMessageScheduler();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
             {
                 factoryConfigurator.UsePrometheusMetrics(options => { }, configuration["ServiceName"]);
@@ -39,9 +38,7 @@ public static class ServiceCollectionExtensions
                     new ConsumeObserver(busContext.GetRequiredService<ILogger<ConsumeObserver>>()));
                 factoryConfigurator.ConnectReceiveObserver(
                     new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
-
-                factoryConfigurator.UseDelayedMessageScheduler();
-
+                
                 var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();
                 var port = configuration["EventBus:Port"] ?? throw new ArgumentNullException();
                 factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
