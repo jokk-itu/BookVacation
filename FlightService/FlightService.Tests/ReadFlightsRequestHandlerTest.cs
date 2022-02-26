@@ -48,13 +48,13 @@ public class ReadFlightsRequestHandlerTest
 
         var (expectedResult, expectedFlights) = (RequestResult.Ok, flights);
 
-        fakeResult.Setup(r => r["id"])
+        fakeResult.Setup(r => r.Values["id"])
             .Returns(It.IsAny<Guid>())
             .Verifiable();
-        fakeResult.Setup(r => r["from"])
+        fakeResult.Setup(r => r.Values["from"])
             .Returns(It.IsAny<DateTime>())
             .Verifiable();
-        fakeResult.Setup(r => r["to"])
+        fakeResult.Setup(r => r.Values["to"])
             .Returns(It.IsAny<DateTime>())
             .Verifiable();
 
@@ -90,7 +90,7 @@ public class ReadFlightsRequestHandlerTest
 
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_ExpectError()
+    public async Task Handle_ExpectNotFound()
     {
         //Arrange
         var fakeDriver = new Mock<IDriver>();
@@ -104,7 +104,7 @@ public class ReadFlightsRequestHandlerTest
 
         var command = new ReadFlightsRequest(0u, 2u);
 
-        (var expectedResult, IEnumerable<Flight>? expectedFlights) = (RequestResult.Error, null);
+        (var expectedResult, IEnumerable<Flight>? expectedFlights) = (RequestResult.NotFound, null);
 
         fakeResultCursor.Setup(rc => rc.FetchAsync())
             .ReturnsAsync(false)
