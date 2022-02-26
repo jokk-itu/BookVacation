@@ -9,12 +9,28 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Build
     runs-on: ubuntu-latest
     
     env:
         DOTNET_NOLOGO: true
         CONFIGURATION: Release
+
+    services:
+      neo4j:
+        image: neo4j
+        ports:
+          - 7474:7474
+          - 7687:7687
+        environment:
+          - NEO4J_AUTH=neo4j/test
+      eventbus:
+        image: masstransit/rabbitmq
+        ports:
+          - 5672:5672
+        volumes:
+          - ./EventBus/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+          - ./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins      
 
     steps:
     - name: Checkout
@@ -34,6 +50,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c $CONFIGURATION --no-restore
+      run: dotnet build -c $CONFIGURATION --no-restore  
     - name: Test
       run: dotnet test --no-build
