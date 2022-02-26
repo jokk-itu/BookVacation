@@ -14,11 +14,34 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        var builder = CreateHostBuilder(args).Build();
-        var metricServer = builder.Services.GetRequiredService<IMetricServer>();
-        metricServer.Start();
-        builder.Run();
-        metricServer.Stop();
+        var logConfiguration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", true, true)
+            .AddJsonFile("appsettings.Development.json", true, true)
+            .AddEnvironmentVariables()
+            .Build()
+            .GetSection("Logging");
+
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Seq(logConfiguration["SeqUri"])
+            .CreateBootstrapLogger();
+
+        try
+        {
+            var builder = CreateHostBuilder(args).Build();
+            var metricServer = builder.Services.GetRequiredService<IMetricServer>();
+            metricServer.Start();
+            builder.Run();
+            metricServer.Stop();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "Unhandled exception during startup");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 
     private static IHostBuilder CreateHostBuilder(string[] args)
