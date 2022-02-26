@@ -38,7 +38,7 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
     public async Task GetFlight_ExpectNotFound()
     {
         var client = _api.CreateClient();
-        var postFlightRequest = new PostFlightRequest { From = DateTime.Now, To = DateTime.Now.AddDays(2) };
+        var postFlightRequest = new PostFlightRequest { From = DateTime.Now.AddDays(1), To = DateTime.Now.AddDays(2) };
         var postFlightResponse = await client.PostAsJsonAsync("api/v1/flight", postFlightRequest);
         postFlightResponse.EnsureSuccessStatusCode();
         var flight = await postFlightResponse.Content.ReadFromJsonAsync<Flight>();

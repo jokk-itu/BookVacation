@@ -20,16 +20,16 @@ public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Requ
         {
             const string query = @"
 MATCH (f:Flight {id: $id})
-RETURN f";
+RETURN f.id AS id, f.from AS from, f.to as to";
             var result = await transaction.RunAsync(query, new { id = request.Id.ToString() });
             if (!await result.FetchAsync())
                 return null;
 
             return new Flight
             {
-                Id = (Guid)result.Current["id"],
-                From = (DateTime)result.Current["from"],
-                To = (DateTime)result.Current["to"]
+                Id = Guid.Parse(result.Current.Values["id"].ToString()),
+                From = DateTime.Parse(result.Current.Values["from"].ToString()),
+                To = DateTime.Parse(result.Current.Values["to"].ToString())
             };
         });
         return flight is null
