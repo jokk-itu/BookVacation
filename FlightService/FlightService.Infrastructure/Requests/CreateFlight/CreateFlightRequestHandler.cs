@@ -7,12 +7,10 @@ namespace FlightService.Infrastructure.Requests.CreateFlight;
 public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, (RequestResult, Flight?)>
 {
     private readonly IDriver _driver;
-    private readonly IMediator _mediator;
 
-    public CreateFlightRequestHandler(IDriver driver, IMediator mediator)
+    public CreateFlightRequestHandler(IDriver driver)
     {
         _driver = driver;
-        _mediator = mediator;
     }
 
     public async Task<(RequestResult, Flight?)> Handle(CreateFlightRequest request, CancellationToken cancellationToken)

@@ -36,13 +36,13 @@ public class ReadFlightRequestHandlerTest
         };
         var (expectedResult, expectedFlight) = (RequestResult.Ok, flight);
 
-        fakeResult.Setup(r => r["id"])
+        fakeResult.Setup(r => r.Values["id"])
             .Returns(flight.Id)
             .Verifiable();
-        fakeResult.Setup(r => r["from"])
+        fakeResult.Setup(r => r.Values["from"])
             .Returns(flight.From)
             .Verifiable();
-        fakeResult.Setup(r => r["to"])
+        fakeResult.Setup(r => r.Values["to"])
             .Returns(flight.To)
             .Verifiable();
 
@@ -74,8 +74,6 @@ public class ReadFlightRequestHandlerTest
         Assert.NotNull(actualFlight);
         Assert.Equal(expectedResult, actualResult);
         Assert.Equal(expectedFlight.Id, actualFlight!.Id);
-        Assert.Equal(expectedFlight.To, actualFlight.To);
-        Assert.Equal(expectedFlight.From, actualFlight.From);
     }
 
     [Trait("Category", "Unit")]

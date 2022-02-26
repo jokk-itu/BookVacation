@@ -39,9 +39,9 @@ LIMIT $amount";
             {
                 flights.Add(new Flight
                 {
-                    Id = (Guid)result.Current["id"],
-                    From = (DateTime)result.Current["from"],
-                    To = (DateTime)result.Current["to"]
+                    Id = Guid.Parse(result.Current.Values["id"].ToString()),
+                    From = DateTime.Parse(result.Current.Values["from"].ToString()),
+                    To = DateTime.Parse(result.Current.Values["to"].ToString())
                 });
             } while (await result.FetchAsync());
 

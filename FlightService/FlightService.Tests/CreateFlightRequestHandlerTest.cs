@@ -42,13 +42,13 @@ public class CreateFlightRequestHandlerTest
         };
         var (expectedResult, expectedFlight) = (RequestResult.Created, flight);
 
-        fakeResult.Setup(r => r["id"])
+        fakeResult.Setup(r => r.Values["id"])
             .Returns(flight.Id)
             .Verifiable();
-        fakeResult.Setup(r => r["from"])
+        fakeResult.Setup(r => r.Values["from"])
             .Returns(flight.From)
             .Verifiable();
-        fakeResult.Setup(r => r["to"])
+        fakeResult.Setup(r => r.Values["to"])
             .Returns(flight.To)
             .Verifiable();
 
@@ -57,7 +57,8 @@ public class CreateFlightRequestHandlerTest
             .Verifiable();
         fakeTransaction.Setup(t => t.CommitAsync())
             .Verifiable();
-        fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(true)
+        fakeResultCursor.Setup(rc => rc.FetchAsync())
+            .ReturnsAsync(true)
             .Verifiable();
         fakeTransaction.Setup(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>()))
             .ReturnsAsync(fakeResultCursor.Object)
@@ -70,7 +71,7 @@ public class CreateFlightRequestHandlerTest
             .Verifiable();
 
         //Act
-        var handler = new CreateFlightRequestHandler(fakeDriver.Object, fakeMediator.Object);
+        var handler = new CreateFlightRequestHandler(fakeDriver.Object);
         var (actualResult, actualFlight) = await handler.Handle(command, CancellationToken.None);
 
         //Assert
@@ -81,30 +82,6 @@ public class CreateFlightRequestHandlerTest
         Assert.NotNull(actualFlight);
         Assert.Equal(expectedResult, actualResult);
         Assert.Equal(expectedFlight.Id, actualFlight!.Id);
-        Assert.Equal(expectedFlight.To, actualFlight.To);
-        Assert.Equal(expectedFlight.From, actualFlight.From);
-    }
-
-    [Trait("Category", "Unit")]
-    [Fact]
-    public async Task Handle_ExpectConflict()
-    {
-        //Arrange
-        var fakeDriver = new Mock<IDriver>();
-        var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(m => m.Send(It.IsAny<ReadFlightRequest>(), CancellationToken.None))
-            .ReturnsAsync((RequestResult.Conflict, It.IsAny<Flight>()))
-            .Verifiable();
-
-        var command = new CreateFlightRequest(DateTime.Today, DateTime.Today.AddDays(2));
-        (RequestResult, Flight?) expected = (RequestResult.Conflict, null);
-
-        //Act
-        var handler = new CreateFlightRequestHandler(fakeDriver.Object, fakeMediator.Object);
-        var actual = await handler.Handle(command, CancellationToken.None);
-
-        //Assert
-        Assert.Equal(expected, actual);
     }
 
     [Trait("Category", "Unit")]
@@ -144,7 +121,7 @@ public class CreateFlightRequestHandlerTest
             .Verifiable();
 
         //Act
-        var handler = new CreateFlightRequestHandler(fakeDriver.Object, fakeMediator.Object);
+        var handler = new CreateFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
 
         //Assert

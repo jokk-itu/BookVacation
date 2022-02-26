@@ -9,12 +9,12 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Build
     runs-on: ubuntu-latest
     
     env:
         DOTNET_NOLOGO: true
-        CONFIGURATION: Release
+        CONFIGURATION: Release  
 
     steps:
     - name: Checkout
@@ -26,7 +26,9 @@ jobs:
     - name: Setup GithubToken
       run: |
         GithubToken=${{ secrets.GITHUB_TOKEN }}
-        echo "GithubToken=$GithubToken" >> $GITHUB_ENV    
+        echo "GithubToken=$GithubToken" >> $GITHUB_ENV
+    - name: Setup Services
+      run: docker-compose up -d neo4j eventbus logger      
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
@@ -34,6 +36,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c $CONFIGURATION --no-restore
+      run: dotnet build -c $CONFIGURATION --no-restore  
     - name: Test
       run: dotnet test --no-build
