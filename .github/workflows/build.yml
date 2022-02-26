@@ -22,7 +22,7 @@ jobs:
         ports:
           - 7474:7474
           - 7687:7687
-        environment:
+        env:
           - NEO4J_AUTH=neo4j/test
       eventbus:
         image: masstransit/rabbitmq
