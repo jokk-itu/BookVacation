@@ -4,6 +4,7 @@ ARG Configuration
 ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /app
+COPY NuGet.config NuGet.config
 COPY GatewayService.Api GatewayService.Api
 RUN dotnet publish GatewayService.Api/GatewayService.Api.csproj -c $Configuration -o out
 

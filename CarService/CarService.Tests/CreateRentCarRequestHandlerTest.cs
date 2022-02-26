@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using CarService.Infrastructure.Requests;
 using CarService.Infrastructure.Requests.CreateRentCar;
 using Moq;
@@ -39,7 +36,7 @@ public class CreateRentCarRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new CreateRentCarRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
@@ -66,7 +63,7 @@ public class CreateRentCarRequestHandlerTest
             .Verifiable();
         var command = new CreateRentCarRequest(Guid.NewGuid(), Guid.NewGuid(), 10u, Guid.NewGuid());
         var expected = RequestResult.Error;
-        
+
         fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(false)
@@ -80,11 +77,11 @@ public class CreateRentCarRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new CreateRentCarRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();

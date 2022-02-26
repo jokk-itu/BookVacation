@@ -12,7 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher']
+        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core']
+        include:
+          - projects: CarService.Contracts
+            service: CarService
+          - projects: FlightService.Contracts
+            service: FlightService
+          - projects: HotelService.Contracts
+            service: HotelService
+          - projects: VacationService.Contracts
+            service: VacationService
+          - projects: EventDispatcher.Core
+            service: EventDispatcher          
     steps:
     - name: Checkout
       uses: actions/checkout/@v2
@@ -34,5 +45,5 @@ jobs:
       run: dotnet build -c $CONFIGURATION --no-restore
     - name: Push package to Github Nuget Repository
       run: |
-        package=$(ls ${{ matrix.projects }}/bin/$CONFIGURATION/*nupkg)
+        package=$(ls ${{ matrix.service }}/${{ matrix.projects }}/bin/$CONFIGURATION/*nupkg)
         dotnet nuget push "$package" --source "github" --skip-duplicate

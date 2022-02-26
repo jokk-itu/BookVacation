@@ -33,7 +33,7 @@ RETURN true";
                     flightId = request.FlightId.ToString(),
                     seatId = request.SeatId,
                     reservationId = request.ReservationId.ToString()
-                }); 
+                });
             if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();

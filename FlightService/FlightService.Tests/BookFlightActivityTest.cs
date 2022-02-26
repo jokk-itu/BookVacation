@@ -18,7 +18,6 @@ namespace FlightService.Tests;
 
 public class BookFlightActivityTest
 {
-
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Execute_ExpectCompleted()
@@ -29,7 +28,7 @@ public class BookFlightActivityTest
         var rentCarActivity = new BookFlightActivity(fakeMediator.Object);
         var bookFlightActivityHarness =
             harness.Activity<BookFlightActivity, BookFlightArgument, BookFlightLog>(
-                _ => rentCarActivity, 
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookFlightRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
@@ -74,7 +73,7 @@ public class BookFlightActivityTest
         var rentCarActivity = new BookFlightActivity(fakeMediator.Object);
         var bookFlightActivityHarness =
             harness.Activity<BookFlightActivity, BookFlightArgument, BookFlightLog>(
-                _ => rentCarActivity, 
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookFlightRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
@@ -119,7 +118,7 @@ public class BookFlightActivityTest
         var rentCarActivity = new BookFlightActivity(fakeMediator.Object);
         var bookFlightActivityHarness =
             harness.Activity<BookFlightActivity, BookFlightArgument, BookFlightLog>(
-                _ => rentCarActivity, 
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
@@ -130,7 +129,7 @@ public class BookFlightActivityTest
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteBookFlightRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
-        
+
         //Act
         await harness.Start();
         try
@@ -146,7 +145,8 @@ public class BookFlightActivityTest
             {
                 IsExecuteFaulty = true
             };
-            builder.AddActivity(bookFlightActivityHarness.Name, bookFlightActivityHarness.ExecuteAddress, rentCarArgument);
+            builder.AddActivity(bookFlightActivityHarness.Name, bookFlightActivityHarness.ExecuteAddress,
+                rentCarArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensated>();
@@ -175,7 +175,7 @@ public class BookFlightActivityTest
         var rentCarActivity = new BookFlightActivity(fakeMediator.Object);
         var bookFlightActivityHarness =
             harness.Activity<BookFlightActivity, BookFlightArgument, BookFlightLog>(
-                _ => rentCarActivity, 
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
@@ -186,7 +186,7 @@ public class BookFlightActivityTest
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteBookFlightRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
             .Verifiable();
-        
+
         //Act
         await harness.Start();
         try
@@ -202,7 +202,8 @@ public class BookFlightActivityTest
             {
                 IsExecuteFaulty = true
             };
-            builder.AddActivity(bookFlightActivityHarness.Name, bookFlightActivityHarness.ExecuteAddress, rentCarArgument);
+            builder.AddActivity(bookFlightActivityHarness.Name, bookFlightActivityHarness.ExecuteAddress,
+                rentCarArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();

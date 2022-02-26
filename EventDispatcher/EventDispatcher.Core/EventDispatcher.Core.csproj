@@ -18,11 +18,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="7.3.0" />
-        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.0" />
-        <PackageReference Include="MassTransit.Prometheus" Version="7.3.0" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="MassTransit" Version="7.3.0"/>
+        <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.0"/>
+        <PackageReference Include="MassTransit.Prometheus" Version="7.3.0"/>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
     </ItemGroup>
 </Project>

@@ -4,9 +4,9 @@ ARG Configuration
 ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /app
+COPY NuGet.config NuGet.config
 COPY VacationService.Api VacationService.Api
 COPY VacationService.Contracts VacationService.Contracts
-COPY EventDispatcher EventDispatcher
 RUN dotnet publish VacationService.Api/VacationService.Api.csproj -c $Configuration -o out
 
 

@@ -39,7 +39,7 @@ public class CreateBookFlightRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new CreateBookFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
@@ -66,7 +66,7 @@ public class CreateBookFlightRequestHandlerTest
             .Verifiable();
         var command = new CreateBookFlightRequest(1, Guid.NewGuid(), Guid.NewGuid());
         var expected = RequestResult.Error;
-        
+
         fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync())
@@ -81,11 +81,11 @@ public class CreateBookFlightRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new CreateBookFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();

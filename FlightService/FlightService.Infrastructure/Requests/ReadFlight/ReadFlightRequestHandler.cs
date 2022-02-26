@@ -22,19 +22,18 @@ public class ReadFlightRequestHandler : IRequestHandler<ReadFlightRequest, (Requ
 MATCH (f:Flight {id: $id})
 RETURN f";
             var result = await transaction.RunAsync(query, new { id = request.Id.ToString() });
-            if (!await result.FetchAsync()) 
+            if (!await result.FetchAsync())
                 return null;
-            
+
             return new Flight
             {
                 Id = (Guid)result.Current["id"],
                 From = (DateTime)result.Current["from"],
                 To = (DateTime)result.Current["to"]
             };
-
         });
-        return flight is null 
-            ? (RequestResult.NotFound, null) 
+        return flight is null
+            ? (RequestResult.NotFound, null)
             : (RequestResult.Ok, flight);
     }
 }

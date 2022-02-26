@@ -24,7 +24,7 @@ public class ReadFlightsRequestHandlerTest
         var fakeTransaction = new Mock<IAsyncTransaction>();
         var fakeResultCursor = new Mock<IResultCursor>();
         var fakeResult = new Mock<IRecord>();
-        
+
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
@@ -45,7 +45,7 @@ public class ReadFlightsRequestHandlerTest
                 To = DateTime.Now.AddDays(1)
             }
         };
-        
+
         var (expectedResult, expectedFlights) = (RequestResult.Ok, flights);
 
         fakeResult.Setup(r => r["id"])
@@ -57,7 +57,7 @@ public class ReadFlightsRequestHandlerTest
         fakeResult.Setup(r => r["to"])
             .Returns(It.IsAny<DateTime>())
             .Verifiable();
-        
+
         fakeResultCursor.Setup(rc => rc.Current)
             .Returns(fakeResult.Object)
             .Verifiable();
@@ -74,7 +74,7 @@ public class ReadFlightsRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new ReadFlightsRequestHandler(fakeDriver.Object);
         var (actualResult, actualFlights) = await handler.Handle(command, CancellationToken.None);
@@ -87,12 +87,12 @@ public class ReadFlightsRequestHandlerTest
         Assert.Equal(expectedFlights.Count, actualFlights!.Count());
         Assert.Equal(expectedResult, actualResult);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectError()
     {
-         //Arrange
+        //Arrange
         var fakeDriver = new Mock<IDriver>();
         var fakeSession = new Mock<IAsyncSession>();
         var fakeTransaction = new Mock<IAsyncTransaction>();
@@ -105,7 +105,7 @@ public class ReadFlightsRequestHandlerTest
         var command = new ReadFlightsRequest(0u, 2u);
 
         (var expectedResult, IEnumerable<Flight>? expectedFlights) = (RequestResult.Error, null);
-        
+
         fakeResultCursor.Setup(rc => rc.FetchAsync())
             .ReturnsAsync(false)
             .Verifiable();
@@ -118,7 +118,7 @@ public class ReadFlightsRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new ReadFlightsRequestHandler(fakeDriver.Object);
         var (actualResult, actualFlights) = await handler.Handle(command, CancellationToken.None);

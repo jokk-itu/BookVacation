@@ -47,7 +47,7 @@ public class RentCarActivityTest
             var completedContext = harness.SubscribeHandler<RoutingSlipCompleted>();
             await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, completedContext);
-            
+
             //Assert
             fakeMediator.Verify();
             Assert.Equal(trackingNumber, completedContext.Result.Message.TrackingNumber);
@@ -121,7 +121,7 @@ public class RentCarActivityTest
 
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok).Verifiable();
-        
+
         //Act
         await harness.Start();
         try
@@ -176,7 +176,7 @@ public class RentCarActivityTest
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentCarRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
             .Verifiable();
-        
+
         //Act
         await harness.Start();
         try

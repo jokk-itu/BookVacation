@@ -4,11 +4,11 @@ ARG Configuration
 ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /app
+COPY NuGet.config NuGet.config
 COPY HotelService.Api HotelService.Api
 COPY HotelService.Domain HotelService.Domain
 COPY HotelService.Contracts HotelService.Contracts
 COPY HotelService.Infrastructure HotelService.Infrastructure
-COPY EventDispatcher EventDispatcher
 RUN dotnet publish HotelService.Api/HotelService.Api.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release

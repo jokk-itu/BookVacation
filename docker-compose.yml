@@ -6,8 +6,8 @@ networks:
 services:
   vacationservice:
     build:
-      context: .
-      dockerfile: VacationService/VacationService.Api/Dockerfile
+      context: VacationService
+      dockerfile: VacationService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -28,8 +28,8 @@ services:
 
   flightservice:
     build:
-      context: .
-      dockerfile: FlightService/FlightService.Api/Dockerfile
+      context: FlightService
+      dockerfile: FlightService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -53,8 +53,8 @@ services:
       
   hotelservice:
     build:
-      context: .
-      dockerfile: HotelService/HotelService.Api/Dockerfile
+      context: HotelService
+      dockerfile: HotelService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -77,8 +77,8 @@ services:
       
   carservice:
     build:
-      context: .
-      dockerfile: CarService/CarService.Api/Dockerfile
+      context: CarService
+      dockerfile: CarService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -101,8 +101,8 @@ services:
       
   trackingservice:
     build:
-      context: .
-      dockerfile: TrackingService/TrackingService.Worker/Dockerfile
+      context: TrackingService
+      dockerfile: TrackingService.Worker/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -124,8 +124,8 @@ services:
       
   gatewayservice:
     build:
-      context: .
-      dockerfile: GatewayService/GatewayService.Api/Dockerfile
+      context: GatewayService
+      dockerfile: GatewayService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -142,7 +142,32 @@ services:
       - logger
       - prometheus
     networks:
-      - service_net          
+      - service_net
+      
+  ticketservice:
+    build:
+      context: TicketService
+      dockerfile: TicketService.Api/Dockerfile
+      args:
+        - Configuration=${Configuration}
+        - Environment=${Environment}
+        - GithubToken=${NUGET_API}
+    container_name: ticketservice
+    hostname: ticketservice
+    ports:
+      - 5007:80
+    env_file:
+      - ./EnvironmentFiles/eventbus.env
+      - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/prometheus.env
+    depends_on:
+      - eventbus
+      - logger
+      - prometheus
+      - neo4j
+    networks:
+      - service_net  
 
   logger:
     image: datalust/seq:latest

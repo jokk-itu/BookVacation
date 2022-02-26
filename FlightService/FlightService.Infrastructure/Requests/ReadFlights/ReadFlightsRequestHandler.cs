@@ -1,5 +1,4 @@
 using FlightService.Domain.Entities.Nodes;
-using MassTransit;
 using MediatR;
 using Neo4j.Driver;
 
@@ -28,10 +27,10 @@ SKIP $offset
 LIMIT $amount";
             var result = await transaction.RunAsync(query, new
             {
-                offset = request.Offset, 
+                offset = request.Offset,
                 amount = request.Amount
             });
-            
+
             if (!await result.FetchAsync())
                 return null;
 
@@ -49,8 +48,8 @@ LIMIT $amount";
             return flights;
         });
 
-        return flights is null 
-            ? (RequestResult.NotFound, null) 
+        return flights is null
+            ? (RequestResult.NotFound, null)
             : (RequestResult.Ok, flights);
     }
 }

@@ -20,9 +20,9 @@ public class CreateBookHotelRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        var command = new CreateBookHotelRequest(Guid.NewGuid(), Guid.NewGuid(),10u, Guid.NewGuid());
+        var command = new CreateBookHotelRequest(Guid.NewGuid(), Guid.NewGuid(), 10u, Guid.NewGuid());
         const RequestResult expected = RequestResult.Ok;
-        
+
         fakeTransaction.Setup(t => t.CommitAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(true)
@@ -36,11 +36,11 @@ public class CreateBookHotelRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new CreateBookHotelRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();
@@ -48,7 +48,7 @@ public class CreateBookHotelRequestHandlerTest
         fakeResultCursor.Verify();
         Assert.Equal(expected, actual);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectError()
@@ -61,9 +61,9 @@ public class CreateBookHotelRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        var command = new CreateBookHotelRequest(Guid.NewGuid(), Guid.NewGuid(),10u, Guid.NewGuid());
+        var command = new CreateBookHotelRequest(Guid.NewGuid(), Guid.NewGuid(), 10u, Guid.NewGuid());
         const RequestResult expected = RequestResult.Error;
-        
+
         fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(false)
@@ -77,11 +77,11 @@ public class CreateBookHotelRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new CreateBookHotelRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();

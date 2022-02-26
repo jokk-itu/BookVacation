@@ -22,7 +22,7 @@ public class ReadFlightRequestHandlerTest
         var fakeTransaction = new Mock<IAsyncTransaction>();
         var fakeResultCursor = new Mock<IResultCursor>();
         var fakeResult = new Mock<IRecord>();
-        
+
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
@@ -45,7 +45,7 @@ public class ReadFlightRequestHandlerTest
         fakeResult.Setup(r => r["to"])
             .Returns(flight.To)
             .Verifiable();
-        
+
         fakeResultCursor.Setup(rc => rc.Current)
             .Returns(fakeResult.Object)
             .Verifiable();
@@ -61,7 +61,7 @@ public class ReadFlightRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new ReadFlightRequestHandler(fakeDriver.Object);
         var (actualResult, actualFlight) = await handler.Handle(command, CancellationToken.None);
@@ -77,7 +77,7 @@ public class ReadFlightRequestHandlerTest
         Assert.Equal(expectedFlight.To, actualFlight.To);
         Assert.Equal(expectedFlight.From, actualFlight.From);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectNotFound()
@@ -93,9 +93,9 @@ public class ReadFlightRequestHandlerTest
             .Verifiable();
 
         var command = new ReadFlightRequest(Guid.NewGuid());
-        
+
         (var expectedResult, Flight? expectedFlight) = (RequestResult.NotFound, null);
-        
+
         fakeResultCursor.Setup(rc => rc.FetchAsync())
             .ReturnsAsync(false)
             .Verifiable();
@@ -108,7 +108,7 @@ public class ReadFlightRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new ReadFlightRequestHandler(fakeDriver.Object);
         var (actualResult, actualFlight) = await handler.Handle(command, CancellationToken.None);

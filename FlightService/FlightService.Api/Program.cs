@@ -32,7 +32,7 @@ builder.Services.AddFluentValidation(options =>
 {
     options.DisableDataAnnotationsValidation = false;
     options.AutomaticValidationEnabled = true;
-    options.RegisterValidatorsFromAssemblyContaining<FlightService.Api.Validators.AssemblyRegistration>();
+    options.RegisterValidatorsFromAssemblyContaining<AssemblyRegistration>();
 });
 builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
 builder.Services.AddEndpointsApiExplorer();
@@ -45,10 +45,8 @@ builder.Services.AddVersionedApiExplorer(config =>
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 builder.Services.AddMediatR(typeof(FlightService.Infrastructure.Requests.AssemblyRegistration));
-builder.Services.AddEventBus(builder.Configuration, configurator =>
-{
-    configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
-});
+builder.Services.AddEventBus(builder.Configuration,
+    configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
 builder.Services.AddSingleton(_ => GraphDatabase.Driver(
     builder.Configuration["Neo4j:Uri"],
     AuthTokens.Basic(
@@ -73,4 +71,6 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program {}
+public partial class Program
+{
+}

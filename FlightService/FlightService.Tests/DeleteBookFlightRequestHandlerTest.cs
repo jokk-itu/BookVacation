@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using FlightService.Infrastructure.Requests;
-using FlightService.Infrastructure.Requests.CreateBookFlight;
 using FlightService.Infrastructure.Requests.DeleteBookFlight;
 using Moq;
 using Neo4j.Driver;
@@ -40,7 +39,7 @@ public class DeleteBookFlightRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new DeleteBookFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
@@ -67,7 +66,7 @@ public class DeleteBookFlightRequestHandlerTest
             .Verifiable();
         var command = new DeleteBookFlightRequest(Guid.NewGuid());
         var expected = RequestResult.Error;
-        
+
         fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync())
@@ -82,11 +81,11 @@ public class DeleteBookFlightRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new DeleteBookFlightRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();

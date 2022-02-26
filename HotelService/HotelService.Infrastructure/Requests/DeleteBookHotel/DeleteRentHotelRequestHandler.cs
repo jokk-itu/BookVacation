@@ -25,7 +25,7 @@ RETURN true";
             {
                 id = request.RentId.ToString()
             });
-            
+
             if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();

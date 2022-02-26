@@ -1,5 +1,4 @@
 using FlightService.Domain.Entities.Nodes;
-using FlightService.Infrastructure.Requests.ReadFlight;
 using MediatR;
 using Neo4j.Driver;
 

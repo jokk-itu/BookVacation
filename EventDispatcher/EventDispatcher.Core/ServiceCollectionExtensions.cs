@@ -38,7 +38,7 @@ public static class ServiceCollectionExtensions
                     new ConsumeObserver(busContext.GetRequiredService<ILogger<ConsumeObserver>>()));
                 factoryConfigurator.ConnectReceiveObserver(
                     new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
-                
+
                 var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();
                 var port = configuration["EventBus:Port"] ?? throw new ArgumentNullException();
                 factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>

@@ -4,11 +4,11 @@ ARG Configuration
 ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /app
+COPY NuGet.config NuGet.config
 COPY CarService.Api CarService.Api
 COPY CarService.Contracts CarService.Contracts
 COPY CarService.Domain CarService.Domain
 COPY CarService.Infrastructure CarService.Infrastructure
-COPY EventDispatcher EventDispatcher
 RUN dotnet publish CarService.Api/CarService.Api.csproj -c $Configuration -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release

@@ -24,7 +24,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity, _ => rentCarActivity);
+            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
+                _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
@@ -47,7 +48,7 @@ public class BookHotelActivityTest
             var completedContext = harness.SubscribeHandler<RoutingSlipCompleted>();
             await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, completedContext);
-            
+
             //Assert
             fakeMediator.Verify();
             Assert.Equal(trackingNumber, completedContext.Result.Message.TrackingNumber);
@@ -58,7 +59,7 @@ public class BookHotelActivityTest
             await harness.Stop();
         }
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Execute_ExpectFaulted()
@@ -68,7 +69,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity, _ => rentCarActivity);
+            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
+                _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
             .Verifiable();
@@ -91,7 +93,7 @@ public class BookHotelActivityTest
             var completedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
             await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, completedContext);
-            
+
             //Assert
             fakeMediator.Verify();
             Assert.Equal(trackingNumber, completedContext.Result.Message.TrackingNumber);
@@ -102,7 +104,7 @@ public class BookHotelActivityTest
             await harness.Stop();
         }
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Compensate_ExpectCompensated()
@@ -112,7 +114,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity, _ => rentCarActivity);
+            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
+                _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
@@ -122,7 +125,7 @@ public class BookHotelActivityTest
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteBookHotelRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
-        
+
         //Act
         await harness.Start();
         try
@@ -139,7 +142,8 @@ public class BookHotelActivityTest
             {
                 IsExecuteFaulty = true
             };
-            builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, bookHotelArgument);
+            builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress,
+                bookHotelArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensated>();
@@ -157,7 +161,7 @@ public class BookHotelActivityTest
             await harness.Stop();
         }
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Compensate_ExpectCompensationFailed()
@@ -167,7 +171,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity, _ => rentCarActivity);
+            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
+                _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
@@ -177,7 +182,7 @@ public class BookHotelActivityTest
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteBookHotelRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Error)
             .Verifiable();
-        
+
         //Act
         await harness.Start();
         try
@@ -194,7 +199,8 @@ public class BookHotelActivityTest
             {
                 IsExecuteFaulty = true
             };
-            builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, bookHotelArgument);
+            builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress,
+                bookHotelArgument);
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();

@@ -34,7 +34,7 @@ RETURN true";
                 hotelId = request.HotelId.ToString(),
                 rentId = request.RentId.ToString()
             });
-            
+
             if (await result.FetchAsync())
             {
                 await transaction.CommitAsync();

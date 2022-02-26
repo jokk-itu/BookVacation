@@ -37,7 +37,7 @@ public class DeleteRentCarRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new DeleteRentCarRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
@@ -79,7 +79,7 @@ public class DeleteRentCarRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new DeleteRentCarRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);

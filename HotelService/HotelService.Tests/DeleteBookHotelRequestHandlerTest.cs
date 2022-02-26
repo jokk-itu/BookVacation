@@ -22,7 +22,7 @@ public class DeleteBookHotelRequestHandlerTest
             .Verifiable();
         var command = new DeleteBookHotelRequest(Guid.NewGuid());
         const RequestResult expected = RequestResult.Ok;
-        
+
         fakeTransaction.Setup(t => t.CommitAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(true)
@@ -36,11 +36,11 @@ public class DeleteBookHotelRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new DeleteRentHotelRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();
@@ -49,7 +49,7 @@ public class DeleteBookHotelRequestHandlerTest
         Assert.Equal(expected, actual);
     }
 
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectError()
@@ -64,7 +64,7 @@ public class DeleteBookHotelRequestHandlerTest
             .Verifiable();
         var command = new DeleteBookHotelRequest(Guid.NewGuid());
         const RequestResult expected = RequestResult.Error;
-        
+
         fakeTransaction.Setup(t => t.RollbackAsync())
             .Verifiable();
         fakeResultCursor.Setup(rc => rc.FetchAsync()).ReturnsAsync(false)
@@ -78,11 +78,11 @@ public class DeleteBookHotelRequestHandlerTest
         fakeDriver.Setup(d => d.AsyncSession())
             .Returns(fakeSession.Object)
             .Verifiable();
-        
+
         //Act
         var handler = new DeleteRentHotelRequestHandler(fakeDriver.Object);
         var actual = await handler.Handle(command, CancellationToken.None);
-        
+
         //Assert
         fakeDriver.Verify();
         fakeSession.Verify();

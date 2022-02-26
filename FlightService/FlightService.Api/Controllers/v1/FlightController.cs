@@ -29,7 +29,7 @@ public class FlightController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetFlightAsync(
-        Guid id, 
+        Guid id,
         CancellationToken cancellationToken = default)
     {
         var request = new ReadFlightRequest(id);

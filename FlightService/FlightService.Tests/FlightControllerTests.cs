@@ -17,33 +17,33 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
     {
         _api = new WebApplicationFactory<Program>();
     }
-    
+
     [Trait("Category", "Integration")]
     [Fact]
     public async Task GetFlight_ExpectOk()
     {
         var client = _api.CreateClient();
-        var postFlightRequest = new PostFlightRequest {From = DateTime.Now.AddDays(1), To = DateTime.Now.AddDays(2)};
+        var postFlightRequest = new PostFlightRequest { From = DateTime.Now.AddDays(1), To = DateTime.Now.AddDays(2) };
         var postFlightResponse = await client.PostAsJsonAsync("api/v1/flight", postFlightRequest);
         postFlightResponse.EnsureSuccessStatusCode();
         var flight = await postFlightResponse.Content.ReadFromJsonAsync<Flight>();
         var getFlightResponse = await client.GetFromJsonAsync<GetFlightResponse>($"api/v1/flight/{flight!.Id}");
-        
+
         Assert.Equal(postFlightRequest.From, getFlightResponse!.From);
         Assert.Equal(postFlightRequest.To, getFlightResponse!.To);
     }
-    
+
     [Trait("Category", "Integration")]
     [Fact]
     public async Task GetFlight_ExpectNotFound()
     {
         var client = _api.CreateClient();
-        var postFlightRequest = new PostFlightRequest {From = DateTime.Now, To = DateTime.Now.AddDays(2)};
+        var postFlightRequest = new PostFlightRequest { From = DateTime.Now, To = DateTime.Now.AddDays(2) };
         var postFlightResponse = await client.PostAsJsonAsync("api/v1/flight", postFlightRequest);
         postFlightResponse.EnsureSuccessStatusCode();
         var flight = await postFlightResponse.Content.ReadFromJsonAsync<Flight>();
         var getFlightResponse = await client.GetFromJsonAsync<GetFlightResponse>($"api/v1/flight/{flight!.Id}");
-        
+
         Assert.Equal(postFlightRequest.From, getFlightResponse!.From);
         Assert.Equal(postFlightRequest.To, getFlightResponse!.To);
     }
