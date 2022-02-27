@@ -1,3 +1,6 @@
+using CarService.Contracts.RentCarActivity;
+using FlightService.Contracts.BookFlightActivity;
+using HotelService.Contracts.BookHotelActivity;
 using MassTransit;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
@@ -26,15 +29,19 @@ public class VacationController : ControllerBase
 
         builder.AddActivity("BookFlight",
             new Uri("queue:book-flight_execute"),
-            new { request.FlightId, request.SeatId });
+            new BookFlightArgument { FlightId = request.FlightId, SeatId = request.SeatId });
 
         builder.AddActivity("BookHotel",
             new Uri("queue:book-hotel_execute"),
-            new { request.HotelId, Days = request.RentHotelDays, request.RoomId });
+            new BookHotelArgument { HotelId = request.HotelId, Days = request.RentHotelDays, RoomId = request.RoomId });
 
         builder.AddActivity("RentCar",
             new Uri("queue:rent-car_execute"),
-            new { request.CarId, request.RentingCompanyId, Days = request.RentCarDays });
+            new RentCarArgument { CarId = request.CarId, RentingCompanyId = request.RentingCompanyId, Days = request.RentCarDays });
+
+        builder.AddActivity("CreateVacationTicket",
+            new Uri("queue:create-vacation-ticket_execute"),
+            new { FlightId = request.FlightId, HotelId = request.HotelId, RoomId = request.RoomId, CarId = request.CarId, RentingCompanyId = request.RentingCompanyId });
 
         builder.AddSubscription(
             new Uri("queue:routing-slip-event"),

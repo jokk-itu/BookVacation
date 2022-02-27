@@ -24,6 +24,9 @@ To book a hotel room.
 ## FlightService
 To buy a flight ticket.
 
+## TicketService
+To handle tickets for flights, hotels and cars.
+
 ## VacationService
 To buy a complete vacation with flight ticket, hotel room and car.
 
