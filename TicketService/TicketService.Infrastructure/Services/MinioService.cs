@@ -32,15 +32,17 @@ public class MinioService : IMinioService
         }
     }
 
-    public async Task<bool> PutTicketAsync(string bucket, string ticketId, Stream data,
+    public async Task<bool> PutTicketAsync(string bucket, string ticketId, byte[] data,
         CancellationToken cancellationToken = default)
     {
         try
         {
             if (!await _minioClient.BucketExistsAsync(bucket, cancellationToken))
                 await _minioClient.MakeBucketAsync(bucket, cancellationToken: cancellationToken);
-
-            await _minioClient.PutObjectAsync(bucket, ticketId, data, data.Length, cancellationToken: cancellationToken);
+            
+            var stream = new MemoryStream(data);
+            await _minioClient.PutObjectAsync(bucket, ticketId, stream, data.Length, cancellationToken: cancellationToken);
+            await stream.DisposeAsync();
             return true;
         }
         catch (MinioException)

@@ -25,7 +25,7 @@ public class CreateCarTicketRequestHandler : IRequestHandler<CreateCarTicketRequ
         var isSent = await _minioService.PutTicketAsync(
             BucketName.CarTicketBucket,
             Guid.NewGuid().ToString(),
-            pdf,
+            pdf.ToArray(),
             cancellationToken);
 
         return isSent ? RequestResult.Created : RequestResult.Error;

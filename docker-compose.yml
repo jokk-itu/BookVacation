@@ -42,7 +42,6 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/mongo.env
     depends_on:
       - eventbus
       - logger
@@ -160,12 +159,13 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/prometheus.env
+      - ./EnvironmentFiles/minio.env
     depends_on:
       - eventbus
       - logger
       - prometheus
       - neo4j
+      - blobstorage
     networks:
       - service_net  
 
