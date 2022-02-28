@@ -28,7 +28,7 @@ jobs:
         GithubToken=${{ secrets.GITHUB_TOKEN }}
         echo "GithubToken=$GithubToken" >> $GITHUB_ENV
     - name: Setup Services
-      run: docker-compose up -d neo4j eventbus logger      
+      run: docker-compose up -d neo4j eventbus logger blobstorage
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
