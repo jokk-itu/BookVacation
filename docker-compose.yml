@@ -22,7 +22,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus
     networks:
       - service_net
 
@@ -45,7 +44,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus
       - neo4j
     networks:
       - service_net
@@ -69,7 +67,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus
       - neo4j
     networks:
       - service_net
@@ -93,7 +90,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus
       - neo4j
     networks:
       - service_net
@@ -139,7 +135,6 @@ services:
       - ./EnvironmentFiles/gateway.env
     depends_on:
       - logger
-      - prometheus
     networks:
       - service_net
       
@@ -163,7 +158,6 @@ services:
     depends_on:
       - eventbus
       - logger
-      - prometheus
       - neo4j
       - blobstorage
     networks:

@@ -1,6 +1,5 @@
+using MediatR;
+
 namespace TicketService.Infrastructure.Requests.CreateHotelTicket;
 
-public class CreateHotelTicketRequest
-{
-    
-}
+public record CreateHotelTicketRequest(Guid HotelId, Guid RoomId) : IRequest<RequestResult>;

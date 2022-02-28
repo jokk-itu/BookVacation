@@ -1,5 +1,6 @@
 using EventDispatcher.Filters;
 using EventDispatcher.Observers;
+using GreenPipes;
 using MassTransit;
 using MassTransit.ExtensionsDependencyInjectionIntegration;
 using MassTransit.PrometheusIntegration;
@@ -20,7 +21,20 @@ public static class ServiceCollectionExtensions
             configurator.SetKebabCaseEndpointNameFormatter();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
             {
-                factoryConfigurator.UsePrometheusMetrics(options => { }, configuration["ServiceName"]);
+                factoryConfigurator.UseCircuitBreaker(circuitBreakerConfigurator =>
+                {
+                    circuitBreakerConfigurator.ActiveThreshold = 2;
+                    circuitBreakerConfigurator.ResetInterval = TimeSpan.FromSeconds(5);
+                    circuitBreakerConfigurator.TrackingPeriod = TimeSpan.FromSeconds(1);
+                    circuitBreakerConfigurator.TripThreshold = 10;
+                });
+                
+                factoryConfigurator.UseKillSwitch(killSwitchOptions => killSwitchOptions
+                    .SetActivationThreshold(10)
+                    .SetTripThreshold(0.15)
+                    .SetRestartTimeout(m: 1));
+
+                factoryConfigurator.UsePrometheusMetrics(serviceName: configuration["ServiceName"]);
 
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);

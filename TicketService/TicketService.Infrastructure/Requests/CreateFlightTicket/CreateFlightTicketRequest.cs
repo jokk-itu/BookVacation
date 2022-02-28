@@ -1,6 +1,5 @@
+using MediatR;
+
 namespace TicketService.Infrastructure.Requests.CreateFlightTicket;
 
-public class CreateFlightTicketRequest
-{
-    
-}
+public record CreateFlightTicketRequest(Guid FlightId) : IRequest<RequestResult>;

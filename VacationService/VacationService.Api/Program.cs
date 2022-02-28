@@ -22,7 +22,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-// Add serilog
+    // Add serilog
     builder.Host.UseSerilog((context, serviceProvider, config) =>
     {
         var seqUri = context.Configuration["Logging:SeqUri"];
@@ -35,7 +35,7 @@ try
             .MinimumLevel.Warning();
     });
 
-// Add services to the container.
+    // Add services to the container.
     builder.Services.AddControllers();
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddEndpointsApiExplorer();
@@ -54,7 +54,7 @@ try
 
     builder.Services.AddSystemMetrics();
 
-// Configure the HTTP request pipeline.
+    // Configure the HTTP request pipeline.
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
