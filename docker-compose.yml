@@ -41,6 +41,7 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmenFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -64,6 +65,7 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmenFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -87,6 +89,7 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmenFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -111,6 +114,7 @@ services:
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/prometheus.env
+      - ./EnvironmenFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -238,4 +242,16 @@ services:
       - MINIO_ROOT_PASSWORD=secret1234
     command: minio server /data --console-address ":9001"  
     networks:
-      - service_net        
+      - service_net
+      
+  ravendb:
+    image: ravendb/ravendb:ubuntu-latest
+    hostname: ravendb
+    container_name: ravendb
+    ports:
+      - 8080-8080
+    environment:
+      - RAVEN_Setup_Mode='None'
+      - RAVEN_Security_UnsecuredAccessAllowed='PrivateNetwork'
+    networks:
+      - service_net   

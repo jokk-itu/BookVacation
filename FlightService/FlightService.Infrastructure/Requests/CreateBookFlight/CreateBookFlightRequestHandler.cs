@@ -1,5 +1,6 @@
 using MediatR;
 using Neo4j.Driver;
+using Raven.Client.Documents.Session;
 
 namespace FlightService.Infrastructure.Requests.CreateBookFlight;
 

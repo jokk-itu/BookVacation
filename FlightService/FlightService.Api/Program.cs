@@ -8,6 +8,7 @@ using MediatR;
 using Neo4j.Driver;
 using Prometheus;
 using Prometheus.SystemMetrics;
+using Raven.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
@@ -68,6 +69,8 @@ try
             builder.Configuration["Neo4j:Password"])));
     builder.Services.AddMassTransitHostedService();
     builder.Services.AddSystemMetrics();
+    builder.Services.AddRavenDbDocStore();
+    builder.Services.AddRavenDbAsyncSession();
 
 // Configure the HTTP request pipeline.
     var app = builder.Build();
