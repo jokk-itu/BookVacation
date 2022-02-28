@@ -47,4 +47,10 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-      - targets: ['gatewayservice:80']    
+      - targets: ['gatewayservice:80']
+      
+  - job_name: 'ticketservice'
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ticketservice:80']    

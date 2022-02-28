@@ -1,6 +1,7 @@
 using EventDispatcher;
 using MassTransit;
 using MediatR;
+using Minio;
 using Neo4j.Driver;
 using Prometheus.SystemMetrics;
 using Serilog;
@@ -8,6 +9,7 @@ using Serilog.Events;
 using TicketService.Api;
 using TicketService.Infrastructure.CourierActivities;
 using TicketService.Infrastructure.Requests;
+using TicketService.Infrastructure.Services;
 
 var logConfiguration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -38,10 +40,41 @@ try
     });
 
     // Add services to the container.
-
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
     builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
+    builder.Services.AddTransient(sp =>
+        new MinioConfiguration(sp.GetRequiredService<IConfiguration>().GetSection("Minio")));
+    builder.Services.AddTransient(sp => new MinioLogger(sp.GetRequiredService<ILogger<MinioLogger>>()));
+    builder.Services.AddTransient<IMinioService, MinioService>();
+    builder.Services.AddSingleton(sp =>
+    {
+        var configuration = sp.GetRequiredService<MinioConfiguration>();
+        var minioClient = new MinioClient(configuration.Uri, configuration.Username, configuration.Password);
+        minioClient.WithTimeout(5000);
+        minioClient.SetTraceOn(sp.GetRequiredService<MinioLogger>());
+        minioClient.WithRetryPolicy(async callback =>
+        {
+            const int maxRetry = 5;
+
+            Exception? exception = null;
+            for (var i = 0; i < maxRetry; ++i)
+            {
+                try
+                {
+                    return await callback();
+                }
+                catch (ConnectionException? e)
+                {
+                    exception = e;
+                    await Task.Delay(TimeSpan.FromSeconds(i));
+                }
+            }
+
+            throw exception!;
+        });
+        return minioClient;
+    });
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
     builder.Services.AddVersionedApiExplorer(config =>
@@ -62,7 +95,6 @@ try
 
     builder.Services.AddMassTransitHostedService();
     builder.Services.AddSystemMetrics();
-
 
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();

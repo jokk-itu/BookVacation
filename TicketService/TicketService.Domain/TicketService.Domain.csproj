@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MiniRazor" Version="2.2.0" />
+      <PackageReference Include="MiniRazor.CodeGen" Version="2.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="Templates/**/*.razor" IsRazorTemplate="true" />
+    </ItemGroup>
 </Project>
