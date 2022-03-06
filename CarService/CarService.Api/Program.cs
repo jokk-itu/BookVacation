@@ -1,13 +1,10 @@
 using CarService.Api;
+using CarService.Infrastructure;
 using CarService.Infrastructure.CourierActivities;
-using CarService.Infrastructure.Requests;
 using EventDispatcher;
 using MassTransit;
-using MediatR;
-using Neo4j.Driver;
 using Prometheus;
 using Prometheus.SystemMetrics;
-using Raven.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 
@@ -27,7 +24,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-// Add serilog
+    // Add serilog
     builder.Host.UseSerilog((context, serviceProvider, config) =>
     {
         var seqUri = context.Configuration["Logging:SeqUri"];
@@ -39,10 +36,13 @@ try
             .MinimumLevel.Warning();
     });
 
-// Add services to the container.
+    // Add services to the container.
+    builder.Services.AddInfrastructureServices();
+    builder.Services.AddEventBus(builder.Configuration,
+        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
+    builder.Services.AddMassTransitHostedService();
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
-    builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
     builder.Services.AddVersionedApiExplorer(config =>
@@ -52,21 +52,9 @@ try
     });
     builder.Services.AddSwaggerGen();
     builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
-    builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
-    builder.Services.AddEventBus(builder.Configuration,
-        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
-    builder.Services.AddSingleton(_ => GraphDatabase.Driver(
-        builder.Configuration["Neo4j:Uri"],
-        AuthTokens.Basic(
-            builder.Configuration["Neo4j:Username"],
-            builder.Configuration["Neo4j:Password"])));
-
-    builder.Services.AddMassTransitHostedService();
     builder.Services.AddSystemMetrics();
-    builder.Services.AddRavenDbDocStore();
-    builder.Services.AddRavenDbAsyncSession();
 
-// Configure the HTTP request pipeline.
+    // Configure the HTTP request pipeline.
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
     app.UseSwagger();
@@ -87,4 +75,8 @@ catch (Exception e)
 finally
 {
     Log.CloseAndFlush();
+}
+
+public partial class Program
+{
 }

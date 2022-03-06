@@ -41,7 +41,7 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmenFiles/ravendb.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -65,7 +65,7 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmenFiles/ravendb.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -89,7 +89,7 @@ services:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmenFiles/ravendb.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -114,7 +114,7 @@ services:
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/prometheus.env
-      - ./EnvironmenFiles/ravendb.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
@@ -249,9 +249,13 @@ services:
     hostname: ravendb
     container_name: ravendb
     ports:
-      - 8080-8080
+      - 8080:8080
+      - 38888:38888
     environment:
-      - RAVEN_Setup_Mode='None'
-      - RAVEN_Security_UnsecuredAccessAllowed='PrivateNetwork'
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_Setup_Mode=None
+      - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
+    volumes:
+      - ./RavenDB/data:/opt/RavenDB/Server/RavenData
     networks:
       - service_net   
