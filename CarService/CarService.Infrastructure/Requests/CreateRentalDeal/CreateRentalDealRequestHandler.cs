@@ -17,9 +17,17 @@ public class CreateRentalDealRequestHandler : IRequestHandler<CreateRentalDealRe
 
     public async Task<RentalDeal?> Handle(CreateRentalDealRequest request, CancellationToken cancellationToken)
     {
+        var rentalCar = await _session.Query<RentalCar>().Where(x => x.Id == request.RentalCarId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (rentalCar is null)
+            return null;
+        
         var conflictingRentDeal = await _session.Query<RentalDeal>()
-            .Where(x => x.RentalCarId.Equals(request.RentalCarId))
-            .Where(x => (request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo) || (request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo))
+            .Where(x => x.RentalCarId == request.RentalCarId)
+            .Where(x =>
+                request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo ||
+                request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (conflictingRentDeal is not null)

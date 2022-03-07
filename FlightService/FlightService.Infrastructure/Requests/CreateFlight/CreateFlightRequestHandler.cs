@@ -1,49 +1,48 @@
-using FlightService.Domain.Entities.Nodes;
+using FlightService.Domain;
 using MediatR;
-using Neo4j.Driver;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Linq;
+using Raven.Client.Documents.Session;
 
 namespace FlightService.Infrastructure.Requests.CreateFlight;
 
-public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, (RequestResult, Flight?)>
+public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, Flight?>
 {
-    private readonly IDriver _driver;
+    private readonly IAsyncDocumentSession _session;
 
-    public CreateFlightRequestHandler(IDriver driver)
+    public CreateFlightRequestHandler(IAsyncDocumentSession session)
     {
-        _driver = driver;
+        _session = session;
     }
-
-    public async Task<(RequestResult, Flight?)> Handle(CreateFlightRequest request, CancellationToken cancellationToken)
+    
+    public async Task<Flight?> Handle(CreateFlightRequest request, CancellationToken cancellationToken)
     {
-        await using var session = _driver.AsyncSession();
-        var flight = await session.WriteTransactionAsync(async transaction =>
-        {
-            const string command = @"
-CREATE (f:Flight {id: $id, from: $from, to: $to})
-RETURN f.id AS id, f.from AS from, f.to AS to";
-            var result = await transaction.RunAsync(command, new
-            {
-                id = Guid.NewGuid().ToString(),
-                from = request.From,
-                to = request.To
-            });
+        var airplane = await _session.Query<Airplane>().Where(x => x.Id == request.AirplaneId)
+            .FirstOrDefaultAsync(cancellationToken);
 
-            if (await result.FetchAsync())
-            {
-                var flight = new Flight
-                {
-                    Id = Guid.Parse(result.Current.Values["id"].ToString()),
-                    From = DateTime.Parse(result.Current.Values["from"].ToString()),
-                    To = DateTime.Parse(result.Current.Values["to"].ToString())
-                };
-                await transaction.CommitAsync();
-                return flight;
-            }
-
-            await transaction.RollbackAsync();
+        if (airplane is null)
             return null;
-        });
+        
+        var conflictingFlight = await _session.Query<Flight>()
+            .Where(x => x.AirPlaneId == request.AirplaneId)
+            .Where(x => request.From >= x.From && request.From <= x.To || 
+                        request.To >= x.From && request.To <= x.To)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return flight is null ? (RequestResult.Error, null) : (RequestResult.Created, flight);
+        if (conflictingFlight is not null)
+            return null;
+            
+        var flight = new Flight
+        {
+            From = request.From,
+            To = request.To,
+            FromAirport = request.FromAirport,
+            ToAirport = request.ToAirport,
+            AirPlaneId = request.AirplaneId,
+            Price = request.Price
+        };
+        await _session.StoreAsync(flight, cancellationToken);
+        await _session.SaveChangesAsync(cancellationToken);
+        return flight;
     }
-}
+};

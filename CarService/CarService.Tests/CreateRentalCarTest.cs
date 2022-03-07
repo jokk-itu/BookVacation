@@ -10,7 +10,7 @@ public class CreateRentalCarTest : RavenTestDriver
 {
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle()
+    public async Task Handle_ExpectRentalCar()
     {
         //Arrange
         using var store = GetDocumentStore();
@@ -21,7 +21,7 @@ public class CreateRentalCarTest : RavenTestDriver
 
         //Act
         var expected = await handler.Handle(request, CancellationToken.None);
-        WaitForIndexing(store, timeout: TimeSpan.FromSeconds(5));
+        WaitForIndexing(store);
         var actual = await session.Query<RentalCar>().FirstAsync();
 
         //Assert

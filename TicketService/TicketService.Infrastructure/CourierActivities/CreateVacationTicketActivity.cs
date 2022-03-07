@@ -1,6 +1,5 @@
 using MassTransit.Courier;
 using MediatR;
-using Org.BouncyCastle.Ocsp;
 using TicketService.Contracts.CreateVacationTickets;
 using TicketService.Infrastructure.Requests;
 using TicketService.Infrastructure.Requests.CreateCarTicket;

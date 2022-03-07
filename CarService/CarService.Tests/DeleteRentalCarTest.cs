@@ -12,7 +12,7 @@ public class DeleteRentalCarTest : RavenTestDriver
 {
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_CreateRentalDeal_DeleteSuccessfully()
+    public async Task Handle_CreateRentalDeal_ExpectDeleteSuccessfully()
     {
         //Arrange
         using var store = GetDocumentStore();
@@ -27,18 +27,18 @@ public class DeleteRentalCarTest : RavenTestDriver
                 new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"),
                 CancellationToken.None);
 
-        WaitForIndexing(store, timeout: TimeSpan.FromSeconds(5));
+        WaitForIndexing(store);
 
         var rentalDeal = await createRentalDealHandler.Handle(
             new CreateRentalDealRequest(new DateTimeOffset().AddDays(1), new DateTimeOffset().AddDays(2), rentalCar.Id),
             CancellationToken.None);
 
-        WaitForIndexing(store, timeout: TimeSpan.FromSeconds(5));
+        WaitForIndexing(store);
 
         //Act
         await deleteRentalDealHandler.Handle(new DeleteRentalDealRequest(rentalDeal!.Id), CancellationToken.None);
 
-        WaitForIndexing(store, timeout: TimeSpan.FromSeconds(5));
+        WaitForIndexing(store);
 
         var deletedRentalDeal =
             await session.Query<RentalDeal>().Where(x => x.Id == rentalDeal.Id).FirstOrDefaultAsync();

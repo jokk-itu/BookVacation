@@ -1,9 +1,9 @@
-using CarService.Infrastructure.Requests;
+using FlightService.Infrastructure.Requests;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Raven.DependencyInjection;
 
-namespace CarService.Infrastructure;
+namespace FlightService.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {

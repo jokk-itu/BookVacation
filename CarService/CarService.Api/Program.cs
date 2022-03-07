@@ -32,7 +32,7 @@ try
             .Enrich.FromLogContext()
             .MinimumLevel.Override("CarService", LogEventLevel.Information)
             .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
-            .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
+            .MinimumLevel.Override("Raven", LogEventLevel.Information)
             .MinimumLevel.Warning();
     });
 

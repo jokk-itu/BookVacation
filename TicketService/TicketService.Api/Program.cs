@@ -42,7 +42,7 @@ try
     // Add services to the container.
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
-    builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
+    builder.Services.AddMediatR(typeof(MediatorRegistration).Assembly);
     builder.Services.AddTransient(sp =>
         new MinioConfiguration(sp.GetRequiredService<IConfiguration>().GetSection("Minio")));
     builder.Services.AddTransient(sp => new MinioLogger(sp.GetRequiredService<ILogger<MinioLogger>>()));
@@ -84,7 +84,7 @@ try
     });
     builder.Services.AddSwaggerGen();
     builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
-    builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
+    builder.Services.AddMediatR(typeof(MediatorRegistration).Assembly);
     builder.Services.AddEventBus(builder.Configuration,
         configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
     builder.Services.AddSingleton(_ => GraphDatabase.Driver(
