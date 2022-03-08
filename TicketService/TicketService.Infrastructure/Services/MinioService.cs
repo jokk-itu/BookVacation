@@ -12,7 +12,7 @@ public class MinioService : IMinioService
         _minioClient = minioClient;
     }
 
-    public async Task<Stream?> FetchTicketAsync(string bucket, string ticketId,
+    public async Task<Stream?> GetTicketAsync(string bucket, string ticketId,
         CancellationToken cancellationToken = default)
     {
         try

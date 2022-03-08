@@ -192,21 +192,6 @@ services:
     networks:
       - service_net
       
-  neo4j:
-    image: neo4j:latest
-    container_name: neo4j
-    hostname: neo4j
-    environment:
-      - NEO4J_AUTH=neo4j/test
-    networks:
-      - service_net
-    volumes:
-      - ./Neo4j/neo4j.conf:/conf  
-      - ./Neo4j/initialize.cypher:/initialize.cypher
-    ports:
-      - "7474:7474"
-      - "7687:7687"
-      
   prometheus:
     image: prom/prometheus
     ports:

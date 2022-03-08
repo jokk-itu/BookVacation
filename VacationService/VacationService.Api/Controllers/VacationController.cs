@@ -5,6 +5,7 @@ using MassTransit;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using TicketService.Contracts.CreateVacationTickets;
 using VacationService.Contracts.Vacation;
 
 namespace VacationService.Api.Controllers;
@@ -37,11 +38,16 @@ public class VacationController : ControllerBase
 
         builder.AddActivity("RentCar",
             new Uri("queue:rent-car_execute"),
-            new RentCarArgument { CarId = request.CarId, RentingCompanyId = request.RentingCompanyId, Days = request.RentCarDays });
+            new RentCarArgument
+                { CarId = request.CarId, RentingCompanyId = request.RentingCompanyId, Days = request.RentCarDays });
 
         builder.AddActivity("CreateVacationTicket",
             new Uri("queue:create-vacation-ticket_execute"),
-            new { FlightId = request.FlightId, HotelId = request.HotelId, RoomId = request.RoomId, CarId = request.CarId, RentingCompanyId = request.RentingCompanyId });
+            new CreateVacationTicketArgument
+            {
+                FlightId = request.FlightId, HotelId = request.HotelId, RoomId = request.RoomId, CarId = request.CarId,
+                RentingCompanyId = request.RentingCompanyId
+            });
 
         builder.AddSubscription(
             new Uri("queue:routing-slip-event"),
