@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FlightService.Contracts.Flight;
 using FlightService.Infrastructure.Requests.CreateFlight;
 using MediatR;
@@ -17,10 +18,21 @@ public class FlightController : ControllerBase
         _mediator = mediator;
     }
 
+    [HttpPost]
+    [ProducesResponseType(typeof(PostFlightResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostAsync(PostFlightRequest request, CancellationToken cancellationToken = default)
     {
-        var flight = await _mediator.Send(new CreateFlightRequest(request.From, request.To, request.FromAirport, request.ToAirport, request.AirPlaneId, request.Price), cancellationToken);
-        return Ok(new PostFlightResponse
+        var flight =
+            await _mediator.Send(
+                new CreateFlightRequest(request.From, request.To, request.FromAirport, request.ToAirport,
+                    request.AirPlaneId, request.Price), cancellationToken);
+
+        if (flight is null)
+            return Conflict();
+
+        return Created("", new PostFlightResponse
         {
             Id = flight.Id,
             From = flight.From,

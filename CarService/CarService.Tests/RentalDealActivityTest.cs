@@ -1,12 +1,9 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+using CarService.Contracts.RentalDeal;
+using CarService.Domain;
+using CarService.Infrastructure.CourierActivities;
+using CarService.Infrastructure.Requests.CreateRentalDeal;
+using CarService.Infrastructure.Requests.DeleteRentalDeal;
 using EventDispatcher.Test;
-using FlightService.Contracts.FlightReservation;
-using FlightService.Domain;
-using FlightService.Infrastructure.CourierActivities;
-using FlightService.Infrastructure.Requests.CreateFlightReservation;
-using FlightService.Infrastructure.Requests.DeleteFlightReservation;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
@@ -14,9 +11,9 @@ using MediatR;
 using Moq;
 using Xunit;
 
-namespace FlightService.Tests;
+namespace CarService.Tests;
 
-public class FlightReservationActivityTest
+public class RentalDealActivityTest
 {
     [Trait("Category", "Unit")]
     [Fact]
@@ -25,16 +22,18 @@ public class FlightReservationActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var flightReservationActivity = new FlightReservationActivity(fakeMediator.Object);
-        var flightReservationHarness =
-            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(_ => flightReservationActivity,
-                _ => flightReservationActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync(new FlightReservation
+        var rentalDealActivity = new RentalDealActivity(fakeMediator.Object);
+        var rentalDealHarness =
+            harness.Activity<RentalDealActivity, RentalDealArgument, RentalDealLog>(_ => rentalDealActivity,
+                _ => rentalDealActivity);
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+            .ReturnsAsync(new RentalDeal
             {
-                Id = It.IsAny<Guid>().ToString(),
-                FlightId = It.IsAny<Guid>().ToString(),
-                SeatId = It.IsAny<Guid>().ToString()
+                Id = It.IsAny<Guid>()
+                    .ToString(),
+                RentFrom = It.IsAny<DateTimeOffset>(),
+                RentTo = It.IsAny<DateTimeOffset>(),
+                RentalCarId = It.IsAny<Guid>().ToString()
             })
             .Verifiable();
 
@@ -44,12 +43,13 @@ public class FlightReservationActivityTest
         {
             var trackingNumber = Guid.NewGuid();
             var builder = new RoutingSlipBuilder(trackingNumber);
-            var argument = new FlightReservationArgument
+            var argument = new RentalDealArgument
             {
-                FlightId = Guid.NewGuid().ToString(),
-                SeatId = Guid.NewGuid().ToString()
+                RentFrom = It.IsAny<DateTimeOffset>(),
+                RentTo = It.IsAny<DateTimeOffset>(),
+                RentalCarId = It.IsAny<Guid>().ToString()
             };
-            builder.AddActivity(flightReservationHarness.Name, flightReservationHarness.ExecuteAddress, argument);
+            builder.AddActivity(rentalDealHarness.Name, rentalDealHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompleted>();
             var completedContext = harness.SubscribeHandler<RoutingSlipCompleted>();
@@ -74,12 +74,12 @@ public class FlightReservationActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var rentCarActivity = new FlightReservationActivity(fakeMediator.Object);
+        var rentCarActivity = new RentalDealActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(_ => rentCarActivity,
+            harness.Activity<RentalDealActivity, RentalDealArgument, RentalDealLog>(_ => rentCarActivity,
                 _ => rentCarActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync((FlightReservation?)null)
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+            .ReturnsAsync((RentalDeal?)null)
             .Verifiable();
 
         //Act
@@ -88,10 +88,11 @@ public class FlightReservationActivityTest
         {
             var trackingNumber = Guid.NewGuid();
             var builder = new RoutingSlipBuilder(trackingNumber);
-            var argument = new FlightReservationArgument
+            var argument = new RentalDealArgument
             {
-                FlightId = Guid.NewGuid().ToString(),
-                SeatId = Guid.NewGuid().ToString()
+                RentFrom = It.IsAny<DateTimeOffset>(),
+                RentTo = It.IsAny<DateTimeOffset>(),
+                RentalCarId = It.IsAny<Guid>().ToString()
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -118,22 +119,24 @@ public class FlightReservationActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var rentCarActivity = new FlightReservationActivity(fakeMediator.Object);
+        var rentCarActivity = new RentalDealActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(_ => rentCarActivity,
+            harness.Activity<RentalDealActivity, RentalDealArgument, RentalDealLog>(_ => rentCarActivity,
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync(new FlightReservation
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+            .ReturnsAsync(new RentalDeal
             {
-                Id = It.IsAny<Guid>().ToString(),
-                FlightId = It.IsAny<Guid>().ToString(),
-                SeatId = It.IsAny<Guid>().ToString()
+                Id = It.IsAny<Guid>()
+                    .ToString(),
+                RentFrom = It.IsAny<DateTimeOffset>(),
+                RentTo = It.IsAny<DateTimeOffset>(),
+                RentalCarId = It.IsAny<Guid>().ToString()
             })
             .Verifiable();
 
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteFlightReservationRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentalDealRequest>(), CancellationToken.None))
             .ReturnsAsync(Unit.Value)
             .Verifiable();
 
@@ -143,10 +146,11 @@ public class FlightReservationActivityTest
         {
             var trackingNumber = Guid.NewGuid();
             var builder = new RoutingSlipBuilder(trackingNumber);
-            var bookHotelArgument = new FlightReservationArgument
+            var bookHotelArgument = new RentalDealArgument
             {
-                FlightId = Guid.NewGuid().ToString(),
-                SeatId = Guid.NewGuid().ToString()
+                RentFrom = It.IsAny<DateTimeOffset>(),
+                RentTo = It.IsAny<DateTimeOffset>(),
+                RentalCarId = It.IsAny<Guid>().ToString()
             };
             var testArgument = new TestArgument
             {

@@ -1,4 +1,4 @@
-namespace CarService.Contracts.RentCarActivity;
+namespace CarService.Contracts.RentalDeal;
 
 #nullable disable
 public record RentalDealArgument

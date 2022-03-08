@@ -20,7 +20,7 @@ public class RentalCarControllerTest : IClassFixture<WebApplicationFactory<Progr
     public async Task Post_ExpectCreated()
     {
         var client = _api.CreateClient();
-        var request = new RentalCarRequest
+        var request = new PostRentalCarRequest
         {
             CarModelNumber = Guid.NewGuid(),
             CarCompanyName = "Mercedes",
@@ -29,7 +29,7 @@ public class RentalCarControllerTest : IClassFixture<WebApplicationFactory<Progr
             Color = "Blue"
         };
         var response = await client.PostAsJsonAsync("api/v1/rentalcar", request);
-        var rentalCarResponse = await response.Content.ReadFromJsonAsync<RentalCarResponse>();
+        var rentalCarResponse = await response.Content.ReadFromJsonAsync<PostRentalCarResponse>();
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         Assert.NotNull(rentalCarResponse);

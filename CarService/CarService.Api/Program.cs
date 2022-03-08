@@ -1,7 +1,9 @@
 using CarService.Api;
+using CarService.Api.Validators;
 using CarService.Infrastructure;
 using CarService.Infrastructure.CourierActivities;
 using EventDispatcher;
+using FluentValidation.AspNetCore;
 using MassTransit;
 using Prometheus;
 using Prometheus.SystemMetrics;
@@ -38,6 +40,16 @@ try
 
     // Add services to the container.
     builder.Services.AddInfrastructureServices();
+    builder.Services.AddFluentValidation(options =>
+    {
+        options.DisableDataAnnotationsValidation = true;
+        options.AutomaticValidationEnabled = true;
+        options.RegisterValidatorsFromAssemblies(new[]
+        {
+            typeof(CarService.Api.Validators.FluentValidatorRegistration).Assembly,
+            typeof(CarService.Infrastructure.Validators.FluentValidatorRegistration).Assembly
+        });
+    });
     builder.Services.AddEventBus(builder.Configuration,
         configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
     builder.Services.AddMassTransitHostedService();

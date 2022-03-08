@@ -11,6 +11,6 @@ public class PostFlightRequestValidator : AbstractValidator<PostFlightRequest>
         RuleFor(x => x.AirPlaneId).NotEmpty();
         RuleFor(x => x.FromAirport).NotEmpty();
         RuleFor(x => x.ToAirport).NotEmpty();
-        RuleFor(x => x.To).LessThan(x => x.From);
+        RuleFor(x => x.To).GreaterThan(x => x.From);
     }
 }

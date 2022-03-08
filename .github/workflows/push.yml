@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core', 'TicketService.Contracts']
+        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core', 'TicketService.Contracts', 'Mediator.Core']
         include:
           - projects: CarService.Contracts
             service: CarService

@@ -1,4 +1,4 @@
-using CarService.Contracts.RentCarActivity;
+using CarService.Contracts.RentalDeal;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
 using CarService.Infrastructure.Requests.DeleteRentalDeal;
 using MassTransit.Courier;
@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CarService.Infrastructure.CourierActivities;
 
-public class RentalDealActivity : IActivity<RentalDealArgument, RentalDeaLog>
+public class RentalDealActivity : IActivity<RentalDealArgument, RentalDealLog>
 {
     private readonly IMediator _mediator;
 
@@ -27,7 +27,7 @@ public class RentalDealActivity : IActivity<RentalDealArgument, RentalDeaLog>
             context.Completed(new { RentalDealId = rentalDeal.Id });
     }
 
-    public async Task<CompensationResult> Compensate(CompensateContext<RentalDeaLog> context)
+    public async Task<CompensationResult> Compensate(CompensateContext<RentalDealLog> context)
     {
         await _mediator.Send(new DeleteRentalDealRequest(context.Log.RentalDealId));
         return context.Compensated();

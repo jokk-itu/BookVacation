@@ -23,7 +23,7 @@ public class AirplaneController : ControllerBase
     public async Task<IActionResult> PostAsync(PostAirplaneRequest request, CancellationToken cancellationToken = default)
     {
         var airPlane = await _mediator.Send(new CreateAirplaneRequest(request.ModelNumber, request.AirplaneMakerName, request.AirlineName, request.Seats), cancellationToken);
-        return Ok(new PostAirplaneResponse
+        return Created("", new PostAirplaneResponse
         {
             Id = airPlane.Id,
             AirlineName = airPlane.AirlineName,

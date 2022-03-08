@@ -22,10 +22,10 @@ public class BookHotelActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
+        var bookHotelActivity = new BookHotelActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
-                _ => rentCarActivity);
+            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => bookHotelActivity,
+                _ => bookHotelActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
             .ReturnsAsync(RequestResult.Ok)
             .Verifiable();
