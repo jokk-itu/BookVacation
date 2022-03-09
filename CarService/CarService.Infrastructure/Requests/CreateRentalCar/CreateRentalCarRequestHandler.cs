@@ -12,7 +12,7 @@ public class CreateRentalCarRequestHandler : IRequestHandler<CreateRentalCarRequ
     {
         _session = session;
     }
-    
+
     public async Task<RentalCar> Handle(CreateRentalCarRequest request, CancellationToken cancellationToken)
     {
         var rentalCar = new RentalCar

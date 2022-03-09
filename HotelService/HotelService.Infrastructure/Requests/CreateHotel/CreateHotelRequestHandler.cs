@@ -13,7 +13,7 @@ public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, Hot
     {
         _session = session;
     }
-    
+
     public async Task<Hotel?> Handle(CreateHotelRequest request, CancellationToken cancellationToken)
     {
         var conflictingHotel = await _session.Query<Hotel>()
@@ -22,10 +22,10 @@ public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, Hot
 
         if (conflictingHotel is not null)
             return null;
-        
+
         var hotel = new Hotel
         {
-            HotelRooms = Enumerable.Range(0, request.Rooms).Select(x => new HotelRoom {Id = Guid.NewGuid().ToString()}),
+            HotelRooms = Enumerable.Range(0, request.Rooms).Select(_ => new HotelRoom()),
             Country = request.Country,
             City = request.City,
             Address = request.Address

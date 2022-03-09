@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
                     circuitBreakerConfigurator.TrackingPeriod = TimeSpan.FromSeconds(1);
                     circuitBreakerConfigurator.TripThreshold = 10;
                 });
-                
+
                 factoryConfigurator.UseKillSwitch(killSwitchOptions => killSwitchOptions
                     .SetActivationThreshold(10)
                     .SetTripThreshold(0.15)

@@ -14,6 +14,7 @@ public class CreateHotelTicketRequestHandler : IRequestHandler<CreateHotelTicket
     {
         _minioService = minioService;
     }
+
     public async Task<RequestResult> Handle(CreateHotelTicketRequest request, CancellationToken cancellationToken)
     {
         var html = await new HotelTicketModel(request.HotelId, request.RoomId)

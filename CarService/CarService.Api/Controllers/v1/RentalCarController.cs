@@ -22,7 +22,8 @@ public class RentalCarController : ControllerBase
     [ProducesResponseType(typeof(PostRentalCarResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> Post([FromBody] PostRentalCarRequest request)
     {
-        var rentalCar = await _mediator.Send(new CreateRentalCarRequest(request.CarModelNumber, request.CarCompanyName, request.RentingCompanyName, request.DayPrice, request.Color));
+        var rentalCar = await _mediator.Send(new CreateRentalCarRequest(request.CarModelNumber, request.CarCompanyName,
+            request.RentingCompanyName, request.DayPrice, request.Color));
         return Created("", new PostRentalCarResponse
         {
             Id = rentalCar.Id,

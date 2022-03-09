@@ -1,12 +1,18 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=43FB8E5B_002D8A5E_002D4085_002D9FFC_002D5859E522E04F_002Fd_003ATemplates_002Fd_003AFlightTicket_002Ff_003AFlightTicket_002Erazor/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/joachim/.cache/JetBrains/Rider2021.3/resharper-host/temp/Rider/vAny/CoverageData/_BookVacation.-879985797/Snapshot/snapshot.utdcvr</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ee88f4d3_002D5dbd_002D4135_002Db5c3_002Dbb7f26b1073d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;FlightService&amp;gt;\&amp;lt;FlightService.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Solution /&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6fe88f5d_002D0656_002D4a2c_002D9998_002D86d0fd6fda24/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Handle_ExpectHotelRoomReservation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.CreateHotelRoomReservationRequestHandlerTest.Handle_ExpectHotelRoomReservation&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::974143DF-FA81-495E-99A6-7F8A3E133FC4::net6.0::FlightService.Tests.CreateAirplaneRequestHandlerTest.Handle_ExpectFlight&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::974143DF-FA81-495E-99A6-7F8A3E133FC4::net6.0::FlightService.Tests.CreateFlightReservationRequestHandlerTest.Handle_ExpectFlightReservation&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.CreateHotelRoomReservationRequestHandlerTest.Handle_GivenInvalidHotel_ExpectNull&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.CreateHotelRoomReservationRequestHandlerTest.Handle_GivenInvalidRoomId_ExpectNull&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.CreateHotelRoomReservationRequestHandlerTest.Handle_DoConflictingHotelRoomReservation_ExpectNull&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=fb459ea9_002D56e5_002D4117_002Da4f6_002Da980ea10b22b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Handle_ExpectError" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Solution /&gt;
-&lt;/SessionState&gt;</s:String>
+	
+	
 	
 	
 	

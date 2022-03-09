@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using FlightService.Api;
 using FlightService.Contracts.Airplane;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
@@ -16,7 +17,7 @@ public class AirplaneControllerTest : IClassFixture<WebApplicationFactory<Progra
     {
         _api = new WebApplicationFactory<Program>();
     }
-    
+
     [Trait("Category", "Integration")]
     [Fact]
     public async Task Post_ExpectCreated()

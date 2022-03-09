@@ -8,6 +8,6 @@ public record PostHotelRequest
     public string Country { get; init; }
 
     public string City { get; init; }
-    
+
     public string Address { get; init; }
 }

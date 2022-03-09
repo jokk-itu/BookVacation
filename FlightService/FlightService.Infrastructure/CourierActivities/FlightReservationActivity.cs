@@ -18,7 +18,8 @@ public class FlightReservationActivity : IActivity<FlightReservationArgument, Fl
     public async Task<ExecutionResult> Execute(ExecuteContext<FlightReservationArgument> context)
     {
         var flightReservation =
-            await _mediator.Send(new CreateFlightReservationRequest(context.Arguments.SeatId, context.Arguments.FlightId));
+            await _mediator.Send(
+                new CreateFlightReservationRequest(context.Arguments.SeatId, context.Arguments.FlightId));
         return flightReservation is null
             ? context.Faulted()
             : context.Completed(new FlightReservationLog { ReservationId = flightReservation.Id });

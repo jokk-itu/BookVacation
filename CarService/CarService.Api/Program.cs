@@ -46,7 +46,7 @@ try
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(CarService.Api.Validators.FluentValidatorRegistration).Assembly,
+            typeof(FluentValidatorRegistration).Assembly,
             typeof(CarService.Infrastructure.Validators.FluentValidatorRegistration).Assembly
         });
     });
@@ -89,6 +89,9 @@ finally
     Log.CloseAndFlush();
 }
 
-public partial class Program
+namespace CarService.Api
 {
+    public partial class Program
+    {
+    }
 }

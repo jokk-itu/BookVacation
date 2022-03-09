@@ -1,9 +1,6 @@
-using HotelService.Contracts.BookHotelActivity;
 using HotelService.Contracts.HotelRoomReservationActivity;
-using HotelService.Infrastructure.Requests;
-using HotelService.Infrastructure.Requests.CreateBookHotel;
-using HotelService.Infrastructure.Requests.DeleteBookHotel;
-using MassTransit;
+using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
+using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 using MassTransit.Courier;
 using MediatR;
 

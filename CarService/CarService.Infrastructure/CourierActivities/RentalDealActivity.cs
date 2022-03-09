@@ -19,12 +19,10 @@ public class RentalDealActivity : IActivity<RentalDealArgument, RentalDealLog>
     {
         var rentalDeal = await _mediator.Send(new CreateRentalDealRequest(
             context.Arguments.RentFrom,
-            context.Arguments.RentTo, 
+            context.Arguments.RentTo,
             context.Arguments.RentalCarId));
-        
-        return rentalDeal is null ? 
-            context.Faulted() : 
-            context.Completed(new { RentalDealId = rentalDeal.Id });
+
+        return rentalDeal is null ? context.Faulted() : context.Completed(new { RentalDealId = rentalDeal.Id });
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<RentalDealLog> context)

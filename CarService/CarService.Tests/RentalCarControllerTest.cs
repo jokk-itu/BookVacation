@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using CarService.Api;
 using CarService.Contracts.RentalCar;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
@@ -14,7 +15,7 @@ public class RentalCarControllerTest : IClassFixture<WebApplicationFactory<Progr
     {
         _api = new WebApplicationFactory<Program>();
     }
-    
+
     [Trait("Category", "Integration")]
     [Fact]
     public async Task Post_ExpectCreated()

@@ -20,16 +20,20 @@ public class AirplaneController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(PostAirplaneRequest), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostAsync(PostAirplaneRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> PostAsync(PostAirplaneRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var airPlane = await _mediator.Send(new CreateAirplaneRequest(request.ModelNumber, request.AirplaneMakerName, request.AirlineName, request.Seats), cancellationToken);
+        var airPlane =
+            await _mediator.Send(
+                new CreateAirplaneRequest(request.ModelNumber, request.AirplaneMakerName, request.AirlineName,
+                    request.Seats), cancellationToken);
         return Created("", new PostAirplaneResponse
         {
             Id = airPlane.Id,
             AirlineName = airPlane.AirlineName,
             AirplaneMakerName = airPlane.AirplaneMakerName,
             ModelNumber = airPlane.ModelNumber,
-            Seats = airPlane.Seats.Select(s => new SeatDTO {Id = s.Id})
+            Seats = airPlane.Seats.Select(s => new SeatDTO { Id = s.Id })
         });
     }
 }

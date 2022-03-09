@@ -17,7 +17,6 @@ public class DeleteFlightReservationRequestHandlerTest : RavenTestDriver
         //Act
 
         //Assert
-       
     }
 
     [Trait("Category", "Unit")]
@@ -29,8 +28,7 @@ public class DeleteFlightReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
 
         //Act
-       
+
         //Assert
-       
     }
 }

@@ -19,11 +19,14 @@ public class CreateVacationTicketActivity : IActivity<CreateVacationTicketArgume
 
     public async Task<ExecutionResult> Execute(ExecuteContext<CreateVacationTicketArgument> context)
     {
-        var carTicketResult = await _mediator.Send(new CreateCarTicketRequest(context.Arguments.CarId, context.Arguments.RentingCompanyId));
-        var hotelTicketResult = await _mediator.Send(new CreateHotelTicketRequest(context.Arguments.HotelId, context.Arguments.RoomId));
+        var carTicketResult =
+            await _mediator.Send(
+                new CreateCarTicketRequest(context.Arguments.CarId, context.Arguments.RentingCompanyId));
+        var hotelTicketResult =
+            await _mediator.Send(new CreateHotelTicketRequest(context.Arguments.HotelId, context.Arguments.RoomId));
         var flightTicketResult = await _mediator.Send(new CreateFlightTicketRequest(context.Arguments.FlightId));
-        if (carTicketResult == RequestResult.Created 
-            && hotelTicketResult == RequestResult.Created 
+        if (carTicketResult == RequestResult.Created
+            && hotelTicketResult == RequestResult.Created
             && flightTicketResult == RequestResult.Created)
             return context.Completed();
 

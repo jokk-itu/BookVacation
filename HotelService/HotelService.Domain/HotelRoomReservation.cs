@@ -10,6 +10,6 @@ public class HotelRoomReservation
     public string RoomId { get; init; }
 
     public DateTimeOffset From { get; init; }
-    
+
     public DateTimeOffset To { get; init; }
 }

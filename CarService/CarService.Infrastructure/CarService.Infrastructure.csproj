@@ -8,16 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="10.3.6" />
-        <PackageReference Include="MassTransit" Version="7.3.1" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-        <PackageReference Include="RavenDB.DependencyInjection" Version="4.0.2" />
+        <PackageReference Include="FluentValidation" Version="10.3.6"/>
+        <PackageReference Include="MassTransit" Version="7.3.1"/>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="RavenDB.DependencyInjection" Version="4.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CarService.Contracts\CarService.Contracts.csproj" />
-        <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj" />
+        <ProjectReference Include="..\CarService.Contracts\CarService.Contracts.csproj"/>
+        <ProjectReference Include="..\CarService.Domain\CarService.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

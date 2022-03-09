@@ -33,7 +33,7 @@ public class HotelController : ControllerBase
         return Created("", new PostHotelResponse
         {
             Id = hotel.Id,
-            HotelRooms = hotel.HotelRooms.Select(x => new HotelRoomDTO {Id = x.Id}),
+            HotelRooms = hotel.HotelRooms.Select(x => new HotelRoomDTO { Id = x.Id }),
             Country = hotel.Country,
             City = hotel.City,
             Address = hotel.Address

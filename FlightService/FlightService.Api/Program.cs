@@ -61,7 +61,7 @@ try
         configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
     builder.Services.AddMassTransitHostedService();
     builder.Services.AddSystemMetrics();
-    
+
 
     // Configure the HTTP request pipeline.
     var app = builder.Build();
@@ -88,6 +88,9 @@ finally
     Log.CloseAndFlush();
 }
 
-public partial class Program
+namespace FlightService.Api
 {
+    public partial class Program
+    {
+    }
 }

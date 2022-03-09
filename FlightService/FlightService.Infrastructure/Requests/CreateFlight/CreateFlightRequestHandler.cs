@@ -14,7 +14,7 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, F
     {
         _session = session;
     }
-    
+
     public async Task<Flight?> Handle(CreateFlightRequest request, CancellationToken cancellationToken)
     {
         var airplane = await _session.Query<Airplane>().Where(x => x.Id == request.AirplaneId)
@@ -22,16 +22,16 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, F
 
         if (airplane is null)
             return null;
-        
+
         var conflictingFlight = await _session.Query<Flight>()
             .Where(x => x.AirPlaneId == request.AirplaneId)
-            .Where(x => request.From >= x.From && request.From <= x.To || 
+            .Where(x => request.From >= x.From && request.From <= x.To ||
                         request.To >= x.From && request.To <= x.To)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (conflictingFlight is not null)
             return null;
-            
+
         var flight = new Flight
         {
             From = request.From,
@@ -45,4 +45,4 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, F
         await _session.SaveChangesAsync(cancellationToken);
         return flight;
     }
-};
+}

@@ -14,16 +14,6 @@ namespace FlightService.Tests;
 
 public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
 {
-    //Execute, invalid flight
-    
-    //Execute, invalid seat
-    
-    //Execute, conflictingFightReservation
-    
-    //Execute, Correct
-    
-    //Compensate, Correct
-    
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_InvalidFlightId_ExpectNull()
@@ -32,11 +22,13 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
 
-        var createFlightReservationRequest = new CreateFlightReservationRequest(Guid.Empty.ToString(), Guid.Empty.ToString());
+        var createFlightReservationRequest =
+            new CreateFlightReservationRequest(Guid.Empty.ToString(), Guid.Empty.ToString());
         var createFlightReservationHandler = new CreateFlightReservationRequestHandler(session);
-        
+
         //Act
-        var invalidFlight = await createFlightReservationHandler.Handle(createFlightReservationRequest, CancellationToken.None);
+        var invalidFlight =
+            await createFlightReservationHandler.Handle(createFlightReservationRequest, CancellationToken.None);
 
         //Assert
         Assert.Null(invalidFlight);
@@ -50,22 +42,23 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
 
-        var createAirplaneRequest = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 20);
+        var createAirplaneRequest = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 3);
         var createAirplaneHandler = new CreateAirplaneRequestHandler(session);
         var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
-        
-        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2), "Karup", "Kastrup", airplane.Id, 1200);
+
+        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
+            "Karup", "Kastrup", airplane.Id, 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
         var flight = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
-        
+
         var createFlightReservationRequest = new CreateFlightReservationRequest(airplane.Seats.First().Id, flight!.Id);
         var createFlightReservationHandler = new CreateFlightReservationRequestHandler(session);
-        
+
         //Act
         var expected =
             await createFlightReservationHandler.Handle(createFlightReservationRequest, CancellationToken.None);
         var actual = await session.Query<FlightReservation>().Where(x => x.Id == expected!.Id).FirstOrDefaultAsync();
-        
+
         //Assert
         Assert.NotNull(actual);
     }

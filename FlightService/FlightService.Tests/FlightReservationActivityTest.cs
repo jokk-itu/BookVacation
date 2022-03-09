@@ -27,7 +27,8 @@ public class FlightReservationActivityTest
         var harness = new InMemoryTestHarness();
         var flightReservationActivity = new FlightReservationActivity(fakeMediator.Object);
         var flightReservationHarness =
-            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(_ => flightReservationActivity,
+            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(
+                _ => flightReservationActivity,
                 _ => flightReservationActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
             .ReturnsAsync(new FlightReservation
@@ -76,7 +77,8 @@ public class FlightReservationActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new FlightReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(_ => rentCarActivity,
+            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
             .ReturnsAsync((FlightReservation?)null)
@@ -120,7 +122,8 @@ public class FlightReservationActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new FlightReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(_ => rentCarActivity,
+            harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();

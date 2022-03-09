@@ -1,3 +1,4 @@
+using Mediator.PipelineBehaviours;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

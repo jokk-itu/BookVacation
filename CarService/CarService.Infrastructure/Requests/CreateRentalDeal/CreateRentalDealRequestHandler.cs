@@ -22,7 +22,7 @@ public class CreateRentalDealRequestHandler : IRequestHandler<CreateRentalDealRe
 
         if (rentalCar is null)
             return null;
-        
+
         var conflictingRentDeal = await _session.Query<RentalDeal>()
             .Where(x => x.RentalCarId == request.RentalCarId)
             .Where(x =>

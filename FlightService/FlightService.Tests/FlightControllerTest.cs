@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using FlightService.Api;
 using FlightService.Contracts.Airplane;
 using FlightService.Contracts.Flight;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -17,7 +18,7 @@ public class FlightControllerTest : IClassFixture<WebApplicationFactory<Program>
     {
         _api = new WebApplicationFactory<Program>();
     }
-    
+
     [Trait("Category", "Integration")]
     [Fact]
     public async Task Post_ExpectCreated()
@@ -33,7 +34,7 @@ public class FlightControllerTest : IClassFixture<WebApplicationFactory<Program>
         var airplaneResponse = await client.PostAsJsonAsync("api/v1/airplane", airplaneRequest);
         airplaneResponse.EnsureSuccessStatusCode();
         var airplane = await airplaneResponse.Content.ReadFromJsonAsync<PostAirplaneResponse>();
-        
+
         var flightRequest = new PostFlightRequest
         {
             From = DateTimeOffset.Now.AddDays(1),

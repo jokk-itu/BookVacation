@@ -1,11 +1,9 @@
 using EventDispatcher.Test;
-using HotelService.Contracts.BookHotelActivity;
 using HotelService.Contracts.HotelRoomReservationActivity;
 using HotelService.Domain;
 using HotelService.Infrastructure.CourierActivities;
-using HotelService.Infrastructure.Requests;
-using HotelService.Infrastructure.Requests.CreateBookHotel;
-using HotelService.Infrastructure.Requests.DeleteBookHotel;
+using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
+using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
@@ -26,7 +24,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var bookHotelActivity = new HotelRoomReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(_ => bookHotelActivity,
+            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
+                _ => bookHotelActivity,
                 _ => bookHotelActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
             .ReturnsAsync(new HotelRoomReservation
@@ -79,7 +78,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new HotelRoomReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(_ => rentCarActivity,
+            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
             .ReturnsAsync((HotelRoomReservation?)null)
@@ -125,7 +125,8 @@ public class BookHotelActivityTest
         var harness = new InMemoryTestHarness();
         var rentCarActivity = new HotelRoomReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(_ => rentCarActivity,
+            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();

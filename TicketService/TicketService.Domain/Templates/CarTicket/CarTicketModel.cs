@@ -1,5 +1,3 @@
-using System.Text;
-
 namespace TicketService.Domain.Templates.CarTicket;
 
 public record CarTicketModel(Guid CarId, Guid RentingCompanyId)

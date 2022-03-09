@@ -39,9 +39,10 @@ public class MinioService : IMinioService
         {
             if (!await _minioClient.BucketExistsAsync(bucket, cancellationToken))
                 await _minioClient.MakeBucketAsync(bucket, cancellationToken: cancellationToken);
-            
+
             var stream = new MemoryStream(data);
-            await _minioClient.PutObjectAsync(bucket, ticketId, stream, data.Length, cancellationToken: cancellationToken);
+            await _minioClient.PutObjectAsync(bucket, ticketId, stream, data.Length,
+                cancellationToken: cancellationToken);
             await stream.DisposeAsync();
             return true;
         }

@@ -23,8 +23,9 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         var createAirplaneHandler = new CreateAirplaneRequestHandler(session);
         var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
         WaitForIndexing(store);
-        
-        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2), "Kastrup", "Karup", airplane.Id, 1200);
+
+        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
+            "Kastrup", "Karup", airplane.Id, 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
 
         //Act
@@ -43,16 +44,17 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
-        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2), "Kastrup", "Karup", Guid.Empty.ToString(), 1200);
+        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
+            "Kastrup", "Karup", Guid.Empty.ToString(), 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
-        
+
         //Act
         var invalidFlight = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
-        
+
         //Assert
         Assert.Null(invalidFlight);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_AddIdenticalFlight_ExpectConflict()
@@ -64,8 +66,9 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         var createAirplaneHandler = new CreateAirplaneRequestHandler(session);
         var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
         WaitForIndexing(store);
-        
-        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2), "Kastrup", "Karup", airplane.Id, 1200);
+
+        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
+            "Kastrup", "Karup", airplane.Id, 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
 
         //Act

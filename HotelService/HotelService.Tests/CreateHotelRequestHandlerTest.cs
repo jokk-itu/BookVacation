@@ -26,7 +26,7 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         //Assert
         Assert.NotNull(actual);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_GivenConflicting_ExpectNull()
@@ -38,7 +38,7 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         var handler = new CreateHotelRequestHandler(session);
         await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
-        
+
         //Act
         var conflictingHotel = await handler.Handle(request, CancellationToken.None);
 

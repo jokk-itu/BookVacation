@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using FlightService.Contracts.Flight;
 using FlightService.Infrastructure.Requests.CreateFlight;
 using MediatR;

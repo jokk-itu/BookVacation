@@ -59,7 +59,6 @@ try
 
             Exception? exception = null;
             for (var i = 0; i < maxRetry; ++i)
-            {
                 try
                 {
                     return await callback();
@@ -69,7 +68,6 @@ try
                     exception = e;
                     await Task.Delay(TimeSpan.FromSeconds(i));
                 }
-            }
 
             throw exception!;
         });
