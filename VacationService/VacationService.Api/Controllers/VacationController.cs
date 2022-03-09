@@ -5,6 +5,7 @@ using MassTransit;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Mono.Unix;
 using TicketService.Contracts.CreateVacationTickets;
 using VacationService.Contracts.Vacation;
 
@@ -24,6 +25,7 @@ public class VacationController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> PostAsync([FromBody] VacationRequest request)
     {
         var builder = new RoutingSlipBuilder(NewId.NextGuid());

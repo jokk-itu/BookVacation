@@ -40,12 +40,11 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
+      - ravendb
     networks:
       - service_net
       
@@ -64,12 +63,11 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
+      - ravendb
     networks:
       - service_net
       
@@ -88,19 +86,18 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
+      - ravendb
     networks:
       - service_net
       
   trackingservice:
     build:
       context: TrackingService
-      dockerfile: TrackingService.Worker/Dockerfile
+      dockerfile: TrackingService.Api/Dockerfile
       args:
         - Configuration=${Configuration}
         - Environment=${Environment}
@@ -112,12 +109,12 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/prometheus.env
       - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
+      - ravendb
     networks:
       - service_net
       
@@ -157,12 +154,10 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/minio.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
       - blobstorage
     networks:
       - service_net  
