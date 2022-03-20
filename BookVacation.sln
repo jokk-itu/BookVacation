@@ -503,4 +503,7 @@ Global
 		{EBC2841B-3126-47E1-9888-C6F3B3496BD8} = {206E1704-5230-4F31-9B2D-69F310BFFC6B}
 		{D6974667-8058-41B9-9D53-0E6B8AE43DAB} = {71EC5D3E-03A9-4274-B3A7-B1BBF401D926}
 	EndGlobalSection
+	GlobalSection(RiderSharedRunConfigurations) = postSolution
+		File = RiderConfigurations\Compose.run.xml
+	EndGlobalSection
 EndGlobal
