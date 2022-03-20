@@ -9,8 +9,6 @@ services:
       context: VacationService
       dockerfile: VacationService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     hostname: vacationservice
     container_name: vacationservice
@@ -30,8 +28,6 @@ services:
       context: FlightService
       dockerfile: FlightService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: flightservice
     hostname: flightservice
@@ -53,8 +49,6 @@ services:
       context: HotelService
       dockerfile: HotelService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: hotelservice
     hostname: hotelservice
@@ -76,8 +70,6 @@ services:
       context: CarService
       dockerfile: CarService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: carservice
     hostname: carservice
@@ -99,8 +91,6 @@ services:
       context: TrackingService
       dockerfile: TrackingService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: trackingservice
     hostname: trackingservice
@@ -109,7 +99,6 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/prometheus.env
       - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
@@ -123,8 +112,6 @@ services:
       context: GatewayService
       dockerfile: GatewayService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: gatewayservice
     hostname: gatewayservice
@@ -144,8 +131,6 @@ services:
       context: TicketService
       dockerfile: TicketService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: ticketservice
     hostname: ticketservice

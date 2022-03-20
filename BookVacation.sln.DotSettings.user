@@ -1,6 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=43FB8E5B_002D8A5E_002D4085_002D9FFC_002D5859E522E04F_002Fd_003ATemplates_002Fd_003AFlightTicket_002Ff_003AFlightTicket_002Erazor/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/joachim/.cache/JetBrains/Rider2021.3/resharper-host/temp/Rider/vAny/CoverageData/_BookVacation.-879985797/Snapshot/snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6fe88f5d_002D0656_002D4a2c_002D9998_002D86d0fd6fda24/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Handle_ExpectHotelRoomReservation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.CreateHotelRoomReservationRequestHandlerTest.Handle_ExpectHotelRoomReservation&lt;/TestId&gt;
