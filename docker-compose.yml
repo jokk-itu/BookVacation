@@ -6,8 +6,8 @@ networks:
 services:
   vacationservice:
     build:
-      context: VacationService
-      dockerfile: VacationService.Api/Dockerfile
+      context: .
+      dockerfile: VacationService/VacationService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     hostname: vacationservice
@@ -25,8 +25,8 @@ services:
 
   flightservice:
     build:
-      context: FlightService
-      dockerfile: FlightService.Api/Dockerfile
+      context: .
+      dockerfile: FlightService/FlightService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     container_name: flightservice
@@ -46,8 +46,8 @@ services:
       
   hotelservice:
     build:
-      context: HotelService
-      dockerfile: HotelService.Api/Dockerfile
+      context: .
+      dockerfile: HotelService/HotelService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     container_name: hotelservice
@@ -67,8 +67,8 @@ services:
       
   carservice:
     build:
-      context: CarService
-      dockerfile: CarService.Api/Dockerfile
+      context: .
+      dockerfile: CarService/CarService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     container_name: carservice
@@ -88,8 +88,8 @@ services:
       
   trackingservice:
     build:
-      context: TrackingService
-      dockerfile: TrackingService.Api/Dockerfile
+      context: .
+      dockerfile: TrackingService/TrackingService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     container_name: trackingservice
@@ -109,8 +109,8 @@ services:
       
   gatewayservice:
     build:
-      context: GatewayService
-      dockerfile: GatewayService.Api/Dockerfile
+      context: .
+      dockerfile: GatewayService/GatewayService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     container_name: gatewayservice
@@ -128,8 +128,8 @@ services:
       
   ticketservice:
     build:
-      context: TicketService
-      dockerfile: TicketService.Api/Dockerfile
+      context: .
+      dockerfile: TicketService/TicketService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
     container_name: ticketservice
@@ -220,7 +220,5 @@ services:
       - RAVEN_License_Eula_Accepted=true
       - RAVEN_Setup_Mode=None
       - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
-    volumes:
-      - ./RavenDB/data:/opt/RavenDB/Server/RavenData
     networks:
       - service_net   

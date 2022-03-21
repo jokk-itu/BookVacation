@@ -7,12 +7,12 @@ ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
-COPY ["CarService.Api/CarService.Api.csproj", "CarService.Api/"]
-COPY ["CarService.Contracts/CarService.Contracts.csproj", "CarService.Contracts/"]
-COPY ["CarService.Domain/CarService.Domain.csproj", "CarService.Domain/"]
-COPY ["CarService.Infrastructure/CarService.Infrastructure.csproj", "CarService.Infrastructure/"]
+COPY ["CarService/CarService.Api/CarService.Api.csproj", "CarService.Api/"]
+COPY ["CarService/CarService.Contracts/CarService.Contracts.csproj", "CarService.Contracts/"]
+COPY ["CarService/CarService.Domain/CarService.Domain.csproj", "CarService.Domain/"]
+COPY ["CarService/CarService.Infrastructure/CarService.Infrastructure.csproj", "CarService.Infrastructure/"]
 RUN dotnet restore "CarService.Api/CarService.Api.csproj"
-COPY . .
+COPY CarService/ .
 WORKDIR "/src/CarService.Api"
 RUN dotnet build "CarService.Api.csproj" -c Release -o /app/build
 

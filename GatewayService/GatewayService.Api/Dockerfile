@@ -8,9 +8,9 @@ ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
-COPY ["GatewayService.Api/GatewayService.Api.csproj", "GatewayService.Api/"]
+COPY ["GatewayService/GatewayService.Api/GatewayService.Api.csproj", "GatewayService.Api/"]
 RUN dotnet restore "GatewayService.Api/GatewayService.Api.csproj"
-COPY . .
+COPY GatewayService/ .
 WORKDIR "/src/GatewayService.Api"
 RUN dotnet build "GatewayService.Api.csproj" -c Release -o /app/build
 

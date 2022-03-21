@@ -7,12 +7,12 @@ ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
-COPY ["TrackingService.Api/TrackingService.Api.csproj", "TrackingService.Api/"]
-COPY ["TrackingService.Contracts/TrackingService.Contracts.csproj", "TrackingService.Contracts/"]
-COPY ["TrackingService.Domain/TrackingService.Domain.csproj", "TrackingService.Domain/"]
-COPY ["TrackingService.Infrastructure/TrackingService.Infrastructure.csproj", "TrackingService.Infrastructure/"]
+COPY ["TrackingService/TrackingService.Api/TrackingService.Api.csproj", "TrackingService.Api/"]
+COPY ["TrackingService/TrackingService.Contracts/TrackingService.Contracts.csproj", "TrackingService.Contracts/"]
+COPY ["TrackingService/TrackingService.Domain/TrackingService.Domain.csproj", "TrackingService.Domain/"]
+COPY ["TrackingService/TrackingService.Infrastructure/TrackingService.Infrastructure.csproj", "TrackingService.Infrastructure/"]
 RUN dotnet restore "TrackingService.Api/TrackingService.Api.csproj"
-COPY . .
+COPY TrackingService/ .
 WORKDIR "/src/TrackingService.Api"
 RUN dotnet build "TrackingService.Api.csproj" -c Release -o /app/build
 

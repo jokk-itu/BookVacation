@@ -26,8 +26,8 @@ public class UpdateTrackingRequestHandler : IRequestHandler<UpdateTrackingReques
 
         tracking.Statuses.ToList().Add(new Status
         {
-            Result = null,
-            OccuredAt = default
+            Result = request.Result,
+            OccuredAt = request.OccuredAt
         });
 
         return tracking;

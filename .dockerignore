@@ -7,4 +7,5 @@ Neo4j
 .sonarqube
 .git
 .github
-RavenDB
+RiderConfiguration/
+**/*.Tests

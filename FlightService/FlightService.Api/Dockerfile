@@ -7,12 +7,12 @@ ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
-COPY ["FlightService.Api/FlightService.Api.csproj", "FlightService.Api/"]
-COPY ["FlightService.Contracts/FlightService.Contracts.csproj", "FlightService.Contracts/"]
-COPY ["FlightService.Infrastructure/FlightService.Infrastructure.csproj", "FlightService.Infrastructure/"]
-COPY ["FlightService.Domain/FlightService.Domain.csproj", "FlightService.Domain/"]
+COPY ["FlightService/FlightService.Api/FlightService.Api.csproj", "FlightService.Api/"]
+COPY ["FlightService/FlightService.Contracts/FlightService.Contracts.csproj", "FlightService.Contracts/"]
+COPY ["FlightService/FlightService.Infrastructure/FlightService.Infrastructure.csproj", "FlightService.Infrastructure/"]
+COPY ["FlightService/FlightService.Domain/FlightService.Domain.csproj", "FlightService.Domain/"]
 RUN dotnet restore "FlightService.Api/FlightService.Api.csproj"
-COPY . .
+COPY FlightService/ .
 WORKDIR "/src/FlightService.Api"
 RUN dotnet build "FlightService.Api.csproj" -c Release -o /app/build
 

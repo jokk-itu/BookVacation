@@ -7,12 +7,12 @@ ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
-COPY ["HotelService.Api/HotelService.Api.csproj", "HotelService.Api/"]
-COPY ["HotelService.Contracts/HotelService.Contracts.csproj", "HotelService.Contracts/"]
-COPY ["HotelService.Domain/HotelService.Domain.csproj", "HotelService.Domain/"]
-COPY ["HotelService.Infrastructure/HotelService.Infrastructure.csproj", "HotelService.Infrastructure/"]
+COPY ["HotelService/HotelService.Api/HotelService.Api.csproj", "HotelService.Api/"]
+COPY ["HotelService/HotelService.Contracts/HotelService.Contracts.csproj", "HotelService.Contracts/"]
+COPY ["HotelService/HotelService.Domain/HotelService.Domain.csproj", "HotelService.Domain/"]
+COPY ["HotelService/HotelService.Infrastructure/HotelService.Infrastructure.csproj", "HotelService.Infrastructure/"]
 RUN dotnet restore "HotelService.Api/HotelService.Api.csproj"
-COPY . .
+COPY HotelService .
 WORKDIR "/src/HotelService.Api"
 RUN dotnet build "HotelService.Api.csproj" -c Release -o /app/build
 

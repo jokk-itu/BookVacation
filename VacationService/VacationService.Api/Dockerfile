@@ -7,10 +7,10 @@ ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
 COPY ["NuGet.config", "NuGet.config"]
-COPY ["VacationService.Api/VacationService.Api.csproj", "VacationService.Api/"]
-COPY ["VacationService.Contracts/VacationService.Contracts.csproj", "VacationService.Contracts/"]
+COPY ["VacationService/VacationService.Api/VacationService.Api.csproj", "VacationService.Api/"]
+COPY ["VacationService/VacationService.Contracts/VacationService.Contracts.csproj", "VacationService.Contracts/"]
 RUN dotnet restore "VacationService.Api/VacationService.Api.csproj"
-COPY . .
+COPY VacationService/ .
 WORKDIR "/src/VacationService.Api"
 RUN dotnet build "VacationService.Api.csproj" -c Release -o /app/build
 
