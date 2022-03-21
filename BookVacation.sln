@@ -66,13 +66,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketService.Tests", "TicketService\TicketService.Tests\TicketService.Tests.csproj", "{EFD8D234-C54D-4E47-8233-4CA30C6C383F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventDispatcher", "EventDispatcher", "{A7F3336D-1F07-441D-9CBE-B918D1E8DE76}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Tests", "TrackingService\TrackingService.Tests\TrackingService.Tests.csproj", "{BE178D0F-EC26-467A-9D2F-AD990578DB3D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mediator", "Mediator", "{498AD719-EEA4-4A8A-9E71-8B7C4D3AC9F4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Core", "Mediator.Core\Mediator.Core.csproj", "{D16191CA-F809-4FB1-B3FF-7FBA1B344ECE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediator.Core", "Mediator\Mediator.Core\Mediator.Core.csproj", "{D16191CA-F809-4FB1-B3FF-7FBA1B344ECE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Domain", "TrackingService\TrackingService.Domain\TrackingService.Domain.csproj", "{6CB547B3-0419-4F32-96C8-3D4C878904F2}"
 EndProject
@@ -80,9 +76,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Contracts",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Api", "TrackingService\TrackingService.Api\TrackingService.Api.csproj", "{EBC2841B-3126-47E1-9888-C6F3B3496BD8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migration", "Migration", "{71EC5D3E-03A9-4274-B3A7-B1BBF401D926}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migration.Core", "Migration.Core\Migration.Core.csproj", "{D6974667-8058-41B9-9D53-0E6B8AE43DAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migration.Core", "Migration\Migration.Core\Migration.Core.csproj", "{D6974667-8058-41B9-9D53-0E6B8AE43DAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
