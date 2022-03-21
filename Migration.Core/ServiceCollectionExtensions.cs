@@ -32,8 +32,7 @@ public static class ServiceCollectionExtensions
 
             return documentStore;
         });
-        services.AddScoped<IAsyncDocumentSession>(sp =>
-            sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
+        services.AddScoped<IAsyncDocumentSession>(sp => sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
         return services;
     }
 }

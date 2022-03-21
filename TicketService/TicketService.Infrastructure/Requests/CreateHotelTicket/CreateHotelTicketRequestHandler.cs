@@ -23,7 +23,7 @@ public class CreateHotelTicketRequestHandler : IRequestHandler<CreateHotelTicket
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);
         var isSent = await _minioService.PutTicketAsync(
-            BucketName.CarTicketBucket,
+            BucketName.HotelTicketBucket,
             Guid.NewGuid().ToString(),
             pdf.ToArray(),
             cancellationToken);

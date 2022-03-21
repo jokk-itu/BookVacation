@@ -24,7 +24,7 @@ public class CreateFlightTicketRequestHandler : IRequestHandler<CreateFlightTick
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);
         var isSent = await _minioService.PutTicketAsync(
-            BucketName.CarTicketBucket,
+            BucketName.FlightTicketBucket,
             Guid.NewGuid().ToString(),
             pdf.ToArray(),
             cancellationToken);
