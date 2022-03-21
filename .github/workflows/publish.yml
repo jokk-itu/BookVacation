@@ -27,7 +27,7 @@ jobs:
             folder: CarService.Api
           - services: TrackingService
             repository: trackingservice
-            folder: TrackingService.Worker
+            folder: TrackingService.Api
           - services: GatewayService
             repository: gatewayservice
             folder: GatewayService.Api
