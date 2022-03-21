@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
                     circuitBreakerConfigurator.TrackingPeriod = TimeSpan.FromSeconds(1);
                     circuitBreakerConfigurator.TripThreshold = 10;
                 });
-                
+
                 factoryConfigurator.UseKillSwitch(killSwitchOptions => killSwitchOptions
                     .SetActivationThreshold(10)
                     .SetTripThreshold(0.15)
@@ -53,12 +53,12 @@ public static class ServiceCollectionExtensions
                 factoryConfigurator.ConnectReceiveObserver(
                     new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
 
-                var hostname = configuration["EventBus:Hostname"] ?? throw new ArgumentNullException();
-                var port = configuration["EventBus:Port"] ?? throw new ArgumentNullException();
+                var hostname = configuration["EventBus:Hostname"];
+                var port = configuration["EventBus:Port"];
                 factoryConfigurator.Host($"rabbitmq://{hostname}:{port}", hostConfigurator =>
                 {
-                    hostConfigurator.Username(configuration["EventBus:Username"] ?? throw new ArgumentNullException());
-                    hostConfigurator.Password(configuration["EventBus:Password"] ?? throw new ArgumentNullException());
+                    hostConfigurator.Username(configuration["EventBus:Username"]);
+                    hostConfigurator.Password(configuration["EventBus:Password"]);
                 });
                 factoryConfigurator.ConfigureEndpoints(busContext);
             });

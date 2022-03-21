@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core', 'TicketService.Contracts']
+        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core', 'TicketService.Contracts', 'Mediator.Core', 'TrackingService.Contracts', 'Migration.Core']
         include:
           - projects: CarService.Contracts
             service: CarService
@@ -25,7 +25,13 @@ jobs:
           - projects: EventDispatcher.Core
             service: EventDispatcher
           - projects: TicketService.Contracts
-            service: TicketService      
+            service: TicketService
+          - projects: Mediator.Core
+            service: Mediator
+          - projects: TrackingService.Contracts
+            service: TrackingService
+          - projects: Migration.Core
+            service: Migration      
     steps:
     - name: Checkout
       uses: actions/checkout/@v2

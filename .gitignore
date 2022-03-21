@@ -4,3 +4,5 @@
 .vscode
 .ionide
 .sonarqube
+RavenDBServer
+RavenDB

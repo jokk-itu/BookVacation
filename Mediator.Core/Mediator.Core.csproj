@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>Mediator</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>Mediator</PackageId>
+        <AssemblyName>Mediator</AssemblyName>
+        <Title>Mediator</Title>
+        <Authors>Joachim Køcher Kelsen</Authors>
+        <Company>jokk-itu</Company>
+        <PackageDescription>Mediator pipeline behaviours.</PackageDescription>
+        <PackageProjectUrl>https://github.com/jokk-itu/BookVacation</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jokk-itu/BookVacation</RepositoryUrl>
+        <VersionPrefix Condition="$(CI) != ''">$([System.DateTime]::UtcNow.ToString("yyyyMMdd").Insert(4, ".").Insert(7, ".").Insert(10, "."))$(BuildNumber)</VersionPrefix>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="10.3.6" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    </ItemGroup>
+
+</Project>

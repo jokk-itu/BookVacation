@@ -12,7 +12,7 @@ public class MinioService : IMinioService
         _minioClient = minioClient;
     }
 
-    public async Task<Stream?> FetchTicketAsync(string bucket, string ticketId,
+    public async Task<Stream?> GetTicketAsync(string bucket, string ticketId,
         CancellationToken cancellationToken = default)
     {
         try
@@ -39,9 +39,10 @@ public class MinioService : IMinioService
         {
             if (!await _minioClient.BucketExistsAsync(bucket, cancellationToken))
                 await _minioClient.MakeBucketAsync(bucket, cancellationToken: cancellationToken);
-            
+
             var stream = new MemoryStream(data);
-            await _minioClient.PutObjectAsync(bucket, ticketId, stream, data.Length, cancellationToken: cancellationToken);
+            await _minioClient.PutObjectAsync(bucket, ticketId, stream, data.Length,
+                cancellationToken: cancellationToken);
             await stream.DisposeAsync();
             return true;
         }

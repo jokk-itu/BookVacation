@@ -27,6 +27,6 @@ public class LogSendFilter<T> : IFilter<SendContext<T>> where T : class
 
     public void Probe(ProbeContext context)
     {
-        context.CreateScope("SendLog");
+        context.CreateScope("SendScope");
     }
 }

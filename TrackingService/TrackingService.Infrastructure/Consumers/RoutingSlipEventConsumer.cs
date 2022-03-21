@@ -1,6 +1,8 @@
 using MassTransit;
 using MassTransit.Courier.Contracts;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using TrackingService.Infrastructure.Requests.UpdateTracking;
 
 namespace TrackingService.Infrastructure.Consumers;
 
@@ -13,51 +15,50 @@ public class RoutingSlipEventConsumer :
     IConsumer<RoutingSlipActivityFaulted>,
     IConsumer<RoutingSlipActivityCompensationFailed>
 {
-    private readonly ILogger<RoutingSlipEventConsumer> _logger;
+    private readonly IMediator _mediator;
 
-    public RoutingSlipEventConsumer(ILogger<RoutingSlipEventConsumer> logger)
+    public RoutingSlipEventConsumer(IMediator mediator)
     {
-        _logger = logger;
+        _mediator = mediator;
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipActivityCompensated> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipActivityCompensationFailed> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipActivityCompleted> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipActivityFaulted> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipCompensationFailed> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipCompleted> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
     public async Task Consume(ConsumeContext<RoutingSlipFaulted> context)
     {
-        await LogPerformance(context, context.Message.Duration);
+        await UpdateTracking(context.Message.TrackingNumber.ToString(), context.Message.GetType().Name, context.Message.Timestamp);
     }
 
-    private Task LogPerformance<T>(ConsumeContext<T> context, TimeSpan elapsed) where T : class
+    private async Task UpdateTracking(string trackingNumber, string result, DateTimeOffset occuredAt)
     {
-        _logger.LogInformation("{RoutingSlipEvent} took {Elapsed} ms", context.Message.GetType().Name, elapsed);
-        return Task.CompletedTask;
+        await _mediator.Send(new UpdateTrackingRequest(trackingNumber, result, occuredAt));
     }
 }

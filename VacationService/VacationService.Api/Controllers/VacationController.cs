@@ -5,6 +5,8 @@ using MassTransit;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Mono.Unix;
+using TicketService.Contracts.CreateVacationTickets;
 using VacationService.Contracts.Vacation;
 
 namespace VacationService.Api.Controllers;
@@ -23,25 +25,31 @@ public class VacationController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> PostAsync([FromBody] VacationRequest request)
     {
         var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
         builder.AddActivity("BookFlight",
-            new Uri("queue:book-flight_execute"),
+            new Uri("queue:flight-reservation_execute"),
             new BookFlightArgument { FlightId = request.FlightId, SeatId = request.SeatId });
 
         builder.AddActivity("BookHotel",
-            new Uri("queue:book-hotel_execute"),
+            new Uri("queue:hotel-room-reservation_execute"),
             new BookHotelArgument { HotelId = request.HotelId, Days = request.RentHotelDays, RoomId = request.RoomId });
 
         builder.AddActivity("RentCar",
-            new Uri("queue:rent-car_execute"),
-            new RentCarArgument { CarId = request.CarId, RentingCompanyId = request.RentingCompanyId, Days = request.RentCarDays });
+            new Uri("queue:rental-deal_execute"),
+            new RentCarArgument
+                { CarId = request.CarId, RentingCompanyId = request.RentingCompanyId, Days = request.RentCarDays });
 
         builder.AddActivity("CreateVacationTicket",
             new Uri("queue:create-vacation-ticket_execute"),
-            new { FlightId = request.FlightId, HotelId = request.HotelId, RoomId = request.RoomId, CarId = request.CarId, RentingCompanyId = request.RentingCompanyId });
+            new CreateVacationTicketArgument
+            {
+                FlightId = request.FlightId, HotelId = request.HotelId, RoomId = request.RoomId, CarId = request.CarId,
+                RentingCompanyId = request.RentingCompanyId
+            });
 
         builder.AddSubscription(
             new Uri("queue:routing-slip-event"),

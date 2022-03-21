@@ -6,11 +6,9 @@ networks:
 services:
   vacationservice:
     build:
-      context: VacationService
-      dockerfile: VacationService.Api/Dockerfile
+      context: .
+      dockerfile: VacationService/VacationService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     hostname: vacationservice
     container_name: vacationservice
@@ -27,11 +25,9 @@ services:
 
   flightservice:
     build:
-      context: FlightService
-      dockerfile: FlightService.Api/Dockerfile
+      context: .
+      dockerfile: FlightService/FlightService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: flightservice
     hostname: flightservice
@@ -40,21 +36,19 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
+      - ravendb
     networks:
       - service_net
       
   hotelservice:
     build:
-      context: HotelService
-      dockerfile: HotelService.Api/Dockerfile
+      context: .
+      dockerfile: HotelService/HotelService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: hotelservice
     hostname: hotelservice
@@ -63,21 +57,19 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
+      - ravendb
     networks:
       - service_net
       
   carservice:
     build:
-      context: CarService
-      dockerfile: CarService.Api/Dockerfile
+      context: .
+      dockerfile: CarService/CarService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: carservice
     hostname: carservice
@@ -86,21 +78,19 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
+      - ravendb
     networks:
       - service_net
       
   trackingservice:
     build:
-      context: TrackingService
-      dockerfile: TrackingService.Worker/Dockerfile
+      context: .
+      dockerfile: TrackingService/TrackingService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: trackingservice
     hostname: trackingservice
@@ -109,21 +99,19 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
-      - ./EnvironmentFiles/prometheus.env
+      - ./EnvironmentFiles/ravendb.env
     depends_on:
       - eventbus
       - logger
+      - ravendb
     networks:
       - service_net
       
   gatewayservice:
     build:
-      context: GatewayService
-      dockerfile: GatewayService.Api/Dockerfile
+      context: .
+      dockerfile: GatewayService/GatewayService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: gatewayservice
     hostname: gatewayservice
@@ -140,11 +128,9 @@ services:
       
   ticketservice:
     build:
-      context: TicketService
-      dockerfile: TicketService.Api/Dockerfile
+      context: .
+      dockerfile: TicketService/TicketService.Api/Dockerfile
       args:
-        - Configuration=${Configuration}
-        - Environment=${Environment}
         - GithubToken=${NUGET_API}
     container_name: ticketservice
     hostname: ticketservice
@@ -153,12 +139,10 @@ services:
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/neo4j.env
       - ./EnvironmentFiles/minio.env
     depends_on:
       - eventbus
       - logger
-      - neo4j
       - blobstorage
     networks:
       - service_net  
@@ -187,21 +171,6 @@ services:
       - ./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins
     networks:
       - service_net
-      
-  neo4j:
-    image: neo4j:latest
-    container_name: neo4j
-    hostname: neo4j
-    environment:
-      - NEO4J_AUTH=neo4j/test
-    networks:
-      - service_net
-    volumes:
-      - ./Neo4j/neo4j.conf:/conf  
-      - ./Neo4j/initialize.cypher:/initialize.cypher
-    ports:
-      - "7474:7474"
-      - "7687:7687"
       
   prometheus:
     image: prom/prometheus
@@ -238,4 +207,18 @@ services:
       - MINIO_ROOT_PASSWORD=secret1234
     command: minio server /data --console-address ":9001"  
     networks:
-      - service_net        
+      - service_net
+      
+  ravendb:
+    image: ravendb/ravendb:ubuntu-latest
+    hostname: ravendb
+    container_name: ravendb
+    ports:
+      - 8080:8080
+      - 38888:38888
+    environment:
+      - RAVEN_License_Eula_Accepted=true
+      - RAVEN_Setup_Mode=None
+      - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
+    networks:
+      - service_net   

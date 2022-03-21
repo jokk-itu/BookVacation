@@ -27,6 +27,6 @@ public class LogExecuteFilter<T> : IFilter<ExecuteContext<T>> where T : class
 
     public void Probe(ProbeContext context)
     {
-        context.CreateScope("LogExecute");
+        context.CreateScope("ExecuteScope");
     }
 }

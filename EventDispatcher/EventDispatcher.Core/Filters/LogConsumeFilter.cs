@@ -27,6 +27,6 @@ public class LogConsumeFilter<T> : IFilter<ConsumeContext<T>> where T : class
 
     public void Probe(ProbeContext context)
     {
-        context.CreateScope("ConsumeLog");
+        context.CreateScope("ConsumeScope");
     }
 }

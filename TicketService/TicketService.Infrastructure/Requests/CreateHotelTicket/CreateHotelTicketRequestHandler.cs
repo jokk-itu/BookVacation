@@ -14,6 +14,7 @@ public class CreateHotelTicketRequestHandler : IRequestHandler<CreateHotelTicket
     {
         _minioService = minioService;
     }
+
     public async Task<RequestResult> Handle(CreateHotelTicketRequest request, CancellationToken cancellationToken)
     {
         var html = await new HotelTicketModel(request.HotelId, request.RoomId)
@@ -22,7 +23,7 @@ public class CreateHotelTicketRequestHandler : IRequestHandler<CreateHotelTicket
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);
         var isSent = await _minioService.PutTicketAsync(
-            BucketName.CarTicketBucket,
+            BucketName.HotelTicketBucket,
             Guid.NewGuid().ToString(),
             pdf.ToArray(),
             cancellationToken);

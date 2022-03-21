@@ -8,14 +8,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="7.3.1"/>
-        <PackageReference Include="MediatR" Version="10.0.1"/>
-        <PackageReference Include="Neo4j.Driver" Version="4.4.0"/>
+        <PackageReference Include="FluentValidation" Version="10.3.6" />
+        <PackageReference Include="MassTransit" Version="7.3.1" />
+        <PackageReference Include="Mediator" Version="1.0.1" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Migration" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HotelService.Contracts\HotelService.Contracts.csproj"/>
-        <ProjectReference Include="..\HotelService.Domain\HotelService.Domain.csproj"/>
+        <ProjectReference Include="..\HotelService.Contracts\HotelService.Contracts.csproj" />
+        <ProjectReference Include="..\HotelService.Domain\HotelService.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+            <HintPath>..\..\..\..\..\..\usr\share\dotnet\shared\Microsoft.AspNetCore.App\6.0.2\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

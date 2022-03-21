@@ -27,6 +27,6 @@ public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T : cl
 
     public void Probe(ProbeContext context)
     {
-        context.CreateScope("LogCompensate");
+        context.CreateScope("CompensateScope");
     }
 }

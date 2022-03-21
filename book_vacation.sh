@@ -1,7 +1,7 @@
 #! /bin/sh
 
 curl -X 'POST' \
-  'http://localhost:5000/api/v1/Vacation' \
+  'http://localhost:5000/api/v1/vacation' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,11 +1,10 @@
 using EventDispatcher;
 using FlightService.Api;
 using FlightService.Api.Validators;
+using FlightService.Infrastructure;
 using FlightService.Infrastructure.CourierActivities;
 using FluentValidation.AspNetCore;
 using MassTransit;
-using MediatR;
-using Neo4j.Driver;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
@@ -35,20 +34,20 @@ try
             .Enrich.FromLogContext()
             .MinimumLevel.Override("FlightService", LogEventLevel.Information)
             .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
-            .MinimumLevel.Override("Neo4j", LogEventLevel.Information)
+            .MinimumLevel.Override("Raven", LogEventLevel.Information)
             .MinimumLevel.Warning();
     });
 
 // Add services to the container.
+    builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
     builder.Services.AddFluentValidation(options =>
     {
-        options.DisableDataAnnotationsValidation = false;
+        options.DisableDataAnnotationsValidation = true;
         options.AutomaticValidationEnabled = true;
-        options.RegisterValidatorsFromAssemblyContaining<AssemblyRegistration>();
+        options.RegisterValidatorsFromAssemblyContaining<FluentValidatorRegistration>();
     });
-    builder.Services.AddMediatR(typeof(AssemblyRegistration).Assembly);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
     builder.Services.AddVersionedApiExplorer(config =>
@@ -58,18 +57,13 @@ try
     });
     builder.Services.AddSwaggerGen();
     builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
-    builder.Services.AddMediatR(typeof(FlightService.Infrastructure.Requests.AssemblyRegistration));
     builder.Services.AddEventBus(builder.Configuration,
         configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
-    builder.Services.AddSingleton(_ => GraphDatabase.Driver(
-        builder.Configuration["Neo4j:Uri"],
-        AuthTokens.Basic(
-            builder.Configuration["Neo4j:Username"],
-            builder.Configuration["Neo4j:Password"])));
     builder.Services.AddMassTransitHostedService();
     builder.Services.AddSystemMetrics();
 
-// Configure the HTTP request pipeline.
+
+    // Configure the HTTP request pipeline.
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
 
@@ -94,6 +88,9 @@ finally
     Log.CloseAndFlush();
 }
 
-public partial class Program
+namespace FlightService.Api
 {
+    public partial class Program
+    {
+    }
 }

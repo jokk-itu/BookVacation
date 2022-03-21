@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>TrackingService.Contracts</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>TrackingService.Contracts</PackageId>
+        <AssemblyName>TrackingService.Contracts</AssemblyName>
+        <Title>TrackingService.Contracts</Title>
+        <Authors>Joachim Køcher Kelsen</Authors>
+        <Company>jokk-itu</Company>
+        <PackageDescription>Contracts for the TrackingService</PackageDescription>
+        <PackageProjectUrl>https://github.com/jokk-itu/BookVacation</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jokk-itu/BookVacation</RepositoryUrl>
+        <VersionPrefix Condition="$(CI) != ''">$([System.DateTime]::UtcNow.ToString("yyyyMMdd").Insert(4, ".").Insert(7, ".").Insert(10, "."))$(BuildNumber)</VersionPrefix>
+    </PropertyGroup>
+
+</Project>

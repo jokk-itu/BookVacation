@@ -42,8 +42,8 @@ Masstransit and Api data to illustrate in grafana.
 ## Seq
 Sends all logs to Seq as a sink in Serilog.
 
-## Neo4j
-The DBMS for all data. There is currently only one database, which is the limit for the community edition.
+## RavenDB
+The DBMS for all data. There is one database pr. service.
 
 ## RabbitMQ
 The broker to handle messages between services.

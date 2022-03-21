@@ -1,9 +1,9 @@
 using EventDispatcher.Test;
-using HotelService.Contracts.BookHotelActivity;
+using HotelService.Contracts.HotelRoomReservationActivity;
+using HotelService.Domain;
 using HotelService.Infrastructure.CourierActivities;
-using HotelService.Infrastructure.Requests;
-using HotelService.Infrastructure.Requests.CreateBookHotel;
-using HotelService.Infrastructure.Requests.DeleteBookHotel;
+using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
+using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
@@ -22,12 +22,20 @@ public class BookHotelActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
+        var bookHotelActivity = new HotelRoomReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
-                _ => rentCarActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
-            .ReturnsAsync(RequestResult.Ok)
+            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
+                _ => bookHotelActivity,
+                _ => bookHotelActivity);
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
+            .ReturnsAsync(new HotelRoomReservation
+            {
+                Id = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>().ToString(),
+                RoomId = It.IsAny<Guid>().ToString(),
+                From = It.IsAny<DateTimeOffset>(),
+                To = It.IsAny<DateTimeOffset>()
+            })
             .Verifiable();
 
         //Act
@@ -36,11 +44,12 @@ public class BookHotelActivityTest
         {
             var trackingNumber = Guid.NewGuid();
             var builder = new RoutingSlipBuilder(trackingNumber);
-            var argument = new BookHotelArgument
+            var argument = new HotelRoomReservationArgument
             {
-                HotelId = Guid.NewGuid(),
-                Days = 10u,
-                RoomId = Guid.NewGuid()
+                HotelId = It.IsAny<Guid>().ToString(),
+                RoomId = It.IsAny<Guid>().ToString(),
+                From = It.IsAny<DateTimeOffset>(),
+                To = It.IsAny<DateTimeOffset>()
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -67,12 +76,13 @@ public class BookHotelActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
+        var rentCarActivity = new HotelRoomReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
+            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
+                _ => rentCarActivity,
                 _ => rentCarActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
-            .ReturnsAsync(RequestResult.Error)
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
+            .ReturnsAsync((HotelRoomReservation?)null)
             .Verifiable();
 
         //Act
@@ -81,11 +91,12 @@ public class BookHotelActivityTest
         {
             var trackingNumber = Guid.NewGuid();
             var builder = new RoutingSlipBuilder(trackingNumber);
-            var argument = new BookHotelArgument
+            var argument = new HotelRoomReservationArgument
             {
-                HotelId = Guid.NewGuid(),
-                Days = 10u,
-                RoomId = Guid.NewGuid()
+                HotelId = It.IsAny<Guid>().ToString(),
+                RoomId = It.IsAny<Guid>().ToString(),
+                From = It.IsAny<DateTimeOffset>(),
+                To = It.IsAny<DateTimeOffset>()
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -112,18 +123,26 @@ public class BookHotelActivityTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
-        var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
+        var rentCarActivity = new HotelRoomReservationActivity(fakeMediator.Object);
         var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
+            harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
+                _ => rentCarActivity,
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
-            .ReturnsAsync(RequestResult.Ok)
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
+            .ReturnsAsync(new HotelRoomReservation
+            {
+                Id = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>().ToString(),
+                RoomId = It.IsAny<Guid>().ToString(),
+                From = It.IsAny<DateTimeOffset>(),
+                To = It.IsAny<DateTimeOffset>()
+            })
             .Verifiable();
 
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteBookHotelRequest>(), CancellationToken.None))
-            .ReturnsAsync(RequestResult.Ok)
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteHotelRoomReservationRequest>(), CancellationToken.None))
+            .ReturnsAsync(Unit.Value)
             .Verifiable();
 
         //Act
@@ -132,11 +151,12 @@ public class BookHotelActivityTest
         {
             var trackingNumber = Guid.NewGuid();
             var builder = new RoutingSlipBuilder(trackingNumber);
-            var bookHotelArgument = new BookHotelArgument
+            var bookHotelArgument = new HotelRoomReservationArgument
             {
-                HotelId = Guid.NewGuid(),
-                Days = 10u,
-                RoomId = Guid.NewGuid()
+                HotelId = It.IsAny<Guid>().ToString(),
+                RoomId = It.IsAny<Guid>().ToString(),
+                From = It.IsAny<DateTimeOffset>(),
+                To = It.IsAny<DateTimeOffset>()
             };
             var testArgument = new TestArgument
             {
@@ -148,63 +168,6 @@ public class BookHotelActivityTest
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensated>();
             var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
-            await harness.Bus.Execute(builder.Build());
-            Task.WaitAll(activityContext, faultedContext);
-
-            //Assert
-            fakeMediator.Verify();
-            Assert.Equal(trackingNumber, faultedContext.Result.Message.TrackingNumber);
-            Assert.Equal(trackingNumber, activityContext.Result.Message.TrackingNumber);
-        }
-        finally
-        {
-            await harness.Stop();
-        }
-    }
-
-    [Trait("Category", "Unit")]
-    [Fact]
-    public async Task Compensate_ExpectCompensationFailed()
-    {
-        //Arrange
-        var fakeMediator = new Mock<IMediator>();
-        var harness = new InMemoryTestHarness();
-        var rentCarActivity = new BookHotelActivity(fakeMediator.Object);
-        var bookHotelActivityHarness =
-            harness.Activity<BookHotelActivity, BookHotelArgument, BookHotelLog>(_ => rentCarActivity,
-                _ => rentCarActivity);
-        var testActivityHarness =
-            harness.Activity<TestActivity, TestArgument, TestLog>();
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateBookHotelRequest>(), CancellationToken.None))
-            .ReturnsAsync(RequestResult.Ok)
-            .Verifiable();
-
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteBookHotelRequest>(), CancellationToken.None))
-            .ReturnsAsync(RequestResult.Error)
-            .Verifiable();
-
-        //Act
-        await harness.Start();
-        try
-        {
-            var trackingNumber = Guid.NewGuid();
-            var builder = new RoutingSlipBuilder(trackingNumber);
-            var bookHotelArgument = new BookHotelArgument
-            {
-                HotelId = Guid.NewGuid(),
-                Days = 10u,
-                RoomId = Guid.NewGuid()
-            };
-            var testArgument = new TestArgument
-            {
-                IsExecuteFaulty = true
-            };
-            builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress,
-                bookHotelArgument);
-            builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
-            builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
-            var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();
-            var faultedContext = harness.SubscribeHandler<RoutingSlipCompensationFailed>();
             await harness.Bus.Execute(builder.Build());
             Task.WaitAll(activityContext, faultedContext);
 

@@ -8,14 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="7.3.1"/>
-        <PackageReference Include="MediatR" Version="10.0.1"/>
-        <PackageReference Include="Neo4j.Driver" Version="4.4.0"/>
+        <PackageReference Include="MassTransit" Version="7.3.1" />
+        <PackageReference Include="Mediator" Version="1.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Migration" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FlightService.Contracts\FlightService.Contracts.csproj"/>
-        <ProjectReference Include="..\FlightService.Domain\FlightService.Domain.csproj"/>
+        <ProjectReference Include="..\FlightService.Contracts\FlightService.Contracts.csproj" />
+        <ProjectReference Include="..\FlightService.Domain\FlightService.Domain.csproj" />
     </ItemGroup>
 
 </Project>

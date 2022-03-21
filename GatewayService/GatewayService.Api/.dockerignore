@@ -1,4 +1,4 @@
-**/.dockerignore
+﻿**/.dockerignore
 **/.env
 **/.git
 **/.gitignore
@@ -21,5 +21,6 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/**.Tests
 LICENSE
 README.md

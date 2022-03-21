@@ -1,20 +1,25 @@
-﻿# syntax=docker/dockerfile:1
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
-ARG Configuration
+﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG GithubToken
 ENV GithubToken=$GithubToken
-WORKDIR /app
-COPY NuGet.config NuGet.config
-COPY TicketService.Api TicketService.Api
-COPY TicketService.Domain TicketService.Domain
-COPY TicketService.Contracts TicketService.Contracts
-COPY TicketService.Infrastructure TicketService.Infrastructure
-RUN dotnet publish TicketService.Api/TicketService.Api.csproj -c $Configuration -o out
+WORKDIR /src
+COPY ["NuGet.config", "NuGet.config"]
+COPY ["TicketService/TicketService.Api/TicketService.Api.csproj", "TicketService.Api/"]
+COPY ["TicketService/TicketService.Infrastructure/TicketService.Infrastructure.csproj", "TicketService.Infrastructure/"]
+COPY ["TicketService/TicketService.Contracts/TicketService.Contracts.csproj", "TicketService.Contracts/"]
+COPY ["TicketService/TicketService.Domain/TicketService.Domain.csproj", "TicketService.Domain/"]
+RUN dotnet restore "TicketService.Api/TicketService.Api.csproj"
+COPY TicketService/ .
+WORKDIR "/src/TicketService.Api"
+RUN dotnet build "TicketService.Api.csproj" -c Release -o /app/build
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 AS release
-ARG Environment
-EXPOSE 80
+FROM build AS publish
+RUN dotnet publish "TicketService.Api.csproj" -c Release -o /app/publish
+
+FROM base AS final
 WORKDIR /app
-ENV ASPNETCORE_ENVIRONMENT=$Environment
-COPY --from=build /app/out .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TicketService.Api.dll"]

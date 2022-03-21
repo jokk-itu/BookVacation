@@ -11,7 +11,7 @@ public class MinioLogger : IRequestLogger
     {
         _logger = logger;
     }
-    
+
     public void LogRequest(RequestToLog requestToLog, ResponseToLog responseToLog, double durationMs)
     {
         _logger.LogDebug("Request started");
