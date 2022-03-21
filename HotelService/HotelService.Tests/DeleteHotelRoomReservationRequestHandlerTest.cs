@@ -2,6 +2,7 @@ using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
+using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
 
@@ -38,9 +39,9 @@ public class DeleteHotelRoomReservationRequestHandlerTest : RavenTestDriver
             CancellationToken.None);
         WaitForIndexing(store);
 
-        var isDeleted = session.Query<HotelRoomReservation>().Any(x => x.Id == hotelRoomReservation.Id);
+        var deletedReservationExists = await session.Query<HotelRoomReservation>().AnyAsync(x => x.Id == hotelRoomReservation.Id);
 
         //Assert
-        Assert.True(isDeleted);
+        Assert.False(deletedReservationExists);
     }
 }

@@ -1,6 +1,5 @@
 using HotelService.Infrastructure.Requests;
 using Mediator;
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Migration.Core;
