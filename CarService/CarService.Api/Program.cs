@@ -39,7 +39,7 @@ try
     });
 
     // Add services to the container.
-    builder.Services.AddInfrastructureServices();
+    builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddFluentValidation(options =>
     {
         options.DisableDataAnnotationsValidation = true;

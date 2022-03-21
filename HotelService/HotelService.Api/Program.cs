@@ -37,7 +37,7 @@ try
     });
 
     // Add services to the container.
-    builder.Services.AddInfrastructureServices();
+    builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddRouting(options => options.LowercaseUrls = true);
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
