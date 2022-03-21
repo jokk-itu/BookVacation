@@ -5,5 +5,5 @@ public record Tracking
 {
     public string Id { get; init; }
 
-    public IEnumerable<Status> Statuses { get; init; }
+    public ICollection<Status> Statuses { get; init; }
 }
