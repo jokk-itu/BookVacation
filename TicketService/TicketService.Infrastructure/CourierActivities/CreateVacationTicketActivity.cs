@@ -21,7 +21,7 @@ public class CreateVacationTicketActivity : IActivity<CreateVacationTicketArgume
     {
         var carTicketResult =
             await _mediator.Send(
-                new CreateCarTicketRequest(context.Arguments.CarId, context.Arguments.RentingCompanyId));
+                new CreateCarTicketRequest(context.Arguments.CarId, context.Arguments.RentingCompanyName));
         var hotelTicketResult =
             await _mediator.Send(new CreateHotelTicketRequest(context.Arguments.HotelId, context.Arguments.RoomId));
         var flightTicketResult = await _mediator.Send(new CreateFlightTicketRequest(context.Arguments.FlightId));

@@ -23,7 +23,7 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
 
         var createFlightReservationRequest =
-            new CreateFlightReservationRequest(Guid.Empty.ToString(), Guid.Empty.ToString());
+            new CreateFlightReservationRequest(Guid.Empty, Guid.Empty);
         var createFlightReservationHandler = new CreateFlightReservationRequestHandler(session);
 
         //Act
@@ -47,11 +47,11 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
         var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
 
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
-            "Karup", "Kastrup", airplane.Id, 1200);
+            "Karup", "Kastrup", Guid.Parse(airplane.Id), 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
         var flight = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
 
-        var createFlightReservationRequest = new CreateFlightReservationRequest(airplane.Seats.First().Id, flight!.Id);
+        var createFlightReservationRequest = new CreateFlightReservationRequest(Guid.Parse(airplane.Seats.First().Id), Guid.Parse(flight!.Id));
         var createFlightReservationHandler = new CreateFlightReservationRequestHandler(session);
 
         //Act

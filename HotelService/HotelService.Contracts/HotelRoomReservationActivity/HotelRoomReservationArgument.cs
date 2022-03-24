@@ -1,13 +1,13 @@
 namespace HotelService.Contracts.HotelRoomReservationActivity;
 
 #nullable disable
-public record HotelRoomReservationArgument
+public class HotelRoomReservationArgument
 {
-    public string HotelId { get; init; }
+    public Guid HotelId { get; set; }
 
-    public string RoomId { get; init; }
+    public Guid RoomId { get; set; }
 
-    public DateTimeOffset From { get; init; }
+    public DateTimeOffset From { get; set; }
 
     public DateTimeOffset To { get; set; }
 }

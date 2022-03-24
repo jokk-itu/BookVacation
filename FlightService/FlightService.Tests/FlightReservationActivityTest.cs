@@ -34,8 +34,8 @@ public class FlightReservationActivityTest
             .ReturnsAsync(new FlightReservation
             {
                 Id = It.IsAny<Guid>().ToString(),
-                FlightId = It.IsAny<Guid>().ToString(),
-                SeatId = It.IsAny<Guid>().ToString()
+                FlightId = It.IsAny<Guid>(),
+                SeatId = It.IsAny<Guid>()
             })
             .Verifiable();
 
@@ -47,8 +47,8 @@ public class FlightReservationActivityTest
             var builder = new RoutingSlipBuilder(trackingNumber);
             var argument = new FlightReservationArgument
             {
-                FlightId = Guid.NewGuid().ToString(),
-                SeatId = Guid.NewGuid().ToString()
+                FlightId = Guid.NewGuid(),
+                SeatId = Guid.NewGuid()
             };
             builder.AddActivity(flightReservationHarness.Name, flightReservationHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -92,8 +92,8 @@ public class FlightReservationActivityTest
             var builder = new RoutingSlipBuilder(trackingNumber);
             var argument = new FlightReservationArgument
             {
-                FlightId = Guid.NewGuid().ToString(),
-                SeatId = Guid.NewGuid().ToString()
+                FlightId = Guid.NewGuid(),
+                SeatId = Guid.NewGuid()
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -131,8 +131,8 @@ public class FlightReservationActivityTest
             .ReturnsAsync(new FlightReservation
             {
                 Id = It.IsAny<Guid>().ToString(),
-                FlightId = It.IsAny<Guid>().ToString(),
-                SeatId = It.IsAny<Guid>().ToString()
+                FlightId = It.IsAny<Guid>(),
+                SeatId = It.IsAny<Guid>()
             })
             .Verifiable();
 
@@ -148,8 +148,8 @@ public class FlightReservationActivityTest
             var builder = new RoutingSlipBuilder(trackingNumber);
             var bookHotelArgument = new FlightReservationArgument
             {
-                FlightId = Guid.NewGuid().ToString(),
-                SeatId = Guid.NewGuid().ToString()
+                FlightId = Guid.NewGuid(),
+                SeatId = Guid.NewGuid()
             };
             var testArgument = new TestArgument
             {

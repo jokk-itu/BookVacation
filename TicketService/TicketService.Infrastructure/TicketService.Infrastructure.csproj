@@ -7,17 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="itext7.pdfhtml" Version="4.0.1"/>
-        <PackageReference Include="MassTransit" Version="7.3.1"/>
-        <PackageReference Include="MediatR" Version="10.0.1"/>
-        <PackageReference Include="Minio" Version="3.1.13"/>
-        <PackageReference Include="MiniRazor" Version="2.2.0"/>
-        <PackageReference Include="Neo4j.Driver" Version="4.4.0"/>
+        <PackageReference Include="itext7.pdfhtml" Version="4.0.1" />
+        <PackageReference Include="MassTransit" Version="7.3.1" />
+        <PackageReference Include="MediatR" Version="10.0.1" />
+        <PackageReference Include="Minio" Version="3.1.13" />
+        <PackageReference Include="MiniRazor" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TicketService.Contracts\TicketService.Contracts.csproj"/>
-        <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj"/>
+        <ProjectReference Include="..\TicketService.Contracts\TicketService.Contracts.csproj" />
+        <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj" />
     </ItemGroup>
 
 </Project>

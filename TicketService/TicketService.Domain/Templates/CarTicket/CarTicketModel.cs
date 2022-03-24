@@ -1,6 +1,6 @@
 namespace TicketService.Domain.Templates.CarTicket;
 
-public record CarTicketModel(Guid CarId, Guid RentingCompanyId)
+public record CarTicketModel(Guid CarId, string RentingCompanyName)
 {
     public async Task<string> RenderViewAsync(CancellationToken cancellationToken = default)
     {

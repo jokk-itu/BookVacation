@@ -22,7 +22,7 @@ public class FlightReservationActivity : IActivity<FlightReservationArgument, Fl
                 new CreateFlightReservationRequest(context.Arguments.SeatId, context.Arguments.FlightId));
         return flightReservation is null
             ? context.Faulted()
-            : context.Completed(new FlightReservationLog { ReservationId = flightReservation.Id });
+            : context.Completed(new FlightReservationLog { ReservationId = Guid.Parse(flightReservation.Id) });
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<FlightReservationLog> context)

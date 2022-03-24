@@ -25,7 +25,7 @@ public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, Hot
 
         var hotel = new Hotel
         {
-            HotelRooms = Enumerable.Range(0, request.Rooms).Select(_ => new HotelRoom()),
+            HotelRooms = Enumerable.Range(0, request.Rooms).Select(_ => new HotelRoom {Id = Guid.NewGuid().ToString()}).ToList(),
             Country = request.Country,
             City = request.City,
             Address = request.Address

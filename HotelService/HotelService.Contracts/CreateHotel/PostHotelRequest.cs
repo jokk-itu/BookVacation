@@ -1,13 +1,13 @@
 namespace HotelService.Contracts.CreateHotel;
 
 #nullable disable
-public record PostHotelRequest
+public class PostHotelRequest
 {
-    public short Rooms { get; init; }
+    public short Rooms { get; set; }
 
-    public string Country { get; init; }
+    public string Country { get; set; }
 
-    public string City { get; init; }
+    public string City { get; set; }
 
-    public string Address { get; init; }
+    public string Address { get; set; }
 }

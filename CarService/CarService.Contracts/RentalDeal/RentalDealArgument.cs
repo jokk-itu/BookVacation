@@ -1,9 +1,9 @@
 namespace CarService.Contracts.RentalDeal;
 
 #nullable disable
-public record RentalDealArgument
+public class RentalDealArgument
 {
-    public DateTimeOffset RentFrom { get; init; }
-    public DateTimeOffset RentTo { get; init; }
-    public string RentalCarId { get; init; }
+    public DateTimeOffset RentFrom { get; set; }
+    public DateTimeOffset RentTo { get; set; }
+    public Guid RentalCarId { get; set; }
 }

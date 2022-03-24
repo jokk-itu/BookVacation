@@ -3,4 +3,4 @@ using MediatR;
 
 namespace FlightService.Infrastructure.Requests.CreateFlightReservation;
 
-public record CreateFlightReservationRequest(string SeatId, string FlightId) : IRequest<FlightReservation?>;
+public record CreateFlightReservationRequest(Guid SeatId, Guid FlightId) : IRequest<FlightReservation?>;

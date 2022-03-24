@@ -1,9 +1,9 @@
 namespace FlightService.Contracts.FlightReservation;
 
 #nullable disable
-public record FlightReservationArgument
+public class FlightReservationArgument
 {
-    public string FlightId { get; init; }
+    public Guid FlightId { get; set; }
 
-    public string SeatId { get; init; }
+    public Guid SeatId { get; set; }
 }

@@ -33,7 +33,7 @@ public class FlightController : ControllerBase
 
         return Created("", new PostFlightResponse
         {
-            Id = flight.Id,
+            Id = Guid.Parse(flight.Id),
             From = flight.From,
             To = flight.To,
             FromAirport = flight.FromAirport,

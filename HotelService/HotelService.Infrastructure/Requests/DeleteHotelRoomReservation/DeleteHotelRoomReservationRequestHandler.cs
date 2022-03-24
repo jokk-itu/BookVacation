@@ -14,7 +14,7 @@ public class DeleteHotelRoomReservationRequestHandler : IRequestHandler<DeleteHo
 
     public async Task<Unit> Handle(DeleteHotelRoomReservationRequest request, CancellationToken cancellationToken)
     {
-        _session.Delete(request.HotelRoomReservationId);
+        _session.Delete(request.HotelRoomReservationId.ToString());
         await _session.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }

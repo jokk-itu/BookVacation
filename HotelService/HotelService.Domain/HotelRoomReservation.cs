@@ -5,9 +5,9 @@ public class HotelRoomReservation
 {
     public string Id { get; init; } = string.Empty;
 
-    public string HotelId { get; init; }
+    public Guid HotelId { get; init; }
 
-    public string RoomId { get; init; }
+    public Guid RoomId { get; init; }
 
     public DateTimeOffset From { get; init; }
 

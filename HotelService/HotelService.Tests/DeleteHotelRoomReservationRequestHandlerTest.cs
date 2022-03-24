@@ -23,15 +23,15 @@ public class DeleteHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(hotel!.Id,
-            hotel!.HotelRooms.First().Id, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id),
+            Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
         var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
         var hotelRoomReservation =
             await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
                 CancellationToken.None);
         WaitForIndexing(store);
 
-        var deleteHotelRoomReservationRequest = new DeleteHotelRoomReservationRequest(hotelRoomReservation!.Id);
+        var deleteHotelRoomReservationRequest = new DeleteHotelRoomReservationRequest(Guid.Parse(hotelRoomReservation!.Id));
         var deleteHotelRoomReservationRequestHandler = new DeleteHotelRoomReservationRequestHandler(session);
 
         //Act

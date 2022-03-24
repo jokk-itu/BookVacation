@@ -1,7 +1,7 @@
 namespace HotelService.Contracts.HotelRoomReservationActivity;
 
 #nullable disable
-public record HotelRoomReservationLog
+public class HotelRoomReservationLog
 {
-    public string HotelRoomReservationId { get; init; }
+    public Guid HotelRoomReservationId { get; set; }
 }

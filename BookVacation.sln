@@ -78,6 +78,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackingService.Api", "Trac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migration.Core", "Migration\Migration.Core\Migration.Core.csproj", "{D6974667-8058-41B9-9D53-0E6B8AE43DAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -463,6 +465,18 @@ Global
 		{D6974667-8058-41B9-9D53-0E6B8AE43DAB}.Release|x64.Build.0 = Release|Any CPU
 		{D6974667-8058-41B9-9D53-0E6B8AE43DAB}.Release|x86.ActiveCfg = Release|Any CPU
 		{D6974667-8058-41B9-9D53-0E6B8AE43DAB}.Release|x86.Build.0 = Release|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Debug|x64.Build.0 = Debug|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Debug|x86.Build.0 = Debug|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Release|x64.ActiveCfg = Release|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Release|x64.Build.0 = Release|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C0A75E4-96EF-4BCD-84D8-89D3B756CC27}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DA065C51-55AA-4356-8FB0-BE0B37EB6B76} = {DB91B133-B4A7-4A75-AE07-1E5A41349975}

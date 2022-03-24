@@ -7,7 +7,7 @@ namespace HotelService.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1")]
-[Route("api/v{version:apiVersion}/hotel")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class HotelController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -32,8 +32,8 @@ public class HotelController : ControllerBase
 
         return Created("", new PostHotelResponse
         {
-            Id = hotel.Id,
-            HotelRooms = hotel.HotelRooms.Select(x => new HotelRoomDTO { Id = x.Id }),
+            Id = Guid.Parse(hotel.Id),
+            HotelRooms = hotel.HotelRooms.Select(x => new HotelRoomDTO { Id = Guid.Parse(x.Id) }),
             Country = hotel.Country,
             City = hotel.City,
             Address = hotel.Address

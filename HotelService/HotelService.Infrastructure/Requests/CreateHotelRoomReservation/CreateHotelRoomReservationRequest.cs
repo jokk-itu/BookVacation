@@ -4,4 +4,4 @@ using MediatR;
 namespace HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 
 public record CreateHotelRoomReservationRequest
-    (string HotelId, string RoomId, DateTimeOffset From, DateTimeOffset To) : IRequest<HotelRoomReservation?>;
+    (Guid HotelId, Guid RoomId, DateTimeOffset From, DateTimeOffset To) : IRequest<HotelRoomReservation?>;

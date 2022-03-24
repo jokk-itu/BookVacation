@@ -17,7 +17,7 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, F
 
     public async Task<Flight?> Handle(CreateFlightRequest request, CancellationToken cancellationToken)
     {
-        var airplane = await _session.Query<Airplane>().Where(x => x.Id == request.AirplaneId)
+        var airplane = await _session.Query<Airplane>().Where(x => x.Id == request.AirplaneId.ToString())
             .FirstOrDefaultAsync(cancellationToken);
 
         if (airplane is null)

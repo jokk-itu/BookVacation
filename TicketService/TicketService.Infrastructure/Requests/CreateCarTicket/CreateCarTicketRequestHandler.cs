@@ -17,7 +17,7 @@ public class CreateCarTicketRequestHandler : IRequestHandler<CreateCarTicketRequ
 
     public async Task<RequestResult> Handle(CreateCarTicketRequest request, CancellationToken cancellationToken)
     {
-        var html = await new CarTicketModel(request.CarId, request.RentingCompanyId)
+        var html = await new CarTicketModel(request.CarId, request.RentingCompanyName)
             .RenderViewAsync(cancellationToken);
 
         await using var pdf = new MemoryStream();

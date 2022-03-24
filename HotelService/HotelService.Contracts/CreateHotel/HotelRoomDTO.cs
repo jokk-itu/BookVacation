@@ -1,7 +1,7 @@
 namespace HotelService.Contracts.CreateHotel;
 
 #nullable disable
-public record HotelRoomDTO
+public class HotelRoomDTO
 {
-    public string Id { get; init; }
+    public Guid Id { get; set; }
 }

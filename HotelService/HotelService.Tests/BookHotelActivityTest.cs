@@ -31,8 +31,8 @@ public class BookHotelActivityTest
             .ReturnsAsync(new HotelRoomReservation
             {
                 Id = It.IsAny<Guid>().ToString(),
-                HotelId = It.IsAny<Guid>().ToString(),
-                RoomId = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>(),
+                RoomId = It.IsAny<Guid>(),
                 From = It.IsAny<DateTimeOffset>(),
                 To = It.IsAny<DateTimeOffset>()
             })
@@ -46,8 +46,8 @@ public class BookHotelActivityTest
             var builder = new RoutingSlipBuilder(trackingNumber);
             var argument = new HotelRoomReservationArgument
             {
-                HotelId = It.IsAny<Guid>().ToString(),
-                RoomId = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>(),
+                RoomId = It.IsAny<Guid>(),
                 From = It.IsAny<DateTimeOffset>(),
                 To = It.IsAny<DateTimeOffset>()
             };
@@ -93,8 +93,8 @@ public class BookHotelActivityTest
             var builder = new RoutingSlipBuilder(trackingNumber);
             var argument = new HotelRoomReservationArgument
             {
-                HotelId = It.IsAny<Guid>().ToString(),
-                RoomId = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>(),
+                RoomId = It.IsAny<Guid>(),
                 From = It.IsAny<DateTimeOffset>(),
                 To = It.IsAny<DateTimeOffset>()
             };
@@ -134,8 +134,8 @@ public class BookHotelActivityTest
             .ReturnsAsync(new HotelRoomReservation
             {
                 Id = It.IsAny<Guid>().ToString(),
-                HotelId = It.IsAny<Guid>().ToString(),
-                RoomId = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>(),
+                RoomId = It.IsAny<Guid>(),
                 From = It.IsAny<DateTimeOffset>(),
                 To = It.IsAny<DateTimeOffset>()
             })
@@ -153,8 +153,8 @@ public class BookHotelActivityTest
             var builder = new RoutingSlipBuilder(trackingNumber);
             var bookHotelArgument = new HotelRoomReservationArgument
             {
-                HotelId = It.IsAny<Guid>().ToString(),
-                RoomId = It.IsAny<Guid>().ToString(),
+                HotelId = It.IsAny<Guid>(),
+                RoomId = It.IsAny<Guid>(),
                 From = It.IsAny<DateTimeOffset>(),
                 To = It.IsAny<DateTimeOffset>()
             };

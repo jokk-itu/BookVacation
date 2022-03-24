@@ -1,11 +1,11 @@
 namespace CarService.Contracts.RentalCar;
 
 #nullable disable
-public record PostRentalCarRequest
+public class PostRentalCarRequest
 {
-    public Guid CarModelNumber { get; init; }
-    public string CarCompanyName { get; init; }
-    public string RentingCompanyName { get; init; }
-    public decimal DayPrice { get; init; }
-    public string Color { get; init; }
+    public Guid CarModelNumber { get; set; }
+    public string CarCompanyName { get; set; }
+    public string RentingCompanyName { get; set; }
+    public decimal DayPrice { get; set; }
+    public string Color { get; set; }
 }

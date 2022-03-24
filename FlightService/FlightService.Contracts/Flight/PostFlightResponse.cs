@@ -3,7 +3,7 @@ namespace FlightService.Contracts.Flight;
 #nullable disable
 public class PostFlightResponse
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     public DateTimeOffset From { get; set; }
 
@@ -13,7 +13,7 @@ public class PostFlightResponse
 
     public string ToAirport { get; set; }
 
-    public string AirPlaneId { get; set; }
+    public Guid AirPlaneId { get; set; }
 
     public decimal Price { get; set; }
 }

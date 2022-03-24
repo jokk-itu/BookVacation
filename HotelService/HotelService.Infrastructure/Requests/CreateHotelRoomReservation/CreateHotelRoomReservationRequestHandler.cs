@@ -19,7 +19,7 @@ public class
         CancellationToken cancellationToken)
     {
         var hotel = await _session.Query<Hotel>()
-            .Where(x => x.Id == request.HotelId && x.HotelRooms.Any(y => y.Id == request.RoomId))
+            .Where(x => x.Id == request.HotelId.ToString() && x.HotelRooms.Any(y => y.Id == request.RoomId.ToString()))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (hotel is null)

@@ -17,14 +17,14 @@ public class CreateFlightReservationRequestHandler : IRequestHandler<CreateFligh
     public async Task<FlightReservation?> Handle(CreateFlightReservationRequest request,
         CancellationToken cancellationToken)
     {
-        var flight = await _session.Query<Flight>().Where(x => x.Id == request.FlightId)
+        var flight = await _session.Query<Flight>().Where(x => x.Id == request.FlightId.ToString())
             .FirstOrDefaultAsync(cancellationToken);
 
         if (flight is null)
             return null;
 
         var airplane = await _session.Query<Airplane>()
-            .Where(x => x.Id == flight.AirPlaneId && x.Seats.Any(y => y.Id == request.SeatId))
+            .Where(x => x.Id == flight.AirPlaneId.ToString() && x.Seats.Any(y => y.Id == request.SeatId.ToString()))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (airplane is null)

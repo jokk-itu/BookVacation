@@ -34,7 +34,6 @@ public class TrackingController : ControllerBase
             Id = tracking.Id,
             Statuses = tracking.Statuses.Select(x => new StatusDto
             {
-                Id = x.Id,
                 Result = x.Result,
                 OccuredAt = x.OccuredAt
             })

@@ -9,5 +9,5 @@ public record RentalDeal
 
     public DateTimeOffset RentTo { get; init; }
 
-    public string RentalCarId { get; init; }
+    public Guid RentalCarId { get; init; }
 }

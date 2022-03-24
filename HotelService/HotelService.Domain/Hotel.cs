@@ -5,7 +5,7 @@ public record Hotel
 {
     public string Id { get; init; } = string.Empty;
 
-    public IEnumerable<HotelRoom> HotelRooms { get; init; }
+    public ICollection<HotelRoom> HotelRooms { get; init; }
 
     public string Country { get; init; }
 

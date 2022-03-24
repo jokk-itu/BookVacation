@@ -1,5 +1,6 @@
 namespace TicketService.Contracts.CreateVacationTickets;
 
+#nullable disable
 public class CreateVacationTicketArgument
 {
     public Guid FlightId { get; set; }
@@ -10,5 +11,5 @@ public class CreateVacationTicketArgument
 
     public Guid CarId { get; set; }
 
-    public Guid RentingCompanyId { get; set; }
+    public string RentingCompanyName { get; set; }
 }

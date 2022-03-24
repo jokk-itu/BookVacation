@@ -25,7 +25,7 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         WaitForIndexing(store);
 
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
-            "Kastrup", "Karup", airplane.Id, 1200);
+            "Kastrup", "Karup", Guid.Parse(airplane.Id), 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
 
         //Act
@@ -45,7 +45,7 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
-            "Kastrup", "Karup", Guid.Empty.ToString(), 1200);
+            "Kastrup", "Karup", Guid.Empty, 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
 
         //Act
@@ -68,7 +68,7 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         WaitForIndexing(store);
 
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
-            "Kastrup", "Karup", airplane.Id, 1200);
+            "Kastrup", "Karup", Guid.Parse(airplane.Id), 1200);
         var createFlightHandler = new CreateFlightRequestHandler(session);
 
         //Act

@@ -13,7 +13,7 @@ public record Flight
 
     public string ToAirport { get; init; }
 
-    public string AirPlaneId { get; init; }
+    public Guid AirPlaneId { get; init; }
 
     public decimal Price { get; init; }
 }

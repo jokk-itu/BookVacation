@@ -22,8 +22,8 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(hotel!.Id,
-            hotel!.HotelRooms.First().Id, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id),
+            Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
         var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
 
         //Act
@@ -50,8 +50,8 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Empty.ToString(),
-            hotel!.HotelRooms.First().Id, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Empty,
+            Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
         var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
 
         //Act
@@ -76,7 +76,7 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(hotel!.Id, Guid.Empty.ToString(),
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id), Guid.Empty,
             DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
         var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
 
@@ -102,8 +102,8 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(hotel!.Id,
-            hotel.HotelRooms.First().Id, DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id),
+            Guid.Parse(hotel.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
         var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
         await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
             CancellationToken.None);

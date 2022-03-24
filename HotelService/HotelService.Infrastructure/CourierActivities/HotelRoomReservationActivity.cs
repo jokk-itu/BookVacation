@@ -21,7 +21,7 @@ public class HotelRoomReservationActivity : IActivity<HotelRoomReservationArgume
             context.Arguments.RoomId, context.Arguments.From, context.Arguments.To));
         return hotelRoomReservation is null
             ? context.Faulted()
-            : context.Completed(new HotelRoomReservationLog { HotelRoomReservationId = hotelRoomReservation.Id });
+            : context.Completed(new HotelRoomReservationLog { HotelRoomReservationId = Guid.Parse(hotelRoomReservation.Id) });
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<HotelRoomReservationLog> context)

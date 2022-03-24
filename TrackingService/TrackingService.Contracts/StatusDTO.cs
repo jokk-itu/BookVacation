@@ -1,11 +1,9 @@
 namespace TrackingService.Contracts;
 
 #nullable disable
-public record StatusDto
+public class StatusDto
 {
-    public string Id { get; init; }
+    public string Result { get; set; }
 
-    public string Result { get; init; }
-
-    public DateTimeOffset OccuredAt { get; init; }
+    public DateTimeOffset OccuredAt { get; set; }
 }

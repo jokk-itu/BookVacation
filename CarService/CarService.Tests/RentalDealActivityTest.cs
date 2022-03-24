@@ -33,7 +33,7 @@ public class RentalDealActivityTest
                     .ToString(),
                 RentFrom = It.IsAny<DateTimeOffset>(),
                 RentTo = It.IsAny<DateTimeOffset>(),
-                RentalCarId = It.IsAny<Guid>().ToString()
+                RentalCarId = It.IsAny<Guid>()
             })
             .Verifiable();
 
@@ -47,7 +47,7 @@ public class RentalDealActivityTest
             {
                 RentFrom = It.IsAny<DateTimeOffset>(),
                 RentTo = It.IsAny<DateTimeOffset>(),
-                RentalCarId = It.IsAny<Guid>().ToString()
+                RentalCarId = It.IsAny<Guid>()
             };
             builder.AddActivity(rentalDealHarness.Name, rentalDealHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -92,7 +92,7 @@ public class RentalDealActivityTest
             {
                 RentFrom = It.IsAny<DateTimeOffset>(),
                 RentTo = It.IsAny<DateTimeOffset>(),
-                RentalCarId = It.IsAny<Guid>().ToString()
+                RentalCarId = It.IsAny<Guid>()
             };
             builder.AddActivity(bookHotelActivityHarness.Name, bookHotelActivityHarness.ExecuteAddress, argument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
@@ -132,7 +132,7 @@ public class RentalDealActivityTest
                     .ToString(),
                 RentFrom = It.IsAny<DateTimeOffset>(),
                 RentTo = It.IsAny<DateTimeOffset>(),
-                RentalCarId = It.IsAny<Guid>().ToString()
+                RentalCarId = It.IsAny<Guid>()
             })
             .Verifiable();
 
@@ -150,7 +150,7 @@ public class RentalDealActivityTest
             {
                 RentFrom = It.IsAny<DateTimeOffset>(),
                 RentTo = It.IsAny<DateTimeOffset>(),
-                RentalCarId = It.IsAny<Guid>().ToString()
+                RentalCarId = It.IsAny<Guid>()
             };
             var testArgument = new TestArgument
             {

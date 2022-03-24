@@ -1,16 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/joachim/.cache/JetBrains/Rider2022.1/resharper-host/temp/Rider/vAny/CoverageData/_BookVacation.-879985797/Snapshot/snapshot.utdcvr</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0cf57afd_002D6465_002D487c_002Db17a_002D900138500196/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Handle_TrackingExists" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.UpdateTrackingRequestHandlerTest.Handle_TrackingExists&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.UpdateTrackingRequestHandlerTest.Handle_TrackingNotExists&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.ReadTrackingRequestHandlerTest.Handle_GivenNotExisting_ExpectNull&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.ReadTrackingRequestHandlerTest.Handle_GivenExisting_ExpectTracking&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+  &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=310645c3_002D4174_002D46a4_002Db3e6_002D6876e4743c36/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Handle_ExpectDeleted" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.DeleteHotelRoomReservationRequestHandlerTest.Handle_ExpectDeleted&lt;/TestId&gt;
-    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.UpdateTrackingRequestHandlerTest.Handle_TrackingExists&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	</wpf:ResourceDictionary>

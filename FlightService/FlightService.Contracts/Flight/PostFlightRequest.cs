@@ -11,7 +11,7 @@ public class PostFlightRequest
 
     public string ToAirport { get; set; }
 
-    public string AirPlaneId { get; set; }
+    public Guid AirPlaneId { get; set; }
 
     public decimal Price { get; set; }
 }

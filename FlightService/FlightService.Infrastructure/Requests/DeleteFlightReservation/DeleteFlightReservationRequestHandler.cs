@@ -14,7 +14,7 @@ public class DeleteFlightReservationRequestHandler : IRequestHandler<DeleteFligh
 
     public async Task<Unit> Handle(DeleteFlightReservationRequest request, CancellationToken cancellationToken)
     {
-        _session.Delete(request.ReservationId);
+        _session.Delete(request.ReservationId.ToString());
         await _session.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }

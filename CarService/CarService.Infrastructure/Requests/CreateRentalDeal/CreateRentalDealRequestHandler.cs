@@ -17,7 +17,7 @@ public class CreateRentalDealRequestHandler : IRequestHandler<CreateRentalDealRe
 
     public async Task<RentalDeal?> Handle(CreateRentalDealRequest request, CancellationToken cancellationToken)
     {
-        var rentalCar = await _session.Query<RentalCar>().Where(x => x.Id == request.RentalCarId)
+        var rentalCar = await _session.Query<RentalCar>().Where(x => x.Id == request.RentalCarId.ToString())
             .FirstOrDefaultAsync(cancellationToken);
 
         if (rentalCar is null)

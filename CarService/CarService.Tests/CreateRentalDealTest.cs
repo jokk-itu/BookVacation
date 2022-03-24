@@ -28,7 +28,7 @@ public class CreateRentalDealTest : RavenTestDriver
         //Act
         var expected = await createDentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
-                rentalCar.Id), CancellationToken.None);
+                Guid.Parse(rentalCar.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
 
@@ -51,7 +51,7 @@ public class CreateRentalDealTest : RavenTestDriver
         //Act
         var invalidRentalDeal = await createDentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
-                Guid.Empty.ToString()), CancellationToken.None);
+                Guid.Empty), CancellationToken.None);
 
         //Assert
         Assert.Null(invalidRentalDeal);
@@ -78,14 +78,14 @@ public class CreateRentalDealTest : RavenTestDriver
         //Act
         await createRentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(from), DateTimeOffset.UtcNow.AddDays(to),
-                rentalCar.Id), CancellationToken.None);
+                Guid.Parse(rentalCar.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
 
         var conflictingRentalDeal = await createRentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(conflictingFrom),
                 DateTimeOffset.UtcNow.AddDays(conflictingTo),
-                rentalCar.Id), CancellationToken.None);
+                Guid.Parse(rentalCar.Id)), CancellationToken.None);
 
         //Assert
         Assert.Null(conflictingRentalDeal);

@@ -14,7 +14,7 @@ public class DeleteRentalDealRequestHandler : IRequestHandler<DeleteRentalDealRe
 
     public async Task<Unit> Handle(DeleteRentalDealRequest request, CancellationToken cancellationToken)
     {
-        _session.Delete(request.RentalDealId);
+        _session.Delete(request.RentalDealId.ToString());
         await _session.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }

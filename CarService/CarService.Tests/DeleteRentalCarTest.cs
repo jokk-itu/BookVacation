@@ -30,13 +30,13 @@ public class DeleteRentalCarTest : RavenTestDriver
         WaitForIndexing(store);
 
         var rentalDeal = await createRentalDealHandler.Handle(
-            new CreateRentalDealRequest(new DateTimeOffset().AddDays(1), new DateTimeOffset().AddDays(2), rentalCar.Id),
+            new CreateRentalDealRequest(new DateTimeOffset().AddDays(1), new DateTimeOffset().AddDays(2), Guid.Parse(rentalCar.Id)),
             CancellationToken.None);
 
         WaitForIndexing(store);
 
         //Act
-        await deleteRentalDealHandler.Handle(new DeleteRentalDealRequest(rentalDeal!.Id), CancellationToken.None);
+        await deleteRentalDealHandler.Handle(new DeleteRentalDealRequest(Guid.Parse(rentalDeal!.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
 

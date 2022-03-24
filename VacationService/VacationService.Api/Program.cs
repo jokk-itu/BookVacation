@@ -48,7 +48,6 @@ try
 
     builder.Services.AddSwaggerGen();
     builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
-
     builder.Services.AddEventBus(builder.Configuration);
     builder.Services.AddMassTransitHostedService();
 

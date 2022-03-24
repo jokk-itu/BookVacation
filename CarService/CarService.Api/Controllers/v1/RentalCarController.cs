@@ -26,7 +26,7 @@ public class RentalCarController : ControllerBase
             request.RentingCompanyName, request.DayPrice, request.Color));
         return Created("", new PostRentalCarResponse
         {
-            Id = rentalCar.Id,
+            Id = Guid.Parse(rentalCar.Id),
             CarModelNumber = rentalCar.CarModelNumber,
             CarCompanyName = rentalCar.CarCompanyName,
             RentingCompanyName = rentalCar.RentalCompanyName,

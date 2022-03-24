@@ -1,11 +1,10 @@
-using CarService.Contracts.RentCarActivity;
-using FlightService.Contracts.BookFlightActivity;
-using HotelService.Contracts.BookHotelActivity;
+using CarService.Contracts.RentalDeal;
+using FlightService.Contracts.FlightReservation;
+using HotelService.Contracts.HotelRoomReservationActivity;
 using MassTransit;
 using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Mono.Unix;
 using TicketService.Contracts.CreateVacationTickets;
 using VacationService.Contracts.Vacation;
 
@@ -26,29 +25,47 @@ public class VacationController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> PostAsync([FromBody] VacationRequest request)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> PostAsync([FromBody] PostVacationRequest request)
     {
         var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
         builder.AddActivity("BookFlight",
             new Uri("queue:flight-reservation_execute"),
-            new BookFlightArgument { FlightId = request.FlightId, SeatId = request.SeatId });
+            new FlightReservationArgument
+            {
+                FlightId = request.FlightId, 
+                SeatId = request.FlightSeatId
+            });
 
         builder.AddActivity("BookHotel",
             new Uri("queue:hotel-room-reservation_execute"),
-            new BookHotelArgument { HotelId = request.HotelId, Days = request.RentHotelDays, RoomId = request.RoomId });
+            new HotelRoomReservationArgument
+            {
+                HotelId = request.HotelId,
+                From = request.HotelFrom,
+                To = request.HotelTo,
+                RoomId = request.HotelRoomId
+            });
 
         builder.AddActivity("RentCar",
             new Uri("queue:rental-deal_execute"),
-            new RentCarArgument
-                { CarId = request.CarId, RentingCompanyId = request.RentingCompanyId, Days = request.RentCarDays });
+            new RentalDealArgument
+            {
+                RentalCarId = request.RentalCarId,
+                RentFrom = request.RentalCarFrom,
+                RentTo = request.RentalCarTo
+            });
 
         builder.AddActivity("CreateVacationTicket",
             new Uri("queue:create-vacation-ticket_execute"),
             new CreateVacationTicketArgument
             {
-                FlightId = request.FlightId, HotelId = request.HotelId, RoomId = request.RoomId, CarId = request.CarId,
-                RentingCompanyId = request.RentingCompanyId
+                FlightId = request.FlightId,
+                HotelId = request.HotelId,
+                RoomId = request.HotelRoomId,
+                CarId = request.RentalCarId,
+                RentingCompanyName = request.RentingCompanyName
             });
 
         builder.AddSubscription(
