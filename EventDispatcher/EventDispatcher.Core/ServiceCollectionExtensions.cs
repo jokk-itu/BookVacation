@@ -21,6 +21,11 @@ public static class ServiceCollectionExtensions
             configurator.SetKebabCaseEndpointNameFormatter();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
             {
+                factoryConfigurator.UseMessageRetry(retryConfigurator =>
+                {
+                    retryConfigurator.Exponential(10, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(30),
+                        TimeSpan.FromSeconds(2));
+                });
                 factoryConfigurator.UseCircuitBreaker(circuitBreakerConfigurator =>
                 {
                     circuitBreakerConfigurator.ActiveThreshold = 2;
