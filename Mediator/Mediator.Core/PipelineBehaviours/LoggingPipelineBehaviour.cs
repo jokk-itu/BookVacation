@@ -21,7 +21,7 @@ public class LoggingPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<T
         var watch = Stopwatch.StartNew();
         var response = await next();
         watch.Stop();
-        _logger.LogInformation("Handled {Request}, returned {Response}, took {Elapsed}", typeof(TRequest).Name,
+        _logger.LogInformation("Handled {Request}, returned {Response}, took {Elapsed} ms", typeof(TRequest).Name,
             typeof(TResponse).Name, watch.ElapsedMilliseconds);
         return response;
     }

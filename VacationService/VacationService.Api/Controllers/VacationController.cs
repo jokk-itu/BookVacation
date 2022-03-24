@@ -31,7 +31,7 @@ public class VacationController : ControllerBase
         var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
         builder.AddActivity("BookFlight",
-            new Uri("queue:flight-reservation_execute"),
+            new Uri("exchange:flight-reservation_execute"),
             new FlightReservationArgument
             {
                 FlightId = request.FlightId, 
@@ -39,7 +39,7 @@ public class VacationController : ControllerBase
             });
 
         builder.AddActivity("BookHotel",
-            new Uri("queue:hotel-room-reservation_execute"),
+            new Uri("exchange:hotel-room-reservation_execute"),
             new HotelRoomReservationArgument
             {
                 HotelId = request.HotelId,
@@ -49,7 +49,7 @@ public class VacationController : ControllerBase
             });
 
         builder.AddActivity("RentCar",
-            new Uri("queue:rental-deal_execute"),
+            new Uri("exchange:rental-deal_execute"),
             new RentalDealArgument
             {
                 RentalCarId = request.RentalCarId,
@@ -58,7 +58,7 @@ public class VacationController : ControllerBase
             });
 
         builder.AddActivity("CreateVacationTicket",
-            new Uri("queue:create-vacation-ticket_execute"),
+            new Uri("exchange:create-vacation-ticket_execute"),
             new CreateVacationTicketArgument
             {
                 FlightId = request.FlightId,
@@ -69,7 +69,7 @@ public class VacationController : ControllerBase
             });
 
         builder.AddSubscription(
-            new Uri("queue:routing-slip-event"),
+            new Uri("exchange:routing-slip-event"),
             RoutingSlipEvents.All, RoutingSlipEventContents.None);
 
         var routingSlip = builder.Build();
