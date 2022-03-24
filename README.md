@@ -28,16 +28,13 @@ To buy a flight ticket.
 To handle tickets for flights, hotels and cars.
 
 ## TrackingService
-To track events from executing routingslips and persist them.
+Subscribes to routing slip events and persists them.
 
 ## VacationService
 To buy a complete vacation with flight ticket, hotel room and car.
 
 ## GatewayService
 A reverse proxy to route a request to different services.
-
-## TrackingService
-Subscribes to routing slip events and logs them.
 
 ## Prometheus and Grafana
 Masstransit and Api data to illustrate in grafana.
@@ -51,7 +48,7 @@ The DBMS for all data. There is one database pr. service.
 ## RabbitMQ
 The broker to handle messages between services.
 
-## Testconsole flags
+## TestConsole
 Uses the NBomber load testing package.
 ```
 -v, --vacation        Runs the vacation load test

@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using GreenPipes;
 using MassTransit;
@@ -21,8 +22,12 @@ public class LogPublishFilter<T> : IFilter<PublishContext<T>> where T : class
         watch.Start();
         await next.Send(context);
         watch.Stop();
-        _logger.LogInformation("Published {Message} with {MessageId}, took {Elapsed} ms",
-            context.Message.GetType().Name, context.MessageId, watch.ElapsedMilliseconds);
+        using (_logger.BeginScope(new Dictionary<string, object>
+                   { { "MessageId", context.MessageId }, { "CorrelationId", context.CorrelationId } }))
+        {
+            _logger.LogInformation("Published {Message} to {Destination}, took {Elapsed} ms",
+                context.Message.GetType().Name, context.DestinationAddress, watch.ElapsedMilliseconds);
+        }
     }
 
     public void Probe(ProbeContext context)

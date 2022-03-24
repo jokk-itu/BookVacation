@@ -24,7 +24,7 @@ public static class RentalCar
             request.CarModelNumber = Guid.NewGuid();
         });
         
-        var rentalCar = Step.Create("post_rentalCar", async context =>
+        var rentalCar = Step.Create("post_rentalcar", async context =>
         {
             var rentalCarRequest = rentalCarRequestFaker.Generate();
             var watch = Stopwatch.StartNew();

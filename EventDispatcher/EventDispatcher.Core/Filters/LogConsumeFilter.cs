@@ -21,8 +21,12 @@ public class LogConsumeFilter<T> : IFilter<ConsumeContext<T>> where T : class
         watch.Start();
         await next.Send(context);
         watch.Stop();
-        _logger.LogInformation("Consumed {Message} with {MessageId}, took {Elapsed} ms", context.Message.GetType().Name,
-            context.MessageId, watch.ElapsedMilliseconds);
+        using (_logger.BeginScope(new Dictionary<string, object>
+                   { { "MessageId", context.MessageId }, { "CorrelationId", context.CorrelationId } }))
+        {
+            _logger.LogInformation("Consumed {Message}, took {Elapsed} ms", context.Message.GetType().Name,
+                watch.ElapsedMilliseconds);
+        }
     }
 
     public void Probe(ProbeContext context)

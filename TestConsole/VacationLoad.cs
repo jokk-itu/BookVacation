@@ -95,7 +95,7 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var rentalCar = Step.Create("post_rentalCar", async context =>
+        var rentalCar = Step.Create("post_rentalcar", async context =>
         {
             var rentalCarRequest = rentalCarRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
@@ -137,9 +137,7 @@ public static class VacationLoad
             watch.Stop();
             vacationResponse.EnsureSuccessStatusCode();
 
-            var size = vacationResponse.Content.Headers.ContentLength.GetValueOrDefault();
-            return Response.Ok(statusCode: (int)vacationResponse.StatusCode, sizeBytes: (int)size,
-                latencyMs: watch.ElapsedMilliseconds);
+            return Response.Ok(statusCode: (int)vacationResponse.StatusCode, latencyMs: watch.ElapsedMilliseconds);
         });
 
         var scenario = ScenarioBuilder.CreateScenario("vacation", airplane, flight, hotel, rentalCar, vacation);

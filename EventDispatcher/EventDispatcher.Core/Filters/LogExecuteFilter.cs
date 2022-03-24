@@ -21,8 +21,15 @@ public class LogExecuteFilter<T> : IFilter<ExecuteContext<T>> where T : class
         watch.Start();
         await next.Send(context);
         watch.Stop();
-        _logger.LogInformation("Executed {Message} with {MessageId}, took {Elapsed} ms", context.Message.GetType().Name,
-            context.MessageId, watch.ElapsedMilliseconds);
+        using (_logger.BeginScope(new Dictionary<string, object>
+               {
+                   { "MessageId", context.MessageId }, { "TrackingNumber", context.TrackingNumber },
+                   { "CorrelationId", context.CorrelationId }, {"ActivityName", context.ActivityName}
+               }))
+        {
+            _logger.LogInformation("Executed {Message}, took {Elapsed} ms",
+                context.Message.GetType().Name, watch.ElapsedMilliseconds);
+        }
     }
 
     public void Probe(ProbeContext context)
