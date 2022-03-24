@@ -27,6 +27,9 @@ To buy a flight ticket.
 ## TicketService
 To handle tickets for flights, hotels and cars.
 
+## TrackingService
+To track events from executing routingslips and persist them.
+
 ## VacationService
 To buy a complete vacation with flight ticket, hotel room and car.
 
@@ -48,12 +51,20 @@ The DBMS for all data. There is one database pr. service.
 ## RabbitMQ
 The broker to handle messages between services.
 
+## Testconsole flags
+Uses the NBomber load testing package.
+```
+-v, --vacation        Runs the vacation load test
+-r, --rentalcar       Runs the rentalcar load test
+-h, --hotel           Runs the hotel load test
+-f, --flight          Runs the flight load test
+-a, --airplane        Runs the airplane load test
+```
 
-## How to run
+## How to run system
 
 ```
-##The env file could also be development, depending on your scenario
-docker-compose build --env-file production.env
+docker-compose build
 
 docker-compose up -d
 ```
