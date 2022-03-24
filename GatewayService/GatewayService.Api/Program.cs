@@ -17,7 +17,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-// Add serilog
+    // Add serilog
     builder.Host.UseSerilog((context, serviceProvider, config) =>
     {
         var seqUri = context.Configuration["Logging:SeqUri"];
@@ -27,7 +27,7 @@ try
             .MinimumLevel.Warning();
     });
 
-//Add services
+    //Add services
     builder.Services.AddReverseProxy()
         .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
@@ -36,7 +36,7 @@ try
         options.AddPolicy("Strict", policyBuilder =>
         {
             policyBuilder.AllowCredentials();
-            policyBuilder.WithOrigins();
+            policyBuilder.WithOrigins("localhost");
             policyBuilder.AllowAnyMethod();
             policyBuilder.AllowAnyHeader();
         });

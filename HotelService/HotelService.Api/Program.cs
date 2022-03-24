@@ -33,6 +33,8 @@ try
             .MinimumLevel.Override("HotelService", LogEventLevel.Information)
             .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
             .MinimumLevel.Override("Raven", LogEventLevel.Information)
+            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
+            .MinimumLevel.Override("Migration", LogEventLevel.Information)
             .MinimumLevel.Warning();
     });
 

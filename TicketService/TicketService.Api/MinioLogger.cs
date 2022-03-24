@@ -14,7 +14,20 @@ public class MinioLogger : IRequestLogger
 
     public void LogRequest(RequestToLog requestToLog, ResponseToLog responseToLog, double durationMs)
     {
-        _logger.LogDebug("Request started");
-        _logger.LogInformation("Request completed");
+        using (_logger.BeginScope(new Dictionary<string, object>
+               {
+                   { "Uri", requestToLog.uri }, { "Resource", requestToLog.resource }, { "Method", requestToLog.method }
+               }))
+        {
+            _logger.LogDebug("Request started");
+
+            if (string.IsNullOrWhiteSpace(responseToLog.errorMessage))
+                _logger.LogInformation("Request completed with statuscode {StatusCode}, took {Elapsed} ms",
+                    responseToLog.statusCode, responseToLog.durationMs);
+            else
+                _logger.LogError(
+                    "Request completed with statuscode {StatusCode}, took {Elapsed} ms, with error {Error}",
+                    responseToLog.statusCode, responseToLog.durationMs, responseToLog.errorMessage);
+        }
     }
 }

@@ -32,6 +32,8 @@ try
             .Enrich.FromLogContext()
             .MinimumLevel.Override("VacationService", LogEventLevel.Information)
             .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
+            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
+            .MinimumLevel.Override("Migration", LogEventLevel.Information)
             .MinimumLevel.Warning();
     });
 
