@@ -1,12 +1,12 @@
 using Serilog;
 
-namespace Logging.Core;
+namespace Logging;
 
 public static class StartupLogger
 {
-    public static void Run(Action hostRunner)
+    public static void Run(Action hostRunner, LoggingConfiguration configuration)
     {
-        Log.Logger = new LoggerConfiguration().ConfigureLogging().CreateBootstrapLogger();
+        Log.Logger = new LoggerConfiguration().ConfigureLogging(configuration).CreateBootstrapLogger();
 
         try
         {

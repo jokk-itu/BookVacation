@@ -4,14 +4,14 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Filters;
 
-namespace Logging.Core;
+namespace Logging;
 
 public static class LoggerConfigurationExtensions
 {
-    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration)
+    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration)
     {
         var assembly = Assembly.GetCallingAssembly();
-        return loggerConfiguration
+        loggerConfiguration
             .Enrich.FromLogContext()
             .Enrich.WithThreadId()
             .Enrich.WithThreadName()
@@ -28,6 +28,17 @@ public static class LoggerConfigurationExtensions
             .Filter.ByExcluding(logEvent =>
                 Matching.FromSource("EventDispatcher").Invoke(logEvent) && logEvent.Level < LogEventLevel.Information)
             .Filter.ByExcluding(logEvent =>
-                Matching.FromSource("Mediator").Invoke(logEvent) && logEvent.Level < LogEventLevel.Information);
+                Matching.FromSource("Mediator").Invoke(logEvent) && logEvent.Level < LogEventLevel.Information)
+            .WriteTo.Seq(configuration.SeqUri)
+            .WriteTo.Console();
+
+        foreach (var pair in configuration.Overrides)
+        {
+            var logEvent = Enum.Parse<LogEventLevel>(pair.Key);
+            loggerConfiguration.Filter.ByExcluding(x =>
+                Matching.FromSource(pair.Value).Invoke(x) && x.Level < logEvent);
+        }
+
+        return loggerConfiguration;
     }
 }

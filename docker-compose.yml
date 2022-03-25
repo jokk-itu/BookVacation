@@ -221,4 +221,16 @@ services:
       - RAVEN_Setup_Mode=None
       - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
     networks:
-      - service_net   
+      - service_net
+      
+  influxdb:
+    image: influxdb:2.1
+    container_name: influxdb
+    hostname: influxdb
+    ports:
+      - 8086:8086
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin
+      - DOCKER_INFLUXDB_INIT_ORG=bookvacation
+      - DOCKER_INFLUXDB_INIT_BUCKET=bookvacation
