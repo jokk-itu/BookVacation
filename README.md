@@ -3,6 +3,8 @@
 ![Architecture](architecture.png "Architecture")
 
 
+![](https://tokei.rs/b1/github/jokk-itu/bookvacation)
+
 |Build|Dockerhub|Nuget|
 |-----|---------|-----|
 | [![Build](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml) | [![Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml) |[![Push to Github](https://github.com/jokk-itu/BookVacation/actions/workflows/push.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/push.yml)|
