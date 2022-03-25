@@ -6,3 +6,4 @@
 .sonarqube
 RavenDBServer
 RavenDB
+Monitoring/grafana/dashboards

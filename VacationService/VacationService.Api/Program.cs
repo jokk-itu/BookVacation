@@ -1,82 +1,74 @@
 using EventDispatcher;
+using FluentValidation.AspNetCore;
+using Logging;
 using MassTransit;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
-using Serilog.Events;
 using VacationService.Api;
+using VacationService.Api.Validators;
 
-var logConfiguration = new ConfigurationBuilder()
+var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
     .AddJsonFile("appsettings.Development.json", true, true)
     .AddEnvironmentVariables()
     .Build()
-    .GetSection("Logging");
+    .GetSection("Logging"));
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Seq(logConfiguration["SeqUri"])
-    .CreateBootstrapLogger();
+var builder = WebApplication.CreateBuilder(args);
 
-try
+builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    var builder = WebApplication.CreateBuilder(args);
+    configuration.ConfigureAdvancedLogging(logConfiguration, builder.Configuration["ServiceName"]);
+});
 
-    // Add serilog
-    builder.Host.UseSerilog((context, serviceProvider, config) =>
+builder.WebHost.ConfigureServices(services =>
+{
+    services.AddFluentValidation(options =>
     {
-        var seqUri = context.Configuration["Logging:SeqUri"];
-        config
-            .WriteTo.Seq(seqUri)
-            .WriteTo.Console(LogEventLevel.Debug)
-            .Enrich.FromLogContext()
-            .MinimumLevel.Override("VacationService", LogEventLevel.Information)
-            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
-            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
-            .MinimumLevel.Override("Migration", LogEventLevel.Information)
-            .MinimumLevel.Warning();
+        options.DisableDataAnnotationsValidation = true;
+        options.AutomaticValidationEnabled = true;
+        options.RegisterValidatorsFromAssemblies(new[]
+        {
+            typeof(FluentValidatorRegistration).Assembly
+        });
     });
-
-    // Add services to the container.
-    builder.Services.AddControllers();
-    builder.Services.AddRouting(options => options.LowercaseUrls = true);
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
-    builder.Services.AddVersionedApiExplorer(config =>
+    services.AddEventBus(builder.Configuration);
+    services.AddMassTransitHostedService();
+    services.AddRouting(options => options.LowercaseUrls = true);
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddApiVersioning(config => { config.ReportApiVersions = true; });
+    services.AddVersionedApiExplorer(config =>
     {
         config.GroupNameFormat = "'v'VVV";
         config.SubstituteApiVersionInUrl = true;
     });
+    services.AddSwaggerGen();
+    services.ConfigureOptions<ConfigureSwaggerOptions>();
+    services.AddSystemMetrics();
+});
 
-    builder.Services.AddSwaggerGen();
-    builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
-    builder.Services.AddEventBus(builder.Configuration);
-    builder.Services.AddMassTransitHostedService();
-
-    builder.Services.AddSystemMetrics();
-
-    // Configure the HTTP request pipeline.
+StartupLogger.Run(() =>
+{
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
-
     app.UseSwagger();
     app.UseSwaggerUI();
 
     app.UseSerilogRequestLogging();
     app.UseHttpMetrics();
 
-    app.UseAuthorization();
-
-    app.MapMetrics();
     app.MapControllers();
+    app.MapMetrics();
 
     app.Run();
-}
-catch (Exception e)
+}, new LoggerConfiguration().ConfigureStartupLogging(logConfiguration, builder.Configuration["ServiceName"]));
+
+namespace VacationService.Api
 {
-    Log.Error(e, "Unhandled exception during startup");
-}
-finally
-{
-    Log.CloseAndFlush();
+    public partial class Program
+    {
+    }
 }

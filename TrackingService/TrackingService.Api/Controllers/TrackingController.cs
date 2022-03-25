@@ -22,9 +22,9 @@ public class TrackingController : ControllerBase
     [ProducesResponseType(typeof(GetTrackingResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetAsync(Guid trackingNumber, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
     {
-        var tracking = await _mediator.Send(new ReadTrackingRequest(trackingNumber.ToString()), cancellationToken);
+        var tracking = await _mediator.Send(new ReadTrackingRequest(id.ToString()), cancellationToken);
 
         if (tracking is null)
             return NotFound();

@@ -1,60 +1,43 @@
+using Logging;
 using Serilog;
-using Serilog.Events;
 
-var logConfiguration = new ConfigurationBuilder()
+var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
     .AddJsonFile("appsettings.Development.json", true, true)
     .AddEnvironmentVariables()
     .Build()
-    .GetSection("Logging");
+    .GetSection("Logging"));
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Seq(logConfiguration["SeqUri"])
-    .CreateBootstrapLogger();
+var builder = WebApplication.CreateBuilder(args);
 
-try
+builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    var builder = WebApplication.CreateBuilder(args);
+    configuration.ConfigureAdvancedLogging(logConfiguration, builder.Configuration["ServiceName"]);
+});
 
-    // Add serilog
-    builder.Host.UseSerilog((context, serviceProvider, config) =>
-    {
-        var seqUri = context.Configuration["Logging:SeqUri"];
-        config.WriteTo.Seq(seqUri)
-            .Enrich.FromLogContext()
-            .MinimumLevel.Override("GatewayService", LogEventLevel.Information)
-            .MinimumLevel.Warning();
-    });
-
-    //Add services
-    builder.Services.AddReverseProxy()
+builder.WebHost.ConfigureServices(services =>
+{
+    services.AddReverseProxy()
         .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
-
-    builder.Services.AddCors(options =>
+    services.AddCors(options =>
     {
         options.AddPolicy("Strict", policyBuilder =>
         {
             policyBuilder.AllowCredentials();
-            policyBuilder.WithOrigins("localhost");
+            policyBuilder.WithOrigins();
             policyBuilder.AllowAnyMethod();
             policyBuilder.AllowAnyHeader();
         });
     });
+});
 
-//Add pipeline setup
+StartupLogger.Run(() =>
+{
     var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
     app.UseCors();
     app.MapReverseProxy();
     app.Run();
-}
-catch (Exception e)
-{
-    Log.Error(e, "Unhandled exception during startup");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+}, new LoggerConfiguration().ConfigureStartupLogging(logConfiguration, builder.Configuration["ServiceName"]));

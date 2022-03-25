@@ -16,7 +16,10 @@ public static class VacationLoad
 {
     public static void Start()
     {
-        var httpClient = new HttpClient();
+        var httpFactory = ClientFactory.Create(
+            name: "factory",
+            clientCount: 10,
+            initClient: (number, context) => Task.FromResult(new HttpClient()));
 
         var airplaneRequestFaker = new Faker<PostAirplaneRequest>().Rules((faker, request) =>
         {
@@ -49,12 +52,12 @@ public static class VacationLoad
             request.CarModelNumber = Guid.NewGuid();
         });
 
-        var airplane = Step.Create("post_airplane", async context =>
+        var airplane = Step.Create("post_airplane", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var airplaneRequest = airplaneRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
             var airplaneResponse =
-                await httpClient.PostAsJsonAsync("http://localhost:5001/api/v1/airplane", airplaneRequest);
+                await context.Client.PostAsJsonAsync("http://localhost:5001/api/v1/airplane", airplaneRequest);
             watch.Stop();
             airplaneResponse.EnsureSuccessStatusCode();
             var airplane = await airplaneResponse.Content.ReadFromJsonAsync<PostAirplaneResponse>();
@@ -64,12 +67,13 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var flight = Step.Create("post_flight", async context =>
+        var flight = Step.Create("post_flight", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var flightRequest = flightRequestFaker.Generate();
             flightRequest.AirPlaneId = (context.Data["airplane"] as PostAirplaneResponse)!.Id;
             var watch = Stopwatch.StartNew();
-            var flightResponse = await httpClient.PostAsJsonAsync("http://localhost:5001/api/v1/flight", flightRequest);
+            var flightResponse =
+                await context.Client.PostAsJsonAsync("http://localhost:5001/api/v1/flight", flightRequest);
             watch.Stop();
             flightResponse.EnsureSuccessStatusCode();
             var flight = await flightResponse.Content.ReadFromJsonAsync<PostFlightResponse>();
@@ -80,11 +84,12 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var hotel = Step.Create("post_hotel", async context =>
+        var hotel = Step.Create("post_hotel", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var hotelRequest = hotelRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
-            var hotelResponse = await httpClient.PostAsJsonAsync("http://localhost:5002/api/v1/hotel", hotelRequest);
+            var hotelResponse =
+                await context.Client.PostAsJsonAsync("http://localhost:5002/api/v1/hotel", hotelRequest);
             watch.Stop();
             hotelResponse.EnsureSuccessStatusCode();
             var hotel = await hotelResponse.Content.ReadFromJsonAsync<PostHotelResponse>();
@@ -95,12 +100,12 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var rentalCar = Step.Create("post_rentalcar", async context =>
+        var rentalCar = Step.Create("post_rentalcar", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var rentalCarRequest = rentalCarRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
             var rentalCarResponse =
-                await httpClient.PostAsJsonAsync("http://localhost:5003/api/v1/rentalcar", rentalCarRequest);
+                await context.Client.PostAsJsonAsync("http://localhost:5003/api/v1/rentalcar", rentalCarRequest);
             watch.Stop();
             rentalCarResponse.EnsureSuccessStatusCode();
             var rentalCar = await rentalCarResponse.Content.ReadFromJsonAsync<PostRentalCarResponse>();
@@ -111,7 +116,7 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var vacation = Step.Create("post_vacation", async context =>
+        var vacation = Step.Create("post_vacation", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var airplaneResponse = context.Data["airplane"] as PostAirplaneResponse;
             var flightResponse = context.Data["flight"] as PostFlightResponse;
@@ -133,17 +138,20 @@ public static class VacationLoad
             };
             var watch = Stopwatch.StartNew();
             var vacationResponse =
-                await httpClient.PostAsJsonAsync("http://localhost:5000/api/v1/vacation", vacationRequest);
+                await context.Client.PostAsJsonAsync("http://localhost:5000/api/v1/vacation", vacationRequest);
             watch.Stop();
             vacationResponse.EnsureSuccessStatusCode();
 
             return Response.Ok(statusCode: (int)vacationResponse.StatusCode, latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var scenario = ScenarioBuilder.CreateScenario("vacation", airplane, flight, hotel, rentalCar, vacation);
+        var scenario = ScenarioBuilder.CreateScenario("vacation", airplane, flight, hotel, rentalCar, vacation)
+            .WithLoadSimulations(Simulation.InjectPerSecRandom(10, 20, TimeSpan.FromMinutes(2)))
+            .WithWarmUpDuration(TimeSpan.FromMinutes(1));
 
         NBomberRunner
             .RegisterScenarios(scenario)
+            .WithTestSuite("Vacation")
             .WithTestName("Vacation")
             .WithLoggerConfig(() =>
                 new LoggerConfiguration()
