@@ -31,7 +31,9 @@ jobs:
           - projects: TrackingService.Contracts
             service: TrackingService
           - projects: Migration.Core
-            service: Migration      
+            service: Migration
+          - projects: Logging.Core
+            service: Logging  
     steps:
     - name: Checkout
       uses: actions/checkout/@v2
