@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>Logging</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>Logging</PackageId>
+        <AssemblyName>Logging</AssemblyName>
+        <Title>Logging</Title>
+        <Authors>Joachim Køcher Kelsen</Authors>
+        <Company>jokk-itu</Company>
+        <PackageDescription>Logging extension methods for easier setup using Serilog.</PackageDescription>
+        <PackageProjectUrl>https://github.com/jokk-itu/BookVacation</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jokk-itu/BookVacation</RepositoryUrl>
+        <VersionPrefix Condition="$(CI) != ''">$([System.DateTime]::UtcNow.ToString("yyyyMMdd").Insert(4, ".").Insert(7, ".").Insert(10, "."))$(BuildNumber)</VersionPrefix>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+      <PackageReference Include="Serilog.Enrichers.Memory" Version="1.0.4" />
+      <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
+      <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+      <PackageReference Include="Serilog.Exceptions" Version="8.1.0" />
+      <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
+      <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
+    </ItemGroup>
+
+</Project>
