@@ -9,14 +9,14 @@
 
     <ItemGroup>
         <PackageReference Include="EventDispatcher" Version="2022.3.24.191" />
+        <PackageReference Include="Logging" Version="2022.25.2" />
         <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
         <PackageReference Include="Minio" Version="3.1.13" />
         <PackageReference Include="Polly" Version="7.2.3" />
+        <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
         <PackageReference Include="prometheus-net.SystemMetrics" Version="2.0.0" />
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
-        <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 

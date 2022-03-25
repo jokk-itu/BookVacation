@@ -4,91 +4,72 @@ using FlightService.Api.Validators;
 using FlightService.Infrastructure;
 using FlightService.Infrastructure.CourierActivities;
 using FluentValidation.AspNetCore;
+using Logging;
 using MassTransit;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
-using Serilog.Events;
 
-var logConfiguration = new ConfigurationBuilder()
+var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", true, true)
     .AddJsonFile("appsettings.Development.json", true, true)
     .AddEnvironmentVariables()
     .Build()
-    .GetSection("Logging");
+    .GetSection("Logging"));
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Seq(logConfiguration["SeqUri"])
-    .CreateBootstrapLogger();
+var builder = WebApplication.CreateBuilder(args);
 
-try
+builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    var builder = WebApplication.CreateBuilder(args);
+    configuration.ConfigureLogging(logConfiguration);
+});
 
-// Add serilog
-    builder.Host.UseSerilog((context, serviceProvider, config) =>
-    {
-        var seqUri = context.Configuration["Logging:SeqUri"];
-        config.WriteTo.Seq(seqUri)
-            .Enrich.FromLogContext()
-            .MinimumLevel.Override("FlightService", LogEventLevel.Information)
-            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
-            .MinimumLevel.Override("Raven", LogEventLevel.Information)
-            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
-            .MinimumLevel.Override("Migration", LogEventLevel.Information)
-            .MinimumLevel.Warning();
-    });
-
-// Add services to the container.
-    builder.Services.AddInfrastructureServices(builder.Configuration);
-    builder.Services.AddRouting(options => options.LowercaseUrls = true);
-    builder.Services.AddControllers();
-    builder.Services.AddFluentValidation(options =>
+builder.WebHost.ConfigureServices(services =>
+{
+    services.AddInfrastructureServices(builder.Configuration);
+    services.AddFluentValidation(options =>
     {
         options.DisableDataAnnotationsValidation = true;
         options.AutomaticValidationEnabled = true;
-        options.RegisterValidatorsFromAssemblyContaining<FluentValidatorRegistration>();
+        options.RegisterValidatorsFromAssemblies(new[]
+        {
+            typeof(FluentValidatorRegistration).Assembly,
+            typeof(FlightService.Infrastructure.Validators.FluentValidatorRegistration).Assembly
+        });
     });
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddApiVersioning(config => { config.ReportApiVersions = true; });
-    builder.Services.AddVersionedApiExplorer(config =>
+    services.AddEventBus(builder.Configuration,
+        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
+    services.AddMassTransitHostedService();
+    services.AddRouting(options => options.LowercaseUrls = true);
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddApiVersioning(config => { config.ReportApiVersions = true; });
+    services.AddVersionedApiExplorer(config =>
     {
         config.GroupNameFormat = "'v'VVV";
         config.SubstituteApiVersionInUrl = true;
     });
-    builder.Services.AddSwaggerGen();
-    builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
-    builder.Services.AddEventBus(builder.Configuration,
-        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
-    builder.Services.AddMassTransitHostedService();
-    builder.Services.AddSystemMetrics();
+    services.AddSwaggerGen();
+    services.ConfigureOptions<ConfigureSwaggerOptions>();
+    services.AddSystemMetrics();
+});
 
-
-    // Configure the HTTP request pipeline.
+StartupLogger.Run(() =>
+{
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
-
     app.UseSwagger();
     app.UseSwaggerUI();
 
     app.UseSerilogRequestLogging();
+    app.UseHttpMetrics();
 
-    app.UseAuthorization();
-
-    app.MapMetrics();
     app.MapControllers();
+    app.MapMetrics();
 
     app.Run();
-}
-catch (Exception e)
-{
-    Log.Error(e, "Unhandled exception during startup");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+}, logConfiguration);
 
 namespace FlightService.Api
 {
