@@ -4,20 +4,23 @@ using TestConsole;
 Parser.Default.ParseArguments<Options>(args)
     .WithParsed(options =>
     {
-        if(options.Vacation)
+        if(options.VacationLoad)
             VacationLoad.Start();
         
-        if(options.Airplane)
+        if(options.AirplaneLoad)
             AirplaneLoad.Start();
         
-        if(options.Flight)
+        if(options.FlightLoad)
             FlightLoad.Start();
         
-        if(options.Hotel)
+        if(options.HotelLoad)
             HotelLoad.Start();
 
-        if (options.RentalCar)
+        if (options.RentalCarLoad)
             RentalCar.Start();
+        
+        if(options.VacationSingle)
+            Vacation.Start().GetAwaiter().GetResult();
     })
     .WithNotParsed(errors =>
     {

@@ -22,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogging(logConfiguration, builder.Configuration["ServiceName"]);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -69,7 +69,7 @@ StartupLogger.Run(() =>
     app.MapMetrics();
 
     app.Run();
-}, logConfiguration);
+}, new LoggerConfiguration().ConfigureStartupLogging(logConfiguration, builder.Configuration["ServiceName"]));
 
 namespace FlightService.Api
 {

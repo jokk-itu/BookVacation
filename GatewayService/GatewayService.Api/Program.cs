@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogging(logConfiguration, builder.Configuration["ServiceName"]);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -25,7 +25,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AddPolicy("Strict", policyBuilder =>
         {
             policyBuilder.AllowCredentials();
-            policyBuilder.WithOrigins("localhost");
+            policyBuilder.WithOrigins();
             policyBuilder.AllowAnyMethod();
             policyBuilder.AllowAnyHeader();
         });
@@ -40,4 +40,4 @@ StartupLogger.Run(() =>
     app.UseCors();
     app.MapReverseProxy();
     app.Run();
-}, logConfiguration);
+}, new LoggerConfiguration().ConfigureStartupLogging(logConfiguration, builder.Configuration["ServiceName"]));

@@ -4,9 +4,9 @@ namespace Logging;
 
 public static class StartupLogger
 {
-    public static void Run(Action hostRunner, LoggingConfiguration configuration)
+    public static void Run(Action hostRunner, LoggerConfiguration loggerConfiguration)
     {
-        Log.Logger = new LoggerConfiguration().ConfigureLogging(configuration).CreateBootstrapLogger();
+        Log.Logger = loggerConfiguration.CreateBootstrapLogger();
 
         try
         {

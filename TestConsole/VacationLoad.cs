@@ -1,4 +1,3 @@
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using Bogus;
@@ -8,7 +7,6 @@ using FlightService.Contracts.Flight;
 using HotelService.Contracts.CreateHotel;
 using NBomber.Contracts;
 using NBomber.CSharp;
-using NBomber.Sinks.InfluxDB;
 using Serilog;
 using VacationService.Contracts.Vacation;
 
@@ -54,7 +52,7 @@ public static class VacationLoad
             request.CarModelNumber = Guid.NewGuid();
         });
 
-        var airplane = Step.Create("post_airplane", clientFactory: httpFactory, execute: async context =>
+        var airplane = Step.Create("post_airplane", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var airplaneRequest = airplaneRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
@@ -69,7 +67,7 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var flight = Step.Create("post_flight", clientFactory: httpFactory, execute: async context =>
+        var flight = Step.Create("post_flight", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var flightRequest = flightRequestFaker.Generate();
             flightRequest.AirPlaneId = (context.Data["airplane"] as PostAirplaneResponse)!.Id;
@@ -86,7 +84,7 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var hotel = Step.Create("post_hotel", clientFactory: httpFactory, execute: async context =>
+        var hotel = Step.Create("post_hotel", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var hotelRequest = hotelRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
@@ -102,7 +100,7 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var rentalCar = Step.Create("post_rentalcar", clientFactory: httpFactory, execute: async context =>
+        var rentalCar = Step.Create("post_rentalcar", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var rentalCarRequest = rentalCarRequestFaker.Generate();
             var watch = Stopwatch.StartNew();
@@ -118,7 +116,7 @@ public static class VacationLoad
                 latencyMs: watch.ElapsedMilliseconds);
         });
 
-        var vacation = Step.Create("post_vacation", clientFactory: httpFactory, execute: async context =>
+        var vacation = Step.Create("post_vacation", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context =>
         {
             var airplaneResponse = context.Data["airplane"] as PostAirplaneResponse;
             var flightResponse = context.Data["flight"] as PostFlightResponse;
@@ -153,8 +151,6 @@ public static class VacationLoad
 
         NBomberRunner
             .RegisterScenarios(scenario)
-            .WithReportingSinks(
-                new InfluxDBSink(InfluxDbSinkConfig.Create("http://localhost:8086", "vacation_load_test", "", "")))
             .WithTestSuite("Vacation")
             .WithTestName("Vacation")
             .WithLoggerConfig(() =>

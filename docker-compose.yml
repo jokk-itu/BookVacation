@@ -11,7 +11,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     hostname: vacationservice
-    container_name: vacationservice
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
@@ -29,7 +28,6 @@ services:
       dockerfile: FlightService/FlightService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
-    container_name: flightservice
     hostname: flightservice
     ports:
       - 5001:80
@@ -50,7 +48,6 @@ services:
       dockerfile: HotelService/HotelService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
-    container_name: hotelservice
     hostname: hotelservice
     ports:
       - 5002:80
@@ -71,7 +68,6 @@ services:
       dockerfile: CarService/CarService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
-    container_name: carservice
     hostname: carservice
     ports:
       - 5003:80
@@ -92,7 +88,6 @@ services:
       dockerfile: TrackingService/TrackingService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
-    container_name: trackingservice
     hostname: trackingservice
     ports:
       - 5004:80
@@ -113,7 +108,6 @@ services:
       dockerfile: GatewayService/GatewayService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
-    container_name: gatewayservice
     hostname: gatewayservice
     ports:
       - 5005:80
@@ -132,7 +126,6 @@ services:
       dockerfile: TicketService/TicketService.Api/Dockerfile
       args:
         - GithubToken=${NUGET_API}
-    container_name: ticketservice
     hostname: ticketservice
     ports:
       - 5007:80
@@ -153,7 +146,6 @@ services:
       - "5341:80"
     environment:
       - ACCEPT_EULA=Y
-    container_name: logger
     hostname: logger
     networks:
       - service_net
@@ -161,7 +153,6 @@ services:
   eventbus:
     image: masstransit/rabbitmq
     hostname: eventbus
-    container_name: eventbus
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -176,7 +167,6 @@ services:
     image: prom/prometheus
     ports:
       - "9090:9090"
-    container_name: prometheus
     hostname: prometheus
     volumes:
       - ./Monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -187,7 +177,6 @@ services:
     image: grafana/grafana:8.2.6
     ports:
       - "3000:3000"
-    container_name: grafana
     environment:
       - GF_DEFAULT_INSTANCE_NAME=local
       - GF_SECURITY_ADMIN_USER=admin
@@ -206,7 +195,6 @@ services:
   blobstorage:
     image: minio/minio
     hostname: blobstorage
-    container_name: blobstorage
     ports:
       - 9000:9000
       - 9001:9001
@@ -220,7 +208,6 @@ services:
   ravendb:
     image: ravendb/ravendb:ubuntu-latest
     hostname: ravendb
-    container_name: ravendb
     ports:
       - 8080:8080
       - 38888:38888
@@ -233,7 +220,6 @@ services:
       
   influxdb:
     image: influxdb:2.0
-    container_name: influxdb
     hostname: influxdb
     ports:
       - 8086:8086
@@ -245,4 +231,4 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=bookvacation
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=iXnNAnWD3YXqqs95Dy1x7l2J-bXxZvzS_cLNs8wGHLT7pTp8lxsipx3Tzv-ElDf3bD4NLwYBz822GnUtouUesQ==
     networks:
-      - service_net  
+      - service_net

@@ -8,8 +8,12 @@ namespace Logging;
 
 public static class LoggerConfigurationExtensions
 {
-    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration)
+    public static LoggerConfiguration ConfigureStartupLogging(this LoggerConfiguration loggerConfiguration,
+        LoggingConfiguration configuration, string serviceName)
     {
+        if (configuration is null)
+            throw new ArgumentNullException(nameof(configuration));
+        
         var assembly = Assembly.GetCallingAssembly();
         loggerConfiguration
             .Enrich.FromLogContext()
@@ -20,24 +24,44 @@ public static class LoggerConfigurationExtensions
             .Enrich.WithProcessName()
             .Enrich.WithExceptionDetails()
             .Enrich.WithEnvironmentName()
-            .Enrich.WithProperty("Application", assembly.GetName().Name)
-            .MinimumLevel.Warning()
-            .Filter.ByExcluding(logEvent =>
-                Matching.FromSource(assembly.GetName().Name).Invoke(logEvent) &&
-                logEvent.Level < LogEventLevel.Information)
-            .Filter.ByExcluding(logEvent =>
-                Matching.FromSource("EventDispatcher").Invoke(logEvent) && logEvent.Level < LogEventLevel.Information)
-            .Filter.ByExcluding(logEvent =>
-                Matching.FromSource("Mediator").Invoke(logEvent) && logEvent.Level < LogEventLevel.Information)
+            .Enrich.WithMachineName()
+            .Enrich.WithProperty("Assembly", assembly.GetName().Name)
+            .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
+            .Enrich.WithProperty("Application", serviceName)
+            .MinimumLevel.Information()
             .WriteTo.Seq(configuration.SeqUri)
             .WriteTo.Console();
 
-        foreach (var pair in configuration.Overrides)
-        {
-            var logEvent = Enum.Parse<LogEventLevel>(pair.Key);
-            loggerConfiguration.Filter.ByExcluding(x =>
-                Matching.FromSource(pair.Value).Invoke(x) && x.Level < logEvent);
-        }
+        return loggerConfiguration;
+    }
+    
+    public static LoggerConfiguration ConfigureAdvancedLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration, string serviceName)
+    {
+        if (configuration is null)
+            throw new ArgumentNullException(nameof(configuration));
+        
+        var assembly = Assembly.GetCallingAssembly();
+        var root = assembly.GetName().Name?.Split('.')[0] ?? "NotFound";
+        Console.WriteLine(root);
+        loggerConfiguration
+            .Enrich.FromLogContext()
+            .Enrich.WithThreadId()
+            .Enrich.WithThreadName()
+            .Enrich.WithMemoryUsage()
+            .Enrich.WithProcessId()
+            .Enrich.WithProcessName()
+            .Enrich.WithExceptionDetails()
+            .Enrich.WithEnvironmentName()
+            .Enrich.WithProperty("Assembly", assembly.GetName().Name)
+            .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
+            .Enrich.WithProperty("Application", serviceName)
+            .MinimumLevel.Warning()
+            .MinimumLevel.Override("Serilog", LogEventLevel.Information)
+            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
+            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
+            .MinimumLevel.Override(root, LogEventLevel.Information)
+            .WriteTo.Seq(configuration.SeqUri)
+            .WriteTo.Console();
 
         return loggerConfiguration;
     }
