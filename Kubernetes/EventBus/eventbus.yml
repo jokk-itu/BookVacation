@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventbus-deployment
+spec:
+  selector:
+    matchLabels:
+      app: eventbus
+  template:
+    metadata:
+      labels:
+        app: eventbus
+    spec:
+      containers:
+      - name: eventbus
+        image: masstransit/rabbitmq
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - name: eventbus-port
+          containerPort: 5672
+        - name: eventbus-ui-port
+          containerPort: 15672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventbus-service
+spec:
+  type: NodePort
+  selector:
+    app: eventbus
+  ports:
+  - name: internal
+    port: 5672
+    targetPort: eventbus-port
+  - name: ui  
+    port: 15672
+    targetPort: eventbus-ui-port
+    nodePort: 31001
