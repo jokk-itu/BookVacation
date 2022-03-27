@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="EventDispatcher" Version="2022.3.24.191" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.6" />
-        <PackageReference Include="Logging" Version="2022.3.25.8" />
+        <PackageReference Include="Logging" Version="2022.3.27.1" />
         <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />

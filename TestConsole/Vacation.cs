@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Net.Http.Json;
 using Bogus;
 using CarService.Contracts.RentalCar;

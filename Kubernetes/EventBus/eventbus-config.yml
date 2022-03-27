@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eventbus-config
+data:
+  url: eventbus-service
+  port: "5672"
