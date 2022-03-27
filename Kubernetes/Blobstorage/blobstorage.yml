@@ -26,17 +26,12 @@ spec:
         - containerPort: 9001
           name: ui
         env:
-          - name: Minio__Uri
-            valueFrom:
-              configMapKeyRef:
-                name: blobstorage-config
-                key: url
-          - name: Minio__Username
+          - name: MINIO_ROOT_USER
             valueFrom:
               secretKeyRef:
                 name: blobstorage-secret
                 key: username   
-          - name: Minio__Password
+          - name: MINIO_ROOT_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: blobstorage-secret

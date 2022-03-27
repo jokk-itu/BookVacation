@@ -6,6 +6,7 @@ spec:
   selector:
     matchLabels:
       app: vacationservice
+  replicas: 2    
   template:
     metadata:
       labels:
@@ -21,6 +22,34 @@ spec:
         ports:
         - containerPort: 80
           name: internal
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+          - name: Logging__SeqUri
+            valueFrom:
+              configMapKeyRef:
+                name: logger-config
+                key: url
+          - name: EventBus__Hostname
+            valueFrom:
+              configMapKeyRef:
+                name: eventbus-config
+                key: url
+          - name: EventBus__Port
+            valueFrom:
+              configMapKeyRef:
+                name: eventbus-config
+                key: port
+          - name: EventBus__Username
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key: username
+          - name: EventBus__Password
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key: password
 ---
 apiVersion: v1
 kind: Service
