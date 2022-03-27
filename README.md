@@ -51,17 +51,23 @@ The broker to handle messages between services.
 ## TestConsole
 Uses the NBomber load testing package.
 ```
--v, --vacation        Runs the vacation load test
--r, --rentalcar       Runs the rentalcar load test
--h, --hotel           Runs the hotel load test
--f, --flight          Runs the flight load test
--a, --airplane        Runs the airplane load test
+-a, --vacationload        Runs the vacation load test
+-b, --rentalcarload       Runs the rentalcar load test
+-c, --hotelload           Runs the hotel load test
+-d, --flightload          Runs the flight load test
+-e, --airplaneload        Runs the airplane load test
+-f, --vacationsingle      Runs the vacation single test
 ```
 
-## How to run system
+## Development
+Use docker during development.
 
 ```
 docker-compose build
 
 docker-compose up -d
 ```
+
+## Production
+Use kubernetes during production.
+Set up services by running the <b>start.sh</b> script in the Kubernetes directory.

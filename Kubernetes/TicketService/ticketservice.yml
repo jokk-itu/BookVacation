@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vacationservice-deployment
+  name: ticketservice-deployment
 spec:
   selector:
     matchLabels:
-      app: vacationservice
+      app: ticketservice
   template:
     metadata:
       labels:
-        app: vacationservice
+        app: ticketservice
     spec:
       containers:
-      - name: vacationservice
-        image: jokk-itu/vacationservice:master
+      - name: ticketservice
+        image: jokk-itu/ticketservice:master
         resources:
           limits:
             memory: "128Mi"
@@ -25,12 +25,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: vacationservice-service
+  name: ticketservice-service
 spec:
   type: NodePort
   selector:
-    app: vacationservice
+    app: ticketservice
   ports:
-  - port: 5000
-    targetPort: 80
-    nodePort: 30000
+  - port: 5005
+    targetPort: internal
+    nodePort: 30005

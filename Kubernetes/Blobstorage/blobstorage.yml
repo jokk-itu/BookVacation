@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blobstorage-deployment
+spec:
+  selector:
+    matchLabels:
+      app: blobstorage
+  template:
+    metadata:
+      labels:
+        app: blobstorage
+    spec:
+      containers:
+      - name: blobstorage
+        image: minio/minio
+        command: 
+          - minio server /data --console-address ":9001"
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9000
+          name: internal
+        - containerPort: 9001
+          name: ui
+        env:
+          - name: Minio__Uri
+            valueFrom:
+              configMapKeyRef:
+                name: blobstorage-config
+                key: url
+          - name: Minio__Username
+            valueFrom:
+              secretKeyRef:
+                name: blobstorage-secret
+                key: username   
+          - name: Minio__Password
+            valueFrom:
+              secretKeyRef:
+                name: blobstorage-secret
+                key: password         
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blobstorage-service
+spec:
+  type: NodePort
+  selector:
+    app: blobstorage
+  ports:
+  - port: 9001
+    targetPort: ui
+    nodePort: 31004
+  - port: 9000
+    targetPort: internal
