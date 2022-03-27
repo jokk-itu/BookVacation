@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: carservice
-        image: jokk/carservice:master
+        image: jokk/carservice:feature-kubernetes
         resources:
           limits:
             memory: "128Mi"
@@ -28,7 +28,7 @@ spec:
           - name: Logging__SeqUri
             valueFrom:
               configMapKeyRef:
-                name: logger
+                name: logger-config
                 key: url
           - name: EventBus__Hostname
             valueFrom:
