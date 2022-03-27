@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotelservice-deployment
+spec:
+  selector:
+    matchLabels:
+      app: hotelservice
+  template:
+    metadata:
+      labels:
+        app: hotelservice
+    spec:
+      containers:
+      - name: hotelservice
+        image: jokk-itu/hotelservice:master
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+          name: internal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hotelservice-service
+spec:
+  type: NodePort
+  selector:
+    app: hotelservice
+  ports:
+  - port: 5002
+    targetPort: internal
+    nodePort: 30002
