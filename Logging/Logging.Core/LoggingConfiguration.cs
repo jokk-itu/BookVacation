@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Logging;
 
@@ -8,8 +9,9 @@ public class LoggingConfiguration
 
     public LoggingConfiguration(IConfiguration configuration)
     {
+        var logger = Log.Logger.ForContext<LoggingConfiguration>();
         SeqUri = configuration["SeqUri"];
 
-        StartupLogger.LogInformation<LoggingConfiguration>("Configuration: SeqUri = {LoggingConfiguration:SeqUri}", SeqUri);
+        logger.Information("Configuration: SeqUri = {LoggingConfiguration:SeqUri}", SeqUri);
     }
 }

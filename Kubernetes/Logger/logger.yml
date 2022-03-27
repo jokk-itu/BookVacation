@@ -16,13 +16,14 @@ spec:
         image: datalust/seq:latest
         resources:
           limits:
-            memory: "128Mi"
+            memory: "500Mi"
             cpu: "500m"
         ports:
         - containerPort: 80
+          name: logger-port
         env:
           - name: ACCEPT_EULA
-            value: Y
+            value: "Y"
 ---
 apiVersion: v1
 kind: Service
@@ -34,6 +35,5 @@ spec:
     app: logger
   ports:
   - port: 5341
-    targetPort: 80
-    nodePort: 31003
-
+    targetPort: logger-port
+    nodePort: 31002

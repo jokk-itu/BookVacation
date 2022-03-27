@@ -42,6 +42,7 @@ public static class AirplaneLoad
         NBomberRunner
             .RegisterScenarios(scenario)
             .WithTestName("Airplane")
+            .WithTestSuite("Airplane")
             .WithLoggerConfig(() =>
                 new LoggerConfiguration()
                     .Enrich.FromLogContext()

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: carservice
-        image: jokk/carservice:latest
+        image: jokk/carservice:master
         resources:
           limits:
             memory: "128Mi"
@@ -22,6 +22,39 @@ spec:
         ports:
         - containerPort: 80
           name: carservice-port
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+          - name: Logging__SeqUri
+            valueFrom:
+              configMapKeyRef:
+                name: logger
+                key: url
+          - name: EventBus__Hostname
+            valueFrom:
+              configMapKeyRef:
+                name: eventbus-config
+                key: url
+          - name: EventBus__Port
+            valueFrom:
+              configMapKeyRef:
+                name: eventbus-config
+                key: port
+          - name: EventBus__Username
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key: username
+          - name: EventBus__Password
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key: password
+          - name: RavenSettings__Urls__0
+            valueFrom:
+              configMapKeyRef:
+                name: raven-config
+                key: url
 ---
 apiVersion: v1
 kind: Service
@@ -32,7 +65,6 @@ spec:
   selector:
     app: carservice
   ports:
-  - protocol: TCP
-    port: 5003
+  - port: 5003
     targetPort: carservice-port
     nodePort: 30003

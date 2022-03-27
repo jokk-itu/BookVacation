@@ -59,6 +59,7 @@ public static class LoggerConfigurationExtensions
             .MinimumLevel.Override("Serilog", LogEventLevel.Information)
             .MinimumLevel.Override("Mediator", LogEventLevel.Information)
             .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
+            .MinimumLevel.Override("Logging", LogEventLevel.Information)
             .MinimumLevel.Override(root, LogEventLevel.Information)
             .WriteTo.Seq(configuration.SeqUri)
             .WriteTo.Console();

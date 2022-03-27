@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: carservice-config
 data:
-  url: carservice-service
+  url: carservice-service:5003

@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: eventbus-config
 data:
-  url: eventbus-service.ports.internal
+  url: eventbus-service
+  port: "5672"

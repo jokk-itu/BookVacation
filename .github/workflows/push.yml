@@ -1,8 +1,7 @@
 name: Push to Github
 
 on:
-  push:
-    branches: [ master ]
+  workflow_dispatch:
 
 env:
   CONFIGURATION: Release 
