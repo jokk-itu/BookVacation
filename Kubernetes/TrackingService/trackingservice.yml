@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: trackingservice
-        image: jokk-itu/trackingservice:master
+        image: jokk/trackingservice:master
         resources:
           limits:
             memory: "128Mi"
@@ -61,10 +61,8 @@ kind: Service
 metadata:
   name: trackingservice-service
 spec:
-  type: NodePort
   selector:
     app: trackingservice
   ports:
   - port: 5004
     targetPort: internal
-    nodePort: 30004

@@ -20,7 +20,6 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 80
-          name: logger-port
         env:
           - name: ACCEPT_EULA
             value: "Y"
@@ -30,10 +29,9 @@ kind: Service
 metadata:
   name: logger-service
 spec:
-  type: NodePort
   selector:
     app: logger
   ports:
   - port: 5341
-    targetPort: logger-port
-    nodePort: 31002
+    targetPort: 80
+    name: logger-port

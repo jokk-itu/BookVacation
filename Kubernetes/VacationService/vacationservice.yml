@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: vacationservice
-        image: jokk-itu/vacationservice:master
+        image: jokk/vacationservice:master
         resources:
           limits:
             memory: "128Mi"
@@ -56,10 +56,8 @@ kind: Service
 metadata:
   name: vacationservice-service
 spec:
-  type: NodePort
   selector:
     app: vacationservice
   ports:
   - port: 5000
     targetPort: 80
-    nodePort: 30000

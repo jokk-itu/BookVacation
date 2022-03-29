@@ -15,7 +15,7 @@ spec:
       - name: blobstorage
         image: minio/minio
         command: 
-          - minio server /data --console-address ":9001"
+          - server /data --console-address ":9001"
         resources:
           limits:
             memory: "1024Mi"
@@ -42,12 +42,12 @@ kind: Service
 metadata:
   name: blobstorage-service
 spec:
-  type: NodePort
   selector:
     app: blobstorage
   ports:
   - port: 9001
     targetPort: ui
-    nodePort: 31004
+    name: service-ui
   - port: 9000
     targetPort: internal
+    name: service-internal
