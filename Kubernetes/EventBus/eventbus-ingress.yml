@@ -6,13 +6,13 @@ metadata:
     name: eventbus-ingress
 spec:
   rules:
-  - host: bookvacation.local
+  - host: eventbus.bookvacation.local
     http:
       paths:
       - pathType: Prefix
-        path: "/eventbus"
+        path: "/"
         backend:
           service:
             name: eventbus-service
-            port: 
+            port:
               name: management
