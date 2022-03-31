@@ -14,8 +14,8 @@ spec:
       containers:
       - name: blobstorage
         image: minio/minio
-        command: 
-          - server /data --console-address ":9001"
+        command: ["minio"]
+        args: ["server", "/data", "--console-address", ":9001"]
         resources:
           limits:
             memory: "1024Mi"
@@ -35,7 +35,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: blobstorage-secret
-                key: password         
+                key: password
 ---
 apiVersion: v1
 kind: Service

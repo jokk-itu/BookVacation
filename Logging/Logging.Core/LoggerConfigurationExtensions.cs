@@ -15,6 +15,7 @@ public static class LoggerConfigurationExtensions
             throw new ArgumentNullException(nameof(configuration));
         
         var assembly = Assembly.GetCallingAssembly();
+        var root = assembly.GetName().Name?.Split('.')[0] ?? "NotFound";
         loggerConfiguration
             .Enrich.FromLogContext()
             .Enrich.WithThreadId()
@@ -28,7 +29,12 @@ public static class LoggerConfigurationExtensions
             .Enrich.WithProperty("Assembly", assembly.GetName().Name)
             .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
             .Enrich.WithProperty("Application", serviceName)
-            .MinimumLevel.Information()
+            .MinimumLevel.Warning()
+            .MinimumLevel.Override("Serilog", LogEventLevel.Information)
+            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
+            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
+            .MinimumLevel.Override("Logging", LogEventLevel.Information)
+            .MinimumLevel.Override(root, LogEventLevel.Information)
             .WriteTo.Seq(configuration.SeqUri)
             .WriteTo.Console();
 
