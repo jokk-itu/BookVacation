@@ -6,7 +6,7 @@ using Raven.Client.Exceptions;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 
-namespace Migration.Core;
+namespace RavenClient.Core;
 
 public static class ServiceCollectionExtensions
 {

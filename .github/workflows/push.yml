@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core', 'TicketService.Contracts', 'Mediator.Core', 'TrackingService.Contracts', 'Migration.Core', 'Logging.Core']
+        projects:  ['CarService.Contracts', 'FlightService.Contracts', 'HotelService.Contracts', 'VacationService.Contracts', 'EventDispatcher.Core', 'TicketService.Contracts', 'Mediator.Core', 'TrackingService.Contracts', 'RavenClient.Core', 'Logging.Core']
         include:
           - projects: CarService.Contracts
             service: CarService
@@ -29,8 +29,8 @@ jobs:
             service: Mediator
           - projects: TrackingService.Contracts
             service: TrackingService
-          - projects: Migration.Core
-            service: Migration
+          - projects: RavenClient.Core
+            service: RavenClient
           - projects: Logging.Core
             service: Logging
     steps:
