@@ -32,7 +32,8 @@ public static class ServiceCollectionExtensions
 
             return documentStore;
         });
-        services.AddScoped<IAsyncDocumentSession>(sp => sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
+        services.AddTransient<IAsyncDocumentSession>(sp => sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
+        services.AddTransient<IRavenClient, RavenClient>();
         return services;
     }
 }
