@@ -17,10 +17,11 @@ public class RavenClient : IRavenClient
         _session = session;
         _policies = Policy.WrapAsync(
             Policy.Handle<ConcurrencyException>().WaitAndRetryAsync(5, retryCount => TimeSpan.FromSeconds(2 * retryCount)),
-            Policy.Handle<RequestedNodeUnavailableException>().RetryForeverAsync(),
-            Policy.Handle<AllTopologyNodesDownException>().RetryForeverAsync(),
-            Policy.Handle<DatabaseLoadTimeoutException>().RetryForeverAsync(),
-            Policy.Handle<DatabaseConcurrentLoadTimeoutException>().WaitAndRetryAsync(5, retryCount => TimeSpan.FromSeconds(2* retryCount)),
+            Policy.Handle<RequestedNodeUnavailableException>().WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(1)),
+            Policy.Handle<AllTopologyNodesDownException>().WaitAndRetryForeverAsync(retryCount => TimeSpan.FromSeconds(retryCount * 2)),
+            Policy.Handle<DatabaseLoadTimeoutException>().WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(2)),
+            Policy.Handle<DatabaseDisabledException>().WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(2)),
+            Policy.Handle<DatabaseConcurrentLoadTimeoutException>().WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(2)),
             Policy.Handle<DatabaseLoadFailureException>().WaitAndRetryAsync(5, retryCount => TimeSpan.FromSeconds(2 * retryCount)));
     }
 
