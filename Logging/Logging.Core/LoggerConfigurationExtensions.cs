@@ -8,15 +8,36 @@ namespace Logging;
 
 public static class LoggerConfigurationExtensions
 {
-    public static LoggerConfiguration ConfigureStartupLogging(this LoggerConfiguration loggerConfiguration,
-        LoggingConfiguration configuration, string serviceName)
+    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration, string serviceName)
     {
         if (configuration is null)
             throw new ArgumentNullException(nameof(configuration));
         
         var assembly = Assembly.GetCallingAssembly();
-        var root = assembly.GetName().Name?.Split('.')[0] ?? "NotFound";
-        loggerConfiguration
+        return loggerConfiguration
+            .SetupEnrichers(assembly, serviceName)
+            .SetupBaseOverrides(assembly, serviceName)
+            .SetupCustomOverrides(configuration)
+            .SetupSeqIfEnabled(configuration)
+            .SetupConsoleIfEnabled(configuration);
+    }
+
+    private static LoggerConfiguration SetupBaseOverrides(this LoggerConfiguration loggerConfiguration, Assembly assembly, string serviceName)
+    {
+        return loggerConfiguration
+            .MinimumLevel.Warning()
+            .MinimumLevel.Override(serviceName, LogEventLevel.Information)
+            .MinimumLevel.Override("Serilog", LogEventLevel.Information)
+            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
+            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
+            .MinimumLevel.Override("Logging", LogEventLevel.Information)
+            .MinimumLevel.Override("DocumentClient", LogEventLevel.Information)
+            .MinimumLevel.Override(assembly.GetName().Name?.Split('.')[0] ?? "NotFound", LogEventLevel.Information);
+    }
+
+    private static LoggerConfiguration SetupEnrichers(this LoggerConfiguration loggerConfiguration, Assembly assembly, string serviceName)
+    {
+        return loggerConfiguration
             .Enrich.FromLogContext()
             .Enrich.WithThreadId()
             .Enrich.WithThreadName()
@@ -25,51 +46,39 @@ public static class LoggerConfigurationExtensions
             .Enrich.WithProcessName()
             .Enrich.WithExceptionDetails()
             .Enrich.WithEnvironmentName()
-            .Enrich.WithMachineName()
             .Enrich.WithProperty("Assembly", assembly.GetName().Name)
             .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
-            .Enrich.WithProperty("Application", serviceName)
-            .MinimumLevel.Warning()
-            .MinimumLevel.Override("Serilog", LogEventLevel.Information)
-            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
-            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
-            .MinimumLevel.Override("Logging", LogEventLevel.Information)
-            .MinimumLevel.Override(root, LogEventLevel.Information)
-            .WriteTo.Seq(configuration.SeqUri)
-            .WriteTo.Console();
+            .Enrich.WithProperty("Application", serviceName);
+    }
 
+    private static LoggerConfiguration SetupCustomOverrides(this LoggerConfiguration loggerConfiguration,
+        LoggingConfiguration configuration)
+    {
+        foreach (var pair in configuration.Overrides)
+        {
+            loggerConfiguration.MinimumLevel.Override(pair.Key, pair.Value);
+        }
         return loggerConfiguration;
     }
-    
-    public static LoggerConfiguration ConfigureAdvancedLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration, string serviceName)
-    {
-        if (configuration is null)
-            throw new ArgumentNullException(nameof(configuration));
-        
-        var assembly = Assembly.GetCallingAssembly();
-        var root = assembly.GetName().Name?.Split('.')[0] ?? "NotFound";
-        Console.WriteLine(root);
-        loggerConfiguration
-            .Enrich.FromLogContext()
-            .Enrich.WithThreadId()
-            .Enrich.WithThreadName()
-            .Enrich.WithMemoryUsage()
-            .Enrich.WithProcessId()
-            .Enrich.WithProcessName()
-            .Enrich.WithExceptionDetails()
-            .Enrich.WithEnvironmentName()
-            .Enrich.WithProperty("Assembly", assembly.GetName().Name)
-            .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
-            .Enrich.WithProperty("Application", serviceName)
-            .MinimumLevel.Warning()
-            .MinimumLevel.Override("Serilog", LogEventLevel.Information)
-            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
-            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
-            .MinimumLevel.Override("Logging", LogEventLevel.Information)
-            .MinimumLevel.Override(root, LogEventLevel.Information)
-            .WriteTo.Seq(configuration.SeqUri)
-            .WriteTo.Console();
 
-        return loggerConfiguration;
+    private static LoggerConfiguration SetupConsoleIfEnabled(this LoggerConfiguration loggerConfiguration,
+        LoggingConfiguration configuration)
+    {
+        if (!configuration.LogToConsole)
+            return loggerConfiguration;
+
+        return loggerConfiguration.WriteTo.Console();
+    }
+
+    private static LoggerConfiguration SetupSeqIfEnabled(this LoggerConfiguration loggerConfiguration,
+        LoggingConfiguration configuration)
+    {
+        if (!configuration.LogToSeq)
+            return loggerConfiguration;
+
+        if (!Uri.IsWellFormedUriString(configuration.SeqUri, UriKind.Absolute))
+            throw new UriFormatException($"Invalid {nameof(configuration.SeqUri)} set to {configuration.SeqUri}");
+
+        return loggerConfiguration.WriteTo.Seq(configuration.SeqUri);
     }
 }

@@ -80,7 +80,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging.Core", "Logging\Logging.Core\Logging.Core.csproj", "{D3D9D386-6053-4841-A70F-9B8B02C62AA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenClient.Core", "RavenClient\RavenClient.Core\RavenClient.Core.csproj", "{116AEA56-AF50-49B7-9F00-872B82B78DD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentClient", "DocumentClient\DocumentClient.Core\DocumentClient.Core.csproj", "{116AEA56-AF50-49B7-9F00-872B82B78DD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
