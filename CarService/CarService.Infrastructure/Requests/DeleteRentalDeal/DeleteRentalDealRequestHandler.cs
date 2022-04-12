@@ -1,21 +1,20 @@
+using DocumentClient;
 using MediatR;
-using Raven.Client.Documents.Session;
 
 namespace CarService.Infrastructure.Requests.DeleteRentalDeal;
 
 public class DeleteRentalDealRequestHandler : IRequestHandler<DeleteRentalDealRequest, Unit>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public DeleteRentalDealRequestHandler(IAsyncDocumentSession session)
+    public DeleteRentalDealRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<Unit> Handle(DeleteRentalDealRequest request, CancellationToken cancellationToken)
     {
-        _session.Delete(request.RentalDealId.ToString());
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.DeleteAsync(request.RentalDealId.ToString(), cancellationToken);
         return Unit.Value;
     }
 }

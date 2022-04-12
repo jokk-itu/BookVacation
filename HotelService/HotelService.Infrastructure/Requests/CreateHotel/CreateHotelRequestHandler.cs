@@ -1,3 +1,4 @@
+using DocumentClient;
 using HotelService.Domain;
 using MediatR;
 using Raven.Client.Documents;
@@ -7,31 +8,31 @@ namespace HotelService.Infrastructure.Requests.CreateHotel;
 
 public class CreateHotelRequestHandler : IRequestHandler<CreateHotelRequest, Hotel?>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public CreateHotelRequestHandler(IAsyncDocumentSession session)
+    public CreateHotelRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<Hotel?> Handle(CreateHotelRequest request, CancellationToken cancellationToken)
     {
-        var conflictingHotel = await _session.Query<Hotel>()
+        var conflictingHotel = await _client.QueryAsync<Hotel>(async query => await query
             .Where(x => x.Address == request.Address && x.City == request.City && x.Country == request.Country)
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken));
 
         if (conflictingHotel is not null)
             return null;
 
         var hotel = new Hotel
         {
-            HotelRooms = Enumerable.Range(0, request.Rooms).Select(_ => new HotelRoom {Id = Guid.NewGuid().ToString()}).ToList(),
+            HotelRooms = Enumerable.Range(0, request.Rooms)
+                .Select(_ => new HotelRoom { Id = Guid.NewGuid().ToString() }).ToList(),
             Country = request.Country,
             City = request.City,
             Address = request.Address
         };
-        await _session.StoreAsync(hotel, cancellationToken);
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.StoreAsync(hotel, cancellationToken);
         return hotel;
     }
 }

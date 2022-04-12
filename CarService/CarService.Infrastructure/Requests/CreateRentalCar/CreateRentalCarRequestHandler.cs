@@ -1,16 +1,16 @@
 using CarService.Domain;
+using DocumentClient;
 using MediatR;
-using Raven.Client.Documents.Session;
 
 namespace CarService.Infrastructure.Requests.CreateRentalCar;
 
 public class CreateRentalCarRequestHandler : IRequestHandler<CreateRentalCarRequest, RentalCar>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public CreateRentalCarRequestHandler(IAsyncDocumentSession session)
+    public CreateRentalCarRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<RentalCar> Handle(CreateRentalCarRequest request, CancellationToken cancellationToken)
@@ -23,9 +23,7 @@ public class CreateRentalCarRequestHandler : IRequestHandler<CreateRentalCarRequ
             DayPrice = request.DayPrice,
             Color = request.Color
         };
-        await _session.StoreAsync(rentalCar, cancellationToken);
-
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.StoreAsync(rentalCar, cancellationToken);
         return rentalCar;
     }
 }

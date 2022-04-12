@@ -1,8 +1,8 @@
+using DocumentClient;
 using FlightService.Infrastructure.Requests;
 using Mediator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Migration.Core;
 
 namespace FlightService.Infrastructure;
 

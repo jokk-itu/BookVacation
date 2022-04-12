@@ -1,7 +1,7 @@
+using DocumentClient;
 using Mediator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Migration.Core;
 using TrackingService.Infrastructure.Requests;
 
 namespace TrackingService.Infrastructure;

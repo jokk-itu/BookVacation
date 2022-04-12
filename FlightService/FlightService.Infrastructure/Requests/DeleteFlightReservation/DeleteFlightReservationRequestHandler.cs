@@ -1,21 +1,20 @@
+using DocumentClient;
 using MediatR;
-using Raven.Client.Documents.Session;
 
 namespace FlightService.Infrastructure.Requests.DeleteFlightReservation;
 
 public class DeleteFlightReservationRequestHandler : IRequestHandler<DeleteFlightReservationRequest, Unit>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public DeleteFlightReservationRequestHandler(IAsyncDocumentSession session)
+    public DeleteFlightReservationRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<Unit> Handle(DeleteFlightReservationRequest request, CancellationToken cancellationToken)
     {
-        _session.Delete(request.ReservationId.ToString());
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.DeleteAsync(request.ReservationId.ToString(), cancellationToken);
         return Unit.Value;
     }
 }

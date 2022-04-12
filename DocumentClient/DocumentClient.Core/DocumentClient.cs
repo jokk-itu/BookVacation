@@ -64,7 +64,7 @@ public class DocumentClient : IDocumentClient
 
     public async Task<bool> ExistsAsync(string id, CancellationToken cancellationToken = default)
     {
-        return await Execute<bool>(async () => await _session.Advanced.ExistsAsync(id, cancellationToken));
+        return await Execute(async () => await _session.Advanced.ExistsAsync(id, cancellationToken));
     }
 
     public async Task<T?> QueryAsync<T>(Func<IRavenQueryable<T>, Task<T>> query)

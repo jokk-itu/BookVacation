@@ -1,8 +1,8 @@
 using CarService.Infrastructure.Requests;
+using DocumentClient;
 using Mediator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Migration.Core;
 
 namespace CarService.Infrastructure;
 

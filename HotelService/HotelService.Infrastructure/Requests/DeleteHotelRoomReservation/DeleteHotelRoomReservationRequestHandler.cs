@@ -1,21 +1,20 @@
+using DocumentClient;
 using MediatR;
-using Raven.Client.Documents.Session;
 
 namespace HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 
 public class DeleteHotelRoomReservationRequestHandler : IRequestHandler<DeleteHotelRoomReservationRequest, Unit>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public DeleteHotelRoomReservationRequestHandler(IAsyncDocumentSession session)
+    public DeleteHotelRoomReservationRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<Unit> Handle(DeleteHotelRoomReservationRequest request, CancellationToken cancellationToken)
     {
-        _session.Delete(request.HotelRoomReservationId.ToString());
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.DeleteAsync(request.HotelRoomReservationId.ToString(), cancellationToken);
         return Unit.Value;
     }
 }

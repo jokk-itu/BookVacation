@@ -8,15 +8,15 @@ namespace Logging;
 
 public static class LoggerConfigurationExtensions
 {
-    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration, string serviceName)
+    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration)
     {
         if (configuration is null)
             throw new ArgumentNullException(nameof(configuration));
         
         var assembly = Assembly.GetCallingAssembly();
         return loggerConfiguration
-            .SetupEnrichers(assembly, serviceName)
-            .SetupBaseOverrides(assembly, serviceName)
+            .SetupEnrichers(assembly, configuration.ServiceName)
+            .SetupBaseOverrides(assembly, configuration.ServiceName)
             .SetupCustomOverrides(configuration)
             .SetupSeqIfEnabled(configuration)
             .SetupConsoleIfEnabled(configuration);

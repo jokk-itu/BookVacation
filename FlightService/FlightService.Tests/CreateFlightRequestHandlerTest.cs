@@ -1,9 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DocumentClient;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
 using FlightService.Infrastructure.Requests.CreateFlight;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Raven.Client.Documents.Linq;
 using Raven.TestDriver;
 using Xunit;
@@ -19,14 +22,15 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createAirplaneRequest = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 20);
-        var createAirplaneHandler = new CreateAirplaneRequestHandler(session);
+        var createAirplaneHandler = new CreateAirplaneRequestHandler(client);
         var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
             "Kastrup", "Karup", Guid.Parse(airplane.Id), 1200);
-        var createFlightHandler = new CreateFlightRequestHandler(session);
+        var createFlightHandler = new CreateFlightRequestHandler(client);
 
         //Act
         var expected = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
@@ -44,9 +48,10 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
             "Kastrup", "Karup", Guid.Empty, 1200);
-        var createFlightHandler = new CreateFlightRequestHandler(session);
+        var createFlightHandler = new CreateFlightRequestHandler(client);
 
         //Act
         var invalidFlight = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
@@ -62,14 +67,15 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createAirplaneRequest = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 20);
-        var createAirplaneHandler = new CreateAirplaneRequestHandler(session);
+        var createAirplaneHandler = new CreateAirplaneRequestHandler(client);
         var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
             "Kastrup", "Karup", Guid.Parse(airplane.Id), 1200);
-        var createFlightHandler = new CreateFlightRequestHandler(session);
+        var createFlightHandler = new CreateFlightRequestHandler(client);
 
         //Act
         await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);

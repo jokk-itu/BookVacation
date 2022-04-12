@@ -1,5 +1,8 @@
+using DocumentClient;
 using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
@@ -15,8 +18,9 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var request = new CreateHotelRequest(30, "Denmark", "Copenhagen", "Rue");
-        var handler = new CreateHotelRequestHandler(session);
+        var handler = new CreateHotelRequestHandler(client);
 
         //Act
         var expect = await handler.Handle(request, CancellationToken.None);
@@ -34,8 +38,9 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var request = new CreateHotelRequest(30, "Denmark", "Copenhagen", "Rue");
-        var handler = new CreateHotelRequestHandler(session);
+        var handler = new CreateHotelRequestHandler(client);
         await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
 

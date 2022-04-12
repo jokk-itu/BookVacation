@@ -1,24 +1,24 @@
+using DocumentClient;
 using MediatR;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
 using TrackingService.Domain;
 
 namespace TrackingService.Infrastructure.Requests.UpdateTracking;
 
 public class UpdateTrackingRequestHandler : IRequestHandler<UpdateTrackingRequest, Tracking>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public UpdateTrackingRequestHandler(IAsyncDocumentSession session)
+    public UpdateTrackingRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<Tracking> Handle(UpdateTrackingRequest request, CancellationToken cancellationToken)
     {
         var tracking =
-            await _session.Query<Tracking>().Where(x => x.Id == request.TrackingNumber)
-                .FirstOrDefaultAsync(cancellationToken);
+            await _client.QueryAsync<Tracking>(async query => await query.Where(x => x.Id == request.TrackingNumber)
+                .FirstOrDefaultAsync(cancellationToken));
 
         if (tracking is null)
         {
@@ -27,7 +27,7 @@ public class UpdateTrackingRequestHandler : IRequestHandler<UpdateTrackingReques
                 Id = request.TrackingNumber,
                 Statuses = new List<Status>()
             };
-            await _session.StoreAsync(tracking, cancellationToken);
+            await _client.StoreAsync(tracking, cancellationToken);
         }
 
         tracking.Statuses.Add(new Status
@@ -36,7 +36,7 @@ public class UpdateTrackingRequestHandler : IRequestHandler<UpdateTrackingReques
             OccuredAt = request.OccuredAt
         });
 
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.UpdateAsync(cancellationToken);
 
         return tracking;
     }
