@@ -6,6 +6,7 @@ spec:
   selector:
     matchLabels:
       app: flightservice
+  replicas: 2
   template:
     metadata:
       labels:
@@ -13,7 +14,7 @@ spec:
     spec:
       containers:
       - name: flightservice
-        image: jokk-itu/flightservice:master
+        image: jokk/flightservice:master
         resources:
           limits:
             memory: "128Mi"
@@ -21,17 +22,48 @@ spec:
         ports:
         - containerPort: 80
           name: internal
+        env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Production"
+          - name: Logging__SeqUri
+            valueFrom:
+              configMapKeyRef:
+                name: logger-config
+                key: url
+          - name: EventBus__Hostname
+            valueFrom:
+              configMapKeyRef:
+                name: eventbus-config
+                key: url
+          - name: EventBus__Port
+            valueFrom:
+              configMapKeyRef:
+                name: eventbus-config
+                key: port
+          - name: EventBus__Username
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key: username
+          - name: EventBus__Password
+            valueFrom:
+              secretKeyRef:
+                name: eventbus-secret
+                key: password
+          - name: RavenSettings__Urls__0
+            valueFrom:
+              configMapKeyRef:
+                name: raven-config
+                key: url
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: flightservice-service
 spec:
-  type: NodePort
   selector:
     app: flightservice
   ports:
   - port: 5001
     targetPort: internal
-    nodePort: 30001
 

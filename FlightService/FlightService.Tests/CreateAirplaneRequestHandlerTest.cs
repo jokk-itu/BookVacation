@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
@@ -19,8 +21,9 @@ public class CreateAirplaneRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var request = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 20);
-        var handler = new CreateAirplaneRequestHandler(session);
+        var handler = new CreateAirplaneRequestHandler(client);
 
         //Act
         var expect = await handler.Handle(request, CancellationToken.None);

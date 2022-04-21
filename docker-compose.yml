@@ -1,8 +1,5 @@
 version: '3.9'
 
-networks:
-  service_net:
-
 services:
   vacationservice:
     build:
@@ -11,7 +8,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: vacationservice
-    hostname: vacationservice
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
@@ -20,8 +16,6 @@ services:
     depends_on:
       - eventbus
       - logger
-    networks:
-      - service_net
 
   flightservice:
     build:
@@ -30,7 +24,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: flightservice
-    hostname: flightservice
     ports:
       - 5001:80
     env_file:
@@ -41,8 +34,6 @@ services:
       - eventbus
       - logger
       - ravendb
-    networks:
-      - service_net
       
   hotelservice:
     build:
@@ -51,7 +42,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: hotelservice
-    hostname: hotelservice
     ports:
       - 5002:80
     env_file:
@@ -62,8 +52,6 @@ services:
       - eventbus
       - logger
       - ravendb
-    networks:
-      - service_net
       
   carservice:
     build:
@@ -72,7 +60,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: carservice
-    hostname: carservice
     ports:
       - 5003:80
     env_file:
@@ -83,8 +70,6 @@ services:
       - eventbus
       - logger
       - ravendb
-    networks:
-      - service_net
       
   trackingservice:
     build:
@@ -93,7 +78,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: trackingservice
-    hostname: trackingservice
     ports:
       - 5004:80
     env_file:
@@ -104,8 +88,6 @@ services:
       - eventbus
       - logger
       - ravendb
-    networks:
-      - service_net
       
   gatewayservice:
     build:
@@ -114,7 +96,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: gatewayservice
-    hostname: gatewayservice
     ports:
       - 5005:80
       - 5006:443
@@ -123,8 +104,6 @@ services:
       - ./EnvironmentFiles/gateway.env
     depends_on:
       - logger
-    networks:
-      - service_net
       
   ticketservice:
     build:
@@ -133,7 +112,6 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: ticketservice
-    hostname: ticketservice
     ports:
       - 5007:80
     env_file:
@@ -144,8 +122,6 @@ services:
       - eventbus
       - logger
       - blobstorage
-    networks:
-      - service_net  
 
   logger:
     image: datalust/seq:latest
@@ -154,13 +130,9 @@ services:
     environment:
       - ACCEPT_EULA=Y
     container_name: logger
-    hostname: logger
-    networks:
-      - service_net
 
   eventbus:
     image: masstransit/rabbitmq
-    hostname: eventbus
     container_name: eventbus
     ports:
       - "5672:5672"
@@ -169,19 +141,14 @@ services:
     volumes:
       - ./EventBus/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - ./EventBus/enabled_plugins:/etc/rabbitmq/enabled_plugins
-    networks:
-      - service_net
       
   prometheus:
     image: prom/prometheus
     ports:
       - "9090:9090"
     container_name: prometheus
-    hostname: prometheus
     volumes:
       - ./Monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - service_net
           
   grafana:
     image: grafana/grafana:8.2.6
@@ -199,27 +166,20 @@ services:
       - ./Monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
     depends_on:
       - prometheus
-      - influxdb  
-    networks:
-      - service_net
+      - influxdb
      
   blobstorage:
     image: minio/minio
-    hostname: blobstorage
     container_name: blobstorage
     ports:
-      - 9000:9000
       - 9001:9001
     environment:
       - MINIO_ROOT_USER=access
       - MINIO_ROOT_PASSWORD=secret1234
-    command: minio server /data --console-address ":9001"  
-    networks:
-      - service_net
+    command: server /data --console-address ":9001"
       
   ravendb:
     image: ravendb/ravendb:ubuntu-latest
-    hostname: ravendb
     container_name: ravendb
     ports:
       - 8080:8080
@@ -228,12 +188,9 @@ services:
       - RAVEN_License_Eula_Accepted=true
       - RAVEN_Setup_Mode=None
       - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
-    networks:
-      - service_net
       
   influxdb:
     image: influxdb:2.0
-    hostname: influxdb
     container_name: influxdb
     ports:
       - 8086:8086
@@ -244,5 +201,3 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=bookvacation
       - DOCKER_INFLUXDB_INIT_BUCKET=bookvacation
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=iXnNAnWD3YXqqs95Dy1x7l2J-bXxZvzS_cLNs8wGHLT7pTp8lxsipx3Tzv-ElDf3bD4NLwYBz822GnUtouUesQ==
-    networks:
-      - service_net

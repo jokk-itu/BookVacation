@@ -1,6 +1,8 @@
 using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
@@ -16,15 +18,15 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
-
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelRequest(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelRequestHandler(session);
+        var createHotelRequestHandler = new CreateHotelRequestHandler(client);
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id),
             Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(client);
 
         //Act
         var expected =
@@ -44,15 +46,15 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
-
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelRequest(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelRequestHandler(session);
+        var createHotelRequestHandler = new CreateHotelRequestHandler(client);
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Empty,
             Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(client);
 
         //Act
         var conflictingHotelRoomReservation =
@@ -70,15 +72,15 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
-
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelRequest(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelRequestHandler(session);
+        var createHotelRequestHandler = new CreateHotelRequestHandler(client);
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id), Guid.Empty,
             DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(client);
 
         //Act
         var conflictingHotelRoomReservation =
@@ -96,15 +98,15 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
-
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelRequest(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelRequestHandler(session);
+        var createHotelRequestHandler = new CreateHotelRequestHandler(client);
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id),
             Guid.Parse(hotel.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(session);
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(client);
         await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
             CancellationToken.None);
         WaitForIndexing(store);

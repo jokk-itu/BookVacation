@@ -1,16 +1,16 @@
+using DocumentClient;
 using FlightService.Domain;
 using MediatR;
-using Raven.Client.Documents.Session;
 
 namespace FlightService.Infrastructure.Requests.CreateAirplane;
 
 public class CreateAirplaneRequestHandler : IRequestHandler<CreateAirplaneRequest, Airplane>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public CreateAirplaneRequestHandler(IAsyncDocumentSession session)
+    public CreateAirplaneRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<Airplane> Handle(CreateAirplaneRequest request, CancellationToken cancellationToken)
@@ -22,8 +22,7 @@ public class CreateAirplaneRequestHandler : IRequestHandler<CreateAirplaneReques
             AirlineName = request.AirlineName,
             Seats = Enumerable.Range(0, request.Seats).Select(_ => new Seat {Id = Guid.NewGuid().ToString()}).ToList()
         };
-        await _session.StoreAsync(airPlane, cancellationToken);
-        await _session.SaveChangesAsync(cancellationToken);
+        await _client.StoreAsync(airPlane, cancellationToken);
         return airPlane;
     }
 }

@@ -61,10 +61,8 @@ kind: Service
 metadata:
   name: carservice-service
 spec:
-  type: NodePort
   selector:
     app: carservice
   ports:
   - port: 5003
     targetPort: carservice-port
-    nodePort: 30003

@@ -1,3 +1,4 @@
+using DocumentClient;
 using FlightService.Domain;
 using MediatR;
 using Raven.Client.Documents;
@@ -7,32 +8,32 @@ namespace FlightService.Infrastructure.Requests.CreateFlightReservation;
 
 public class CreateFlightReservationRequestHandler : IRequestHandler<CreateFlightReservationRequest, FlightReservation?>
 {
-    private readonly IAsyncDocumentSession _session;
+    private readonly IDocumentClient _client;
 
-    public CreateFlightReservationRequestHandler(IAsyncDocumentSession session)
+    public CreateFlightReservationRequestHandler(IDocumentClient client)
     {
-        _session = session;
+        _client = client;
     }
 
     public async Task<FlightReservation?> Handle(CreateFlightReservationRequest request,
         CancellationToken cancellationToken)
     {
-        var flight = await _session.Query<Flight>().Where(x => x.Id == request.FlightId.ToString())
-            .FirstOrDefaultAsync(cancellationToken);
+        var flight = await _client.QueryAsync<Flight>(query => query.Where(x => x.Id == request.FlightId.ToString())
+            .FirstOrDefaultAsync(cancellationToken));
 
         if (flight is null)
             return null;
 
-        var airplane = await _session.Query<Airplane>()
+        var airplane = await _client.QueryAsync<Airplane>(query => query
             .Where(x => x.Id == flight.AirPlaneId.ToString() && x.Seats.Any(y => y.Id == request.SeatId.ToString()))
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken));
 
         if (airplane is null)
             return null;
 
-        var conflictingReservation = await _session.Query<FlightReservation>()
+        var conflictingReservation = await _client.QueryAsync<FlightReservation>(query => query
             .Where(x => x.FlightId == request.FlightId && x.SeatId == request.SeatId)
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken));
 
         if (conflictingReservation is not null)
             return null;
@@ -42,10 +43,7 @@ public class CreateFlightReservationRequestHandler : IRequestHandler<CreateFligh
             SeatId = request.SeatId,
             FlightId = request.FlightId
         };
-
-        await _session.StoreAsync(flightReservation, cancellationToken);
-        await _session.SaveChangesAsync(cancellationToken);
-
+        await _client.StoreAsync(flightReservation, cancellationToken);
         return flightReservation;
     }
 }

@@ -2,6 +2,9 @@ using CarService.Domain;
 using CarService.Infrastructure.Requests.CreateRentalCar;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
 using CarService.Infrastructure.Requests.DeleteRentalDeal;
+using DocumentClient;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
@@ -17,10 +20,11 @@ public class DeleteRentalCarTest : RavenTestDriver
         //Arrange
         using var store = GetDocumentStore();
         using var session = store.OpenAsyncSession();
-
-        var deleteRentalDealHandler = new DeleteRentalDealRequestHandler(session);
-        var createRentalDealHandler = new CreateRentalDealRequestHandler(session);
-        var rentalCarHandler = new CreateRentalCarRequestHandler(session);
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
+        
+        var deleteRentalDealHandler = new DeleteRentalDealRequestHandler(client);
+        var createRentalDealHandler = new CreateRentalDealRequestHandler(client);
+        var rentalCarHandler = new CreateRentalCarRequestHandler(client);
 
         var rentalCar =
             await rentalCarHandler.Handle(

@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blobstorage-ingress
+  labels:
+    name: blobstorage-ingress
+spec:
+  rules:
+  - host: blob.bookvacation.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: blobstorage-service
+            port: 
+              name: service-ui

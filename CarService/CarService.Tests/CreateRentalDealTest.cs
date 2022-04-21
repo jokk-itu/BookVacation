@@ -1,6 +1,8 @@
 using CarService.Domain;
 using CarService.Infrastructure.Requests.CreateRentalCar;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
@@ -17,13 +19,14 @@ public class CreateRentalDealTest : RavenTestDriver
         using var store = GetDocumentStore();
         using var session = store.OpenAsyncSession();
 
-        var createRentalCarHandler = new CreateRentalCarRequestHandler(session);
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
+        var createRentalCarHandler = new CreateRentalCarRequestHandler(client);
         var rentalCar = await createRentalCarHandler.Handle(
             new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var createDentalDealHandler = new CreateRentalDealRequestHandler(session);
+        var createDentalDealHandler = new CreateRentalDealRequestHandler(client);
 
         //Act
         var expected = await createDentalDealHandler.Handle(
@@ -46,7 +49,8 @@ public class CreateRentalDealTest : RavenTestDriver
         using var store = GetDocumentStore();
         using var session = store.OpenAsyncSession();
 
-        var createDentalDealHandler = new CreateRentalDealRequestHandler(session);
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
+        var createDentalDealHandler = new CreateRentalDealRequestHandler(client);
 
         //Act
         var invalidRentalDeal = await createDentalDealHandler.Handle(
@@ -67,13 +71,14 @@ public class CreateRentalDealTest : RavenTestDriver
         using var store = GetDocumentStore();
         using var session = store.OpenAsyncSession();
 
-        var rentalCarHandler = new CreateRentalCarRequestHandler(session);
+        var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
+        var rentalCarHandler = new CreateRentalCarRequestHandler(client);
         var rentalCar = await rentalCarHandler.Handle(
             new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var createRentalDealHandler = new CreateRentalDealRequestHandler(session);
+        var createRentalDealHandler = new CreateRentalDealRequestHandler(client);
 
         //Act
         await createRentalDealHandler.Handle(

@@ -6,7 +6,7 @@ using Raven.Client.Exceptions;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 
-namespace Migration.Core;
+namespace DocumentClient;
 
 public static class ServiceCollectionExtensions
 {
@@ -32,7 +32,9 @@ public static class ServiceCollectionExtensions
 
             return documentStore;
         });
-        services.AddScoped<IAsyncDocumentSession>(sp => sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
+        services.AddTransient<IAsyncDocumentSession>(sp =>
+            sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
+        services.AddTransient<IDocumentClient, DocumentClient>();
         return services;
     }
 }

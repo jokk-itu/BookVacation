@@ -21,7 +21,7 @@ spec:
         ports:
         - name: internal
           containerPort: 5672
-        - name: ui
+        - name: management
           containerPort: 15672
 ---
 apiVersion: v1
@@ -29,14 +29,12 @@ kind: Service
 metadata:
   name: eventbus-service
 spec:
-  type: NodePort
   selector:
     app: eventbus
   ports:
   - name: internal
     port: 5672
     targetPort: eventbus-port
-  - name: ui
+  - name: management
     port: 15672
-    targetPort: ui
-    nodePort: 31001
+    targetPort: management
