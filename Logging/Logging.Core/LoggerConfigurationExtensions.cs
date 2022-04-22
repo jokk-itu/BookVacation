@@ -19,7 +19,8 @@ public static class LoggerConfigurationExtensions
             .SetupBaseOverrides(assembly, configuration.ServiceName)
             .SetupCustomOverrides(configuration)
             .SetupSeqIfEnabled(configuration)
-            .SetupConsoleIfEnabled(configuration);
+            .SetupConsoleIfEnabled(configuration)
+            .SetupExpressions();
     }
 
     private static LoggerConfiguration SetupBaseOverrides(this LoggerConfiguration loggerConfiguration, Assembly assembly, string serviceName)
@@ -49,6 +50,13 @@ public static class LoggerConfigurationExtensions
             .Enrich.WithProperty("Assembly", assembly.GetName().Name)
             .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
             .Enrich.WithProperty("Application", serviceName);
+    }
+
+    private static LoggerConfiguration SetupExpressions(this LoggerConfiguration loggerConfiguration)
+    {
+        return loggerConfiguration
+            .Filter.ByExcluding("RequestPath like '/health%'")
+            .Filter.ByExcluding("RequestPath like '/metrics%'");
     }
 
     private static LoggerConfiguration SetupCustomOverrides(this LoggerConfiguration loggerConfiguration,

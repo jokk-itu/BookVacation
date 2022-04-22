@@ -31,10 +31,10 @@ public class LoggingConfiguration
             });
         ServiceName = configuration["ServiceName"];
 
-        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", SeqUri.GetType().Name, SeqUri);
-        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", LogToSeq.GetType().Name, LogToSeq);
-        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", LogToConsole.GetType().Name,  LogToConsole);
-        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", Overrides.GetType().Name, JsonSerializer.Serialize(Overrides, new JsonSerializerOptions {WriteIndented = true}));
-        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", ServiceName.GetType().Name, ServiceName);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqUri), SeqUri);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToSeq), LogToSeq);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToConsole),  LogToConsole);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(Overrides), JsonSerializer.Serialize(Overrides, new JsonSerializerOptions {WriteIndented = true}));
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(ServiceName), ServiceName);
     }
 }
