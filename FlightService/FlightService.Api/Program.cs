@@ -27,6 +27,11 @@ builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 
 builder.WebHost.ConfigureServices(services =>
 {
+    services.AddHealthChecks().AddRavenDB(options =>
+    {
+        options.Database = builder.Configuration.GetSection("RavenSettings")["Database"];
+        options.Urls = builder.Configuration.GetSection("Urls").Get<string[]>();
+    });
     services.AddInfrastructureServices(builder.Configuration);
     services.AddFluentValidation(options =>
     {
