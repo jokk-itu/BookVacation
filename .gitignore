@@ -6,3 +6,5 @@
 .sonarqube
 RavenDBServer
 Monitoring/grafana/dashboards
+.terraform.*
+.terraform/
