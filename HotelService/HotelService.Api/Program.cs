@@ -2,6 +2,7 @@ using EventDispatcher;
 using FluentValidation.AspNetCore;
 using HotelService.Api;
 using HotelService.Api.Validators;
+using HotelService.Contracts.HotelRoomReservationActivity;
 using HotelService.Infrastructure;
 using HotelService.Infrastructure.CourierActivities;
 using Logging;
@@ -39,7 +40,10 @@ builder.WebHost.ConfigureServices(services =>
         });
     });
     services.AddEventBus(builder.Configuration,
-        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
+        configurator =>
+        {
+            configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>();
+        });
     services.AddMassTransitHostedService();
     services.AddRouting(options => options.LowercaseUrls = true);
     services.AddControllers();

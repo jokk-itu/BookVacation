@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
         Action<IServiceCollectionBusConfigurator>? callback = null)
     {
         return services.AddMassTransit(configurator =>
-        {
+        { ;
             callback?.Invoke(configurator);
             configurator.SetKebabCaseEndpointNameFormatter();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>

@@ -1,5 +1,7 @@
+using System.Runtime.Loader;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Client.Exceptions;
@@ -13,8 +15,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddRavenDb(this IServiceCollection services, IConfiguration configuration)
     {
         var database = configuration["Database"];
-        services.AddSingleton<IDocumentStore>(_ =>
+        services.AddSingleton<IDocumentStore>(serviceProvider =>
         {
+            var logger = serviceProvider.GetRequiredService<ILogger<DocumentClient>>();
             var documentStore = new DocumentStore
             {
                 Urls = configuration.GetSection("Urls").Get<string[]>()
@@ -30,6 +33,52 @@ public static class ServiceCollectionExtensions
                 //Empty on purpose
             }
 
+            documentStore.OnAfterSaveChanges += (sender, args) =>
+            {
+                using (logger.BeginScope(new Dictionary<string, object>
+                       {
+                           { "Database", args.Session.DatabaseName }, { "SessionId", args.Session.Id },
+                           { "StoreId", args.Session.StoreIdentifier }
+                       }))
+                {
+                    logger.LogInformation("Saved document {DocumentId}", args.DocumentId);
+                }
+            };
+            documentStore.OnBeforeDelete += (sender, args) =>
+            {
+                using (logger.BeginScope(new Dictionary<string, object>
+                       {
+                           { "Database", args.Session.DatabaseName }, { "SessionId", args.Session.Id },
+                           { "StoreId", args.Session.StoreIdentifier }
+                       }))
+                {
+                    logger.LogInformation("Deleting document {DocumentId}", args.DocumentId);
+                }
+            };
+            documentStore.OnBeforeQuery += (sender, args) =>
+            {
+                using (logger.BeginScope(new Dictionary<string, object>
+                       {
+                           { "Database", args.Session.DatabaseName }, { "SessionId", args.Session.Id },
+                           { "StoreId", args.Session.StoreIdentifier }
+                       }))
+                {
+                    logger.LogInformation("Querying document(s)");
+                }
+            };
+            documentStore.OnBeforeStore += (sender, args) =>
+            {
+                using (logger.BeginScope(new Dictionary<string, object>
+                       {
+                           { "Database", args.Session.DatabaseName }, { "SessionId", args.Session.Id },
+                           { "StoreId", args.Session.StoreIdentifier }
+                       }))
+                {
+                    logger.LogInformation("Storing document {DocumentId}", args.DocumentId);
+                }
+            };
+
+            documentStore.Conventions.UseOptimisticConcurrency = true;
             return documentStore;
         });
         services.AddTransient<IAsyncDocumentSession>(sp =>
