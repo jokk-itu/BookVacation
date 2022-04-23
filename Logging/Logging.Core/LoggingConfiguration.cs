@@ -19,7 +19,7 @@ public class LoggingConfiguration
         SeqUri = configuration["SeqUri"];
         LogToSeq = configuration.GetValue("LogToSeq", false);
         LogToConsole = configuration.GetValue("LogToConsole", false);
-        Overrides = configuration.GetSection("Overrides").Get<Dictionary<string, string>>().Aggregate(
+        Overrides = configuration.GetSection("Overrides").Get<Dictionary<string, string>>()?.Aggregate(
             new Dictionary<string, LogEventLevel>(),
             (acc, pair) =>
             {
@@ -28,7 +28,7 @@ public class LoggingConfiguration
                 
                 acc.Add(pair.Key, logEventLevel);
                 return acc;
-            });
+            }) ?? new Dictionary<string, LogEventLevel>();
         ServiceName = configuration["ServiceName"];
 
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqUri), SeqUri);

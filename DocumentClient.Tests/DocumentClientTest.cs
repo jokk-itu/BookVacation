@@ -31,8 +31,22 @@ public class DocumentClientTest : RavenTestDriver
         //Assert
         Assert.True(isDeleted);
     }
+    
+    [Trait("Category", "Unit")]
+    [Fact]
+    public async Task DeleteAsync_GivenNonExistingKey_DeleteUnsuccessful()
+    {
+        //Arrange
+        using var store = GetDocumentStore();
+        using var session = store.OpenAsyncSession();
+        var client = new DocumentClient(session, Mock.Of<ILogger<DocumentClient>>());
 
-    //TODO DeleteAsync_GivenNonExistingKey_DeleteUnsuccessful
+        //Act
+        var isDeleted = await client.DeleteAsync(Guid.NewGuid().ToString(), CancellationToken.None);
+
+        //Assert
+        Assert.False(isDeleted);
+    }
 
     [Trait("Category", "Unit")]
     [Fact]

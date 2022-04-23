@@ -3,8 +3,6 @@ apiVersion: 1
 deleteDatasources:
   - name: Prometheus
     orgId: 1
-  - name: Influx
-    orgId: 1
 
 datasources:
   - name: Prometheus
@@ -15,20 +13,3 @@ datasources:
     version: 1
     editable: false
     orgId: 1
-  - name: Influx
-    type: influxdb
-    access: proxy
-    url: http://influxdb:8086
-    editable: false
-    version: 2
-    orgId: 1
-    basicAuth: true
-    isDefault: false
-    secureJsonData:
-      token: iXnNAnWD3YXqqs95Dy1x7l2J-bXxZvzS_cLNs8wGHLT7pTp8lxsipx3Tzv-ElDf3bD4NLwYBz822GnUtouUesQ==
-    jsonData:
-      version: Flux
-      organization: bookvacation
-      defaultBucket: bookVacation
-      httpMode: POST
-      tlsSkipVerify: true

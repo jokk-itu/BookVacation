@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureAdvancedLogging(logConfiguration, builder.Configuration["ServiceName"]);
+    configuration.ConfigureLogging(logConfiguration);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -78,7 +78,7 @@ StartupLogger.Run(() =>
     app.MapMetrics();
 
     app.Run();
-}, new LoggerConfiguration().ConfigureStartupLogging(logConfiguration, builder.Configuration["ServiceName"]));
+}, new LoggerConfiguration().ConfigureLogging(logConfiguration));
 
 namespace TicketService.Api
 {

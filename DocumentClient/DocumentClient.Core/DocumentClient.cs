@@ -92,6 +92,9 @@ public class DocumentClient : IDocumentClient
         {
             return await _policies.ExecuteAsync(async () =>
             {
+                if (!await _session.Advanced.ExistsAsync(id, cancellationToken))
+                    return false;
+                
                 _session.Delete(id);
                 await _session.SaveChangesAsync(cancellationToken);
                 return true;

@@ -166,7 +166,6 @@ services:
       - ./Monitoring/grafana/dashboards/:/var/lib/grafana/dashboards/
     depends_on:
       - prometheus
-      - influxdb
      
   blobstorage:
     image: minio/minio
@@ -188,16 +187,3 @@ services:
       - RAVEN_License_Eula_Accepted=true
       - RAVEN_Setup_Mode=None
       - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
-      
-  influxdb:
-    image: influxdb:2.0
-    container_name: influxdb
-    ports:
-      - 8086:8086
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin12345
-      - DOCKER_INFLUXDB_INIT_ORG=bookvacation
-      - DOCKER_INFLUXDB_INIT_BUCKET=bookvacation
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=iXnNAnWD3YXqqs95Dy1x7l2J-bXxZvzS_cLNs8wGHLT7pTp8lxsipx3Tzv-ElDf3bD4NLwYBz822GnUtouUesQ==

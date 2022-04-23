@@ -20,18 +20,9 @@ public static class ServiceCollectionExtensions
             var logger = serviceProvider.GetRequiredService<ILogger<DocumentClient>>();
             var documentStore = new DocumentStore
             {
-                Urls = configuration.GetSection("Urls").Get<string[]>()
-            }.Initialize();
-
-            try
-            {
-                documentStore.Maintenance.Server.Send(
-                    new CreateDatabaseOperation(new DatabaseRecord(database)));
-            }
-            catch (ConcurrencyException)
-            {
-                //Empty on purpose
-            }
+                Urls = configuration.GetSection("Urls").Get<string[]>(),
+            };
+            documentStore.Conventions.UseOptimisticConcurrency = true;
 
             documentStore.OnAfterSaveChanges += (sender, args) =>
             {
@@ -78,7 +69,16 @@ public static class ServiceCollectionExtensions
                 }
             };
 
-            documentStore.Conventions.UseOptimisticConcurrency = true;
+            documentStore.Initialize();
+            try
+            {
+                documentStore.Maintenance.Server.Send(
+                    new CreateDatabaseOperation(new DatabaseRecord(database)));
+            }
+            catch (ConcurrencyException)
+            {
+                //Empty on purpose
+            }
             return documentStore;
         });
         services.AddTransient<IAsyncDocumentSession>(sp =>
