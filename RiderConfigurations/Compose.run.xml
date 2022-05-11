@@ -7,7 +7,6 @@
         <option name="envFilePath" value="" />
         <option name="services">
           <list>
-            <option value="carservice" />
             <option value="logger" />
             <option value="ravendb" />
             <option value="eventbus" />
@@ -17,7 +16,7 @@
         <option name="upRemoveOrphans" value="true" />
       </settings>
     </deployment>
-    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isPublishEnabled="true" />
+    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isPublishEnabled="false" />
     <method v="2">
       <option name="Build Solution" enabled="true" />
     </method>

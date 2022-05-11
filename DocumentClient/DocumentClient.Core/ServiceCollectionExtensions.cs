@@ -1,10 +1,10 @@
-using System.Runtime.Loader;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Client.Exceptions;
+using Raven.Client.Exceptions.Database;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 
@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
                            { "StoreId", args.Session.StoreIdentifier }
                        }))
                 {
-                    logger.LogInformation("Saved document {DocumentId}", args.DocumentId);
+                    logger.LogDebug("Saved document {DocumentId}", args.DocumentId);
                 }
             };
             documentStore.OnBeforeDelete += (sender, args) =>
@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
                            { "StoreId", args.Session.StoreIdentifier }
                        }))
                 {
-                    logger.LogInformation("Deleting document {DocumentId}", args.DocumentId);
+                    logger.LogDebug("Deleting document {DocumentId}", args.DocumentId);
                 }
             };
             documentStore.OnBeforeQuery += (sender, args) =>
@@ -54,7 +54,7 @@ public static class ServiceCollectionExtensions
                            { "StoreId", args.Session.StoreIdentifier }
                        }))
                 {
-                    logger.LogInformation("Querying document(s)");
+                    logger.LogDebug("Querying document(s)");
                 }
             };
             documentStore.OnBeforeStore += (sender, args) =>
@@ -65,7 +65,7 @@ public static class ServiceCollectionExtensions
                            { "StoreId", args.Session.StoreIdentifier }
                        }))
                 {
-                    logger.LogInformation("Storing document {DocumentId}", args.DocumentId);
+                    logger.LogDebug("Storing document {DocumentId}", args.DocumentId);
                 }
             };
 
@@ -75,7 +75,7 @@ public static class ServiceCollectionExtensions
                 documentStore.Maintenance.Server.Send(
                     new CreateDatabaseOperation(new DatabaseRecord(database)));
             }
-            catch (ConcurrencyException)
+            catch (Exception e) when (e is ConcurrencyException or DatabaseDisabledException)
             {
                 //Empty on purpose
             }
