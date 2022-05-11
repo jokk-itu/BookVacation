@@ -9,7 +9,6 @@ using MassTransit;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
-using Serilog.Events;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())

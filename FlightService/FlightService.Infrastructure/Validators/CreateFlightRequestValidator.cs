@@ -1,11 +1,11 @@
-using FlightService.Contracts.Flight;
+using FlightService.Infrastructure.Requests.CreateFlight;
 using FluentValidation;
 
-namespace FlightService.Api.Validators;
+namespace FlightService.Infrastructure.Validators;
 
-public class PostFlightRequestValidator : AbstractValidator<PostFlightRequest>
+public class CreateFlightRequestValidator : AbstractValidator<CreateFlightRequest>
 {
-    public PostFlightRequestValidator()
+    public CreateFlightRequestValidator()
     {
         RuleFor(x => x.Price).GreaterThan(0);
         RuleFor(x => x.AirplaneId).NotEmpty();

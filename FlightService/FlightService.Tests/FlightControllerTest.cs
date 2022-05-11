@@ -41,7 +41,7 @@ public class FlightControllerTest : IClassFixture<WebApplicationFactory<Program>
             To = DateTimeOffset.Now.AddDays(2),
             FromAirport = "Kastrup",
             ToAirport = "Karup",
-            AirPlaneId = airplane!.Id,
+            AirplaneId = airplane!.Id,
             Price = 1200
         };
         var flightResponse = await client.PostAsJsonAsync("api/v1/flight", flightRequest);

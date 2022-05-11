@@ -26,7 +26,7 @@ public class FlightController : ControllerBase
         var flight =
             await _mediator.Send(
                 new CreateFlightRequest(request.From, request.To, request.FromAirport, request.ToAirport,
-                    request.AirPlaneId, request.Price), cancellationToken);
+                    request.AirplaneId, request.Price), cancellationToken);
 
         if (flight is null)
             return Conflict();

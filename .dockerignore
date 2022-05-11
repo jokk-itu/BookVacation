@@ -5,7 +5,7 @@ EventBus
 Neo4j
 .run
 .sonarqube
-.git
 .github
 RiderConfiguration/
 **/*.Tests
+.git
