@@ -4,6 +4,7 @@ using CarService.Contracts.RentalCar;
 using FlightService.Contracts.Airplane;
 using FlightService.Contracts.Flight;
 using HotelService.Contracts.CreateHotel;
+using TestConsole.Fakes;
 using VacationService.Contracts.Vacation;
 
 namespace TestConsole;
@@ -12,36 +13,10 @@ public class Vacation
 {
     public static async Task Start()
     {
-        var airplaneRequestFaker = new Faker<PostAirplaneRequest>().Rules((faker, request) =>
-        {
-            request.Seats = 2;
-            request.AirlineName = faker.Name.FirstName();
-            request.ModelNumber = Guid.NewGuid();
-            request.AirplaneMakerName = faker.Name.FirstName();
-        });
-        var flightRequestFaker = new Faker<PostFlightRequest>().Rules((faker, request) =>
-        {
-            request.Price = (decimal)Random.Shared.NextDouble();
-            request.FromAirport = faker.Company.CompanyName();
-            request.ToAirport = faker.Company.CompanyName();
-            request.From = DateTimeOffset.Now.AddDays(Random.Shared.Next(1, 1000));
-            request.To = request.From.AddDays(Random.Shared.Next(1, 10));
-        });
-        var hotelRequestFaker = new Faker<PostHotelRequest>().Rules((faker, request) =>
-        {
-            request.Rooms = 2;
-            request.Address = faker.Address.StreetAddress();
-            request.City = faker.Address.City();
-            request.Country = faker.Address.Country();
-        });
-        var rentalCarRequestFaker = new Faker<PostRentalCarRequest>().Rules((faker, request) =>
-        {
-            request.Color = "Blue";
-            request.DayPrice = (short)Random.Shared.Next(1, 10000);
-            request.CarCompanyName = faker.Company.CompanyName();
-            request.RentingCompanyName = faker.Company.CompanyName();
-            request.CarModelNumber = Guid.NewGuid();
-        });
+        var airplaneRequestFaker = AirplaneFaker.GetAirplaneRequestFaker();
+        var flightRequestFaker = FlightFaker.GetFlightRequestFaker();
+        var hotelRequestFaker = HotelFaker.GetFlightRequestFaker();
+        var rentalCarRequestFaker = RentalCarFaker.GetRentalCarRequestFaker();
 
         var client = new HttpClient();
         

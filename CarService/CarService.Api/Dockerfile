@@ -6,7 +6,6 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG GithubToken
 ENV GithubToken=$GithubToken
 WORKDIR /src
-COPY [".git", ".git"]
 COPY ["NuGet.config", "NuGet.config"]
 COPY ["CarService/CarService.Api/CarService.Api.csproj", "CarService.Api/"]
 COPY ["CarService/CarService.Contracts/CarService.Contracts.csproj", "CarService.Contracts/"]

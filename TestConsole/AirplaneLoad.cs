@@ -1,10 +1,8 @@
-using System.Diagnostics;
-using System.Net.Http.Json;
-using Bogus;
-using FlightService.Contracts.Airplane;
-using NBomber.Contracts;
+using NBomber;
 using NBomber.CSharp;
 using Serilog;
+using TestConsole.Constants;
+using TestConsole.Steps;
 
 namespace TestConsole;
 
@@ -12,31 +10,12 @@ public static class AirplaneLoad
 {
     public static void Start()
     {
-        var httpClient = new HttpClient();
-
-        var airplaneRequestFaker = new Faker<PostAirplaneRequest>().Rules((faker, request) =>
-        {
-            request.Seats = 2;
-            request.AirlineName = faker.Name.FirstName();
-            request.ModelNumber = Guid.NewGuid();
-            request.AirplaneMakerName = faker.Name.FirstName();
-        });
+        var httpFactory = ClientFactory.Create(
+            name: "factory",
+            clientCount: 10,
+            initClient: (number, context) => Task.FromResult(new HttpClient()));
         
-        var airplane = Step.Create("post_airplane", async context =>
-        {
-            var airplaneRequest = airplaneRequestFaker.Generate();
-            var watch = Stopwatch.StartNew();
-            var airplaneResponse =
-                await httpClient.PostAsJsonAsync("http://localhost:5001/api/v1/airplane", airplaneRequest);
-            watch.Stop();
-            airplaneResponse.EnsureSuccessStatusCode();
-            var airplane = await airplaneResponse.Content.ReadFromJsonAsync<PostAirplaneResponse>();
-            context.Data["airplane"] = airplane;
-            var size = airplaneResponse.Content.Headers.ContentLength.GetValueOrDefault();
-            return Response.Ok(statusCode: (int)airplaneResponse.StatusCode, sizeBytes: (int)size,
-                latencyMs: watch.ElapsedMilliseconds);
-        });
-        
+        var airplane = Step.Create(StepName.PostAirplane, timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory,  execute: async context => await PostAirplaneStep.PostAirplane(context));
         var scenario = ScenarioBuilder.CreateScenario("airplane", airplane);
 
         NBomberRunner
