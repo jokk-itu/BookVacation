@@ -1,13 +1,13 @@
-name: TicketService Continous Deployment
+name: VacationService Continous Deployment
 
 on:
   workflow_dispatch:
 
 env:
-  SERVICE: TicketService
-  CONTRACTFOLDER: TicketService.Contracts
-  APIFOLDER: TicketService.Api
-  REPOSITORY: ticketservice
+  SERVICE: VacationService
+  CONTRACTFOLDER: VacationService.Contracts
+  APIFOLDER: VacationService.Api
+  REPOSITORY: vacationservice
   CONFIGURATION: Release
 
 jobs:

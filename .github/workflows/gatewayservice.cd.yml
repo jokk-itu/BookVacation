@@ -1,13 +1,13 @@
-name: TicketService Continous Deployment
+name: GatewayService Continous Deployment
 
 on:
   workflow_dispatch:
 
 env:
-  SERVICE: TicketService
-  CONTRACTFOLDER: TicketService.Contracts
-  APIFOLDER: TicketService.Api
-  REPOSITORY: ticketservice
+  SERVICE: GatewayService
+  CONTRACTFOLDER: GatewayService.Contracts
+  APIFOLDER: GatewayService.Api
+  REPOSITORY: gatewayservice
   CONFIGURATION: Release
 
 jobs:
