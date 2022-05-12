@@ -86,7 +86,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentClient.Tests", "Doc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentClient", "DocumentClient", "{74488A72-82B8-4A94-8C36-510D46C2138A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging.Api", "Logging.Api\Logging.Api.csproj", "{280BE564-E4DE-46FD-AD95-284E913DB9EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging.Api", "Logging\Logging.Api\Logging.Api.csproj", "{280BE564-E4DE-46FD-AD95-284E913DB9EB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{D820FC23-A6FD-4741-B1EB-C34CCAC741CB}"
 EndProject
