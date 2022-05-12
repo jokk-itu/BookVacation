@@ -1,4 +1,4 @@
-using MassTransit.Courier;
+using MassTransit;
 
 namespace EventDispatcher.Test;
 

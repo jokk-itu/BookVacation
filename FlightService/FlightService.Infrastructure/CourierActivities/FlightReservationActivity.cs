@@ -1,6 +1,7 @@
 using FlightService.Contracts.FlightReservation;
 using FlightService.Infrastructure.Requests.CreateFlightReservation;
 using FlightService.Infrastructure.Requests.DeleteFlightReservation;
+using MassTransit;
 using MassTransit.Courier;
 using MediatR;
 

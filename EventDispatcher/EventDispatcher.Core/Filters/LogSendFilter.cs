@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 

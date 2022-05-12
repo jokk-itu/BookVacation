@@ -2,7 +2,6 @@ using CarService.Contracts.RentalDeal;
 using FlightService.Contracts.FlightReservation;
 using HotelService.Contracts.HotelRoomReservationActivity;
 using MassTransit;
-using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using TicketService.Contracts.CreateVacationTickets;
