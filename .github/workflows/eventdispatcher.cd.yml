@@ -1,4 +1,4 @@
-name: Logging Continous Deployment
+name: EventDispatcher Continous Deployment
 
 on:
   workflow_dispatch:

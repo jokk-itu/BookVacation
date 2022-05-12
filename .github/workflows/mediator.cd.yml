@@ -1,4 +1,4 @@
-name: Logging Continous Deployment
+name: Mediator Continous Deployment
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Logging Continous Deployment
+name: DocumentClient Continous Deployment
 
 on:
   workflow_dispatch:
