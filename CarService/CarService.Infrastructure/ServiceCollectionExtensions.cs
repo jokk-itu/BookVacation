@@ -1,5 +1,8 @@
+using CarService.Infrastructure.CourierActivities;
 using CarService.Infrastructure.Requests;
 using DocumentClient;
+using EventDispatcher;
+using MassTransit;
 using Mediator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +15,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddMediator(typeof(MediatorRegistration).Assembly);
         services.AddRavenDb(configuration.GetSection("RavenSettings"));
+        services.AddEventBus(configuration,
+            configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
         return services;
     }
 }

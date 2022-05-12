@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DocumentClient\DocumentClient.Core\DocumentClient.Core.csproj" />
+      <ProjectReference Include="..\DocumentClient.Core\DocumentClient.Core.csproj" />
     </ItemGroup>
 
 </Project>

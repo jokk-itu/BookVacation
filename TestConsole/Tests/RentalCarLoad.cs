@@ -3,9 +3,9 @@ using Serilog;
 using TestConsole.Constants;
 using TestConsole.Steps;
 
-namespace TestConsole;
+namespace TestConsole.Tests;
 
-public static class RentalCar
+public static class RentalCarLoad
 {
     public static void Start()
     {

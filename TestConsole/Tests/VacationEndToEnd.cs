@@ -9,7 +9,7 @@ using VacationService.Contracts.Vacation;
 
 namespace TestConsole;
 
-public class Vacation
+public class VacationEndToEnd
 {
     public static async Task Start()
     {

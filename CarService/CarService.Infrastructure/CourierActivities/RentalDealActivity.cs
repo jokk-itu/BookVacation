@@ -1,7 +1,7 @@
 using CarService.Contracts.RentalDeal;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
 using CarService.Infrastructure.Requests.DeleteRentalDeal;
-using MassTransit.Courier;
+using MassTransit;
 using MediatR;
 
 namespace CarService.Infrastructure.CourierActivities;

@@ -1,6 +1,5 @@
 using System.Diagnostics;
-using GreenPipes;
-using MassTransit.Courier;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 
 namespace EventDispatcher.Filters;

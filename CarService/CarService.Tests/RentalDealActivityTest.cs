@@ -4,7 +4,7 @@ using CarService.Infrastructure.CourierActivities;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
 using CarService.Infrastructure.Requests.DeleteRentalDeal;
 using EventDispatcher.Test;
-using MassTransit.Courier;
+using MassTransit;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
 using MediatR;

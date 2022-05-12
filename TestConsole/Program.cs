@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using TestConsole;
+using TestConsole.Tests;
 
 Parser.Default.ParseArguments<Options>(args)
     .WithParsed(options =>
@@ -17,10 +18,10 @@ Parser.Default.ParseArguments<Options>(args)
             HotelLoad.Start();
 
         if (options.RentalCarLoad)
-            RentalCar.Start();
+            RentalCarLoad.Start();
         
         if(options.VacationSingle)
-            Vacation.Start().GetAwaiter().GetResult();
+            VacationEndToEnd.Start().GetAwaiter().GetResult();
     })
     .WithNotParsed(errors =>
     {

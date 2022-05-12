@@ -29,10 +29,7 @@ builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 
 builder.WebHost.ConfigureServices(services =>
 {
-    services.AddInfrastructureServices();
-    services.AddEventBus(builder.Configuration,
-        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
-    services.AddMassTransitHostedService();
+    services.AddInfrastructureServices(builder.Configuration);
     services.AddRouting(options => options.LowercaseUrls = true);
     services.AddControllers();
     services.AddEndpointsApiExplorer();

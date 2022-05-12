@@ -82,7 +82,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging.Core", "Logging\Log
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentClient", "DocumentClient\DocumentClient.Core\DocumentClient.Core.csproj", "{116AEA56-AF50-49B7-9F00-872B82B78DD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentClient.Tests", "DocumentClient.Tests\DocumentClient.Tests.csproj", "{165F424A-87E7-4321-B6A6-ECBE59021BA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentClient.Tests", "DocumentClient\DocumentClient.Tests\DocumentClient.Tests.csproj", "{165F424A-87E7-4321-B6A6-ECBE59021BA0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentClient", "DocumentClient", "{74488A72-82B8-4A94-8C36-510D46C2138A}"
 EndProject

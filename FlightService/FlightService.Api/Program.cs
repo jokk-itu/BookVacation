@@ -43,9 +43,6 @@ builder.WebHost.ConfigureServices(services =>
             typeof(FlightService.Infrastructure.Validators.FluentValidatorRegistration).Assembly
         });
     });
-    services.AddEventBus(builder.Configuration,
-        configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
-    services.AddMassTransitHostedService();
     services.AddRouting(options => options.LowercaseUrls = true);
     services.AddControllers();
     services.AddEndpointsApiExplorer();

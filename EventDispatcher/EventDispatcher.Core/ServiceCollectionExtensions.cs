@@ -1,9 +1,6 @@
 using EventDispatcher.Filters;
 using EventDispatcher.Observers;
-using GreenPipes;
 using MassTransit;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
-using MassTransit.PrometheusIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,10 +10,10 @@ namespace EventDispatcher;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration,
-        Action<IServiceCollectionBusConfigurator>? callback = null)
+        Action<IBusRegistrationConfigurator>? callback = null)
     {
         return services.AddMassTransit(configurator =>
-        { ;
+        {
             callback?.Invoke(configurator);
             configurator.SetKebabCaseEndpointNameFormatter();
             configurator.UsingRabbitMq((busContext, factoryConfigurator) =>
@@ -40,7 +37,7 @@ public static class ServiceCollectionExtensions
                     .SetRestartTimeout(m: 1));
 
                 factoryConfigurator.UsePrometheusMetrics(serviceName: configuration["ServiceName"]);
-
+                
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);

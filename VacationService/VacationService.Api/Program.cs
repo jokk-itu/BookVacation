@@ -35,7 +35,6 @@ builder.WebHost.ConfigureServices(services =>
         });
     });
     services.AddEventBus(builder.Configuration);
-    services.AddMassTransitHostedService();
     services.AddRouting(options => options.LowercaseUrls = true);
     services.AddControllers();
     services.AddEndpointsApiExplorer();
