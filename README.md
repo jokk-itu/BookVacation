@@ -3,11 +3,6 @@
 ![Architecture](architecture.png "Architecture")
 
 
-|Build|Dockerhub|Nuget|
-|-----|---------|-----|
-| [![Build](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/build.yml) | [![Publish](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/publish.yml) |[![Push to Github](https://github.com/jokk-itu/BookVacation/actions/workflows/push.yml/badge.svg)](https://github.com/jokk-itu/BookVacation/actions/workflows/push.yml)|
-
-
 ## Choreography
 
 Project to illustrate a Choreography architecture using Routing slips in Masstransit.

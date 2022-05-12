@@ -44,7 +44,7 @@ builder.WebHost.ConfigureServices(services =>
         });
     });
     services.AddEventBus(builder.Configuration,
-        configurator => { configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>();});
+        configurator => { configurator.AddConsumersFromNamespaceContaining<ConsumerRegistration>(); });
     services.AddMassTransitHostedService();
     services.AddRouting(options => options.LowercaseUrls = true);
     services.AddControllers();
@@ -64,6 +64,7 @@ StartupLogger.Run(() =>
 {
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
+    
     app.UseSwagger();
     app.UseSwaggerUI();
 
