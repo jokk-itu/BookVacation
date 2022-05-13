@@ -20,7 +20,7 @@ data "digitalocean_kubernetes_cluster" "bookvacation" {
 }
 
 
-🇰​​​​​🇺​​​​​🇧​​​​​🇪​​​​​🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​
+# 🇰​​​​​🇺​​​​​🇧​​​​​🇪​​​​​🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​
 resource "local_file" "kubeconfig" {
   depends_on = [var.cluster_id]
   count      = var.write_kubeconfig ? 1 : 0
@@ -29,7 +29,7 @@ resource "local_file" "kubeconfig" {
 }
 
 
-🇵​​​​​🇷​​​​​🇴​​​​​🇻​​​​​🇮​​​​​🇩​​​​​🇪​​​​​🇷​​​​​🇸​​​​​
+# 🇵​​​​​🇷​​​​​🇴​​​​​🇻​​​​​🇮​​​​​🇩​​​​​🇪​​​​​🇷​​​​​🇸​​​​​
 provider "kubernetes" {
   host = data.digitalocean_kubernetes_cluster.bookvacation.endpoint
   token = data.digitalocean_kubernetes_cluster.bookvacation.kube_config[0].token
@@ -49,7 +49,7 @@ provider "helm" {
 }
 
 
-🇳​​​​​🇦​​​​​🇲​​​​​🇪​​​​​🇸​​​​​🇵​​​​​🇦​​​​​🇨​​​​​🇪​​​​​🇸​​​​​
+# 🇳​​​​​🇦​​​​​🇲​​​​​🇪​​​​​🇸​​​​​🇵​​​​​🇦​​​​​🇨​​​​​🇪​​​​​🇸​​​​​
 resource "kubernetes_namespace" "test" {
   metadata {
     name = "test"
@@ -62,31 +62,31 @@ resource "kubernetes_namespace" "production" {
   }
 }
 
-# Domain
+# 🇩​​​​​🇴​​​​​🇲​​​​​🇦​​​​​🇮​​​​​🇳​​​​​
 resource "digitalocean_domain" "default" {
-  name = "test.com"
+  name = "occupancydetection.software"
 }
 
-# A Record
+# 🇷​​​​​🇪​​​​​🇨​​​​​🇴​​​​​🇷​​​​​🇩​​​​​
 resource "digitalocean_record" "static" {
   domain = digitalocean_domain.default.name
   type = "A"
   name = "static"
-  value = TODO "ip address of ingress"
+  value = "ip address of ingress"
 }
 
-# Certificate
+# 🇨​​​​​🇪​​​​​🇷​​​​​🇹​​​​​🇮​​​​​🇫​​​​​🇮​​​​​🇨​​​​​🇦​​​​​🇹​​​​​🇪​​​​​
 resource "digitalocean_certificate" "cert" {
   name = "default"
   type = "lets_encrypt"
-  domains = [digitialocean_domain.default.name]
+  domains = [digitalocean_domain.default.name]
 
   lifecycle {
     create_before_destroy = true
   }
 }
 
-🇮​​​​​🇳​​​​​🇬​​​​​🇷​​​​​🇪​​​​​🇸​​​​​🇸​​​​​ 🇨​​​​​🇴​​​​​🇳​​​​​🇹​​​​​🇷​​​​​🇴​​​​​🇱​​​​​🇱​​​​​🇪​​​​​🇷​​​​​
+#🇮​​​​​🇳​​​​​🇬​​​​​🇷​​​​​🇪​​​​​🇸​​​​​🇸​​​​​ 🇨​​​​​🇴​​​​​🇳​​​​​🇹​​​​​🇷​​​​​🇴​​​​​🇱​​​​​🇱​​​​​🇪​​​​​🇷​​​​​
 resource "helm_release" "nginx_ingress" {
   name       = "nginx-ingress-controller"
   namespace  = kubernetes_namespace.test.metadata.0.name
@@ -106,6 +106,7 @@ resource "helm_release" "nginx_ingress" {
     name  = "service.annotations.service.beta.kubernetes.io/do-loadbalancer-name"
     value = format("%s-nginx-ingress", var.cluster_name)
   }
+
   set {
     name = "service.annotations.service.beta.kubernetes.io/do-loadbalancer-algorithm"
     value = "round_robin"
@@ -115,15 +116,28 @@ resource "helm_release" "nginx_ingress" {
     value = "https"
   }
   set {
-    name = "service.annotations.service.beta.kubernetes.io/do-loadbalancer-tls-ports"
-    value = "443"
-  }
-  set {
     name = "service.annotations.service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https"
     value = "true"
   }
   set {
     name = "service.annotations.service.beta.kubernetes.io/do-loadbalancer-certificate-id"
-    value = digitalocean_certificate.cert.certificate_id
+    value = digitalocean_certificate.cert.id
+  }
+
+  set {
+    name = "service.ports.0.name"
+    value = "https"
+  }
+  set {
+    name = "service.ports.0.protocol"
+    value = "TCP"
+  }
+  set {
+    name = "service.ports.0.port"
+    value = "443"
+  }
+  set {
+    name = "service.ports.0.targetPort"
+    value = "80"
   }
 }
