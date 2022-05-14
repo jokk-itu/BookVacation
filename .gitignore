@@ -8,3 +8,5 @@ RavenDBServer
 Monitoring/grafana/dashboards
 .terraform.*
 .terraform/
+terraform.tfstate.*
+terraform.tfstate
