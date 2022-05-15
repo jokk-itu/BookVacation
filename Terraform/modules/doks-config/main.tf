@@ -15,8 +15,11 @@ terraform {
   }
 }
 
-data "digitalocean_kubernetes_cluster" "bookvacation" {
-  name = var.cluster_name
+# 🇵​​​​​🇷​​​​​🇴​​​​​🇻​​​​​🇮​​​​​🇩​​​​​🇪​​​​​🇷​​​​​🇸​​​​​
+provider "kubernetes" {
+  host = var.cluster_host
+  token = var.cluster_token
+  cluster_ca_certificate = var.cluster_certificate
 }
 
 
@@ -24,28 +27,8 @@ data "digitalocean_kubernetes_cluster" "bookvacation" {
 resource "local_file" "kubeconfig" {
   depends_on = [var.cluster_id]
   count      = var.write_kubeconfig ? 1 : 0
-  content    = data.digitalocean_kubernetes_cluster.bookvacation.kube_config[0].raw_config
-  filename   = "${path.root}/kubeconfig"
-}
-
-
-# 🇵​​​​​🇷​​​​​🇴​​​​​🇻​​​​​🇮​​​​​🇩​​​​​🇪​​​​​🇷​​​​​🇸​​​​​
-provider "kubernetes" {
-  host = data.digitalocean_kubernetes_cluster.bookvacation.endpoint
-  token = data.digitalocean_kubernetes_cluster.bookvacation.kube_config[0].token
-  cluster_ca_certificate = base64decode(
-    data.digitalocean_kubernetes_cluster.bookvacation.kube_config[0].cluster_ca_certificate
-  )
-}
-
-provider "helm" {
-  kubernetes {
-    host  = data.digitalocean_kubernetes_cluster.bookvacation.endpoint
-    token = data.digitalocean_kubernetes_cluster.bookvacation.kube_config[0].token
-    cluster_ca_certificate = base64decode(
-      data.digitalocean_kubernetes_cluster.bookvacation.kube_config[0].cluster_ca_certificate
-    )
-  }
+  content    = var.kubeconfig
+  filename   = "./kubeconfig"
 }
 
 

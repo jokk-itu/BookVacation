@@ -1,20 +1,19 @@
 # Terraform
 
-## DOKS
-
-## DOKS Configuration
+## Domain
+Add domain (Try again)
 
 ## Certificate
 Add certificate to domain
 
-## Ingress Loadbalancer
-Setup as disowned from the beginning.
+## DOKS
+Setup DOKS
 
-## Record
-Add an A-record to point loadbalancer to domain
+## DOKS Configuration
+Add kubeconfig and namespaces
 
 ## Ingress Controller
-Own the loadbalancer, by using its id
+Setup loadbalancer with ingress controller from helm chart
 
 ## RabbitMQ
 Setup cluster
@@ -35,3 +34,6 @@ FlightService
 VacationService
 TicketService
 TrackingService
+
+## Record
+Add an A-record to point loadbalancer to domain

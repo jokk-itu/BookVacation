@@ -1,5 +1,5 @@
 output "cluster_name" {
-  value = module.doks.cluster_name
+  value = module.doks.name
 }
 
 output "kubeconfig_path" {
