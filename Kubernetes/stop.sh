@@ -1,7 +1,6 @@
 #! /bin/sh
 
 kubectl delete -f RavenDB/raven-config.yml
-kubectl delete -f RavenDB/raven-secret.yml
 kubectl delete -f RavenDB/raven.yml
 
 kubectl delete -f Logger/logger-config.yml

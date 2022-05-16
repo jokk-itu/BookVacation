@@ -60,14 +60,40 @@ module "ingress-controller" {
 
 module "rabbitmq" {
   source = "./modules/rabbitmq"
+  cluster_host = module.doks.host
+  cluster_token = module.doks.token
+  cluster_certificate = module.doks.certificate
 }
 
-# RavenDB
-# Seq
-# All Services
+module "ravendb" {
+  source = "./modules/ravendb"
+  cluster_host = module.doks.host
+  cluster_token = module.doks.token
+  cluster_certificate = module.doks.certificate
+}
 
-#module "record" {
-#  source = "./modules/record"
-#  loadbalancer_ip = ""
-#  domain_name = local.domain_name
-#}
+module "logger" {
+  source = "./modules/seq"
+  cluster_host = module.doks.host
+  cluster_token = module.doks.token
+  cluster_certificate = module.doks.certificate
+}
+
+module "minio" {
+  source = "./modules/minio"
+  cluster_host = module.doks.host
+  cluster_token = module.doks.token
+  cluster_certificate = module.doks.certificate
+}
+
+module "main-record" {
+  source = "./modules/record"
+  loadbalancer_ip = ""
+  domain_name = local.domain_name
+}
+
+module "logger-record" {
+  source = "./modules/record"
+  loadbalancer_ip = ""
+  domain_name = "seq.${local.domain_name}"
+}

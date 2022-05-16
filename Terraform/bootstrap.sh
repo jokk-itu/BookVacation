@@ -2,6 +2,19 @@
 
 terraform init
 terraform validate
-terraform apply -var write_kubeconfig=true
+
+# Baseline
+terraform apply \
+  -target "certificate" \
+  -target "doks" \
+  -target "doks-config" \
+  -target "ingress-controller"
+
+# Services
+terraform apply \
+  -target "rabbitmq" \
+  -target "ravendb" \
+  -target "seq" \
+  -target "minio"
 
 echo "Done!"

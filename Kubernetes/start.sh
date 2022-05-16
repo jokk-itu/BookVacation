@@ -1,7 +1,6 @@
 #! /bin/sh
 
 kubectl apply -f RavenDB/raven-config.yml
-kubectl apply -f RavenDB/raven-secret.yml
 kubectl apply -f RavenDB/raven.yml
 
 kubectl apply -f Logger/logger-config.yml

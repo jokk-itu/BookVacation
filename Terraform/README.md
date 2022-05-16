@@ -1,8 +1,5 @@
 # Terraform
 
-## Domain
-Add domain (Try again)
-
 ## Certificate
 Add certificate to domain
 

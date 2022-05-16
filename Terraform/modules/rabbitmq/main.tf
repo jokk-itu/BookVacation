@@ -16,7 +16,7 @@ provider "kubernetes" {
 
 # 🇮​​​​​🇳​​​​​🇸​​​​​🇹​​​​​🇦​​​​​🇱​​​​​🇱​​​​​ 🇴​​​​​🇵​​​​​🇪​​​​​🇷​​​​​🇦​​​​​🇹​​​​​🇴​​​​​🇷​​​​​
 resource "null_resource" "rabbitmq" {
-    provisioner "local_exec" {
+    provisioner "local-exec" {
         command = <<-EOT
             kubectl config --kubeconfig "./kubeconfig" apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
         EOT
