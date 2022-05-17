@@ -5,12 +5,13 @@ on:
     branches:
       - master
       - feature/**
+      - epic/**
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-  
+
     env:
       DOTNET_NOLOGO: true
       CONFIGURATION: Release
