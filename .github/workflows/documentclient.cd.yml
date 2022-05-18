@@ -15,23 +15,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup BuildNumber
         run: |
           BuildNumber="$GITHUB_RUN_NUMBER"
           echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
+
       - name: Setup GithubToken
         run: |
           GithubToken=${{ secrets.GITHUB_TOKEN }}
           echo "GithubToken=$GithubToken" >> $GITHUB_ENV
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
+
       - name: Restore
         run: dotnet-restore
+
       - name: Build
         run: dotnet build -c $CONFIGURATION --no-restore
+
       - name: Push package to nuget registry
         run: |
           package=$(ls $SERVICE/$FOLDER/bin/$CONFIGURATION/*nupkg)
-          dotnet nuget push "$package" --source "github" --skip-duplicate   
+          dotnet nuget push "$package" --source "github" --skip-duplicate

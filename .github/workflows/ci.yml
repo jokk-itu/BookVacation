@@ -3,9 +3,7 @@ name: Continous Integration
 on:
   push:
     branches:
-      - master
-      - feature/**
-      - epic/**
+      - "**"
 
 jobs:
   build:
@@ -19,23 +17,30 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup BuildNumber
         run: |
           BuildNumber="$GITHUB_RUN_NUMBER$GITHUB_RUN_ATTEMPT"
           echo "BuildNumber=$BuildNumber" >> $GITHUB_ENV
+
       - name: Setup GithubToken
         run: |
           GithubToken=${{ secrets.GITHUB_TOKEN }}
           echo "GithubToken=$GithubToken" >> $GITHUB_ENV
+
       - name: Setup Services
         run: docker-compose up -d ravendb eventbus logger blobstorage
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
         run: dotnet build -c $CONFIGURATION --no-restore
+
       - name: Test
         run: dotnet test --no-build
