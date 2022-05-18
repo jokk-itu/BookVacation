@@ -37,8 +37,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: ${{ $TAG == 'release' }}
-          tags: ${{ $TAG }}
+          push: $TAG == 'release'
+          tags: $TAG
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             "GithubToken=${{ secrets.GITHUB_TOKEN }}"
