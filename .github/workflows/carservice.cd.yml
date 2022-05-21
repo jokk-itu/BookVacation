@@ -75,6 +75,7 @@ jobs:
         run: dotnet build -c $CONFIGURATION --no-restore
 
       - name: Push package to nuget registry
+        if: ${{ startsWith(${GITHUB_REF#refs/heads/}, 'release') }}
         run: |
           package=$(ls $SERVICE/$CONTRACTFOLDER/bin/$CONFIGURATION/*nupkg)
           dotnet nuget push "$package" --source "github" --skip-duplicate
