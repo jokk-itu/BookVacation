@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - fix/**
 
 env:
   SERVICE: CarService
@@ -26,7 +25,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-    
+
       - name: Build Image
         run: docker build . -f $SERVICE/$APIFOLDER/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/$REPOSITORY:latest --build-arg GithubToken=${{ secrets.GITHUB_TOKEN }}
 
