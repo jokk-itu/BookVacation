@@ -14,7 +14,6 @@ terraform apply \
 terraform apply \
   -target "rabbitmq" \
   -target "ravendb" \
-  -target "seq" \
-  -target "minio"
+  -target "seq"
 
 echo "Done!"

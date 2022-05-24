@@ -88,12 +88,12 @@ module "minio" {
 
 module "main-record" {
   source = "./modules/record"
-  loadbalancer_ip = ""
+  loadbalancer_ip = "" /get from the first ingress file
   domain_name = local.domain_name
 }
 
 module "logger-record" {
   source = "./modules/record"
-  loadbalancer_ip = ""
+  loadbalancer_ip = "" //get from the first ingress file
   domain_name = "seq.${local.domain_name}"
 }

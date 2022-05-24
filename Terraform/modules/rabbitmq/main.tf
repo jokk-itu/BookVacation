@@ -17,11 +17,11 @@ provider "kubernetes" {
 # 🇮​​​​​🇳​​​​​🇸​​​​​🇹​​​​​🇦​​​​​🇱​​​​​🇱​​​​​ 🇴​​​​​🇵​​​​​🇪​​​​​🇷​​​​​🇦​​​​​🇹​​​​​🇴​​​​​🇷​​​​​
 resource "null_resource" "rabbitmq" {
     provisioner "local-exec" {
-        command = <<-EOT
-            kubectl config --kubeconfig "./kubeconfig" apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
-        EOT
+      command = <<-EOT
+          kubectl config --kubeconfig "./kubeconfig" apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+      EOT
 
-        interpreter = ["/bin/sh", "-c"]
+      interpreter = ["/bin/sh", "-c"]
     }
 }
 
@@ -34,4 +34,5 @@ resource "kubernetes_manifest" "rabbitmq" {
             name = "eventbus"
         }
     }
+    depends_on = [null_resource.rabbitmq]
 }
