@@ -16,7 +16,7 @@ Setup loadbalancer with ingress controller from helm chart
 Setup cluster
 
 ## RavenDB
-Setup cluster (automate giving license?)
+Setup cluster
 
 ## Minio
 Single instance

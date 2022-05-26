@@ -8,10 +8,6 @@ terraform {
       source = "hashicorp/kubernetes"
       version = ">= 2.0.0"
     }
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.0.1"
-    }
   }
 }
 
@@ -26,9 +22,20 @@ provider "kubernetes" {
 # 🇰​​​​​🇺​​​​​🇧​​​​​🇪​​​​​🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​
 resource "local_file" "kubeconfig" {
   depends_on = [var.cluster_id]
-  count      = var.write_kubeconfig ? 1 : 0
   content    = var.kubeconfig
   filename   = "./kubeconfig"
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      doctl kubernetes cluster kubeconfig save $CLUSTERID
+      kubectl apply -f 'https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml'
+    EOT
+      
+    interpreter = ["/bin/sh", "-c"]
+    environment = {
+      CLUSTERID = var.cluster_id
+    }
+  }
 }
 
 

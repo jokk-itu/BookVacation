@@ -1,6 +1,6 @@
 variable "write_kubeconfig" {
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "cluster_version" {

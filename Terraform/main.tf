@@ -63,6 +63,7 @@ module "rabbitmq" {
   cluster_host = module.doks.host
   cluster_token = module.doks.token
   cluster_certificate = module.doks.certificate
+  namespace = module.doks-config.test_namespace
 }
 
 module "ravendb" {
@@ -70,13 +71,16 @@ module "ravendb" {
   cluster_host = module.doks.host
   cluster_token = module.doks.token
   cluster_certificate = module.doks.certificate
+  namespace = module.doks-config.test_namespace
 }
 
 module "logger" {
-  source = "./modules/seq"
+  source = "./modules/logger"
   cluster_host = module.doks.host
   cluster_token = module.doks.token
   cluster_certificate = module.doks.certificate
+  namespace = module.doks-config.test_namespace
+  domain_name = local.domain_name
 }
 
 module "minio" {
@@ -88,12 +92,12 @@ module "minio" {
 
 module "main-record" {
   source = "./modules/record"
-  loadbalancer_ip = "" /get from the first ingress file
+  loadbalancer_ip = "get ip from any ingressrule resource"
   domain_name = local.domain_name
 }
 
 module "logger-record" {
   source = "./modules/record"
-  loadbalancer_ip = "" //get from the first ingress file
+  loadbalancer_ip = "get ip from any ingressrule resource"
   domain_name = "seq.${local.domain_name}"
 }

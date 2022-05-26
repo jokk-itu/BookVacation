@@ -19,6 +19,9 @@ resource "kubernetes_service" "ravendb" {
   metadata {
     name = "ravendb"
     namespace = var.namespace
+    labels = {
+      app = "ravendb"
+    }
   }
   spec {
     port {
@@ -33,22 +36,15 @@ resource "kubernetes_service" "ravendb" {
 resource "kubernetes_config_map" "ravendb" {
   metadata {
     name = "ravendb-config"
+    namespace = var.namespace
   }
   data = {
-    url = "http://ravendb.${var.namespace}.svc.cluster.local"
+    url = "http://ravendb.${var.namespace}.svc.cluster.local:8080"
   }
 }
 
 # 🇸​​​​​🇹​​​​​🇦​​​​​🇹​​​​​🇪​​​​​🇫​​​​​🇺​​​​​🇱​​​​​🇸​​​​​🇪​​​​​🇹​​​​​
 resource "kubernetes_stateful_set" "ravendb" {
-  provisioner "local-exec" {
-    command = <<-EOT
-      kubectl config --kubeconfig "./kubeconfig" cp join_cluster.sh var.namespace/ravendb-0:/
-      kubectl config --kubeconfig "./kubeconfig" exec ravendb-0 -- /bin/sh -c /join_cluster.sh var.replicas var.namespace
-    EOT
-
-    interpreter = ["/bin/sh", "-c"]
-  }
   depends_on = [kubernetes_service.ravendb]
   metadata {
     name = "ravendb"
@@ -59,7 +55,7 @@ resource "kubernetes_stateful_set" "ravendb" {
   }
 
   spec {
-    service_name = "ravendb_service"
+    service_name = "ravendb"
     replicas = var.replicas
     update_strategy {
       type = "RollingUpdate"
@@ -68,6 +64,11 @@ resource "kubernetes_stateful_set" "ravendb" {
       }
     }
     pod_management_policy = "OrderedReady"
+    selector {
+      match_labels = {
+        app = "ravendb"
+      }
+    }
     template {
       metadata {
         labels = {
@@ -78,7 +79,7 @@ resource "kubernetes_stateful_set" "ravendb" {
       spec {
         container {
           image = "ravendb/ravendb:ubuntu-latest"
-          imagePullPolicy = "Always"
+          image_pull_policy = "Always"
           name = "ravendb"
           port {
             container_port = 8080
@@ -100,16 +101,6 @@ resource "kubernetes_stateful_set" "ravendb" {
             name = "RAVEN_Security_UnsecuredAccessAllowed"
             value = "PrivateNetwork"
           }
-          resources {
-            limits = {
-              cpu    = "10m"
-              memory = "10Mi"
-            }
-            requests = {
-              cpu    = "10m"
-              memory = "10Mi"
-            }
-          }
         }
       }
     }
@@ -119,8 +110,8 @@ resource "kubernetes_stateful_set" "ravendb" {
       }
 
       spec {
-        access_modes       = ["ReadWriteOnce"]
-        storage_class_name = "standard"
+        access_modes = ["ReadWriteOnce"]
+        storage_class_name = "do-block-storage"
 
         resources {
           requests = {
