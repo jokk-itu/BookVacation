@@ -55,8 +55,8 @@ public static class LoggerConfigurationExtensions
     private static LoggerConfiguration SetupExpressions(this LoggerConfiguration loggerConfiguration)
     {
         return loggerConfiguration
-            .Filter.ByExcluding("RequestPath like '/health%'")
-            .Filter.ByExcluding("RequestPath like '/metrics%'");
+            .Filter.ByExcluding("RequestPath like '/health%' and @l in ['Verbose', 'Debug', 'Information']")
+            .Filter.ByExcluding("RequestPath like '/metrics%' and @l in ['Verbose', 'Debug', 'Information']");
     }
 
     private static LoggerConfiguration SetupCustomOverrides(this LoggerConfiguration loggerConfiguration,
