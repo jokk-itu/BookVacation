@@ -16,7 +16,7 @@ Setup loadbalancer with ingress controller from helm chart
 Setup cluster
 
 ## RavenDB
-Setup cluster
+Single instance
 
 ## Minio
 Single instance
@@ -34,3 +34,7 @@ TrackingService
 
 ## Record
 Add an A-record to point loadbalancer to domain
+
+
+## Problems
+TLS termination - watch video on it

@@ -23,6 +23,12 @@ resource "kubernetes_deployment" "carservice" {
     }
   }
 
+  lifecycle {
+    ignore_changes = [
+      spec[0].replicas
+    ]
+  }
+
   spec {
     selector {
       match_labels = {
@@ -180,11 +186,112 @@ resource "kubernetes_deployment" "carservice" {
 }
 
 # 🇭​​​​​🇵​​​​​🇦​​​​​
+resource "kubernetes_horizontal_pod_autoscaler" "carservice" {
+  metadata {
+    name = "carservice"
+    namespace = var.namespace
+  }
+
+  spec {
+    min_replicas = 1
+    max_replicas = 10
+
+    scale_target_ref {
+      kind = "Deployment"
+      name = "carservice"
+    }
+
+    metric {
+      type = "Resource"
+      resource {
+        name = "CPU"
+        target {
+          type = "Utilization"
+          average_utilization = "75"
+        }
+      }
+    }
+
+    metric {
+      type = "Resource"
+      resource {
+        name = "Memory"
+        target {
+          type = "Utilization"
+          average_utilization = "75"
+        }
+      }
+    }
+}
 
 # 🇸​​​​​🇪​​​​​🇷​​​​​🇻​​​​​🇮​​​​​🇨​​​​​🇪​​​​​
+resource "kubernetes_service" "carservice" {
+  metadata {
+    name = "carservice"
+    namespace = var.namespace
+  }
+  spec {
+    selector = {
+      app = "carservice"
+    }
+    session_affinity = "ClientIP"
+    port {
+      port        = 80
+      target_port = "carservice"
+    }
+
+    type = "ClusterIP"
+  }
+}
 
 # 🇮​​​​​🇳​​​​​🇬​​​​​🇷​​​​​🇪​​​​​🇸​​​​​🇸​​​​​
+resource "kubernetes_ingress" "carservice" {
+  wait_for_load_balancer = true
+  metadata {
+    name = "carservice"
+    namespace = var.namespace
+    annotations {
+      "nginx.ingress.kubernetes.io/use-regex" = "true"
+      "nginx.ingress.kubernetes.io/rewrite-target" = "/api/v$1/$2"
+    }
+  }
+
+  spec {
+    backend {
+      service_name = "carservice"
+      service_port = 80
+    }
+
+    ingress_class_name = "nginx"
+
+    tls {
+      hosts = [var.domain_name]
+      secret_name = var.tls-secretname
+    }
+
+    rule {
+      host = var.domain_name
+      http {
+        path {
+          backend {
+            service_name = "carservice"
+            service_port = 80
+          }
+
+          path = "/car/api/v([0-9]+)/(.*)"
+        }
+      }
+    }
+  }
+}
 
 # 🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​🇮​​​​​🇬​​​​​🇲​​​​​🇦​​​​​🇵​​​​​
-
-# 🇸​​​​​🇪​​​​​🇨​​​​​🇷​​​​​🇪​​​​​🇹​​​​​🇸​​​​​
+resource "kubernetes_config_map" "carservice" {
+  metadata {
+    name = "carservice"
+    namespace = var.namespace
+  }
+  data = {
+    url = "http://carservice.${var.namespace}.svc.cluster.local"
+  }
+}
