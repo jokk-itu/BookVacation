@@ -24,12 +24,6 @@ locals {
   domain_name = "occupancydetection.software"
 }
 
-module "certificate" {
-  source = "./modules/certificate"
-  name = "default"
-  domain_name = local.domain_name
-}
-
 module "doks" {
   source = "./modules/doks"
   cluster_name = local.cluster_name
@@ -50,12 +44,22 @@ module "doks-config" {
 
 module "ingress-controller" {
   source = "./modules/ingress-controller"
-  certificate_id = module.certificate.id
   namespace = module.doks-config.test_namespace
   cluster_name = module.doks.name
   cluster_host = module.doks.host
   cluster_token = module.doks.token
   cluster_certificate = module.doks.certificate
+}
+
+module "certificate" {
+  source = "./modules/certificate"
+  cluster_host = module.doks.host
+  cluster_token = module.doks.token
+  cluster_certificate = module.doks.certificate
+  dns_names = [
+    "seq.${local.domain_name}",
+    local.domain_name
+  ]
 }
 
 module "rabbitmq" {
@@ -88,6 +92,20 @@ module "minio" {
   cluster_host = module.doks.host
   cluster_token = module.doks.token
   cluster_certificate = module.doks.certificate
+}
+
+module "carservice" {
+  source = "./modules/carservice"
+  cluster_host = module.doks.host
+  cluster_token = module.doks.token
+  cluster_certificate = module.doks.certificate
+  namespace = module.doks-config.test_namespace
+  domain_name = local.domain_name
+  tls-secretname = module.certificate.private-key-ref
+  logger-configname = module.logger.configname
+  eventbus-secretname = "eventbus-default-user"
+  ravendb-configname = module.ravendb.configname
+  cert-issuername = module.certificate.issuername
 }
 
 module "main-record" {

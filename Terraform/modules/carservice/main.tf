@@ -18,6 +18,7 @@ provider "kubernetes" {
 resource "kubernetes_deployment" "carservice" {
   metadata {
     name = "carservice"
+    namespace = var.namespace
     labels = {
       app = "carservice"
     }
@@ -47,10 +48,10 @@ resource "kubernetes_deployment" "carservice" {
         container {
           image = "jokk/carservice:latest"
           name = "carservice"
-
+          
           port {
             container_port = 80
-            name = carservice
+            name = "carservice"
           }
 
           resources {
@@ -110,19 +111,19 @@ resource "kubernetes_deployment" "carservice" {
               config_map_key_ref {
                 key = "url"
                 name = var.logger-configname
-                optional = "false"
+                optional = false
               }
             }
           }
 
           env {
             name = "Logging__LogToSeq"
-            value = "true"
+            value = true
           }
 
           env {
             name = "Logging__LogToConsole"
-            value = "false"
+            value = false
           }
 
           env {
@@ -131,7 +132,7 @@ resource "kubernetes_deployment" "carservice" {
               secret_key_ref {
                 key = var.eventbus-secretname
                 name = "host"
-                optional = "false"
+                optional = false
               }
             }
           }
@@ -142,7 +143,7 @@ resource "kubernetes_deployment" "carservice" {
               secret_key_ref {
                 key = var.eventbus-secretname
                 name = "port"
-                optional = "false"
+                optional = false
               }
             }
           }
@@ -153,7 +154,7 @@ resource "kubernetes_deployment" "carservice" {
               secret_key_ref {
                 key = var.eventbus-secretname
                 name = "username"
-                optional = "false"
+                optional = false
               }
             }
           }
@@ -164,18 +165,18 @@ resource "kubernetes_deployment" "carservice" {
               secret_key_ref {
                 key = var.eventbus-secretname
                 name = "password"
-                optional = "false"
+                optional = false
               }
             }
           }
 
           env {
             name = "RavenSettings__Urls__0"
-            valueFrom {
+            value_from {
               config_map_key_ref {
                 key = "url"
-                name = var.logger-configname
-                optional = "false"
+                name = var.ravendb-configname
+                optional = false
               }
             }
           }
@@ -222,6 +223,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "carservice" {
         }
       }
     }
+  }
 }
 
 # 🇸​​​​​🇪​​​​​🇷​​​​​🇻​​​​​🇮​​​​​🇨​​​​​🇪​​​​​
@@ -230,11 +232,15 @@ resource "kubernetes_service" "carservice" {
     name = "carservice"
     namespace = var.namespace
   }
+
   spec {
+
     selector = {
       app = "carservice"
     }
+
     session_affinity = "ClientIP"
+
     port {
       port        = 80
       target_port = "carservice"
@@ -247,12 +253,15 @@ resource "kubernetes_service" "carservice" {
 # 🇮​​​​​🇳​​​​​🇬​​​​​🇷​​​​​🇪​​​​​🇸​​​​​🇸​​​​​
 resource "kubernetes_ingress" "carservice" {
   wait_for_load_balancer = true
+
   metadata {
     name = "carservice"
     namespace = var.namespace
-    annotations {
+
+    annotations = {
       "nginx.ingress.kubernetes.io/use-regex" = "true"
       "nginx.ingress.kubernetes.io/rewrite-target" = "/api/v$1/$2"
+      "cert-manager.io/cluster-issuer" = var.cert-issuername
     }
   }
 
@@ -271,6 +280,7 @@ resource "kubernetes_ingress" "carservice" {
 
     rule {
       host = var.domain_name
+
       http {
         path {
           backend {
@@ -291,6 +301,7 @@ resource "kubernetes_config_map" "carservice" {
     name = "carservice"
     namespace = var.namespace
   }
+  
   data = {
     url = "http://carservice.${var.namespace}.svc.cluster.local"
   }

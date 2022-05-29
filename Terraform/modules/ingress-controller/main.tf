@@ -40,6 +40,10 @@ resource "helm_release" "nginx_ingress" {
     name  = "service.type"
     value = "LoadBalancer"
   }
+  set {
+    name = "controller.publishService.enabled"
+    value = "true"
+  }
 
   # Loadbalancer configuration
   set {
@@ -53,31 +57,5 @@ resource "helm_release" "nginx_ingress" {
   set {
     name = "service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https"
     value = "true"
-  }
-  set {
-    name = "service.beta.kubernetes.io/do-loadbalancer-certificate-id"
-    value = var.certificate_id
-  }
-  set {
-    name = "service.annotations.service.beta.kubernetes.io/do-loadbalancer-protocol"
-    value = "https"
-  }
-
-  # Proxy rule
-  set {
-    name = "service.ports.0.name"
-    value = "https"
-  }
-  set {
-    name = "service.ports.0.protocol"
-    value = "TCP"
-  }
-  set {
-    name = "service.ports.0.port"
-    value = "443"
-  }
-  set {
-    name = "service.ports.0.targetPort"
-    value = "80"
   }
 }

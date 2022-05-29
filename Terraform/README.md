@@ -1,13 +1,12 @@
 # Terraform
 
-## Certificate
-Add certificate to domain
-
 ## DOKS
 Setup DOKS
 
 ## DOKS Configuration
 Add kubeconfig and namespaces
+Add Operators
+Add Cert-manager
 
 ## Ingress Controller
 Setup loadbalancer with ingress controller from helm chart
@@ -24,7 +23,7 @@ Single instance
 ## Seq
 Single instance
 
-## Services
+## Services (Deployment, Service, HPA, Ingress, ConfigMap)
 CarService
 HotelService
 FlightService
@@ -32,9 +31,14 @@ VacationService
 TicketService
 TrackingService
 
-## Record
+## Records
 Add an A-record to point loadbalancer to domain
+Add an A-record to point loadbalancer to seq.domain
 
 
-## Problems
-TLS termination - watch video on it
+## ToDo
+Test CertManager, 
+  Ingress with TLS termination
+  Minio
+  Ingress Controller
+  CarService

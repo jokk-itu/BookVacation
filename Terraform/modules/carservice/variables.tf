@@ -13,3 +13,27 @@ variable "cluster_host" {
 variable "namespace" {
   type = string
 }
+
+variable "domain_name" {
+  type = string
+}
+
+variable "tls-secretname" {
+  type = string
+}
+
+variable "logger-configname" {
+  type = string
+}
+
+variable "eventbus-secretname" {
+  type = string
+}
+
+variable "ravendb-configname" {
+  type = string
+}
+
+variable "cert-issuername" {
+  type = string
+}

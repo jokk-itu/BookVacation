@@ -29,7 +29,6 @@ provider "helm" {
   }
 }
 
-
 # 🇰​​​​​🇺​​​​​🇧​​​​​🇪​​​​​🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​
 resource "local_file" "kubeconfig" {
   depends_on = [var.cluster_id]
@@ -49,14 +48,12 @@ resource "local_file" "kubeconfig" {
   }
 }
 
-
 # 🇳​​​​​🇦​​​​​🇲​​​​​🇪​​​​​🇸​​​​​🇵​​​​​🇦​​​​​🇨​​​​​🇪​​​​​🇸​​​​​
 resource "kubernetes_namespace" "test" {
   metadata {
     name = "test"
   }
 }
-
 resource "kubernetes_namespace" "production" {
   metadata {
     name = "production"
@@ -66,7 +63,7 @@ resource "kubernetes_namespace" "production" {
 # 🇲​​​​​🇪​​​​​🇹​​​​​🇷​​​​​🇮​​​​​🇨​​​​​🇸​​​​​ 🇸​​​​​🇪​​​​​🇷​​​​​🇻​​​​​🇪​​​​​🇷​​​​​
 resource "helm_release" "metric-server" {
   name       = "metric-server"
-  namespace  = var.namespace
+  namespace  = "test"
   repository = "https://kubernetes-sigs.github.io/metrics-server/"
   chart      = "metrics-server"
 }
