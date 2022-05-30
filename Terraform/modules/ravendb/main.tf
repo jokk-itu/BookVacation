@@ -39,7 +39,7 @@ resource "kubernetes_config_map" "ravendb" {
     namespace = var.namespace
   }
   data = {
-    url = "http://ravendb.${var.namespace}.svc.cluster.local:8080"
+    url = "http://ravendb.${var.namespace}.svc:8080"
   }
 }
 

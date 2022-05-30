@@ -58,6 +58,6 @@ resource "kubernetes_config_map" "logger" {
     namespace = var.namespace
   }
   data = {
-    url = "http://logger.${var.namespace}.svc.cluster.local"
+    url = "http://logger-seq.${var.namespace}.svc:80"
   }
 }

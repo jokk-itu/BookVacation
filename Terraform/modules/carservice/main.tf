@@ -68,18 +68,21 @@ resource "kubernetes_deployment" "carservice" {
           liveness_probe {
             http_get {
               path = "/health/live"
+              port = 80
             }
 
             initial_delay_seconds = 5
-            period_seconds = 10
+            period_seconds = 15
           }
 
           readiness_probe {
             http_get {
               path = "/health/ready"
+              port = 80
             }
 
-            period_seconds = 1
+            initial_delay_seconds = 5
+            period_seconds = 5
           }
 
           env {
@@ -91,16 +94,16 @@ resource "kubernetes_deployment" "carservice" {
             name = "Node__Name"
             value_from {
               field_ref {
-                field_path = "spec.nodeName"
+                field_path = kubernetes_deployment.carservice.spec.0.template.0.spec.0.node_name
               }
             }
           }
 
           env {
-            name = "Pod__IP"
+            name = "Pod__Name"
             value_from {
               field_ref {
-                field_path = "status.podIP"
+                field_path = kubernetes_deployment.carservice.spec.0.template.0.spec.0.hostname
               }
             }
           }
@@ -123,15 +126,15 @@ resource "kubernetes_deployment" "carservice" {
 
           env {
             name = "Logging__LogToConsole"
-            value = false
+            value = true
           }
 
           env {
             name = "EventBus__Hostname"
             value_from {
               secret_key_ref {
-                key = var.eventbus-secretname
-                name = "host"
+                key = "host"
+                name = var.eventbus-secretname
                 optional = false
               }
             }
@@ -141,8 +144,8 @@ resource "kubernetes_deployment" "carservice" {
             name = "EventBus__Port"
             value_from {
               secret_key_ref {
-                key = var.eventbus-secretname
-                name = "port"
+                key = "port"
+                name = var.eventbus-secretname
                 optional = false
               }
             }
@@ -152,8 +155,8 @@ resource "kubernetes_deployment" "carservice" {
             name = "EventBus__Username"
             value_from {
               secret_key_ref {
-                key = var.eventbus-secretname
-                name = "username"
+                key = "username"
+                name = var.eventbus-secretname
                 optional = false
               }
             }
@@ -163,8 +166,8 @@ resource "kubernetes_deployment" "carservice" {
             name = "EventBus__Password"
             value_from {
               secret_key_ref {
-                key = var.eventbus-secretname
-                name = "password"
+                key = "password"
+                name = var.eventbus-secretname
                 optional = false
               }
             }
@@ -192,6 +195,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "carservice" {
     name = "carservice"
     namespace = var.namespace
   }
+  depends_on = [kubernetes_deployment.carservice]
 
   spec {
     min_replicas = 1
@@ -232,6 +236,7 @@ resource "kubernetes_service" "carservice" {
     name = "carservice"
     namespace = var.namespace
   }
+  depends_on = [kubernetes_deployment.carservice]
 
   spec {
 
@@ -251,9 +256,9 @@ resource "kubernetes_service" "carservice" {
 }
 
 # 🇮​​​​​🇳​​​​​🇬​​​​​🇷​​​​​🇪​​​​​🇸​​​​​🇸​​​​​
-resource "kubernetes_ingress" "carservice" {
+resource "kubernetes_ingress_v1" "carservice" {
   wait_for_load_balancer = true
-
+  depends_on = [kubernetes_service.carservice]
   metadata {
     name = "carservice"
     namespace = var.namespace
@@ -262,15 +267,11 @@ resource "kubernetes_ingress" "carservice" {
       "nginx.ingress.kubernetes.io/use-regex" = "true"
       "nginx.ingress.kubernetes.io/rewrite-target" = "/api/v$1/$2"
       "cert-manager.io/cluster-issuer" = var.cert-issuername
+      "kubernetes.io/ingress.class" = "nginx"
     }
   }
 
   spec {
-    backend {
-      service_name = "carservice"
-      service_port = 80
-    }
-
     ingress_class_name = "nginx"
 
     tls {
@@ -284,10 +285,12 @@ resource "kubernetes_ingress" "carservice" {
       http {
         path {
           backend {
-            service_name = "carservice"
-            service_port = 80
+            service {
+              name = "carservice"
+              number = 80
+            }
           }
-
+          path_type = Prefix
           path = "/car/api/v([0-9]+)/(.*)"
         }
       }
@@ -303,6 +306,6 @@ resource "kubernetes_config_map" "carservice" {
   }
   
   data = {
-    url = "http://carservice.${var.namespace}.svc.cluster.local"
+    url = "http://carservice.${var.namespace}.svc:80"
   }
 }

@@ -40,5 +40,4 @@ Add an A-record to point loadbalancer to seq.domain
 Test CertManager, 
   Ingress with TLS termination
   Minio
-  Ingress Controller
   CarService
