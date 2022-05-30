@@ -31,8 +31,7 @@ builder.WebHost.ConfigureServices(services =>
 {
     services.AddHealthChecks().AddRavenDB(options =>
     {
-        options.Database = builder.Configuration.GetSection("RavenSettings")["Database"];
-        options.Urls = builder.Configuration.GetSection("Urls").Get<string[]>();
+        options.Urls = builder.Configuration.GetSection("RavenSettings").GetSection("Urls").Get<string[]>();
     });
     services.AddInfrastructureServices(builder.Configuration);
     services.AddFluentValidation(options =>
@@ -75,7 +74,8 @@ StartupLogger.Run(() =>
     {
         ResultStatusCodes = new Dictionary<HealthStatus, int>
         {
-            { HealthStatus.Healthy, StatusCodes.Status200OK }, { HealthStatus.Degraded, StatusCodes.Status200OK },
+            { HealthStatus.Healthy, StatusCodes.Status200OK }, 
+            { HealthStatus.Degraded, StatusCodes.Status200OK },
             { HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable }
         },
         AllowCachingResponses = false
@@ -85,11 +85,13 @@ StartupLogger.Run(() =>
         Predicate = registration => registration.Tags.Contains("ready"),
         ResultStatusCodes = new Dictionary<HealthStatus, int>
         {
-            { HealthStatus.Healthy, StatusCodes.Status200OK }, { HealthStatus.Degraded, StatusCodes.Status200OK },
+            { HealthStatus.Healthy, StatusCodes.Status200OK }, 
+            { HealthStatus.Degraded, StatusCodes.Status200OK },
             { HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable }
         },
         AllowCachingResponses = false
     });
+    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));

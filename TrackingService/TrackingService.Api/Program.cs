@@ -31,8 +31,7 @@ builder.WebHost.ConfigureServices(services =>
 {
     services.AddHealthChecks().AddRavenDB(options =>
     {
-        options.Database = builder.Configuration.GetSection("RavenSettings")["Database"];
-        options.Urls = builder.Configuration.GetSection("Urls").Get<string[]>();
+        options.Urls = builder.Configuration.GetSection("RavenSettings").GetSection("Urls").Get<string[]>();
     });
     services.AddInfrastructureServices(builder.Configuration);
     services.AddFluentValidation(options =>
@@ -91,6 +90,7 @@ StartupLogger.Run(() =>
         },
         AllowCachingResponses = false
     });
+    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));

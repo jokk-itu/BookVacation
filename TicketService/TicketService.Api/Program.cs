@@ -94,6 +94,7 @@ StartupLogger.Run(() =>
         },
         AllowCachingResponses = false
     });
+    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
