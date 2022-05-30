@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: logger-config
 data:
-  url: http://logger-service:5341
+  url: http://logger-service.default.svc:5341
