@@ -49,6 +49,14 @@ resource "helm_release" "logger" {
     name = "ui.ingress.hosts.0"
     value = "seq.${var.domain_name}"
   }
+  set {
+    name = "ui.ingress.tls.hosts.0"
+    value = "seq.${var.domain_name}"
+  }
+  set {
+    name = "ui.ingress.tls.secret_name"
+    value = var.tls-secretname
+  }
 }
 
 # 🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​🇮​​​​​🇬​​​​​🇲​​​​​🇦​​​​​🇵​​​​​

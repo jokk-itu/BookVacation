@@ -68,11 +68,12 @@ resource "kubernetes_deployment" "carservice" {
           liveness_probe {
             http_get {
               path = "/health/live"
-              port = 80
             }
 
             initial_delay_seconds = 5
             period_seconds = 15
+            success_threshold = 1
+            timeout_seconds = 5
           }
 
           readiness_probe {
@@ -83,6 +84,8 @@ resource "kubernetes_deployment" "carservice" {
 
             initial_delay_seconds = 5
             period_seconds = 5
+            success_threshold = 1
+            timeout_seconds = 5
           }
 
           env {
@@ -94,7 +97,7 @@ resource "kubernetes_deployment" "carservice" {
             name = "Node__Name"
             value_from {
               field_ref {
-                field_path = kubernetes_deployment.carservice.spec.0.template.0.spec.0.node_name
+                field_path = "spec.nodeName"
               }
             }
           }
@@ -103,7 +106,7 @@ resource "kubernetes_deployment" "carservice" {
             name = "Pod__Name"
             value_from {
               field_ref {
-                field_path = kubernetes_deployment.carservice.spec.0.template.0.spec.0.hostname
+                field_path = "status.podIP"
               }
             }
           }
@@ -265,9 +268,8 @@ resource "kubernetes_ingress_v1" "carservice" {
 
     annotations = {
       "nginx.ingress.kubernetes.io/use-regex" = "true"
-      "nginx.ingress.kubernetes.io/rewrite-target" = "/api/v$1/$2"
+      "nginx.ingress.kubernetes.io/rewrite-target" = "/$1"
       "cert-manager.io/cluster-issuer" = var.cert-issuername
-      "kubernetes.io/ingress.class" = "nginx"
     }
   }
 
@@ -287,11 +289,12 @@ resource "kubernetes_ingress_v1" "carservice" {
           backend {
             service {
               name = "carservice"
-              number = 80
+              port {
+                number = 80
+              }
             }
           }
-          path_type = Prefix
-          path = "/car/api/v([0-9]+)/(.*)"
+          path = "/car/(.*)"
         }
       }
     }
