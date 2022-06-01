@@ -5,11 +5,15 @@ Setup DOKS
 
 ## DOKS Configuration
 Add kubeconfig and namespaces
-Add Operators
-Add Cert-manager
+Add Rabbitmq Operator
+Add Minio Operator
+Add Metric Server
 
 ## Ingress Controller
 Setup loadbalancer with ingress controller from helm chart
+
+## Certificate
+Add Cert-Manager
 
 ## RabbitMQ
 Setup cluster
@@ -35,9 +39,5 @@ TrackingService
 Add an A-record to point loadbalancer to domain
 Add an A-record to point loadbalancer to seq.domain
 
-
 ## ToDo
-Test CertManager, 
-  Ingress with TLS termination
-  Minio
-  CarService
+Test Minio

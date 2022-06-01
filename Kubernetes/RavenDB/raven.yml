@@ -1,42 +1,47 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: raven-deployment
+  name: raven
 spec:
   selector:
     matchLabels:
       app: raven
+  serviceName: "raven"
+  replicas: 1
   template:
     metadata:
       labels:
         app: raven
     spec:
       containers:
-      - name: raven
-        image: ravendb/ravendb:ubuntu-latest
-        resources:
-          limits:
-            memory: "1024Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 8080
-          name: raven-port
-        env:
-        - name: RAVEN_License_Eula_Accepted
-          value: "true"
-        - name: RAVEN_Setup_Mode
-          value: None
-        - name: RAVEN_Security_UnsecuredAccessAllowed
-          value: PrivateNetwork    
+        - name: raven
+          image: ravendb/ravendb:ubuntu-latest
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+              name: raven-port
+          env:
+            - name: RAVEN_License_Eula_Accepted
+              value: "true"
+            - name: RAVEN_Setup_Mode
+              value: None
+            - name: RAVEN_Security_UnsecuredAccessAllowed
+              value: PrivateNetwork
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: raven-service
+  name: raven
+  labels:
+    app: raven
 spec:
   selector:
     app: raven
+  clusterIP: None
   ports:
-  - port: 8080
-    targetPort: raven-port
-    name: raven
+    - port: 8080
+      targetPort: raven-port
+      name: raven

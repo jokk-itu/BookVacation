@@ -24,11 +24,14 @@ resource "kubernetes_service" "ravendb" {
     }
   }
   spec {
+    selector = {
+      app = "ravendb"
+    }
     port {
       port        = 8080
       target_port = 8080
     }
-    type = "ClusterIP"
+    cluster_ip = "None"
   }
 }
 
@@ -57,12 +60,6 @@ resource "kubernetes_stateful_set" "ravendb" {
   spec {
     service_name = "ravendb"
     replicas = var.replicas
-    update_strategy {
-      type = "RollingUpdate"
-      rolling_update {
-        partition = 1
-      }
-    }
     pod_management_policy = "OrderedReady"
     selector {
       match_labels = {
@@ -79,14 +76,13 @@ resource "kubernetes_stateful_set" "ravendb" {
       spec {
         container {
           image = "ravendb/ravendb:ubuntu-latest"
-          image_pull_policy = "Always"
           name = "ravendb"
           port {
             container_port = 8080
             name = "ravendb"
           }
           volume_mount {
-            name       = "data"
+            name       = "ravendb"
             mount_path = "/opt/RavenDB/Server/RavenData"
           }
           env {
@@ -106,7 +102,7 @@ resource "kubernetes_stateful_set" "ravendb" {
     }
     volume_claim_template {
       metadata {
-        name = "data"
+        name = "ravendb"
       }
 
       spec {

@@ -85,6 +85,7 @@ module "logger" {
   cluster_certificate = module.doks.certificate
   namespace = module.doks-config.test_namespace
   domain_name = local.domain_name
+  tls-secretname = module.certificate.private-key-ref
 }
 
 module "minio" {
