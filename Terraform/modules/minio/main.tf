@@ -31,6 +31,10 @@ resource "kubernetes_service" "minio" {
       port        = 9001
       target_port = 9001
     }
+    port {
+      port        = 9000
+      target_port = 9000
+    }
     cluster_ip = "None"
   }
 }
@@ -42,7 +46,7 @@ resource "kubernetes_config_map" "minio" {
     namespace = var.namespace
   }
   data = {
-    url = "http://minio.${var.namespace}.svc:9001"
+    url = "http://minio.${var.namespace}.svc:9000"
   }
 }
 
@@ -81,6 +85,10 @@ resource "kubernetes_stateful_set" "minio" {
           args = ["/data", "--console-address", ":9001"]
           port {
             container_port = 9001
+            name = "ui"
+          }
+          port {
+            container_port = 9000
             name = "minio"
           }
           volume_mount {
