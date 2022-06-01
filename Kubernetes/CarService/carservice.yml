@@ -6,55 +6,67 @@ spec:
   selector:
     matchLabels:
       app: carservice
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
         app: carservice
     spec:
       containers:
-      - name: carservice
-        image: jokk/carservice:feature-kubernetes
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 80
-          name: carservice-port
-        env:
-          - name: ASPNETCORE_ENVIRONMENT
-            value: "Production"
-          - name: Logging__SeqUri
-            valueFrom:
-              configMapKeyRef:
-                name: logger-config
-                key: url
-          - name: EventBus__Hostname
-            valueFrom:
-              configMapKeyRef:
-                name: eventbus-config
-                key: url
-          - name: EventBus__Port
-            valueFrom:
-              configMapKeyRef:
-                name: eventbus-config
-                key: port
-          - name: EventBus__Username
-            valueFrom:
-              secretKeyRef:
-                name: eventbus-secret
-                key: username
-          - name: EventBus__Password
-            valueFrom:
-              secretKeyRef:
-                name: eventbus-secret
-                key: password
-          - name: RavenSettings__Urls__0
-            valueFrom:
-              configMapKeyRef:
-                name: raven-config
-                key: url
+        - name: carservice
+          image: jokk/carservice:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+              name: carservice-port
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: carservice-port
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: carservice-port
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: Logging__SeqUri
+              valueFrom:
+                configMapKeyRef:
+                  name: logger-config
+                  key: url
+            - name: EventBus__Hostname
+              valueFrom:
+                secretKeyRef:
+                  name: eventbus-default-user
+                  key: host
+            - name: EventBus__Port
+              valueFrom:
+                secretKeyRef:
+                  name: eventbus-default-user
+                  key: port
+            - name: EventBus__Username
+              valueFrom:
+                secretKeyRef:
+                  name: eventbus-default-user
+                  key: username
+            - name: EventBus__Password
+              valueFrom:
+                secretKeyRef:
+                  name: eventbus-default-user
+                  key: password
+            - name: RavenSettings__Urls__0
+              valueFrom:
+                configMapKeyRef:
+                  name: raven-config
+                  key: url
 ---
 apiVersion: v1
 kind: Service
@@ -64,5 +76,5 @@ spec:
   selector:
     app: carservice
   ports:
-  - port: 5003
-    targetPort: carservice-port
+    - port: 5003
+      targetPort: carservice-port

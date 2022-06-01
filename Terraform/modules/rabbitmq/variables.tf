@@ -9,3 +9,7 @@ variable "cluster_token" {
 variable "cluster_host" {
   type = string
 }
+
+variable "namespace" {
+  type = string
+}

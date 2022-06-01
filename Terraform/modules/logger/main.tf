@@ -30,11 +30,12 @@ resource "helm_release" "logger" {
   name       = "logger"
   namespace  = var.namespace
   repository = "https://helm.datalust.co"
-  chart      = "datalust/seq"
+  chart      = "seq"
 
   set {
-    name = "ingress.annotations.0.kubernetes.io/ingress.class"
+    name = "ingress.annotations.kubernetes\\.io/ingress\\.class"
     value = "nginx"
+    type = "string"
   }
   set {
     name = "ui.ingress.enabled"
@@ -48,14 +49,23 @@ resource "helm_release" "logger" {
     name = "ui.ingress.hosts.0"
     value = "seq.${var.domain_name}"
   }
+  set {
+    name = "ui.ingress.tls.hosts.0"
+    value = "seq.${var.domain_name}"
+  }
+  set {
+    name = "ui.ingress.tls.secret_name"
+    value = var.tls-secretname
+  }
 }
 
 # 🇨​​​​​🇴​​​​​🇳​​​​​🇫​​​​​🇮​​​​​🇬​​​​​🇲​​​​​🇦​​​​​🇵​​​​​
 resource "kubernetes_config_map" "logger" {
   metadata {
     name = "logger-config"
+    namespace = var.namespace
   }
   data = {
-    url = "http://logger.${var.namespace}.svc.cluster.local"
+    url = "http://logger-seq.${var.namespace}.svc:80"
   }
 }

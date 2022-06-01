@@ -18,7 +18,6 @@ public class CreateRentalDealRequestHandler : IRequestHandler<CreateRentalDealRe
 
     public async Task<RentalDeal?> Handle(CreateRentalDealRequest request, CancellationToken cancellationToken)
     {
-        
         var rentalCar = await _client.QueryAsync<RentalCar>(query =>
             query.Where(x => x.Id == request.RentalCarId.ToString())
                 .FirstOrDefaultAsync(cancellationToken)
@@ -28,13 +27,13 @@ public class CreateRentalDealRequestHandler : IRequestHandler<CreateRentalDealRe
             return null;
 
         var conflictingRentDeal = await _client.QueryAsync<RentalDeal>(queryable =>
-                queryable.Where(x => x.RentalCarId == request.RentalCarId)
-                    .Where(x =>
-                        request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo ||
-                        request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo)
-                    .FirstOrDefaultAsync(cancellationToken)
-            );
-            
+            queryable.Where(x => x.RentalCarId == request.RentalCarId)
+                .Where(x =>
+                    request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo ||
+                    request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo)
+                .FirstOrDefaultAsync(cancellationToken)
+        );
+
 
         if (conflictingRentDeal is not null)
             return null;

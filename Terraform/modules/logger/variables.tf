@@ -17,3 +17,6 @@ variable "namespace" {
 variable "domain_name" {
   type = string
 }
+ variable "tls-secretname" {
+  type = string
+ }

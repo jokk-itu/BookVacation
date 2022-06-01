@@ -15,6 +15,8 @@ StartupLogger.Run(() =>
         logger.LogDebug("Debug Log inside '/'");
         return Results.Ok();
     });
+    app.MapGet("/health", ([FromServices] ILogger<Program> logger) => Results.Ok());
+    app.MapGet("/metrics", ([FromServices] ILogger<Program> logger) => Results.Ok());
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(new LoggingConfiguration(builder.Configuration.GetSection("Logging"))));

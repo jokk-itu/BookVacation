@@ -6,13 +6,13 @@ metadata:
     name: raven-ingress
 spec:
   rules:
-  - host: raven.bookvacation.local
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: raven-service
-            port:
-              name: raven
+    - host: raven.bookvacation.local
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: raven
+                port:
+                  name: raven

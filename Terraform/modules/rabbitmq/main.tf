@@ -14,17 +14,6 @@ provider "kubernetes" {
   cluster_ca_certificate = var.cluster_certificate
 }
 
-# 🇮​​​​​🇳​​​​​🇸​​​​​🇹​​​​​🇦​​​​​🇱​​​​​🇱​​​​​ 🇴​​​​​🇵​​​​​🇪​​​​​🇷​​​​​🇦​​​​​🇹​​​​​🇴​​​​​🇷​​​​​
-resource "null_resource" "rabbitmq" {
-    provisioner "local-exec" {
-        command = <<-EOT
-            kubectl config --kubeconfig "./kubeconfig" apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
-        EOT
-
-        interpreter = ["/bin/sh", "-c"]
-    }
-}
-
 # 🇷​​​​​🇦​​​​​🇧​​​​​🇧​​​​​🇮​​​​​🇹​​​​​🇲​​​​​🇶​​​​​🇨​​​​​🇱​​​​​🇺​​​​​🇸​​​​​🇹​​​​​🇪​​​​​🇷​​​​​
 resource "kubernetes_manifest" "rabbitmq" {
     manifest = {
@@ -32,6 +21,7 @@ resource "kubernetes_manifest" "rabbitmq" {
         kind = "RabbitmqCluster"
         metadata = {
             name = "eventbus"
+            namespace = var.namespace
         }
     }
 }

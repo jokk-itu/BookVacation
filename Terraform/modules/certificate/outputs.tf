@@ -1,7 +1,7 @@
-output "name" {
-  value = digitalocean_certificate.cert.name
+output "issuername" {
+  value = module.cert_manager.cluster_issuer_name
 }
 
-output "id" {
-  value = digitalocean_certificate.cert.id
+output "private-key-ref" {
+  value = module.cert_manager.cluster_issuer_private_key_name
 }

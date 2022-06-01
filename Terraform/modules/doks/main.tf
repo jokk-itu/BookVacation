@@ -19,13 +19,13 @@ resource "digitalocean_kubernetes_cluster" "bookvacation" {
     auto_upgrade = true
 
     maintenance_policy {
-        start_time  = "01:00"
-        day         = "sunday"
+      start_time  = "01:00"
+      day         = "sunday"
     }
 
     node_pool {
-        name = "default"
-        size = "s-1vcpu-2gb"
-        node_count = 2
+      name = "default"
+      size = "s-4vcpu-8gb"
+      node_count = 3
     }
 }

@@ -1,7 +1,9 @@
 name: Mediator Continous Deployment
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - "master"
 
 env:
   SERVICE: Mediator

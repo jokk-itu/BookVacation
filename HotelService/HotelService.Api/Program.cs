@@ -7,6 +7,8 @@ using HotelService.Infrastructure;
 using HotelService.Infrastructure.CourierActivities;
 using Logging;
 using MassTransit;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
@@ -30,8 +32,7 @@ builder.WebHost.ConfigureServices(services =>
 {
     services.AddHealthChecks().AddRavenDB(options =>
     {
-        options.Database = builder.Configuration.GetSection("RavenSettings")["Database"];
-        options.Urls = builder.Configuration.GetSection("Urls").Get<string[]>();
+        options.Urls = builder.Configuration.GetSection("RavenSettings").GetSection("Urls").Get<string[]>();
     });
     services.AddInfrastructureServices(builder.Configuration);
     services.AddFluentValidation(options =>
@@ -70,6 +71,26 @@ StartupLogger.Run(() =>
 
     app.MapControllers();
     app.MapMetrics();
+    app.MapHealthChecks("health/live", new HealthCheckOptions
+    {
+        ResultStatusCodes = new Dictionary<HealthStatus, int>
+        {
+            { HealthStatus.Healthy, StatusCodes.Status200OK }, { HealthStatus.Degraded, StatusCodes.Status200OK },
+            { HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable }
+        },
+        AllowCachingResponses = false
+    });
+    app.MapHealthChecks("health/ready", new HealthCheckOptions
+    {
+        Predicate = registration => registration.Tags.Contains("ready"),
+        ResultStatusCodes = new Dictionary<HealthStatus, int>
+        {
+            { HealthStatus.Healthy, StatusCodes.Status200OK }, { HealthStatus.Degraded, StatusCodes.Status200OK },
+            { HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable }
+        },
+        AllowCachingResponses = false
+    });
+    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));

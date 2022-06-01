@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: raven-config
 data:
-  url: http://raven-service:8080
+  url: http://raven.default.svc:8080
