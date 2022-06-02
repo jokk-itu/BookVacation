@@ -26,6 +26,8 @@ public class LoggingConfiguration
         ServiceName = configuration["ServiceName"];
         SeqMinimumLogLevel = GetLogLevel(configuration["SeqMinimumLogLevel"]);
         ConsoleMinimumLogLevel = GetLogLevel(configuration["ConsoleMinimumLoglevel"]);
+        PodName = configuration.GetSection("Pod")?.GetValue<string>("Name") ?? string.Empty;
+        NodeName = configuration.GetSection("Node")?.GetValue<string>("Name") ?? string.Empty;
 
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqUri), SeqUri);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToSeq), LogToSeq);
@@ -39,6 +41,8 @@ public class LoggingConfiguration
             SeqMinimumLogLevel);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(ConsoleMinimumLogLevel),
             ConsoleMinimumLogLevel);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(PodName), PodName);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(NodeName), NodeName);
     }
 
     public string SeqUri { get; }
@@ -49,10 +53,12 @@ public class LoggingConfiguration
 
     public LogEventLevel SeqMinimumLogLevel { get; }
     public LogEventLevel ConsoleMinimumLogLevel { get; }
+    
+    public string PodName { get; }
+    public string NodeName { get; }
 
     private LogEventLevel GetLogLevel(string value)
     {
-        if (Enum.TryParse(value, out LogEventLevel logEventLevel)) return logEventLevel;
-        return LogEventLevel.Information;
+        return Enum.TryParse(value, out LogEventLevel logEventLevel) ? logEventLevel : LogEventLevel.Information;
     }
 }
