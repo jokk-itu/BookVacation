@@ -11,7 +11,10 @@ public class LoggingConfiguration
     public bool LogToSeq { get; }
     public bool LogToConsole { get; }
     public string ServiceName { get; }
-    public IDictionary<string, LogEventLevel> Overrides { get; } 
+    public IDictionary<string, LogEventLevel> Overrides { get; }
+    
+    public LogEventLevel SeqMinimumLogLevel { get; }
+    public LogEventLevel ConsoleMinimumLogLevel { get; }
 
     public LoggingConfiguration(IConfiguration configuration)
     {
@@ -30,11 +33,24 @@ public class LoggingConfiguration
                 return acc;
             }) ?? new Dictionary<string, LogEventLevel>();
         ServiceName = configuration["ServiceName"];
-
+        SeqMinimumLogLevel = GetLogLevel(configuration["SeqMinimumLogLevel"]);
+        ConsoleMinimumLogLevel = GetLogLevel(configuration["ConsoleMinimumLoglevel"]);
+       
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqUri), SeqUri);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToSeq), LogToSeq);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToConsole),  LogToConsole);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(Overrides), JsonSerializer.Serialize(Overrides, new JsonSerializerOptions {WriteIndented = true}));
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(ServiceName), ServiceName);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqMinimumLogLevel), SeqMinimumLogLevel);
+        logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(ConsoleMinimumLogLevel), ConsoleMinimumLogLevel);
+    }
+
+    private LogEventLevel GetLogLevel(string value)
+    {
+        if (Enum.TryParse(value, out LogEventLevel logEventLevel))
+        {
+            return logEventLevel;
+        }
+        return LogEventLevel.Information;
     }
 }
