@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DocumentClient;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Raven.Client.ServerWide.Operations;
 using Raven.TestDriver;
 using TrackingService.Domain;
 using TrackingService.Infrastructure.Requests.ReadTracking;
@@ -25,7 +23,7 @@ public class ReadTrackingRequestHandlerTest : RavenTestDriver
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var request = new ReadTrackingRequest(Guid.NewGuid().ToString());
         var handler = new ReadTrackingRequestHandler(client);
-        
+
         //Act
         var actual = await handler.Handle(request, CancellationToken.None);
 
@@ -51,7 +49,7 @@ public class ReadTrackingRequestHandlerTest : RavenTestDriver
 
         var request = new ReadTrackingRequest(tracking.Id);
         var handler = new ReadTrackingRequestHandler(client);
-        
+
         //Act
         var actual = await handler.Handle(request, CancellationToken.None);
 

@@ -1,11 +1,9 @@
-using EventDispatcher;
 using FlightService.Api;
 using FlightService.Api.Validators;
 using FlightService.Infrastructure;
-using FlightService.Infrastructure.CourierActivities;
 using FluentValidation.AspNetCore;
+using HealthCheck.Core;
 using Logging;
-using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
@@ -89,14 +87,14 @@ StartupLogger.Run(() =>
         },
         AllowCachingResponses = false
     });
-    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
+    ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
 
 namespace FlightService.Api
 {
-    public partial class Program
+    public class Program
     {
     }
 }

@@ -23,7 +23,7 @@ public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T : cl
         using (_logger.BeginScope(new Dictionary<string, object>
                {
                    { "MessageId", context.MessageId }, { "TrackingNumber", context.TrackingNumber },
-                   { "CorrelationId", context.CorrelationId }, {"ActivityName", context.ActivityName}
+                   { "CorrelationId", context.CorrelationId }, { "ActivityName", context.ActivityName }
                }))
         {
             _logger.LogInformation("Compensated {Message}, took {Elapsed} ms",

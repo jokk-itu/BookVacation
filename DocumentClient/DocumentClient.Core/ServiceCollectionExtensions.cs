@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
             var logger = serviceProvider.GetRequiredService<ILogger<DocumentClient>>();
             var documentStore = new DocumentStore
             {
-                Urls = configuration.GetSection("Urls").Get<string[]>(),
+                Urls = configuration.GetSection("Urls").Get<string[]>()
             };
             documentStore.Conventions.UseOptimisticConcurrency = true;
 
@@ -79,6 +79,7 @@ public static class ServiceCollectionExtensions
             {
                 //Empty on purpose
             }
+
             return documentStore;
         });
         services.AddTransient<IAsyncDocumentSession>(sp =>

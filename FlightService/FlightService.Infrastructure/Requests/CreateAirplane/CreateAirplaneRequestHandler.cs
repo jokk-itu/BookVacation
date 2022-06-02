@@ -20,7 +20,7 @@ public class CreateAirplaneRequestHandler : IRequestHandler<CreateAirplaneReques
             ModelNumber = request.ModelNumber,
             AirplaneMakerName = request.AirplaneMakerName,
             AirlineName = request.AirlineName,
-            Seats = Enumerable.Range(0, request.Seats).Select(_ => new Seat {Id = Guid.NewGuid().ToString()}).ToList()
+            Seats = Enumerable.Range(0, request.Seats).Select(_ => new Seat { Id = Guid.NewGuid().ToString() }).ToList()
         };
         await _client.StoreAsync(airPlane, cancellationToken);
         return airPlane;

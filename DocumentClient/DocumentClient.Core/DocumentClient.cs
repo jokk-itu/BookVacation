@@ -80,10 +80,7 @@ public class DocumentClient : IDocumentClient
 
     public async Task UpdateAsync(CancellationToken cancellationToken = default)
     {
-        await _policies.ExecuteAsync(async () =>
-        {
-            await _session.SaveChangesAsync(cancellationToken);
-        });
+        await _policies.ExecuteAsync(async () => { await _session.SaveChangesAsync(cancellationToken); });
     }
 
     public async Task<bool> DeleteAsync(string id, CancellationToken cancellationToken = default)
@@ -94,7 +91,7 @@ public class DocumentClient : IDocumentClient
             {
                 if (!await _session.Advanced.ExistsAsync(id, cancellationToken))
                     return false;
-                
+
                 _session.Delete(id);
                 await _session.SaveChangesAsync(cancellationToken);
                 return true;

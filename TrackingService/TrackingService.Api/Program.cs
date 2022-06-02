@@ -1,7 +1,6 @@
-using EventDispatcher;
 using FluentValidation.AspNetCore;
+using HealthCheck.Core;
 using Logging;
-using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
@@ -10,7 +9,6 @@ using Serilog;
 using TrackingService.Api;
 using TrackingService.Api.Validators;
 using TrackingService.Infrastructure;
-using TrackingService.Infrastructure.Consumers;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -62,7 +60,7 @@ StartupLogger.Run(() =>
 {
     var app = builder.Build();
     if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
-    
+
     app.UseSwagger();
     app.UseSwaggerUI();
 
@@ -90,14 +88,14 @@ StartupLogger.Run(() =>
         },
         AllowCachingResponses = false
     });
-    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
+    ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
 
 namespace TrackingService.Api
 {
-    public partial class Program
+    public class Program
     {
     }
 }

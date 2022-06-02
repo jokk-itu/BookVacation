@@ -31,7 +31,7 @@ public class DocumentClientTest : RavenTestDriver
         //Assert
         Assert.True(isDeleted);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task DeleteAsync_GivenNonExistingKey_DeleteUnsuccessful()
@@ -77,7 +77,7 @@ public class DocumentClientTest : RavenTestDriver
         WaitForIndexing(store);
 
         //Act
-        var isStored = await client.StoreAsync(new DummyDocument() { Id = document.Id });
+        var isStored = await client.StoreAsync(new DummyDocument { Id = document.Id });
 
         //Assert
         Assert.False(isStored);
@@ -250,7 +250,7 @@ public class DocumentClientTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
         var client = new DocumentClient(session, Mock.Of<ILogger<DocumentClient>>());
         var id = Guid.NewGuid().ToString();
-        
+
         //Act
         var queriedDocument = await client.QueryAsync<DummyDocument>(async query =>
             await query.Where(d => d.Id.Equals(id)).FirstOrDefaultAsync());

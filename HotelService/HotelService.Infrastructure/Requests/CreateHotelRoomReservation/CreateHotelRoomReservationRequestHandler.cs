@@ -27,9 +27,9 @@ public class
 
         var conflictingReservation = await _client.QueryAsync<HotelRoomReservation>(async query => await query
             .Where(x =>
-                x.HotelId == request.HotelId && x.RoomId == request.RoomId &&
-                request.From >= x.From && request.From <= x.To ||
-                request.To >= x.From && request.To <= x.To)
+                (x.HotelId == request.HotelId && x.RoomId == request.RoomId &&
+                 request.From >= x.From && request.From <= x.To) ||
+                (request.To >= x.From && request.To <= x.To))
             .FirstOrDefaultAsync(cancellationToken));
 
         if (conflictingReservation is not null)

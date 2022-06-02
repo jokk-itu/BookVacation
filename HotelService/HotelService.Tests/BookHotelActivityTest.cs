@@ -5,7 +5,6 @@ using HotelService.Infrastructure.CourierActivities;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 using MassTransit;
-using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
 using MediatR;

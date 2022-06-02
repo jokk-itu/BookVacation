@@ -1,13 +1,6 @@
-using System.Diagnostics;
-using System.Net.Http.Json;
-using Bogus;
-using FlightService.Contracts.Airplane;
-using FlightService.Contracts.Flight;
-using NBomber.Contracts;
 using NBomber.CSharp;
 using Serilog;
 using TestConsole.Constants;
-using TestConsole.Fakes;
 using TestConsole.Steps;
 
 namespace TestConsole;
@@ -17,10 +10,10 @@ public static class FlightLoad
     public static void Start()
     {
         var httpFactory = ClientFactory.Create(
-            name: "factory",
+            "factory",
             clientCount: 10,
             initClient: (number, context) => Task.FromResult(new HttpClient()));
-        
+
         var airplane = Step.Create(StepName.PostAirplane, timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory,
             execute: async context => await PostAirplaneStep.PostAirplane(context));
 

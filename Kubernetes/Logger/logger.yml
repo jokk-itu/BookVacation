@@ -12,17 +12,17 @@ spec:
         app: logger
     spec:
       containers:
-      - name: logger
-        image: datalust/seq:latest
-        resources:
-          limits:
-            memory: "500Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 80
-        env:
-          - name: ACCEPT_EULA
-            value: "Y"
+        - name: logger
+          image: datalust/seq:latest
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
 ---
 apiVersion: v1
 kind: Service
@@ -32,6 +32,6 @@ spec:
   selector:
     app: logger
   ports:
-  - port: 5341
-    targetPort: 80
-    name: logger-port
+    - port: 5341
+      targetPort: 80
+      name: logger-port

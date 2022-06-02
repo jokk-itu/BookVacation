@@ -8,7 +8,6 @@ using FlightService.Infrastructure.CourierActivities;
 using FlightService.Infrastructure.Requests.CreateFlightReservation;
 using FlightService.Infrastructure.Requests.DeleteFlightReservation;
 using MassTransit;
-using MassTransit.Courier;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
 using MediatR;

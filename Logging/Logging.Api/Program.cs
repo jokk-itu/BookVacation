@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 StartupLogger.Run(() =>
 {
-    builder.Host.UseSerilog((context, services, configuration) => configuration.ConfigureLogging(new LoggingConfiguration(builder.Configuration.GetSection("Logging"))));
+    builder.Host.UseSerilog((context, services, configuration) =>
+        configuration.ConfigureLogging(new LoggingConfiguration(builder.Configuration.GetSection("Logging"))));
     var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.MapGet("/", ([FromServices] ILogger<Program> logger) =>

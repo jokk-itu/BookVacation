@@ -37,7 +37,7 @@ public static class ServiceCollectionExtensions
                     .SetRestartTimeout(m: 1));
 
                 factoryConfigurator.UsePrometheusMetrics(serviceName: configuration["ServiceName"]);
-                
+
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);

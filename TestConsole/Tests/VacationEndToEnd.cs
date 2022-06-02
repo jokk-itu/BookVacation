@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using Bogus;
 using CarService.Contracts.RentalCar;
 using FlightService.Contracts.Airplane;
 using FlightService.Contracts.Flight;
@@ -19,25 +18,26 @@ public class VacationEndToEnd
         var rentalCarRequestFaker = RentalCarFaker.GetRentalCarRequestFaker();
 
         var client = new HttpClient();
-        
+
         var airplaneRequest = airplaneRequestFaker.Generate();
         var airplaneResponse = await client.PostAsJsonAsync("http://localhost:5001/api/v1/airplane", airplaneRequest);
         airplaneResponse.EnsureSuccessStatusCode();
         var airplane = await airplaneResponse.Content.ReadFromJsonAsync<PostAirplaneResponse>();
-        
+
         var flightRequest = flightRequestFaker.Generate();
         flightRequest.AirPlaneId = airplane.Id;
         var flightResponse = await client.PostAsJsonAsync("http://localhost:5001/api/v1/flight", flightRequest);
         flightResponse.EnsureSuccessStatusCode();
         var flight = await flightResponse.Content.ReadFromJsonAsync<PostFlightResponse>();
-        
+
         var hotelRequest = hotelRequestFaker.Generate();
         var hotelResponse = await client.PostAsJsonAsync("http://localhost:5002/api/v1/hotel", hotelRequest);
         hotelResponse.EnsureSuccessStatusCode();
         var hotel = await hotelResponse.Content.ReadFromJsonAsync<PostHotelResponse>();
-        
+
         var rentalCarRequest = rentalCarRequestFaker.Generate();
-        var rentalCarResponse = await client.PostAsJsonAsync("http://localhost:5003/api/v1/rentalcar", rentalCarRequest);
+        var rentalCarResponse =
+            await client.PostAsJsonAsync("http://localhost:5003/api/v1/rentalcar", rentalCarRequest);
         rentalCarResponse.EnsureSuccessStatusCode();
         var rentalCar = await rentalCarResponse.Content.ReadFromJsonAsync<PostRentalCarResponse>();
 

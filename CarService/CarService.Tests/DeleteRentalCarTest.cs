@@ -2,7 +2,6 @@ using CarService.Domain;
 using CarService.Infrastructure.Requests.CreateRentalCar;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
 using CarService.Infrastructure.Requests.DeleteRentalDeal;
-using DocumentClient;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;

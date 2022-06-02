@@ -2,7 +2,6 @@ using DocumentClient;
 using HotelService.Domain;
 using MediatR;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
 
 namespace HotelService.Infrastructure.Requests.CreateHotel;
 

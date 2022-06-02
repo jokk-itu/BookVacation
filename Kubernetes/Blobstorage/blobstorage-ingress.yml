@@ -6,13 +6,13 @@ metadata:
     name: blobstorage-ingress
 spec:
   rules:
-  - host: blob.bookvacation.local
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: blobstorage-service
-            port: 
-              name: service-ui
+    - host: blob.bookvacation.local
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: blobstorage-service
+                port:
+                  name: service-ui

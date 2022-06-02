@@ -33,7 +33,7 @@ public class VacationController : ControllerBase
             new Uri("exchange:flight-reservation_execute"),
             new FlightReservationArgument
             {
-                FlightId = request.FlightId, 
+                FlightId = request.FlightId,
                 SeatId = request.FlightSeatId
             });
 

@@ -12,30 +12,30 @@ spec:
         app: blobstorage
     spec:
       containers:
-      - name: blobstorage
-        image: minio/minio
-        command: ["minio"]
-        args: ["server", "/data", "--console-address", ":9001"]
-        resources:
-          limits:
-            memory: "1024Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 9000
-          name: internal
-        - containerPort: 9001
-          name: ui
-        env:
-          - name: MINIO_ROOT_USER
-            valueFrom:
-              secretKeyRef:
-                name: blobstorage-secret
-                key: username   
-          - name: MINIO_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: blobstorage-secret
-                key: password
+        - name: blobstorage
+          image: minio/minio
+          command: [ "minio" ]
+          args: [ "server", "/data", "--console-address", ":9001" ]
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9000
+              name: internal
+            - containerPort: 9001
+              name: ui
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: blobstorage-secret
+                  key: username
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: blobstorage-secret
+                  key: password
 ---
 apiVersion: v1
 kind: Service
@@ -45,9 +45,9 @@ spec:
   selector:
     app: blobstorage
   ports:
-  - port: 9001
-    targetPort: ui
-    name: service-ui
-  - port: 9000
-    targetPort: internal
-    name: service-internal
+    - port: 9001
+      targetPort: ui
+      name: service-ui
+    - port: 9000
+      targetPort: internal
+      name: service-internal

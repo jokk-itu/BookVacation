@@ -2,7 +2,6 @@ using DocumentClient;
 using FlightService.Domain;
 using MediatR;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Session;
 
 namespace FlightService.Infrastructure.Requests.CreateFlightReservation;
 

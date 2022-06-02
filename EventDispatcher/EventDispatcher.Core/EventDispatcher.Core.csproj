@@ -18,10 +18,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="8.0.2" />
-        <PackageReference Include="MassTransit.Prometheus" Version="8.0.2" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.2" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="MassTransit" Version="8.0.2"/>
+        <PackageReference Include="MassTransit.Prometheus" Version="8.0.2"/>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
     </ItemGroup>
 </Project>
