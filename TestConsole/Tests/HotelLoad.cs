@@ -10,10 +10,10 @@ public static class HotelLoad
     public static void Start()
     {
         var httpFactory = ClientFactory.Create(
-            name: "factory",
+            "factory",
             clientCount: 10,
             initClient: (number, context) => Task.FromResult(new HttpClient()));
-        
+
         var hotel = Step.Create(StepName.PostHotel, timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory,
             execute: async context => await PostHotelStep.PostHotel(context));
         var scenario = ScenarioBuilder.CreateScenario("hotel", hotel);

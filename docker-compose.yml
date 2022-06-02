@@ -8,6 +8,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: vacationservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
@@ -24,6 +26,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: flightservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5001:80
     env_file:
@@ -42,6 +46,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: hotelservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5002:80
     env_file:
@@ -60,6 +66,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: carservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5003:80
     env_file:
@@ -78,6 +86,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: trackingservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5004:80
     env_file:
@@ -96,6 +106,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: gatewayservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5005:80
       - 5006:443
@@ -112,6 +124,8 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: ticketservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5007:80
     env_file:

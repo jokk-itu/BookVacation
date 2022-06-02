@@ -23,7 +23,7 @@ public class LogExecuteFilter<T> : IFilter<ExecuteContext<T>> where T : class
         using (_logger.BeginScope(new Dictionary<string, object>
                {
                    { "MessageId", context.MessageId }, { "TrackingNumber", context.TrackingNumber },
-                   { "CorrelationId", context.CorrelationId }, {"ActivityName", context.ActivityName}
+                   { "CorrelationId", context.CorrelationId }, { "ActivityName", context.ActivityName }
                }))
         {
             _logger.LogInformation("Executed {Message}, took {Elapsed} ms",

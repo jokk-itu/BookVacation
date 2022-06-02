@@ -10,7 +10,8 @@ namespace TicketService.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddMediator(typeof(MediatorRegistration).Assembly);
         services.AddEventBus(configuration,

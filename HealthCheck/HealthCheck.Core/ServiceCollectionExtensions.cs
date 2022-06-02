@@ -11,8 +11,8 @@ public static class ServiceCollectionExtensions
             .AddHealthChecks()
             .AddCheck<ReadyHealthCheck>(
                 "Ready",
-                failureStatus: HealthStatus.Unhealthy,
-                tags: new[] { "ready" });
+                HealthStatus.Unhealthy,
+                new[] { "ready" });
         return services;
     }
 }

@@ -33,7 +33,8 @@ public class DeleteHotelRoomReservationRequestHandlerTest : RavenTestDriver
                 CancellationToken.None);
         WaitForIndexing(store);
 
-        var deleteHotelRoomReservationRequest = new DeleteHotelRoomReservationRequest(Guid.Parse(hotelRoomReservation!.Id));
+        var deleteHotelRoomReservationRequest =
+            new DeleteHotelRoomReservationRequest(Guid.Parse(hotelRoomReservation!.Id));
         var deleteHotelRoomReservationRequestHandler = new DeleteHotelRoomReservationRequestHandler(client);
 
         //Act
@@ -41,7 +42,8 @@ public class DeleteHotelRoomReservationRequestHandlerTest : RavenTestDriver
             CancellationToken.None);
         WaitForIndexing(store);
 
-        var deletedReservationExists = await session.Query<HotelRoomReservation>().AnyAsync(x => x.Id == hotelRoomReservation.Id);
+        var deletedReservationExists =
+            await session.Query<HotelRoomReservation>().AnyAsync(x => x.Id == hotelRoomReservation.Id);
 
         //Assert
         Assert.False(deletedReservationExists);

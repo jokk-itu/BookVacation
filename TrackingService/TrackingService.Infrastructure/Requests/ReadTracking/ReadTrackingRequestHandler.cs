@@ -15,9 +15,9 @@ public class ReadTrackingRequestHandler : IRequestHandler<ReadTrackingRequest, T
     }
 
     public async Task<Tracking?> Handle(ReadTrackingRequest request, CancellationToken cancellationToken)
-        {
-            return await _client.QueryAsync<Tracking>(async query => await query
-                .Where(x => x.Id == request.TrackingNumber)
-                .FirstOrDefaultAsync(cancellationToken));
-        }
+    {
+        return await _client.QueryAsync<Tracking>(async query => await query
+            .Where(x => x.Id == request.TrackingNumber)
+            .FirstOrDefaultAsync(cancellationToken));
     }
+}

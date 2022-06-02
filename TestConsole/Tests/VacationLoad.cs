@@ -18,7 +18,7 @@ public static class VacationLoad
     public static void Start()
     {
         var httpFactory = ClientFactory.Create(
-            name: "factory",
+            "factory",
             clientCount: 10,
             initClient: (number, context) => Task.FromResult(new HttpClient()));
 

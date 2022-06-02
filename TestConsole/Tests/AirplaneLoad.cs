@@ -1,4 +1,3 @@
-using NBomber;
 using NBomber.CSharp;
 using Serilog;
 using TestConsole.Constants;
@@ -11,11 +10,12 @@ public static class AirplaneLoad
     public static void Start()
     {
         var httpFactory = ClientFactory.Create(
-            name: "factory",
+            "factory",
             clientCount: 10,
             initClient: (number, context) => Task.FromResult(new HttpClient()));
-        
-        var airplane = Step.Create(StepName.PostAirplane, timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory,  execute: async context => await PostAirplaneStep.PostAirplane(context));
+
+        var airplane = Step.Create(StepName.PostAirplane, timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory,
+            execute: async context => await PostAirplaneStep.PostAirplane(context));
         var scenario = ScenarioBuilder.CreateScenario("airplane", airplane);
 
         NBomberRunner

@@ -5,25 +5,22 @@ using TestConsole.Tests;
 Parser.Default.ParseArguments<Options>(args)
     .WithParsed(options =>
     {
-        if(options.VacationLoad)
+        if (options.VacationLoad)
             VacationLoad.Start();
-        
-        if(options.AirplaneLoad)
+
+        if (options.AirplaneLoad)
             AirplaneLoad.Start();
-        
-        if(options.FlightLoad)
+
+        if (options.FlightLoad)
             FlightLoad.Start();
-        
-        if(options.HotelLoad)
+
+        if (options.HotelLoad)
             HotelLoad.Start();
 
         if (options.RentalCarLoad)
             RentalCarLoad.Start();
-        
-        if(options.VacationSingle)
+
+        if (options.VacationSingle)
             VacationEndToEnd.Start().GetAwaiter().GetResult();
     })
-    .WithNotParsed(errors =>
-    {
-        errors.Output();
-    });
+    .WithNotParsed(errors => { errors.Output(); });

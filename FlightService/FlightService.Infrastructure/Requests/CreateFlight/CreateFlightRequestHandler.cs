@@ -1,10 +1,8 @@
 using DocumentClient;
 using FlightService.Domain;
-using MassTransit.Initializers.Variables;
 using MediatR;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
-using Raven.Client.Documents.Session;
 
 namespace FlightService.Infrastructure.Requests.CreateFlight;
 
@@ -28,8 +26,8 @@ public class CreateFlightRequestHandler : IRequestHandler<CreateFlightRequest, F
 
         var conflictingFlight = await _client.QueryAsync<Flight>(query => query
             .Where(x => x.AirPlaneId == request.AirplaneId)
-            .Where(x => request.From >= x.From && request.From <= x.To ||
-                        request.To >= x.From && request.To <= x.To)
+            .Where(x => (request.From >= x.From && request.From <= x.To) ||
+                        (request.To >= x.From && request.To <= x.To))
             .FirstOrDefaultAsync(cancellationToken));
 
         if (conflictingFlight is not null)

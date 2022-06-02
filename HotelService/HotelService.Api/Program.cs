@@ -1,12 +1,9 @@
-using EventDispatcher;
 using FluentValidation.AspNetCore;
+using HealthCheck.Core;
 using HotelService.Api;
 using HotelService.Api.Validators;
-using HotelService.Contracts.HotelRoomReservationActivity;
 using HotelService.Infrastructure;
-using HotelService.Infrastructure.CourierActivities;
 using Logging;
-using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
@@ -90,14 +87,14 @@ StartupLogger.Run(() =>
         },
         AllowCachingResponses = false
     });
-    HealthCheck.Core.ReadyHealthCheck.IsReady = true;
+    ReadyHealthCheck.IsReady = true;
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
 
 namespace HotelService.Api
 {
-    public partial class Program
+    public class Program
     {
     }
 }

@@ -28,7 +28,7 @@ public class TrackingController : ControllerBase
 
         if (tracking is null)
             return NotFound();
-        
+
         return Ok(new GetTrackingResponse
         {
             Id = tracking.Id,

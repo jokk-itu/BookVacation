@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DocumentClient;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
 using FlightService.Infrastructure.Requests.CreateFlight;
@@ -54,7 +53,8 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
         var createFlightHandler = new CreateFlightRequestHandler(client);
         var flight = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
 
-        var createFlightReservationRequest = new CreateFlightReservationRequest(Guid.Parse(airplane.Seats.First().Id), Guid.Parse(flight!.Id));
+        var createFlightReservationRequest =
+            new CreateFlightReservationRequest(Guid.Parse(airplane.Seats.First().Id), Guid.Parse(flight!.Id));
         var createFlightReservationHandler = new CreateFlightReservationRequestHandler(client);
 
         //Act

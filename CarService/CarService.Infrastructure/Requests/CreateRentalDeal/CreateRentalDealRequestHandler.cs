@@ -3,7 +3,6 @@ using DocumentClient;
 using MediatR;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
-using Raven.Client.Documents.Session;
 
 namespace CarService.Infrastructure.Requests.CreateRentalDeal;
 
@@ -29,8 +28,8 @@ public class CreateRentalDealRequestHandler : IRequestHandler<CreateRentalDealRe
         var conflictingRentDeal = await _client.QueryAsync<RentalDeal>(queryable =>
             queryable.Where(x => x.RentalCarId == request.RentalCarId)
                 .Where(x =>
-                    request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo ||
-                    request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo)
+                    (request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo) ||
+                    (request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo))
                 .FirstOrDefaultAsync(cancellationToken)
         );
 

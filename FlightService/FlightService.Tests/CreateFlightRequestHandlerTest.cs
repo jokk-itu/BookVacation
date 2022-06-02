@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DocumentClient;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
 using FlightService.Infrastructure.Requests.CreateFlight;

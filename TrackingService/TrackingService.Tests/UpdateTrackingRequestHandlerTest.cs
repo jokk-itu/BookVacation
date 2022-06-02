@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DocumentClient;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;
@@ -31,7 +30,7 @@ public class UpdateTrackingRequestHandlerTest : RavenTestDriver
         await session.StoreAsync(tracking);
         await session.SaveChangesAsync();
         WaitForIndexing(store);
-        
+
         var request = new UpdateTrackingRequest(tracking.Id, "Success", DateTimeOffset.Now);
         var handler = new UpdateTrackingRequestHandler(client);
 
@@ -43,7 +42,7 @@ public class UpdateTrackingRequestHandlerTest : RavenTestDriver
         //Assert
         Assert.Equal(expected, actual);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_TrackingNotExists()
@@ -54,7 +53,7 @@ public class UpdateTrackingRequestHandlerTest : RavenTestDriver
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var request = new UpdateTrackingRequest(Guid.NewGuid().ToString(), "Success", DateTimeOffset.Now);
         var handler = new UpdateTrackingRequestHandler(client);
-        
+
         //Act
         var actual = await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);

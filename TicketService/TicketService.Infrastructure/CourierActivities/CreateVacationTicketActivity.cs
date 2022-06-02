@@ -1,5 +1,4 @@
 using MassTransit;
-using MassTransit.Courier;
 using MediatR;
 using TicketService.Contracts.CreateVacationTickets;
 using TicketService.Infrastructure.Requests;

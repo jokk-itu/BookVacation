@@ -10,11 +10,12 @@ public static class RentalCarLoad
     public static void Start()
     {
         var httpFactory = ClientFactory.Create(
-            name: "factory",
+            "factory",
             clientCount: 10,
             initClient: (number, context) => Task.FromResult(new HttpClient()));
-        
-        var rentalCar = Step.Create(StepName.PostRentalCar, timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory, execute: async context => await PostRentalCarStep.PostRentalCar(context));
+
+        var rentalCar = Step.Create(StepName.PostRentalCar, timeout: TimeSpan.FromSeconds(5),
+            clientFactory: httpFactory, execute: async context => await PostRentalCarStep.PostRentalCar(context));
         var scenario = ScenarioBuilder.CreateScenario("rentalcar", rentalCar);
 
         NBomberRunner

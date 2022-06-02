@@ -6,65 +6,65 @@ spec:
   selector:
     matchLabels:
       app: ticketservice
-  replicas: 2    
+  replicas: 2
   template:
     metadata:
       labels:
         app: ticketservice
     spec:
       containers:
-      - name: ticketservice
-        image: jokk/ticketservice:master
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 80
-          name: internal
-        env:
-          - name: ASPNETCORE_ENVIRONMENT
-            value: "Production"
-          - name: Logging__SeqUri
-            valueFrom:
-              configMapKeyRef:
-                name: logger-config
-                key: url
-          - name: EventBus__Hostname
-            valueFrom:
-              configMapKeyRef:
-                name: eventbus-config
-                key: url
-          - name: EventBus__Port
-            valueFrom:
-              configMapKeyRef:
-                name: eventbus-config
-                key: port
-          - name: EventBus__Username
-            valueFrom:
-              secretKeyRef:
-                name: eventbus-secret
-                key: username
-          - name: EventBus__Password
-            valueFrom:
-              secretKeyRef:
-                name: eventbus-secret
-                key: password
-          - name: Minio__Uri
-            valueFrom:
-              configMapKeyRef:
-                name: blobstorage-config
-                key: url
-          - name: Minio__Username
-            valueFrom:
-              secretKeyRef:
-                name: blobstorage-secret
-                key: username   
-          - name: Minio__Password
-            valueFrom:
-              secretKeyRef:
-                name: blobstorage-secret
-                key: password 
+        - name: ticketservice
+          image: jokk/ticketservice:master
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+              name: internal
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: Logging__SeqUri
+              valueFrom:
+                configMapKeyRef:
+                  name: logger-config
+                  key: url
+            - name: EventBus__Hostname
+              valueFrom:
+                configMapKeyRef:
+                  name: eventbus-config
+                  key: url
+            - name: EventBus__Port
+              valueFrom:
+                configMapKeyRef:
+                  name: eventbus-config
+                  key: port
+            - name: EventBus__Username
+              valueFrom:
+                secretKeyRef:
+                  name: eventbus-secret
+                  key: username
+            - name: EventBus__Password
+              valueFrom:
+                secretKeyRef:
+                  name: eventbus-secret
+                  key: password
+            - name: Minio__Uri
+              valueFrom:
+                configMapKeyRef:
+                  name: blobstorage-config
+                  key: url
+            - name: Minio__Username
+              valueFrom:
+                secretKeyRef:
+                  name: blobstorage-secret
+                  key: username
+            - name: Minio__Password
+              valueFrom:
+                secretKeyRef:
+                  name: blobstorage-secret
+                  key: password
 ---
 apiVersion: v1
 kind: Service
@@ -74,5 +74,5 @@ spec:
   selector:
     app: ticketservice
   ports:
-  - port: 5005
-    targetPort: internal
+    - port: 5005
+      targetPort: internal

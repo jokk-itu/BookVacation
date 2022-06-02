@@ -7,18 +7,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EventDispatcher" Version="2022.5.12.1" />
-        <PackageReference Include="itext7.pdfhtml" Version="4.0.1" />
-        <PackageReference Include="Mediator" Version="2022.3.24.201" />
-        <PackageReference Include="MediatR" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Minio" Version="3.1.13" />
-        <PackageReference Include="MiniRazor" Version="2.2.1" />
+        <PackageReference Include="EventDispatcher" Version="2022.5.12.1"/>
+        <PackageReference Include="itext7.pdfhtml" Version="4.0.1"/>
+        <PackageReference Include="Mediator" Version="2022.3.24.201"/>
+        <PackageReference Include="MediatR" Version="10.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Minio" Version="3.1.13"/>
+        <PackageReference Include="MiniRazor" Version="2.2.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TicketService.Contracts\TicketService.Contracts.csproj" />
-        <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj" />
+        <ProjectReference Include="..\TicketService.Contracts\TicketService.Contracts.csproj"/>
+        <ProjectReference Include="..\TicketService.Domain\TicketService.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

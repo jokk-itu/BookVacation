@@ -1,4 +1,3 @@
-using DocumentClient;
 using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
 using Microsoft.Extensions.Logging;

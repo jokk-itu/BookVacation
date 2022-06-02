@@ -1,7 +1,6 @@
 using EventDispatcher;
 using FluentValidation.AspNetCore;
 using Logging;
-using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
@@ -88,7 +87,7 @@ StartupLogger.Run(() =>
 
 namespace VacationService.Api
 {
-    public partial class Program
+    public class Program
     {
     }
 }

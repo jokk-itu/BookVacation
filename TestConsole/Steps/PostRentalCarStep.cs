@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using CarService.Contracts.RentalCar;
 using Microsoft.FSharp.Core;
 using NBomber.Contracts;
@@ -19,10 +20,10 @@ public static class PostRentalCarStep
         var rentalCarResponse =
             await context.Client.PostAsJsonAsync("http://localhost:5003/api/v1/rentalcar", rentalCarRequest);
         watch.Stop();
-            
-        if(rentalCarResponse.StatusCode == HttpStatusCode.BadRequest)
-            context.Logger.Information("BadRequest {Data}", System.Text.Json.JsonSerializer.Serialize(rentalCarRequest));
-            
+
+        if (rentalCarResponse.StatusCode == HttpStatusCode.BadRequest)
+            context.Logger.Information("BadRequest {Data}", JsonSerializer.Serialize(rentalCarRequest));
+
         rentalCarResponse.EnsureSuccessStatusCode();
         var rentalCar = await rentalCarResponse.Content.ReadFromJsonAsync<PostRentalCarResponse>();
         context.Data[DataName.Car] = rentalCar;

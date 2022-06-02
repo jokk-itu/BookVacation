@@ -72,7 +72,7 @@ StartupLogger.Run(() =>
     {
         ResultStatusCodes = new Dictionary<HealthStatus, int>
         {
-            { HealthStatus.Healthy, StatusCodes.Status200OK }, 
+            { HealthStatus.Healthy, StatusCodes.Status200OK },
             { HealthStatus.Degraded, StatusCodes.Status200OK },
             { HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable }
         },
@@ -83,7 +83,7 @@ StartupLogger.Run(() =>
         Predicate = registration => registration.Tags.Contains("ready"),
         ResultStatusCodes = new Dictionary<HealthStatus, int>
         {
-            { HealthStatus.Healthy, StatusCodes.Status200OK }, 
+            { HealthStatus.Healthy, StatusCodes.Status200OK },
             { HealthStatus.Degraded, StatusCodes.Status200OK },
             { HealthStatus.Unhealthy, StatusCodes.Status503ServiceUnavailable }
         },
@@ -96,7 +96,7 @@ StartupLogger.Run(() =>
 
 namespace CarService.Api
 {
-    public partial class Program
+    public class Program
     {
     }
 }

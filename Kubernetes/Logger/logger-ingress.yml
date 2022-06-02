@@ -6,13 +6,13 @@ metadata:
     name: logger-ingress
 spec:
   rules:
-  - host: logger.bookvacation.local
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: logger-service
-            port: 
-              name: logger-port
+    - host: logger.bookvacation.local
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: logger-service
+                port:
+                  name: logger-port

@@ -1,24 +1,25 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Compose" type="docker-deploy" factoryName="docker-compose.yml" singleton="false" server-name="Docker">
-    <deployment type="docker-compose.yml">
-      <settings>
-        <option name="buildKitEnabledForCompose" value="true" />
-        <option name="composeProjectName" value="BookVacation" />
-        <option name="envFilePath" value="" />
-        <option name="services">
-          <list>
-            <option value="logger" />
-            <option value="ravendb" />
-            <option value="eventbus" />
-          </list>
-        </option>
-        <option name="sourceFilePath" value="docker-compose.yml" />
-        <option name="upRemoveOrphans" value="true" />
-      </settings>
-    </deployment>
-    <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isPublishEnabled="false" />
-    <method v="2">
-      <option name="Build Solution" enabled="true" />
-    </method>
-  </configuration>
+    <configuration default="false" name="Compose" type="docker-deploy" factoryName="docker-compose.yml"
+                   singleton="false" server-name="Docker">
+        <deployment type="docker-compose.yml">
+            <settings>
+                <option name="buildKitEnabledForCompose" value="true"/>
+                <option name="composeProjectName" value="BookVacation"/>
+                <option name="envFilePath" value=""/>
+                <option name="services">
+                    <list>
+                        <option value="logger"/>
+                        <option value="ravendb"/>
+                        <option value="eventbus"/>
+                    </list>
+                </option>
+                <option name="sourceFilePath" value="docker-compose.yml"/>
+                <option name="upRemoveOrphans" value="true"/>
+            </settings>
+        </deployment>
+        <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isPublishEnabled="false"/>
+        <method v="2">
+            <option name="Build Solution" enabled="true"/>
+        </method>
+    </configuration>
 </component>
