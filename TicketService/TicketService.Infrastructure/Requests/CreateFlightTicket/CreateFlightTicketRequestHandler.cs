@@ -1,7 +1,6 @@
 using iText.Html2pdf;
 using MediatR;
 using TicketService.Domain;
-using TicketService.Domain.Templates.FlightTicket;
 using TicketService.Infrastructure.Services;
 
 namespace TicketService.Infrastructure.Requests.CreateFlightTicket;
@@ -18,8 +17,7 @@ public class CreateFlightTicketRequestHandler : IRequestHandler<CreateFlightTick
 
     public async Task<RequestResult> Handle(CreateFlightTicketRequest request, CancellationToken cancellationToken)
     {
-        var html = await new FlightTicketModel(request.FlightId)
-            .RenderViewAsync(cancellationToken);
+        var html = "<!DOCTYPE html><html><head><title>FlightTicket</title></head><body><h1>FlightTicket</h1></body></html>";
 
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);
