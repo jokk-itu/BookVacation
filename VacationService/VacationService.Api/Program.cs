@@ -8,6 +8,7 @@ using Prometheus.SystemMetrics;
 using Serilog;
 using VacationService.Api;
 using VacationService.Api.Validators;
+using VacationService.Infrastructure;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -35,7 +36,7 @@ builder.WebHost.ConfigureServices(services =>
             typeof(FluentValidatorRegistration).Assembly
         });
     });
-    services.AddEventBus(builder.Configuration);
+    services.AddInfrastructureServices(builder.Configuration);
     services.AddRouting(options => options.LowercaseUrls = true);
     services.AddControllers();
     services.AddEndpointsApiExplorer();
