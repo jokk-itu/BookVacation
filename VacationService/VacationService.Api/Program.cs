@@ -84,10 +84,3 @@ StartupLogger.Run(() =>
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
-
-namespace VacationService.Api
-{
-    public class Program
-    {
-    }
-}
