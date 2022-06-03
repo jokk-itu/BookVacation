@@ -25,6 +25,7 @@ public static class LoggerConfigurationExtensions
 
         loggerConfiguration
             .SetupEnrichers(assembly, configuration.ServiceName)
+            .SetupKubernetesInformation(configuration)
             .SetupBaseOverrides(assembly, configuration.ServiceName)
             .SetupCustomOverrides(configuration)
             .SetupExpressions();
@@ -89,6 +90,17 @@ public static class LoggerConfigurationExtensions
     {
         foreach (var pair in configuration.Overrides) loggerConfiguration.MinimumLevel.Override(pair.Key, pair.Value);
 
+        return loggerConfiguration;
+    }
+
+    private static LoggerConfiguration SetupKubernetesInformation(this LoggerConfiguration loggerConfiguration, LoggingConfiguration loggingConfiguration)
+    {
+        if (!string.IsNullOrWhiteSpace(loggingConfiguration.PodName))
+            loggerConfiguration.Enrich.WithProperty("PodName", loggingConfiguration.PodName);
+
+        if (!string.IsNullOrWhiteSpace(loggingConfiguration.NodeName))
+            loggerConfiguration.Enrich.WithProperty("NodeName", loggingConfiguration.NodeName);
+        
         return loggerConfiguration;
     }
 }
