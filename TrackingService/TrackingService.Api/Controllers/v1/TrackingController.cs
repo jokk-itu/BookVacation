@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrackingService.Contracts;
 using TrackingService.Infrastructure.Requests.ReadTracking;
 
-namespace TrackingService.Api.Controllers;
+namespace TrackingService.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1")]
@@ -22,7 +22,7 @@ public class TrackingController : ControllerBase
     [ProducesResponseType(typeof(GetTrackingResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var tracking = await _mediator.Send(new ReadTrackingRequest(id.ToString()), cancellationToken);
 

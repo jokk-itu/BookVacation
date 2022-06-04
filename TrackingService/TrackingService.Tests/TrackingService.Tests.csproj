@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\TrackingService.Api\TrackingService.Api.csproj" />
         <ProjectReference Include="..\TrackingService.Domain\TrackingService.Domain.csproj" />
         <ProjectReference Include="..\TrackingService.Infrastructure\TrackingService.Infrastructure.csproj" />
     </ItemGroup>
