@@ -92,10 +92,3 @@ StartupLogger.Run(() =>
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
-
-namespace TrackingService.Api
-{
-    public class Program
-    {
-    }
-}
