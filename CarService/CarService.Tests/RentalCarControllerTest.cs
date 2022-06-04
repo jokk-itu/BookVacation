@@ -7,7 +7,7 @@ using Xunit;
 
 namespace CarService.Tests;
 
-public class RentalCarControllerTest : IClassFixture<WebApplicationFactory<Program>>
+public class RentalCarControllerTest
 {
     [Trait("Category", "Unit")]
     [Fact]

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FlightService.Tests;
 
-public class AirplaneControllerTest : IClassFixture<WebApplicationFactory<Program>>
+public class AirplaneControllerTest
 {
     [Trait("Category", "Unit")]
     [Fact]

@@ -38,8 +38,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(FluentValidatorRegistration).Assembly,
-            typeof(FlightService.Infrastructure.Validators.FluentValidatorRegistration).Assembly
+            typeof(FluentValidatorRegistration).Assembly
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);
@@ -91,10 +90,3 @@ StartupLogger.Run(() =>
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
-
-namespace FlightService.Api
-{
-    public class Program
-    {
-    }
-}

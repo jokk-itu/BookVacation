@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="DocumentClient" Version="2022.6.3.3" />
         <PackageReference Include="EventDispatcher" Version="2022.5.12.1" />
-        <PackageReference Include="FluentValidation" Version="11.0.2" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.2" />
         <PackageReference Include="Mediator" Version="1.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     </ItemGroup>
