@@ -50,7 +50,10 @@ builder.WebHost.ConfigureServices(services =>
     services.AddSingleton(sp =>
     {
         var configuration = sp.GetRequiredService<MinioConfiguration>();
-        var minioClient = new MinioClient(configuration.Uri, configuration.Username, configuration.Password);
+        var minioClient = new MinioClient()
+            .WithEndpoint(configuration.Uri)
+            .WithCredentials(configuration.Username, configuration.Password)
+            .Build();
         minioClient.WithTimeout(5000);
         minioClient.SetTraceOn(sp.GetRequiredService<MinioLogger>());
         minioClient.WithRetryPolicy(async callback => await Policy
@@ -96,10 +99,3 @@ StartupLogger.Run(() =>
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
-
-namespace TicketService.Api
-{
-    public class Program
-    {
-    }
-}

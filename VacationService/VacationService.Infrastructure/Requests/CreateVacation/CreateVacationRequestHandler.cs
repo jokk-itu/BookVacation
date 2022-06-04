@@ -3,29 +3,21 @@ using FlightService.Contracts.FlightReservation;
 using HotelService.Contracts.HotelRoomReservationActivity;
 using MassTransit;
 using MassTransit.Courier.Contracts;
-using Microsoft.AspNetCore.Mvc;
+using MediatR;
 using TicketService.Contracts.CreateVacationTickets;
-using VacationService.Contracts.Vacation;
 
-namespace VacationService.Api.Controllers;
+namespace VacationService.Infrastructure.Requests.CreateVacation;
 
-[ApiController]
-[ApiVersion("1")]
-[ControllerName("vacation")]
-[Route("api/v{version:apiVersion}/[controller]")]
-public class VacationController : ControllerBase
+public class CreateVacationRequestHandler : IRequestHandler<CreateVacationRequest>
 {
-    private readonly IBusControl _bus;
+    private readonly IBusControl _busControl;
 
-    public VacationController(IBusControl bus)
+    public CreateVacationRequestHandler(IBusControl busControl)
     {
-        _bus = bus;
+        _busControl = busControl;
     }
-
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostAsync([FromBody] PostVacationRequest request)
+    
+    public async Task<Unit> Handle(CreateVacationRequest request, CancellationToken cancellationToken)
     {
         var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
@@ -73,8 +65,8 @@ public class VacationController : ControllerBase
 
         var routingSlip = builder.Build();
 
-        await _bus.Execute(routingSlip);
-
-        return Accepted();
+        await _busControl.Execute(routingSlip);
+        
+        return Unit.Value;
     }
 }

@@ -5,13 +5,4 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="MiniRazor" Version="2.2.1"/>
-        <PackageReference Include="MiniRazor.CodeGen" Version="2.2.1"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <AdditionalFiles Include="Templates/**/*.razor" IsRazorTemplate="true"/>
-    </ItemGroup>
 </Project>

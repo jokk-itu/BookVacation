@@ -1,7 +1,6 @@
 using iText.Html2pdf;
 using MediatR;
 using TicketService.Domain;
-using TicketService.Domain.Templates.CarTicket;
 using TicketService.Infrastructure.Services;
 
 namespace TicketService.Infrastructure.Requests.CreateCarTicket;
@@ -17,8 +16,7 @@ public class CreateCarTicketRequestHandler : IRequestHandler<CreateCarTicketRequ
 
     public async Task<RequestResult> Handle(CreateCarTicketRequest request, CancellationToken cancellationToken)
     {
-        var html = await new CarTicketModel(request.CarId, request.RentingCompanyName)
-            .RenderViewAsync(cancellationToken);
+        var html = "<!DOCTYPE html><html><head><title>CarTicket</title></head><body><h1>CarTicket</h1></body></html>";
 
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);

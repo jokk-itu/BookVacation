@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace HealthCheck.Core;
+namespace HealthCheck;
 
 public class ReadyHealthCheck : IHealthCheck
 {

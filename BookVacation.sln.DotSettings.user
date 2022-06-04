@@ -1,2 +1,13 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c88bfde1_002Db90f_002D4a9e_002Dbbbb_002Db77b80435e62/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::E08E6BC7-014F-4097-84CF-F06246C5FFA9::net6.0::VacationService.Test.VacationControllerTest.PostAsync_ExpectAccepted&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::3022A739-E1FF-48B6-8517-631CC47E481E::net6.0::HotelService.Tests.BookHotelActivityTest.Execute_ExpectCompleted&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::5125C6E7-E9E9-488D-B6C1-1CB1073BFE6B::net6.0::CarService.Tests.RentalCarControllerTest.Post_ExpectCreated&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::974143DF-FA81-495E-99A6-7F8A3E133FC4::net6.0::FlightService.Tests.AirplaneControllerTest.Post_ExpectCreated&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::974143DF-FA81-495E-99A6-7F8A3E133FC4::net6.0::FlightService.Tests.FlightControllerTest.Post_ExpectConflict&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.TrackingControllerTest.GetAsync_ExpectOk&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.TrackingControllerTest.GetAsync_ExpectNotFound&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Enricher/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

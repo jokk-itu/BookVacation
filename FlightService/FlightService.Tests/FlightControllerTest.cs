@@ -1,54 +1,92 @@
 using System;
 using System.Net;
 using System.Net.Http.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using FlightService.Api;
+using FlightService.Api.Controllers.v1;
 using FlightService.Contracts.Airplane;
 using FlightService.Contracts.Flight;
+using FlightService.Domain;
+using FlightService.Infrastructure.Requests.CreateFlight;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Moq;
 using Xunit;
 
 namespace FlightService.Tests;
 
-public class FlightControllerTest : IClassFixture<WebApplicationFactory<Program>>
+public class FlightControllerTest
 {
-    private readonly WebApplicationFactory<Program> _api;
-
-    public FlightControllerTest()
-    {
-        _api = new WebApplicationFactory<Program>();
-    }
-
-    [Trait("Category", "Integration")]
+    [Trait("Category", "Unit")]
     [Fact]
     public async Task Post_ExpectCreated()
     {
-        var client = _api.CreateClient();
-        var airplaneRequest = new PostAirplaneRequest
+        //Arrange
+        var postFlightRequest = new PostFlightRequest
         {
-            ModelNumber = Guid.NewGuid(),
-            AirplaneMakerName = "Boeing",
-            AirlineName = "SAS",
-            Seats = 20
+            AirplaneId = Guid.NewGuid(),
+            Price = 0,
+            From = DateTimeOffset.Now,
+            To = DateTimeOffset.Now,
+            FromAirport = string.Empty,
+            ToAirport = string.Empty
         };
-        var airplaneResponse = await client.PostAsJsonAsync("api/v1/airplane", airplaneRequest);
-        airplaneResponse.EnsureSuccessStatusCode();
-        var airplane = await airplaneResponse.Content.ReadFromJsonAsync<PostAirplaneResponse>();
-
-        var flightRequest = new PostFlightRequest
+        
+        var flight = new Flight
         {
-            From = DateTimeOffset.Now.AddDays(1),
-            To = DateTimeOffset.Now.AddDays(2),
-            FromAirport = "Kastrup",
-            ToAirport = "Karup",
-            AirplaneId = airplane!.Id,
-            Price = 1200
+            Id = Guid.NewGuid().ToString(),
+            AirPlaneId = Guid.NewGuid(),
+            From = DateTimeOffset.Now,
+            To = DateTimeOffset.Now,
+            Price = 0,
+            FromAirport = string.Empty,
+            ToAirport = string.Empty
         };
-        var flightResponse = await client.PostAsJsonAsync("api/v1/flight", flightRequest);
-        flightResponse.EnsureSuccessStatusCode();
-        var flight = await flightResponse.Content.ReadFromJsonAsync<PostFlightResponse>();
+        
+        var fakeMediator = new Mock<IMediator>();
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(flight)
+            .Verifiable();
+        
+        var controller = new FlightController(fakeMediator.Object);
 
-        Assert.Equal(HttpStatusCode.Created, flightResponse.StatusCode);
-        Assert.NotNull(flight);
+        //Act
+        var response = await controller.PostAsync(postFlightRequest);
+
+        //Assert
+        fakeMediator.Verify();
+        Assert.True(response is CreatedResult);
+    }
+    
+    [Trait("Category", "Unit")]
+    [Fact]
+    public async Task Post_ExpectConflict()
+    {
+        //Arrange
+        var postFlightRequest = new PostFlightRequest
+        {
+            AirplaneId = Guid.NewGuid(),
+            Price = 0,
+            From = DateTimeOffset.Now,
+            To = DateTimeOffset.Now,
+            FromAirport = string.Empty,
+            ToAirport = string.Empty
+        };
+
+        var fakeMediator = new Mock<IMediator>();
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(It.IsAny<Flight?>())
+            .Verifiable();
+        
+        var controller = new FlightController(fakeMediator.Object);
+
+        //Act
+        var response = await controller.PostAsync(postFlightRequest);
+
+        //Assert
+        fakeMediator.Verify();
+        Assert.True(response is ConflictResult);
     }
 }

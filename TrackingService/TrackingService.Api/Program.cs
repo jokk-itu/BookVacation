@@ -38,8 +38,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(FluentValidatorRegistration).Assembly,
-            typeof(TrackingService.Infrastructure.Validators.FluentValidatorRegistration).Assembly
+            typeof(FluentValidatorRegistration).Assembly
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);
@@ -92,10 +91,3 @@ StartupLogger.Run(() =>
 
     app.Run();
 }, new LoggerConfiguration().ConfigureLogging(logConfiguration));
-
-namespace TrackingService.Api
-{
-    public class Program
-    {
-    }
-}
