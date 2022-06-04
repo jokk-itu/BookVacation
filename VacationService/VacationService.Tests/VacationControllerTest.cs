@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using VacationService.Api.Controllers;
+using VacationService.Api.Controllers.v1;
 using VacationService.Contracts.Vacation;
 using VacationService.Infrastructure.Requests.CreateVacation;
 using Xunit;

@@ -1,9 +1,9 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VacationService.Contracts.Vacation;
-using MediatR;
 using VacationService.Infrastructure.Requests.CreateVacation;
 
-namespace VacationService.Api.Controllers;
+namespace VacationService.Api.Controllers.v1;
 
 [ApiController]
 [ApiVersion("1")]
