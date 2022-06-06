@@ -11,3 +11,4 @@ Monitoring/grafana/dashboards
 terraform.tfstate.*
 terraform.tfstate
 Terraform/kubeconfig
+Test/LoadConsole/reports/*
