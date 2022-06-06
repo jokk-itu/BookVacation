@@ -99,24 +99,6 @@ services:
       - logger
       - ravendb
       
-  gatewayservice:
-    build:
-      context: .
-      dockerfile: GatewayService/GatewayService.Api/Dockerfile
-      args:
-        - GithubToken=${NUGET_API}
-    container_name: gatewayservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - 5005:80
-      - 5006:443
-    env_file:
-      - ./EnvironmentFiles/logging.env
-      - ./EnvironmentFiles/gateway.env
-    depends_on:
-      - logger
-      
   ticketservice:
     build:
       context: .
@@ -127,7 +109,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - 5007:80
+      - 5005:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
@@ -135,7 +117,25 @@ services:
     depends_on:
       - eventbus
       - logger
-      - blobstorage
+      - blobstorage    
+      
+  gatewayservice:
+    build:
+      context: .
+      dockerfile: GatewayService/GatewayService.Api/Dockerfile
+      args:
+        - GithubToken=${NUGET_API}
+    container_name: gatewayservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 5006:80
+      - 5007:443
+    env_file:
+      - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/gateway.env
+    depends_on:
+      - logger
 
   logger:
     image: datalust/seq:latest

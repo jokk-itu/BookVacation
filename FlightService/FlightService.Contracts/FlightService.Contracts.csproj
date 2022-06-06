@@ -15,6 +15,11 @@
         <PackageProjectUrl>https://github.com/jokk-itu/BookVacation</PackageProjectUrl>
         <RepositoryUrl>https://github.com/jokk-itu/BookVacation</RepositoryUrl>
         <VersionPrefix Condition="$(CI) != ''">$([System.DateTime]::UtcNow.ToString("yyyyMMdd").Insert(4, ".").Insert(7, ".").Insert(10, "."))$(BuildNumber)</VersionPrefix>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <Product>FlightService.Contracts</Product>
+        <LangVersion>latestMajor</LangVersion>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
 </Project>
