@@ -21,7 +21,7 @@ public class VacationLoad
                 await new TestConsole.Services.VacationService(options.VacationUri, options.FlightUri, options.HotelUri,
                     options.CarUri).PostVacationAsync();
                 watch.Stop();
-                return Response.Ok(statusCode: 202, latencyMs: watch.ElapsedMilliseconds);
+                return Response.Ok(statusCode: 202, sizeBytes: 0, latencyMs: watch.ElapsedMilliseconds);
             });
 
         var scenario = ScenarioBuilder.CreateScenario("vacation", vacation)
