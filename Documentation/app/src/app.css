@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header-anchor {
+  opacity: 0;
+}
+
+.header-anchor:hover {
+  opacity: 1;
+}
+
+.ref-link:active {
+  border-bottom: 2px solid blue;
+}
