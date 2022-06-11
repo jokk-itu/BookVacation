@@ -2,67 +2,65 @@
 
 ![Architecture](architecture.png "Architecture")
 
+A project to buy a vacation, consisting of a flight ticket, hotel room reservation and car rental.
 
-## Choreography
+## Table of Contents
 
-Project to illustrate a Choreography architecture using Routing slips in Masstransit.
-It is illustrated by booking a vacation with a Flight, Hotel and Car.
+- Architecture
+- Microservice Technologies
+- Service Technologies
+- Documentation
+- Setup
 
-This flow is activated by the api on: http://localhost:5000/api/v1/vacation.
+## Architecture
 
-## CarService
-To rent cars.
+Made up of microservices, and utilizes the routingslip pattern for distributed transactions.
 
-## HotelService
-To book a hotel room.
+## Microservice Technologies
 
-## FlightService
-To buy a flight ticket.
+- Dotnet
+- Aspnet
+- Masstransit
+- Serilog
 
-## TicketService
-To handle tickets for flights, hotels and cars.
+## Service Technologies
 
-## TrackingService
-Subscribes to routing slip events and persists them.
+- Seq
+- RavenDB
+- Prometheus
+- Grafana
+- Rabbitmq
+- Minio
+- Docker
+- Terraform
+- Kubernetes
 
-## VacationService
-To buy a complete vacation with flight ticket, hotel room and car.
+## Documentation
 
-## GatewayService
-A reverse proxy to route a request to different services.
+Link to [Documentation](https://jokk-itu.github.io/BookVacation/)
 
-## Prometheus and Grafana
-Masstransit and Api data to illustrate in grafana.
+## Setup
 
-## Seq
-Sends all logs to Seq as a sink in Serilog.
+The project can be build using the dotnet-cli or docker.
+The project can be run using docker-compose, kubernetes locally or kubernetes on digitalocean using terraform.
 
-## RavenDB
-The DBMS for all data. There is one database pr. service.
+### Docker
 
-## RabbitMQ
-The broker to handle messages between services.
-
-## TestConsole
-Uses the NBomber load testing package.
+Use the compose file in the root folder.
 ```
--a, --vacationload        Runs the vacation load test
--b, --rentalcarload       Runs the rentalcar load test
--c, --hotelload           Runs the hotel load test
--d, --flightload          Runs the flight load test
--e, --airplaneload        Runs the airplane load test
--f, --vacationsingle      Runs the vacation single test
-```
-
-## Development
-Use docker during development.
-
-```
-docker-compose build
-
 docker-compose up -d
 ```
 
-## Production
-Use kubernetes during production.
-Set up services by running the <b>start.sh</b> script in the Kubernetes directory.
+### Kubernetes Locally
+
+Use the start.sh script in the Kubernetes folder.
+```
+./start.sh
+```
+
+### Terraform (Kubernetes on Digitalocean)
+
+Use the bootstrap.sh script in the Terraform folder.
+```
+./bootstrap.sh
+```

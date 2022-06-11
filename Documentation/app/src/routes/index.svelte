@@ -9,4 +9,5 @@
 	<hr class="border-blue-400" />
 </div>
 
-A project to illustrate the use of distributed transactions using the routingslip pattern.
+A project to illustrate the use of distributed transactions using the routingslip pattern and thus
+implemented the choreography architecture.
