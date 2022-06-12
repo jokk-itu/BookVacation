@@ -7,7 +7,7 @@ publish(
     repo: 'https://github.com/jokk-itu/BookVacation.git',
     user: {
       name: 'Joachim Køcher Kelsen',
-      email: 'jokk-itu.dk'
+      email: 'jokk@itu.dk'
     },
     dotfiles: true
   },
