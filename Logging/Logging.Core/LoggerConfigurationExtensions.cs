@@ -1,5 +1,7 @@
 using System.Reflection;
+using Logging.Enrichers;
 using Logging.Sink;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -8,13 +10,32 @@ namespace Logging;
 
 public static class LoggerConfigurationExtensions
 {
-    public static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration,
-        LoggingConfiguration configuration)
+    public static LoggerConfiguration ConfigureStartupLogger(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration)
+    {
+        if (configuration is null)
+            throw new ArgumentNullException(nameof(configuration));
+        
+        return loggerConfiguration.ConfigureLogging(configuration);
+    }
+
+    public static LoggerConfiguration ConfigureAdvancedLogger(this LoggerConfiguration loggerConfiguration, LoggingConfiguration configuration, IServiceProvider serviceProvider)
     {
         if (configuration is null)
             throw new ArgumentNullException(nameof(configuration));
 
-        var assembly = Assembly.GetCallingAssembly();
+        if (serviceProvider is null)
+            throw new ArgumentNullException(nameof(serviceProvider));
+        
+        return loggerConfiguration.ConfigureLogging(configuration).SetupAdvancedEnrichers(serviceProvider);
+    }
+    
+    private static LoggerConfiguration ConfigureLogging(this LoggerConfiguration loggerConfiguration,
+        LoggingConfiguration configuration)
+    {
+        if (configuration is null)
+            throw new ArgumentNullException(nameof(configuration));
+        
+        var assembly = Assembly.GetEntryAssembly();
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
                           Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
 
@@ -24,14 +45,21 @@ public static class LoggerConfigurationExtensions
             loggerConfiguration.MinimumLevel.Information();
 
         loggerConfiguration
-            .SetupEnrichers(assembly, configuration.ServiceName)
+            .SetupBaseEnrichers(assembly, configuration.ServiceName)
             .SetupKubernetesInformation(configuration)
             .SetupBaseOverrides(assembly, configuration.ServiceName)
             .SetupCustomOverrides(configuration)
-            .SetupExpressions();
+            .SetupExpressions()
+            .SetupSinks(configuration);
 
+        return loggerConfiguration;
+    }
+
+    private static LoggerConfiguration SetupSinks(this LoggerConfiguration loggerConfiguration, LoggingConfiguration loggingConfiguration)
+    {
         var sinkTypes = Assembly.GetExecutingAssembly().GetTypes()
             .Where(x => x.GetInterfaces().Contains(typeof(ISink)));
+        
         foreach (var sinkType in sinkTypes)
         {
             var sink = Activator.CreateInstance(sinkType);
@@ -41,7 +69,7 @@ public static class LoggerConfigurationExtensions
                 continue;
             }
 
-            loggerConfiguration.WriteTo.Logger(lg => ((ISink)sink).Setup(lg, configuration));
+            loggerConfiguration.WriteTo.Logger(lg => ((ISink)sink).Setup(lg, loggingConfiguration));
         }
 
         return loggerConfiguration;
@@ -61,7 +89,7 @@ public static class LoggerConfigurationExtensions
             .MinimumLevel.Override(assembly.GetName().Name?.Split('.')[0] ?? "NotFound", LogEventLevel.Information);
     }
 
-    private static LoggerConfiguration SetupEnrichers(this LoggerConfiguration loggerConfiguration, Assembly assembly,
+    private static LoggerConfiguration SetupBaseEnrichers(this LoggerConfiguration loggerConfiguration, Assembly assembly,
         string serviceName)
     {
         return loggerConfiguration
@@ -76,6 +104,12 @@ public static class LoggerConfigurationExtensions
             .Enrich.WithProperty("Assembly", assembly.GetName().Name)
             .Enrich.WithProperty("AssemblyVersion", assembly.GetName().Version)
             .Enrich.WithProperty("Application", serviceName);
+    }
+
+    private static LoggerConfiguration SetupAdvancedEnrichers(this LoggerConfiguration loggerConfiguration,
+        IServiceProvider serviceProvider)
+    {
+        return loggerConfiguration.Enrich.WithCorrelationId(serviceProvider).Enrich.WithRequestId(serviceProvider);
     }
 
     private static LoggerConfiguration SetupExpressions(this LoggerConfiguration loggerConfiguration)
