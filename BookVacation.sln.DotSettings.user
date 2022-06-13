@@ -8,6 +8,12 @@
     &lt;TestId&gt;xUnit::974143DF-FA81-495E-99A6-7F8A3E133FC4::net6.0::FlightService.Tests.FlightControllerTest.Post_ExpectConflict&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.TrackingControllerTest.GetAsync_ExpectOk&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::BE178D0F-EC26-467A-9D2F-AD990578DB3D::net6.0::TrackingService.Tests.TrackingControllerTest.GetAsync_ExpectNotFound&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BF854877-1464-4498-B42C-E3B74BFD2857::net6.0::Logging.Test.RequestIdDelegatingHandlerTest.Send_ExpectRequestIdHeader&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BF854877-1464-4498-B42C-E3B74BFD2857::net6.0::Logging.Test.CorrelationIdDelegatingHandlerTest.Send_ExpectCorrelationIdHeader&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BF854877-1464-4498-B42C-E3B74BFD2857::net6.0::Logging.Test.PerformanceDelegatingHandlerTest.Send_ExpectStatusOk&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BF854877-1464-4498-B42C-E3B74BFD2857::net6.0::Logging.Test.PerformanceDelegatingHandlerTest.Send_ExpectStatusError&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BF854877-1464-4498-B42C-E3B74BFD2857::net6.0::Logging.Test.Middlewares.CorrelationIdMiddlewareTest.Invoke_ExpectCorrelationIdInMetaContext&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::BF854877-1464-4498-B42C-E3B74BFD2857::net6.0::Logging.Test.Middlewares.RequestIdMiddlewareTest.Invoke_ExpectRequestInMetaContext&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Enricher/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
