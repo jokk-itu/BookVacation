@@ -16,6 +16,7 @@ public class MetaSendFilter<T> : IFilter<SendContext<T>> where T : class
     {
         _metaContextAccessor.MetaContext ??= new MetaContext();
         context.CorrelationId = _metaContextAccessor.MetaContext.CorrelationId;
+        await next.Send(context);
     }
 
     public void Probe(ProbeContext context)
