@@ -19,8 +19,12 @@ public class LogPublishFilter<T> : IFilter<PublishContext<T>> where T : class
         var watch = Stopwatch.StartNew();
         await next.Send(context);
         watch.Stop();
-        using (_logger.BeginScope(new Dictionary<string, object>
-                   { { "MessageId", context.MessageId }, { "CorrelationId", context.CorrelationId } }))
+        
+        var scope = new Dictionary<string, object>();
+        if(context.MessageId is not null)
+            scope.Add("MessageId", context.MessageId);
+        
+        using (_logger.BeginScope(scope))
         {
             _logger.LogInformation("Published {Message} to {Destination}, took {Elapsed} ms",
                 context.Message.GetType().Name, context.DestinationAddress, watch.ElapsedMilliseconds);
