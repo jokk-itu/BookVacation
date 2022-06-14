@@ -16,8 +16,7 @@ public class LogExecuteFilter<T> : IFilter<ExecuteContext<T>> where T : class
     public async Task Send(ExecuteContext<T> context, IPipe<ExecuteContext<T>> next)
     {
         _logger.LogDebug("Executing message");
-        var watch = new Stopwatch();
-        watch.Start();
+        var watch = Stopwatch.StartNew();
         await next.Send(context);
         watch.Stop();
         using (_logger.BeginScope(new Dictionary<string, object>

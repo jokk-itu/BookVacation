@@ -16,8 +16,7 @@ public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T : cl
     public async Task Send(CompensateContext<T> context, IPipe<CompensateContext<T>> next)
     {
         _logger.LogDebug("Compensating message");
-        var watch = new Stopwatch();
-        watch.Start();
+        var watch = Stopwatch.StartNew();
         await next.Send(context);
         watch.Stop();
         using (_logger.BeginScope(new Dictionary<string, object>

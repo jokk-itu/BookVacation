@@ -16,8 +16,7 @@ public class LogPublishFilter<T> : IFilter<PublishContext<T>> where T : class
     public async Task Send(PublishContext<T> context, IPipe<PublishContext<T>> next)
     {
         _logger.LogDebug("Publishing message");
-        var watch = new Stopwatch();
-        watch.Start();
+        var watch = Stopwatch.StartNew();
         await next.Send(context);
         watch.Stop();
         using (_logger.BeginScope(new Dictionary<string, object>
