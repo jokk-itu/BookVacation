@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EventDispatcher" Version="2022.5.12.1" />
+        <PackageReference Include="EventDispatcher" Version="2022.6.13.1" />
         <PackageReference Include="itext7.pdfhtml" Version="4.0.2" />
         <PackageReference Include="Mediator" Version="2022.3.24.201" />
         <PackageReference Include="MediatR" Version="10.0.1" />

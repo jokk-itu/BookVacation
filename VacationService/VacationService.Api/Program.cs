@@ -22,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogger(logConfiguration, serviceProvider);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -49,6 +49,7 @@ builder.WebHost.ConfigureServices(services =>
     services.AddSwaggerGen();
     services.ConfigureOptions<ConfigureSwaggerOptions>();
     services.AddSystemMetrics();
+    services.AddLoggingServices();
 });
 
 StartupLogger.Run(() =>
@@ -58,6 +59,7 @@ StartupLogger.Run(() =>
     app.UseSwagger();
     app.UseSwaggerUI();
 
+    app.UseLogging();
     app.UseSerilogRequestLogging();
     app.UseHttpMetrics();
 
@@ -84,4 +86,4 @@ StartupLogger.Run(() =>
     });
 
     app.Run();
-}, new LoggerConfiguration().ConfigureLogging(logConfiguration));
+}, logConfiguration);

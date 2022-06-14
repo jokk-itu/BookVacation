@@ -32,12 +32,6 @@ public class VacationLoad
             .RegisterScenarios(scenario)
             .WithTestSuite("Vacation")
             .WithTestName("Vacation")
-            .WithLoggerConfig(() =>
-                new LoggerConfiguration()
-                    .Enrich.FromLogContext()
-                    .MinimumLevel.Information()
-                    .WriteTo.Seq(options.LoggerUri)
-            )
             .Run();
     }
 }

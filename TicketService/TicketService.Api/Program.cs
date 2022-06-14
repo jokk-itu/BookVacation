@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogger(logConfiguration, serviceProvider);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -62,6 +62,7 @@ builder.WebHost.ConfigureServices(services =>
             .ExecuteAsync(async () => await callback()));
         return minioClient;
     });
+    services.AddLoggingServices();
 });
 
 StartupLogger.Run(() =>
@@ -71,6 +72,7 @@ StartupLogger.Run(() =>
     app.UseSwagger();
     app.UseSwaggerUI();
 
+    app.UseLogging();
     app.UseSerilogRequestLogging();
     app.UseHttpMetrics();
 
@@ -98,4 +100,4 @@ StartupLogger.Run(() =>
     ReadyHealthCheck.IsReady = true;
 
     app.Run();
-}, new LoggerConfiguration().ConfigureLogging(logConfiguration));
+}, logConfiguration);
