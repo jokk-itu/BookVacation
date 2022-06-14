@@ -1,4 +1,5 @@
 using Logging.Constants;
+using Meta;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +14,7 @@ public class RequestIdMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext httpContext, ILogger<RequestIdMiddleware> logger)
+    public async Task Invoke(HttpContext httpContext, IMetaContextAccessor metaContextAccessor)
     {
         var requestIdLogProperty = Guid.NewGuid();
         if (httpContext.Request.Headers.TryGetValue(Header.RequestId, out var requestId) &&
@@ -22,12 +23,11 @@ public class RequestIdMiddleware
             requestIdLogProperty = parsedRequestId;
         }
 
-        using (logger.BeginScope(new Dictionary<string, string>()
-               {
-                   { "RequestId", requestIdLogProperty.ToString() }
-               }))
+        metaContextAccessor.MetaContext ??= new MetaContext
         {
-            await _next(httpContext);
-        }
+            RequestId = requestIdLogProperty
+        };
+
+        await _next(httpContext);
     }
 }
