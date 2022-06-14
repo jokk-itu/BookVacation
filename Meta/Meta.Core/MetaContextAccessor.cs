@@ -1,15 +1,15 @@
-namespace Logging.Meta;
+namespace Meta;
 
 public class MetaContextAccessor : IMetaContextAccessor
 {
-    private static readonly AsyncLocal<MetaContextHolder> _metaContextCurrent = new();
+    private static readonly AsyncLocal<MetaContextHolder> MetaContextCurrent = new();
     
     public MetaContext? MetaContext
     {
-        get => _metaContextCurrent.Value?.Context;
+        get => MetaContextCurrent.Value?.Context;
         set
         {
-            var holder = _metaContextCurrent.Value;
+            var holder = MetaContextCurrent.Value;
             if (holder != null)
             {
                 holder.Context = null;
@@ -17,7 +17,7 @@ public class MetaContextAccessor : IMetaContextAccessor
 
             if (value != null)
             {
-                _metaContextCurrent.Value = new MetaContextHolder { Context = value };
+                MetaContextCurrent.Value = new MetaContextHolder { Context = value };
             }
         }
     }

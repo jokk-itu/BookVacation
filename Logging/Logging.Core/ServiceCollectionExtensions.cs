@@ -1,6 +1,6 @@
 using Logging.DelegatingHandlers;
 using Logging.Enrichers;
-using Logging.Meta;
+using Meta;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 
@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
         
         services.AddTransient<CorrelationIdEnricher>();
         services.AddTransient<RequestIdEnricher>();
-        
+
         services.ConfigureAll<HttpClientFactoryOptions>(options =>
         {
             options.HttpMessageHandlerBuilderActions.Add(builder =>
@@ -26,8 +26,8 @@ public static class ServiceCollectionExtensions
                 builder.AdditionalHandlers.Add(builder.Services.GetRequiredService<PerformanceDelegatingHandler>());
             });
         });
-        
-        services.AddSingleton<IMetaContextAccessor, MetaContextAccessor>();
+
+        services.AddMetaContextAccessor();
         return services;
     }
 }

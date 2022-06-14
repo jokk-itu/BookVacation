@@ -1,5 +1,5 @@
 using Logging.Constants;
-using Logging.Meta;
+using Meta;
 
 namespace Logging.DelegatingHandlers;
 
@@ -16,7 +16,7 @@ public class CorrelationIdDelegatingHandler : DelegatingHandler
     {
         _metaContextAccessor.MetaContext ??= new MetaContext();
         
-        request.Headers.Add(Header.CorrelationId, _metaContextAccessor.MetaContext.CorrelationId);
+        request.Headers.Add(Header.CorrelationId, _metaContextAccessor.MetaContext.CorrelationId.ToString());
         return await base.SendAsync(request, cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-using Logging.Meta;
+using Meta;
 using Serilog.Core;
 using Serilog.Events;
 

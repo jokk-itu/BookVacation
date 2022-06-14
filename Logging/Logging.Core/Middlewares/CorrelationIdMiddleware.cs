@@ -1,5 +1,5 @@
 using Logging.Constants;
-using Logging.Meta;
+using Meta;
 using Microsoft.AspNetCore.Http;
 
 namespace Logging.Middlewares;
@@ -16,9 +16,12 @@ public class CorrelationIdMiddleware
     public async Task Invoke(HttpContext httpContext, IMetaContextAccessor metaContextAccessor)
     {
         metaContextAccessor.MetaContext ??= new MetaContext();
-            
-        if (httpContext.Request.Headers.TryGetValue(Header.CorrelationId, out var correlationId))
-            metaContextAccessor.MetaContext.CorrelationId = correlationId;
+
+        if (httpContext.Request.Headers.TryGetValue(Header.CorrelationId, out var correlationId) &&
+            Guid.TryParse(correlationId, out var parsedCorrelationId))
+        {
+            metaContextAccessor.MetaContext.CorrelationId = parsedCorrelationId;
+        }
 
         await _next(httpContext);
     }

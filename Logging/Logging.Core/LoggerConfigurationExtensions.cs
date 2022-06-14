@@ -109,7 +109,9 @@ public static class LoggerConfigurationExtensions
     private static LoggerConfiguration SetupAdvancedEnrichers(this LoggerConfiguration loggerConfiguration,
         IServiceProvider serviceProvider)
     {
-        return loggerConfiguration.Enrich.WithCorrelationId(serviceProvider).Enrich.WithRequestId(serviceProvider);
+        return loggerConfiguration
+            .Enrich.WithCorrelationId(serviceProvider)
+            .Enrich.WithRequestId(serviceProvider);
     }
 
     private static LoggerConfiguration SetupExpressions(this LoggerConfiguration loggerConfiguration)

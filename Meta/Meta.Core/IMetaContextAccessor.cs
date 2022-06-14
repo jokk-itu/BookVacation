@@ -1,4 +1,4 @@
-namespace Logging.Meta;
+namespace Meta;
 
 public interface IMetaContextAccessor
 {

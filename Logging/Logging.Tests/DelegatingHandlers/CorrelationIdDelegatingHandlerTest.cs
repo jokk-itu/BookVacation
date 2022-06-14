@@ -1,11 +1,11 @@
 using System.Net;
 using Logging.DelegatingHandlers;
-using Logging.Meta;
+using Meta;
 using Moq;
 using Moq.Protected;
 using Xunit;
 
-namespace Logging.Test;
+namespace Logging.Test.DelegatingHandlers;
 
 public class CorrelationIdDelegatingHandlerTest
 {
@@ -21,13 +21,13 @@ public class CorrelationIdDelegatingHandlerTest
             .Setup<Task<HttpResponseMessage>>("SendAsync", request, ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
             .Verifiable();
-        var expected = Guid.NewGuid().ToString();
+        var expected = Guid.NewGuid();
         var metaContextAccessor = new MetaContextAccessor
         {
             MetaContext = new MetaContext
             {
                 CorrelationId = expected,
-                RequestId = Guid.NewGuid().ToString()
+                RequestId = Guid.NewGuid()
             }
         };
         
@@ -43,6 +43,6 @@ public class CorrelationIdDelegatingHandlerTest
         //Assert
         innerHandlerMock.Verify();
         Assert.True(request.Headers.TryGetValues("X-Correlation-Id", out var actual));
-        Assert.Equal(expected, actual!.Single());
+        Assert.Equal(expected.ToString(), actual!.Single());
     }
 }

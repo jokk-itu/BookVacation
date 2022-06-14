@@ -1,6 +1,6 @@
 using Logging.Constants;
-using Logging.Meta;
 using Logging.Middlewares;
+using Meta;
 using Microsoft.AspNetCore.Http;
 using Xunit;
 
@@ -14,8 +14,8 @@ public class CorrelationIdMiddlewareTest
     {
         //Arrange
         var httpContext = new DefaultHttpContext();
-        var correlationId = Guid.NewGuid().ToString();
-        httpContext.Request.Headers.Add(Header.CorrelationId, correlationId);
+        var correlationId = Guid.NewGuid();
+        httpContext.Request.Headers.Add(Header.CorrelationId, correlationId.ToString());
         var metaContextAccessor = new MetaContextAccessor
         {
             MetaContext = new MetaContext()

@@ -5,12 +5,11 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
 using Xunit;
 
-namespace Logging.Test;
+namespace Logging.Test.DelegatingHandlers;
 
 public class PerformanceDelegatingHandlerTest
 {

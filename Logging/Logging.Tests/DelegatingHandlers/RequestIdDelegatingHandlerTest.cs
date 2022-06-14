@@ -4,7 +4,7 @@ using Moq;
 using Moq.Protected;
 using Xunit;
 
-namespace Logging.Test;
+namespace Logging.Test.DelegatingHandlers;
 
 public class RequestIdDelegatingHandlerTest
 {

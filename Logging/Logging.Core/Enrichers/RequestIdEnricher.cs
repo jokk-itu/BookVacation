@@ -1,4 +1,4 @@
-using Logging.Meta;
+using Meta;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -12,13 +12,13 @@ public class RequestIdEnricher : ILogEventEnricher
     {
         _metaContextAccessor = metaContextAccessor;
     }
-    
+
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
-        if (_metaContextAccessor.MetaContext?.RequestId is null)
+        if (_metaContextAccessor.MetaContext?.CorrelationId is null)
             return;
 
-        var property = propertyFactory.CreateProperty("RequestId", _metaContextAccessor.MetaContext.RequestId);
+        var property = propertyFactory.CreateProperty("CorrelationId", _metaContextAccessor.MetaContext.CorrelationId);
         logEvent.AddOrUpdateProperty(property);
     }
 }
