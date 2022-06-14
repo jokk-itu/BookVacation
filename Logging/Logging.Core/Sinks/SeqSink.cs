@@ -14,8 +14,13 @@ public class SeqSink : ISink
                 $"Invalid {nameof(loggingConfiguration.SeqUri)} set to {loggingConfiguration.SeqUri}");
 
         loggerConfiguration
-            .Enrich.WithProperty("SeqProperty", "Seq")
             .WriteTo.Seq(loggingConfiguration.SeqUri,
                 restrictedToMinimumLevel: loggingConfiguration.SeqMinimumLogLevel);
+        
+        foreach (var pair in loggingConfiguration.SeqOverrides)
+        {
+            loggerConfiguration.Filter.ByExcluding(
+                $"SourceContext like {pair.Key} and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
+        }
     }
 }
