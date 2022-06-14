@@ -1,5 +1,6 @@
 using Logging.Configuration;
 using Serilog;
+using Serilog.Events;
 
 namespace Logging.Sinks;
 
@@ -18,7 +19,7 @@ public class ConsoleSink : ISink
         foreach (var pair in loggingConfiguration.ConsoleOverrides)
         {
             loggerConfiguration.Filter.ByExcluding(
-                $"SourceContext like {pair.Key} and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
+                $"SourceContext like {pair.Key} and @l in {SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
         }
     }
 }

@@ -6,27 +6,36 @@ public static class SerilogFilterArrayGenerator
 {
     public static string GenerateArrayAboveLevel(LogEventLevel level)
     {
-        return level switch
+        switch (level)
         {
-            LogEventLevel.Verbose => "['Verbose', 'Debug', 'Information', 'Warning', 'Error', 'Fatal']",
-            LogEventLevel.Debug => "['Debug', 'Information', 'Warning', 'Error', 'Fatal']",
-            LogEventLevel.Information => "['Information', 'Warning', 'Error', 'Fatal']",
-            LogEventLevel.Warning => "['Warning', 'Error', 'Fatal']",
-            LogEventLevel.Error => "['Warning', 'Error', 'Fatal']",
-            LogEventLevel.Fatal => "['Fatal']",
-        };
+            case LogEventLevel.Verbose:
+                return "['Debug', 'Information', 'Warning', 'Error', 'Fatal']";
+            case LogEventLevel.Debug:
+                return "['Information', 'Warning', 'Error', 'Fatal']";
+            case LogEventLevel.Information:
+                return "['Warning', 'Error', 'Fatal']";
+            case LogEventLevel.Warning:
+                return "['Error', 'Fatal']";
+            case LogEventLevel.Error:
+                return "['Fatal']";
+            case LogEventLevel.Fatal:
+                return "[]";
+            default:
+                throw new ArgumentOutOfRangeException(nameof(level), level, null);
+        }
     }
     
     public static string GenerateArrayBelowLevel(LogEventLevel level)
     {
         return level switch
         {
-            LogEventLevel.Verbose => "['Verbose']",
-            LogEventLevel.Debug => "['Verbose', 'Debug']",
-            LogEventLevel.Information => "['Verbose', 'Debug', 'Information']",
-            LogEventLevel.Warning => "['Verbose', 'Debug', 'Information', 'Warning']",
-            LogEventLevel.Error => "['Verbose', 'Debug', 'Information', 'Warning', 'Error']",
-            LogEventLevel.Fatal => "['Verbose', 'Debug', 'Information', 'Warning', 'Error', 'Fatal']",
+            LogEventLevel.Verbose => "[]",
+            LogEventLevel.Debug => "['Verbose']",
+            LogEventLevel.Information => "['Verbose', 'Debug']",
+            LogEventLevel.Warning => "['Verbose', 'Debug', 'Information']",
+            LogEventLevel.Error => "['Verbose', 'Debug', 'Information', 'Warning']",
+            LogEventLevel.Fatal => "['Verbose', 'Debug', 'Information', 'Warning', 'Error']",
+            _ => throw new ArgumentOutOfRangeException(nameof(level), level, null)
         };
     }
 }

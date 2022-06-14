@@ -22,6 +22,8 @@ Made up of microservices, and utilizes the routingslip pattern for distributed t
 - Aspnet
 - Masstransit
 - Serilog
+- RavenDB
+- Minio
 
 ## Service Technologies
 

@@ -21,7 +21,7 @@ public class SeqSink : ISink
         foreach (var pair in loggingConfiguration.SeqOverrides)
         {
             loggerConfiguration.Filter.ByExcluding(
-                $"SourceContext like {pair.Key} and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
+                $"SourceContext like {pair.Key} and @l in {SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
         }
     }
 }

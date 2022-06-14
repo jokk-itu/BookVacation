@@ -16,18 +16,13 @@ public class RequestIdMiddleware
 
     public async Task Invoke(HttpContext httpContext, IMetaContextAccessor metaContextAccessor)
     {
-        var requestIdLogProperty = Guid.NewGuid();
+        metaContextAccessor.MetaContext ??= new MetaContext();
         if (httpContext.Request.Headers.TryGetValue(Header.RequestId, out var requestId) &&
             Guid.TryParse(requestId, out var parsedRequestId))
         {
-            requestIdLogProperty = parsedRequestId;
+            metaContextAccessor.MetaContext.RequestId = parsedRequestId;
         }
-
-        metaContextAccessor.MetaContext ??= new MetaContext
-        {
-            RequestId = requestIdLogProperty
-        };
-
+        
         await _next(httpContext);
     }
 }

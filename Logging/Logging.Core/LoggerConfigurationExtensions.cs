@@ -37,7 +37,7 @@ public static class LoggerConfigurationExtensions
         if (configuration is null)
             throw new ArgumentNullException(nameof(configuration));
 
-        var assembly = Assembly.GetEntryAssembly();
+        var assembly = Assembly.GetEntryAssembly()!;
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
                           Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
 
@@ -82,22 +82,14 @@ public static class LoggerConfigurationExtensions
         Assembly assembly, string serviceName)
     {
         return loggerConfiguration
-            .Filter.ByExcluding(
-                $"SourceContext like {serviceName} and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like 'Serilog.AspnetCore.RequestLoggingMiddleware' and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like 'Mediator' and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like 'EventDispatcher' and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like 'Logging' and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like 'DocumentClient' and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like 'HealthCheck' and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}")
-            .Filter.ByExcluding(
-                $"SourceContext like {assembly.GetName().Name?.Split('.')[0]} and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(LogEventLevel.Information)}");
+            .MinimumLevel.Override(serviceName, LogEventLevel.Information)
+            .MinimumLevel.Override("Serilog.AspnetCore.RequestLoggingMiddleware", LogEventLevel.Information)
+            .MinimumLevel.Override("Mediator", LogEventLevel.Information)
+            .MinimumLevel.Override("EventDispatcher", LogEventLevel.Information)
+            .MinimumLevel.Override("Logging", LogEventLevel.Information)
+            .MinimumLevel.Override("DocumentClient", LogEventLevel.Information)
+            .MinimumLevel.Override("HealthCheck", LogEventLevel.Information)
+            .MinimumLevel.Override(assembly.GetName().Name?.Split('.')[0], LogEventLevel.Information);
     }
 
     private static LoggerConfiguration SetupBaseEnrichers(this LoggerConfiguration loggerConfiguration,
@@ -139,7 +131,7 @@ public static class LoggerConfigurationExtensions
         foreach (var pair in configuration.GlobalOverrides)
         {
             loggerConfiguration.Filter.ByExcluding(
-                $"SourceContext like {pair.Key} and @l in ${SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
+                $"SourceContext like {pair.Key} and @l in {SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
         }
 
         return loggerConfiguration;
