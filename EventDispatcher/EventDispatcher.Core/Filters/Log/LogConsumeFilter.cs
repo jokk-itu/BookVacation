@@ -2,7 +2,7 @@ using System.Diagnostics;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace EventDispatcher.Filters;
+namespace EventDispatcher.Filters.Log;
 
 public class LogConsumeFilter<T> : IFilter<ConsumeContext<T>> where T : class
 {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 
-namespace Logging;
+namespace Logging.Configuration;
 
 public class LoggingConfiguration
 {

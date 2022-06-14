@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Logging;
+namespace Logging.Configuration;
 
 [Serializable]
 public class LoggingConfigurationException : Exception

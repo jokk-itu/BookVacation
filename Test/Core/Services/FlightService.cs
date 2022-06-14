@@ -1,9 +1,9 @@
 using System.Net.Http.Json;
+using Core.Fakes;
 using FlightService.Contracts.Airplane;
 using FlightService.Contracts.Flight;
-using TestConsole.Fakes;
 
-namespace TestConsole.Services;
+namespace Core.Services;
 
 public class FlightService
 {

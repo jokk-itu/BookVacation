@@ -1,7 +1,7 @@
 using Bogus;
 using CarService.Contracts.RentalCar;
 
-namespace TestConsole.Fakes;
+namespace Core.Fakes;
 
 public static class RentalCarFaker
 {

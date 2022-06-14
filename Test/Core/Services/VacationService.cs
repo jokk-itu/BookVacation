@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using VacationService.Contracts.Vacation;
 
-namespace TestConsole.Services;
+namespace Core.Services;
 
 public class VacationService
 {

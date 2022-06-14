@@ -1,7 +1,7 @@
 using MassTransit;
 using Meta;
 
-namespace EventDispatcher.Filters;
+namespace EventDispatcher.Filters.Meta;
 
 public class MetaSendFilter<T> : IFilter<SendContext<T>> where T : class
 {

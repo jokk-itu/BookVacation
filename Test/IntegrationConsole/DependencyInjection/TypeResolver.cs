@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
-namespace TestConsole.DependencyInjection;
+namespace IntegrationConsole.DependencyInjection;
 
 public class TypeResolver : ITypeResolver
 {

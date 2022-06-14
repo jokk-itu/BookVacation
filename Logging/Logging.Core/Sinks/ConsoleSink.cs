@@ -1,6 +1,7 @@
+using Logging.Configuration;
 using Serilog;
 
-namespace Logging.Sink;
+namespace Logging.Sinks;
 
 public class ConsoleSink : ISink
 {

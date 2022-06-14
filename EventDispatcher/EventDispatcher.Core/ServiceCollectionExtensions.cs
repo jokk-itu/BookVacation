@@ -1,4 +1,5 @@
 using EventDispatcher.Filters;
+using EventDispatcher.Filters.Log;
 using EventDispatcher.Filters.Meta;
 using MassTransit;
 using Microsoft.Extensions.Configuration;

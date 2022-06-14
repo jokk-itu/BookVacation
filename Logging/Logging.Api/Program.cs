@@ -1,4 +1,5 @@
 using Logging;
+using Logging.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 

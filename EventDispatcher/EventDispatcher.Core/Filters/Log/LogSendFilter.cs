@@ -2,7 +2,7 @@ using System.Diagnostics;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace EventDispatcher.Filters;
+namespace EventDispatcher.Filters.Log;
 
 public class LogSendFilter<T> : IFilter<SendContext<T>> where T : class
 {

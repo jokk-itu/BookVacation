@@ -1,6 +1,7 @@
 using System.Reflection;
+using Logging.Configuration;
 using Logging.Enrichers;
-using Logging.Sink;
+using Logging.Sinks;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;

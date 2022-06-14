@@ -1,7 +1,7 @@
 using Bogus;
 using FlightService.Contracts.Flight;
 
-namespace TestConsole.Fakes;
+namespace Core.Fakes;
 
 public static class FlightFaker
 {

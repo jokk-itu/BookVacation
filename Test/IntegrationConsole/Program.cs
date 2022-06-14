@@ -1,6 +1,5 @@
+using IntegrationConsole.Commands;
 using Spectre.Console.Cli;
-using TestConsole.Commands;
-using TestConsole.Settings;
 
 var app = new CommandApp();
 app.Configure(config =>

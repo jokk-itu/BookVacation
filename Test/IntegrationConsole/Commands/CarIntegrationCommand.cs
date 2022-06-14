@@ -1,9 +1,8 @@
+using IntegrationConsole.Settings;
 using Spectre.Console;
 using Spectre.Console.Cli;
-using TestConsole.Services;
-using TestConsole.Settings;
 
-namespace TestConsole.Commands;
+namespace IntegrationConsole.Commands;
 
 public class CarIntegrationCommand : Command<TestSettings>
 {

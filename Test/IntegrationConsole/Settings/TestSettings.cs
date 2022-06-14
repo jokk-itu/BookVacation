@@ -1,6 +1,6 @@
 using Spectre.Console.Cli;
 
-namespace TestConsole.Settings;
+namespace IntegrationConsole.Settings;
 
 public class TestSettings : CommandSettings
 {

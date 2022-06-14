@@ -1,3 +1,4 @@
+using Logging.Configuration;
 using Serilog;
 
 namespace Logging;
