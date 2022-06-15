@@ -34,6 +34,9 @@ SeqUri: http://localhost:5341,
 SeqMinimumLogLevel: Information,
 ConsoleMinimumLogLevel: Information,
 Servicename: api
+GlobalOverrides: ''
+SeqOverrides: ''
+ConsoleOverrides: ''
 
 <div class="py-4">
     <h2 id="meta" class="text-xl">
@@ -81,3 +84,6 @@ It is then logged in every log as a property.
 
 Get a MessageId from the header of an incoming AMQP message.
 It is then logged in every log as a property.
+
+<!-- Explain how the Serilog pipeline functions -->
+<!-- Explain difference between Normal Pipeline vs Advanced Pipeline -->

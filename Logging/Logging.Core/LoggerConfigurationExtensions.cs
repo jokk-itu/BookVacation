@@ -130,8 +130,7 @@ public static class LoggerConfigurationExtensions
     {
         foreach (var pair in configuration.GlobalOverrides)
         {
-            loggerConfiguration.Filter.ByExcluding(
-                $"SourceContext like {pair.Key} and @l in {SerilogFilterArrayGenerator.GenerateArrayBelowLevel(pair.Value)}");
+            loggerConfiguration.MinimumLevel.Override(pair.Key, pair.Value);
         }
 
         return loggerConfiguration;
