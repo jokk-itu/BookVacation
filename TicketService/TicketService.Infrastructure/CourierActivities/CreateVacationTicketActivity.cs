@@ -35,6 +35,7 @@ public class CreateVacationTicketActivity : IActivity<CreateVacationTicketArgume
 
     public async Task<CompensationResult> Compensate(CompensateContext<CreateVacationTicketLog> context)
     {
+        await Task.Yield();
         return context.Compensated();
     }
 }

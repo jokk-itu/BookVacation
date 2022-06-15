@@ -17,12 +17,15 @@ public class MinioService : IMinioService
     {
         try
         {
-            if (!await _minioClient.BucketExistsAsync(bucket, cancellationToken))
-                await _minioClient.MakeBucketAsync(bucket, cancellationToken: cancellationToken);
+            if (!await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucket), cancellationToken))
+                await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucket), cancellationToken);
 
-            await _minioClient.StatObjectAsync(bucket, ticketId, cancellationToken: cancellationToken);
+            await _minioClient.StatObjectAsync(new StatObjectArgs().WithBucket(bucket).WithObject(ticketId),
+                cancellationToken: cancellationToken);
             var output = new MemoryStream();
-            await _minioClient.GetObjectAsync(bucket, ticketId, stream => { stream.CopyTo(output); },
+            await _minioClient.GetObjectAsync(
+                new GetObjectArgs().WithBucket(bucket).WithObject(ticketId)
+                    .WithCallbackStream(stream => { stream.CopyTo(output); }),
                 cancellationToken: cancellationToken);
             return output;
         }
@@ -37,12 +40,14 @@ public class MinioService : IMinioService
     {
         try
         {
-            if (!await _minioClient.BucketExistsAsync(bucket, cancellationToken))
-                await _minioClient.MakeBucketAsync(bucket, cancellationToken: cancellationToken);
+            if (!await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucket), cancellationToken))
+                await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucket),
+                    cancellationToken: cancellationToken);
 
             var stream = new MemoryStream(data);
-            await _minioClient.PutObjectAsync(bucket, ticketId, stream, data.Length,
-                cancellationToken: cancellationToken);
+            await _minioClient.PutObjectAsync(
+                new PutObjectArgs().WithBucket(bucket).WithObject(ticketId).WithObjectSize(data.Length)
+                    .WithStreamData(stream), cancellationToken: cancellationToken);
             await stream.DisposeAsync();
             return true;
         }
