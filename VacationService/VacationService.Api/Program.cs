@@ -1,6 +1,6 @@
-using EventDispatcher;
 using FluentValidation.AspNetCore;
 using Logging;
+using Logging.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;

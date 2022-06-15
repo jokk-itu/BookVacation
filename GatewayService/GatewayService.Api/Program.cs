@@ -1,4 +1,5 @@
 using Logging;
+using Logging.Configuration;
 using Serilog;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()

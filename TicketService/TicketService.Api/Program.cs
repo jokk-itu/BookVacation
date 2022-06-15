@@ -1,5 +1,6 @@
 using HealthCheck.Core;
 using Logging;
+using Logging.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Minio;

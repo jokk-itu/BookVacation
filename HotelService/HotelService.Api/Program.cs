@@ -4,6 +4,7 @@ using HotelService.Api;
 using HotelService.Api.Validators;
 using HotelService.Infrastructure;
 using Logging;
+using Logging.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
