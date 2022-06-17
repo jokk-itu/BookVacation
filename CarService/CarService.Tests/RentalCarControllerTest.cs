@@ -6,6 +6,7 @@ using CarService.Api.Controllers.v1;
 using CarService.Contracts.RentalCar;
 using CarService.Domain;
 using CarService.Infrastructure.Requests.CreateRentalCar;
+using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -39,10 +40,12 @@ public class RentalCarControllerTest
             CarModelNumber = Guid.NewGuid(),
             RentalCompanyName = string.Empty
         };
+
+        var rentalCarResponse = new Response<RentalCar>(rentalCar);
         
         var fakeMediator = new Mock<IMediator>();
         fakeMediator.Setup(x => x.Send(It.IsAny<CreateRentalCarRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(rentalCar)
+            .ReturnsAsync(rentalCarResponse)
             .Verifiable();
         
         var controller = new RentalCarController(fakeMediator.Object);

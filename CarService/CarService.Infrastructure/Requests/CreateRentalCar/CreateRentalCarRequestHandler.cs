@@ -1,10 +1,11 @@
 using CarService.Domain;
 using DocumentClient;
+using Mediator;
 using MediatR;
 
 namespace CarService.Infrastructure.Requests.CreateRentalCar;
 
-public class CreateRentalCarRequestHandler : IRequestHandler<CreateRentalCarRequest, RentalCar>
+public class CreateRentalCarRequestHandler : ICommandHandler<CreateRentalCarRequest, RentalCar>
 {
     private readonly IDocumentClient _client;
 
@@ -13,7 +14,7 @@ public class CreateRentalCarRequestHandler : IRequestHandler<CreateRentalCarRequ
         _client = client;
     }
 
-    public async Task<RentalCar> Handle(CreateRentalCarRequest request, CancellationToken cancellationToken)
+    public async Task<Response<RentalCar>> Handle(CreateRentalCarRequest request, CancellationToken cancellationToken)
     {
         var rentalCar = new RentalCar
         {
@@ -24,6 +25,6 @@ public class CreateRentalCarRequestHandler : IRequestHandler<CreateRentalCarRequ
             Color = request.Color
         };
         await _client.StoreAsync(rentalCar, cancellationToken);
-        return rentalCar;
+        return new Response<RentalCar>(rentalCar);
     }
 }

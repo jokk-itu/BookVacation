@@ -1,5 +1,6 @@
 using CarService.Domain;
 using CarService.Infrastructure.Requests.CreateRentalCar;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;
@@ -23,11 +24,12 @@ public class CreateRentalCarTest : RavenTestDriver
         var handler = new CreateRentalCarRequestHandler(client);
 
         //Act
-        var expected = await handler.Handle(request, CancellationToken.None);
+        var response = await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
         var actual = await session.Query<RentalCar>().FirstAsync();
 
         //Assert
-        Assert.Equal(expected.Id, actual.Id);
+        Assert.Equal(ResponseCode.Ok, response.ResponseCode);
+        Assert.Equal(response.Body!.Id, actual.Id);
     }
 }

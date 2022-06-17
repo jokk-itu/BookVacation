@@ -21,24 +21,24 @@ public class CreateRentalDealTest : RavenTestDriver
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createRentalCarHandler = new CreateRentalCarRequestHandler(client);
-        var rentalCar = await createRentalCarHandler.Handle(
+        var rentalCarResponse = await createRentalCarHandler.Handle(
             new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var createDentalDealHandler = new CreateRentalDealRequestHandler(client);
+        var createDentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
 
         //Act
-        var expected = await createDentalDealHandler.Handle(
+        var rentalDealResponse = await createDentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
-                Guid.Parse(rentalCar.Id)), CancellationToken.None);
+                Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var actual = await session.Query<RentalDeal>().Where(x => x.Id == expected!.Id).FirstAsync();
+        var actual = await session.Query<RentalDeal>().Where(x => x.Id == rentalDealResponse.Body!.Id).FirstAsync();
 
         //Assert
-        Assert.Equal(expected!.Id, actual.Id);
+        Assert.Equal(rentalDealResponse.Body!.Id, actual.Id);
     }
 
     [Trait("Category", "Unit")]
@@ -50,7 +50,7 @@ public class CreateRentalDealTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var createDentalDealHandler = new CreateRentalDealRequestHandler(client);
+        var createDentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
 
         //Act
         var invalidRentalDeal = await createDentalDealHandler.Handle(
@@ -73,24 +73,24 @@ public class CreateRentalDealTest : RavenTestDriver
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var rentalCarHandler = new CreateRentalCarRequestHandler(client);
-        var rentalCar = await rentalCarHandler.Handle(
+        var rentalCarResponse = await rentalCarHandler.Handle(
             new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var createRentalDealHandler = new CreateRentalDealRequestHandler(client);
+        var createRentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
 
         //Act
         await createRentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(from), DateTimeOffset.UtcNow.AddDays(to),
-                Guid.Parse(rentalCar.Id)), CancellationToken.None);
+                Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
 
         var conflictingRentalDeal = await createRentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(conflictingFrom),
                 DateTimeOffset.UtcNow.AddDays(conflictingTo),
-                Guid.Parse(rentalCar.Id)), CancellationToken.None);
+                Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 
         //Assert
         Assert.Null(conflictingRentalDeal);

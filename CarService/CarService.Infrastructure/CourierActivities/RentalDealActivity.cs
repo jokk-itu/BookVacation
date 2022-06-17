@@ -2,6 +2,7 @@ using CarService.Contracts.RentalDeal;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
 using CarService.Infrastructure.Requests.DeleteRentalDeal;
 using MassTransit;
+using Mediator;
 using MediatR;
 
 namespace CarService.Infrastructure.CourierActivities;
@@ -17,17 +18,21 @@ public class RentalDealActivity : IActivity<RentalDealArgument, RentalDealLog>
 
     public async Task<ExecutionResult> Execute(ExecuteContext<RentalDealArgument> context)
     {
-        var rentalDeal = await _mediator.Send(new CreateRentalDealRequest(
+        var response = await _mediator.Send(new CreateRentalDealRequest(
             context.Arguments.RentFrom,
             context.Arguments.RentTo,
             context.Arguments.RentalCarId));
 
-        return rentalDeal is null ? context.Faulted() : context.Completed(new { RentalDealId = rentalDeal.Id });
+        if (response.ResponseCode != ResponseCode.Ok)
+            return context.Faulted();
+
+        return context.Completed(new { RentalDealId = response.Body!.Id });
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<RentalDealLog> context)
     {
-        await _mediator.Send(new DeleteRentalDealRequest(context.Log.RentalDealId));
-        return context.Compensated();
+        var response = await _mediator.Send(new DeleteRentalDealRequest(context.Log.RentalDealId));
+
+        return response.ResponseCode != ResponseCode.Ok ? context.Failed() : context.Compensated();
     }
 }

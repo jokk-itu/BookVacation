@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.HealthChecks.RavenDB" Version="6.0.2" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.2" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.3" />
         <PackageReference Include="HealthCheck" Version="2022.6.3.3" />
         <PackageReference Include="Logging" Version="2022.6.15.1" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
