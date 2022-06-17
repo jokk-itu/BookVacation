@@ -20,9 +20,11 @@ public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T : cl
         await next.Send(context);
         watch.Stop();
 
-        var scope = new Dictionary<string, object>();
-        scope.Add("TrackingNumber", context.TrackingNumber);
-        scope.Add("ActivityName", context.ActivityName);
+        var scope = new Dictionary<string, object>
+        {
+            { "TrackingNumber", context.TrackingNumber },
+            { "ActivityName", context.ActivityName }
+        };
         if(context.MessageId is not null)
             scope.Add("MessageId", context.MessageId);
         

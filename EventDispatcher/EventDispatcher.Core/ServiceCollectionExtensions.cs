@@ -41,6 +41,8 @@ public static class ServiceCollectionExtensions
                 factoryConfigurator.UseConsumeFilter(typeof(MetaConsumerFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(MetaSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(MetaPublishFilter<>), busContext);
+                factoryConfigurator.UseCompensateActivityFilter(typeof(MetaCompensateFilter<>), busContext);
+                factoryConfigurator.UseExecuteActivityFilter(typeof(MetaExecuteFilter<>), busContext);
                 
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
