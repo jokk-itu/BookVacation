@@ -14,7 +14,7 @@ public class VacationLoad
             clientCount: 10,
             initClient: (_, _) => Task.FromResult(new HttpClient()));
 
-        var vacation = Step.Create("post_vacation", timeout: TimeSpan.FromSeconds(5), clientFactory: httpFactory,
+        var vacation = Step.Create("post_vacation", clientFactory: httpFactory,
             execute: async context =>
             {
                 var watch = Stopwatch.StartNew();
@@ -25,8 +25,7 @@ public class VacationLoad
             });
 
         var scenario = ScenarioBuilder.CreateScenario("vacation", vacation)
-            .WithLoadSimulations(Simulation.InjectPerSecRandom(10, 20, TimeSpan.FromMinutes(2)))
-            .WithWarmUpDuration(TimeSpan.FromMinutes(1));
+            .WithLoadSimulations(Simulation.RampPerSec(10, TimeSpan.FromSeconds(120)));
 
         NBomberRunner
             .RegisterScenarios(scenario)
