@@ -9,4 +9,4 @@
 	<hr class="border-blue-400" />
 </div>
 
-<!-- Mediator pattern, PipelineBehaviours -->
+<!-- Mediator pattern, PipelineBehaviours, ICommandHandler, IQueryHandler, CQRS Pattern -->
