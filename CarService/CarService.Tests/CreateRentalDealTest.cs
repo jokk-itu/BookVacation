@@ -1,6 +1,7 @@
 using CarService.Domain;
 using CarService.Infrastructure.Requests.CreateRentalCar;
 using CarService.Infrastructure.Requests.CreateRentalDeal;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;
@@ -53,12 +54,12 @@ public class CreateRentalDealTest : RavenTestDriver
         var createDentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
 
         //Act
-        var invalidRentalDeal = await createDentalDealHandler.Handle(
+        var responseRentalDeal = await createDentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
                 Guid.Empty), CancellationToken.None);
 
         //Assert
-        Assert.Null(invalidRentalDeal);
+        Assert.Equal(ResponseCode.NotFound, responseRentalDeal.ResponseCode);
     }
 
     [Trait("Category", "Unit")]
@@ -87,12 +88,12 @@ public class CreateRentalDealTest : RavenTestDriver
 
         WaitForIndexing(store);
 
-        var conflictingRentalDeal = await createRentalDealHandler.Handle(
+        var responseRentalDeal = await createRentalDealHandler.Handle(
             new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(conflictingFrom),
                 DateTimeOffset.UtcNow.AddDays(conflictingTo),
                 Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 
         //Assert
-        Assert.Null(conflictingRentalDeal);
+        Assert.Equal(ResponseCode.Conflict, responseRentalDeal.ResponseCode);
     }
 }

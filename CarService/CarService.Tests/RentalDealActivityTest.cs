@@ -235,9 +235,9 @@ public class RentalDealActivityTest
             builder.AddActivity(testActivityHarness.Name, testActivityHarness.ExecuteAddress, testArgument);
             builder.AddSubscription(harness.Bus.Address, RoutingSlipEvents.All);
             var activityContext = harness.SubscribeHandler<RoutingSlipActivityCompensationFailed>();
-            var faultedContext = harness.SubscribeHandler<RoutingSlipFaulted>();
+            var faultedContext = harness.SubscribeHandler<RoutingSlipCompensationFailed>();
             await harness.Bus.Execute(builder.Build());
-            Task.WaitAll(activityContext, faultedContext);
+            await Task.WhenAll(activityContext, faultedContext);
 
             //Assert
             fakeMediator.Verify();
