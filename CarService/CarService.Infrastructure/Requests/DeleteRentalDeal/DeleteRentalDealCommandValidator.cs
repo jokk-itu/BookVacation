@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace CarService.Infrastructure.Validators;
 
-public class DeleteRentalDealRequestValidator : AbstractValidator<DeleteRentalDealRequest>
+public class DeleteRentalDealCommandValidator : AbstractValidator<DeleteRentalDealCommand>
 {
-    public DeleteRentalDealRequestValidator()
+    public DeleteRentalDealCommandValidator()
     {
         RuleFor(x => x.RentalDealId).NotEmpty();
     }

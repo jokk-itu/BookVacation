@@ -20,8 +20,8 @@ public class CreateRentalCarTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue");
-        var handler = new CreateRentalCarRequestHandler(client);
+        var request = new CreateRentalCarCommand(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue");
+        var handler = new CreateRentalCarCommandHandler(client);
 
         //Act
         var response = await handler.Handle(request, CancellationToken.None);

@@ -44,7 +44,7 @@ public class RentalCarControllerTest
         var rentalCarResponse = new Response<RentalCar>(rentalCar);
         
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<CreateRentalCarRequest>(), It.IsAny<CancellationToken>()))
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateRentalCarCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(rentalCarResponse)
             .Verifiable();
         

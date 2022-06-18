@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace CarService.Infrastructure.Validators;
 
-public class CreateRentalCarRequestValidator : AbstractValidator<CreateRentalCarRequest>
+public class CreateRentalCarCommandValidator : AbstractValidator<CreateRentalCarCommand>
 {
-    public CreateRentalCarRequestValidator()
+    public CreateRentalCarCommandValidator()
     {
         RuleFor(x => x.CarModelNumber).NotEmpty();
         RuleFor(x => x.Color).NotEmpty();

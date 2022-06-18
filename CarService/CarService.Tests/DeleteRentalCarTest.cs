@@ -22,26 +22,26 @@ public class DeleteRentalCarTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
 
-        var deleteRentalDealHandler = new DeleteRentalDealRequestHandler(client, Mock.Of<ILogger<DeleteRentalDealRequestHandler>>());
-        var createRentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
-        var rentalCarHandler = new CreateRentalCarRequestHandler(client);
+        var deleteRentalDealHandler = new DeleteRentalDealCommandHandler(client, Mock.Of<ILogger<DeleteRentalDealCommandHandler>>());
+        var createRentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
+        var rentalCarHandler = new CreateRentalCarCommandHandler(client);
 
         var rentalCarResponse =
             await rentalCarHandler.Handle(
-                new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"),
+                new CreateRentalCarCommand(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"),
                 CancellationToken.None);
 
         WaitForIndexing(store);
 
         var rentalDealResponse = await createRentalDealHandler.Handle(
-            new CreateRentalDealRequest(new DateTimeOffset().AddDays(1), new DateTimeOffset().AddDays(2),
+            new CreateRentalDealCommand(new DateTimeOffset().AddDays(1), new DateTimeOffset().AddDays(2),
                 Guid.Parse(rentalCarResponse.Body!.Id)),
             CancellationToken.None);
 
         WaitForIndexing(store);
 
         //Act
-        await deleteRentalDealHandler.Handle(new DeleteRentalDealRequest(Guid.Parse(rentalDealResponse.Body!.Id)),
+        await deleteRentalDealHandler.Handle(new DeleteRentalDealCommand(Guid.Parse(rentalDealResponse.Body!.Id)),
             CancellationToken.None);
 
         WaitForIndexing(store);
@@ -61,13 +61,13 @@ public class DeleteRentalCarTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
 
-        var deleteRentalDealHandler = new DeleteRentalDealRequestHandler(client, Mock.Of<ILogger<DeleteRentalDealRequestHandler>>());
+        var deleteRentalDealHandler = new DeleteRentalDealCommandHandler(client, Mock.Of<ILogger<DeleteRentalDealCommandHandler>>());
 
         WaitForIndexing(store);
 
         //Act
         var rentalDealId = Guid.NewGuid();
-        var actual = await deleteRentalDealHandler.Handle(new DeleteRentalDealRequest(rentalDealId),
+        var actual = await deleteRentalDealHandler.Handle(new DeleteRentalDealCommand(rentalDealId),
             CancellationToken.None);
 
         //Assert

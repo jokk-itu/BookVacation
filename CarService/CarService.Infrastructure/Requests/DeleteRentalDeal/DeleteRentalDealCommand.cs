@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CarService.Infrastructure.Requests.DeleteRentalDeal;
 
-public record DeleteRentalDealRequest(Guid RentalDealId) : ICommand<Unit>;
+public record DeleteRentalDealCommand(Guid RentalDealId) : ICommand<Unit>;

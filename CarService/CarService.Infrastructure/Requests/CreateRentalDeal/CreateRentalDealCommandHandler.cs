@@ -8,36 +8,36 @@ using Raven.Client.Documents.Linq;
 
 namespace CarService.Infrastructure.Requests.CreateRentalDeal;
 
-public class CreateRentalDealRequestHandler : ICommandHandler<CreateRentalDealRequest, RentalDeal>
+public class CreateRentalDealCommandHandler : ICommandHandler<CreateRentalDealCommand, RentalDeal>
 {
     private readonly IDocumentClient _client;
-    private readonly ILogger<CreateRentalDealRequestHandler> _logger;
+    private readonly ILogger<CreateRentalDealCommandHandler> _logger;
 
-    public CreateRentalDealRequestHandler(IDocumentClient client, ILogger<CreateRentalDealRequestHandler> logger)
+    public CreateRentalDealCommandHandler(IDocumentClient client, ILogger<CreateRentalDealCommandHandler> logger)
     {
         _client = client;
         _logger = logger;
     }
 
-    public async Task<Response<RentalDeal>> Handle(CreateRentalDealRequest request, CancellationToken cancellationToken)
+    public async Task<Response<RentalDeal>> Handle(CreateRentalDealCommand command, CancellationToken cancellationToken)
     {
         var rentalCar = await _client.QueryAsync<RentalCar>(query =>
-            query.Where(x => x.Id == request.RentalCarId.ToString())
+            query.Where(x => x.Id == command.RentalCarId.ToString())
                 .FirstOrDefaultAsync(cancellationToken)
         );
 
         if (rentalCar is null)
         {
-            _logger.LogDebug("RentalCar does not exist from given identifier {Identifier}", request.RentalCarId);
+            _logger.LogDebug("RentalCar does not exist from given identifier {Identifier}", command.RentalCarId);
             return new Response<RentalDeal>(ResponseCode.NotFound,
                 new[] { "RentalCar does not exist from the given identifier" });
         }
 
         var conflictingRentDeal = await _client.QueryAsync<RentalDeal>(queryable =>
-            queryable.Where(x => x.RentalCarId == request.RentalCarId)
+            queryable.Where(x => x.RentalCarId == command.RentalCarId)
                 .Where(x =>
-                    (request.RentFrom >= x.RentFrom && request.RentFrom <= x.RentTo) ||
-                    (request.RentTo >= x.RentFrom && request.RentTo <= x.RentTo))
+                    (command.RentFrom >= x.RentFrom && command.RentFrom <= x.RentTo) ||
+                    (command.RentTo >= x.RentFrom && command.RentTo <= x.RentTo))
                 .FirstOrDefaultAsync(cancellationToken)
         );
 
@@ -45,16 +45,16 @@ public class CreateRentalDealRequestHandler : ICommandHandler<CreateRentalDealRe
         if (conflictingRentDeal is not null)
         {
             _logger.LogDebug("RentalCar with identifier {Identifier}, is already booked from {From} to {To}",
-                request.RentalCarId, request.RentFrom, request.RentTo);
+                command.RentalCarId, command.RentFrom, command.RentTo);
             return new Response<RentalDeal>(ResponseCode.Conflict,
                 new[] { "RentalDeal already exists in the given timeframe." });
         }
 
         var rentalDeal = new RentalDeal
         {
-            RentFrom = request.RentFrom,
-            RentTo = request.RentTo,
-            RentalCarId = request.RentalCarId
+            RentFrom = command.RentFrom,
+            RentTo = command.RentTo,
+            RentalCarId = command.RentalCarId
         };
 
         await _client.StoreAsync(rentalDeal, cancellationToken);

@@ -36,7 +36,7 @@ public class RentalDealActivityTest
             RentalCarId = It.IsAny<Guid>()
         };
         var rentalDealResponse = new Mediator.Response<RentalDeal>(rentalDeal);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealCommand>(), CancellationToken.None))
             .ReturnsAsync(rentalDealResponse)
             .Verifiable();
 
@@ -81,7 +81,7 @@ public class RentalDealActivityTest
         var bookHotelActivityHarness =
             harness.Activity<RentalDealActivity, RentalDealArgument, RentalDealLog>(_ => rentCarActivity,
                 _ => rentCarActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealCommand>(), CancellationToken.None))
             .ReturnsAsync(new Mediator.Response<RentalDeal> {ResponseCode = ResponseCode.NotFound})
             .Verifiable();
 
@@ -137,11 +137,11 @@ public class RentalDealActivityTest
             RentalCarId = It.IsAny<Guid>()
         };
         var rentalDealResponse = new Mediator.Response<RentalDeal>(rentalDeal);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealCommand>(), CancellationToken.None))
             .ReturnsAsync(rentalDealResponse)
             .Verifiable();
 
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentalDealRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentalDealCommand>(), CancellationToken.None))
             .ReturnsAsync(new Mediator.Response<Unit>())
             .Verifiable();
 
@@ -203,11 +203,11 @@ public class RentalDealActivityTest
             RentalCarId = It.IsAny<Guid>()
         };
         var rentalDealResponse = new Mediator.Response<RentalDeal>(rentalDeal);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealCommand>(), CancellationToken.None))
             .ReturnsAsync(rentalDealResponse)
             .Verifiable();
 
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentalDealRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteRentalDealCommand>(), CancellationToken.None))
             .ReturnsAsync(new Mediator.Response<Unit>
             {
                 ResponseCode = ResponseCode.NotFound

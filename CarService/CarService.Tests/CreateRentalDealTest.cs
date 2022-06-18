@@ -21,17 +21,17 @@ public class CreateRentalDealTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var createRentalCarHandler = new CreateRentalCarRequestHandler(client);
+        var createRentalCarHandler = new CreateRentalCarCommandHandler(client);
         var rentalCarResponse = await createRentalCarHandler.Handle(
-            new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
+            new CreateRentalCarCommand(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var createDentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
+        var createDentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
 
         //Act
         var rentalDealResponse = await createDentalDealHandler.Handle(
-            new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
+            new CreateRentalDealCommand(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
                 Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
@@ -51,11 +51,11 @@ public class CreateRentalDealTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var createDentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
+        var createDentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
 
         //Act
         var responseRentalDeal = await createDentalDealHandler.Handle(
-            new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
+            new CreateRentalDealCommand(DateTimeOffset.UtcNow.AddDays(1), DateTimeOffset.UtcNow.AddDays(2),
                 Guid.Empty), CancellationToken.None);
 
         //Assert
@@ -73,23 +73,23 @@ public class CreateRentalDealTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var rentalCarHandler = new CreateRentalCarRequestHandler(client);
+        var rentalCarHandler = new CreateRentalCarCommandHandler(client);
         var rentalCarResponse = await rentalCarHandler.Handle(
-            new CreateRentalCarRequest(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
+            new CreateRentalCarCommand(Guid.NewGuid(), "Mercedes", "EuropeCar", 12, "Blue"), CancellationToken.None);
 
         WaitForIndexing(store);
 
-        var createRentalDealHandler = new CreateRentalDealRequestHandler(client, Mock.Of<ILogger<CreateRentalDealRequestHandler>>());
+        var createRentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
 
         //Act
         await createRentalDealHandler.Handle(
-            new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(from), DateTimeOffset.UtcNow.AddDays(to),
+            new CreateRentalDealCommand(DateTimeOffset.UtcNow.AddDays(from), DateTimeOffset.UtcNow.AddDays(to),
                 Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 
         WaitForIndexing(store);
 
         var responseRentalDeal = await createRentalDealHandler.Handle(
-            new CreateRentalDealRequest(DateTimeOffset.UtcNow.AddDays(conflictingFrom),
+            new CreateRentalDealCommand(DateTimeOffset.UtcNow.AddDays(conflictingFrom),
                 DateTimeOffset.UtcNow.AddDays(conflictingTo),
                 Guid.Parse(rentalCarResponse.Body!.Id)), CancellationToken.None);
 

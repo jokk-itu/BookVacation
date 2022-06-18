@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace CarService.Infrastructure.Validators;
 
-public class CreateRentalDealRequestValidator : AbstractValidator<CreateRentalDealRequest>
+public class CreateRentalDealCommandValidator : AbstractValidator<CreateRentalDealCommand>
 {
-    public CreateRentalDealRequestValidator()
+    public CreateRentalDealCommandValidator()
     {
         RuleFor(x => x.RentalCarId).NotEmpty();
         RuleFor(x => x.RentFrom).NotNull();

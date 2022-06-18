@@ -18,7 +18,7 @@ public class RentalDealActivity : IActivity<RentalDealArgument, RentalDealLog>
 
     public async Task<ExecutionResult> Execute(ExecuteContext<RentalDealArgument> context)
     {
-        var response = await _mediator.Send(new CreateRentalDealRequest(
+        var response = await _mediator.Send(new CreateRentalDealCommand(
             context.Arguments.RentFrom,
             context.Arguments.RentTo,
             context.Arguments.RentalCarId));
@@ -31,7 +31,7 @@ public class RentalDealActivity : IActivity<RentalDealArgument, RentalDealLog>
 
     public async Task<CompensationResult> Compensate(CompensateContext<RentalDealLog> context)
     {
-        var response = await _mediator.Send(new DeleteRentalDealRequest(context.Log.RentalDealId));
+        var response = await _mediator.Send(new DeleteRentalDealCommand(context.Log.RentalDealId));
 
         return response.ResponseCode != ResponseCode.Ok ? context.Failed() : context.Compensated();
     }
