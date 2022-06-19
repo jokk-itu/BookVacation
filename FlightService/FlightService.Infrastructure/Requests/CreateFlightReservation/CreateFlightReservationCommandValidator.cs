@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightService.Infrastructure.Validators;
 
-public class CreateFlightReservationRequestValidator : AbstractValidator<CreateFlightReservationRequest>
+public class CreateFlightReservationCommandValidator : AbstractValidator<CreateFlightReservationCommand>
 {
-    public CreateFlightReservationRequestValidator()
+    public CreateFlightReservationCommandValidator()
     {
         RuleFor(x => x.FlightId).NotEmpty();
         RuleFor(x => x.SeatId).NotEmpty();

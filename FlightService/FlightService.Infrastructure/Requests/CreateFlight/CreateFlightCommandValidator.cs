@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightService.Infrastructure.Validators;
 
-public class CreateFlightRequestValidator : AbstractValidator<CreateFlightRequest>
+public class CreateFlightCommandValidator : AbstractValidator<CreateFlightCommand>
 {
-    public CreateFlightRequestValidator()
+    public CreateFlightCommandValidator()
     {
         RuleFor(x => x.Price).GreaterThan(0);
         RuleFor(x => x.AirplaneId).NotEmpty();

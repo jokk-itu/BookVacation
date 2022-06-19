@@ -2,6 +2,7 @@ using FlightService.Contracts.FlightReservation;
 using FlightService.Infrastructure.Requests.CreateFlightReservation;
 using FlightService.Infrastructure.Requests.DeleteFlightReservation;
 using MassTransit;
+using Mediator;
 using MediatR;
 
 namespace FlightService.Infrastructure.CourierActivities;
@@ -17,17 +18,17 @@ public class FlightReservationActivity : IActivity<FlightReservationArgument, Fl
 
     public async Task<ExecutionResult> Execute(ExecuteContext<FlightReservationArgument> context)
     {
-        var flightReservation =
+        var response =
             await _mediator.Send(
-                new CreateFlightReservationRequest(context.Arguments.SeatId, context.Arguments.FlightId));
-        return flightReservation is null
+                new CreateFlightReservationCommand(context.Arguments.SeatId, context.Arguments.FlightId));
+        return response.ResponseCode != ResponseCode.Ok
             ? context.Faulted()
-            : context.Completed(new FlightReservationLog { ReservationId = Guid.Parse(flightReservation.Id) });
+            : context.Completed(new FlightReservationLog { ReservationId = Guid.Parse(response.Body!.Id) });
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<FlightReservationLog> context)
     {
-        await _mediator.Send(new DeleteFlightReservationRequest(context.Log.ReservationId));
+        await _mediator.Send(new DeleteFlightReservationCommand(context.Log.ReservationId));
         return context.Compensated();
     }
 }

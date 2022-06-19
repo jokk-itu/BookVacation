@@ -22,13 +22,13 @@ public class CreateAirplaneRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 20);
-        var handler = new CreateAirplaneRequestHandler(client);
+        var request = new CreateAirplaneCommand(Guid.NewGuid(), "Boeing", "SAS", 20);
+        var handler = new CreateAirplaneCommandHandler(client);
 
         //Act
-        var expect = await handler.Handle(request, CancellationToken.None);
+        var airplaneResponse = await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
-        var actual = await session.Query<Airplane>().Where(x => x.Id == expect.Id).FirstOrDefaultAsync();
+        var actual = await session.Query<Airplane>().Where(x => x.Id == airplaneResponse.Body!.Id).FirstOrDefaultAsync();
 
         //Assert
         Assert.NotNull(actual);

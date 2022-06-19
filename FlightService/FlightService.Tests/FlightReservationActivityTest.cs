@@ -10,6 +10,7 @@ using FlightService.Infrastructure.Requests.DeleteFlightReservation;
 using MassTransit;
 using MassTransit.Courier.Contracts;
 using MassTransit.Testing;
+using Mediator;
 using MediatR;
 using Moq;
 using Xunit;
@@ -26,17 +27,18 @@ public class FlightReservationActivityTest
         var fakeMediator = new Mock<IMediator>();
         var harness = new InMemoryTestHarness();
         var flightReservationActivity = new FlightReservationActivity(fakeMediator.Object);
+        var flightReservation = new FlightReservation
+        {
+            Id = It.IsAny<Guid>().ToString(),
+            FlightId = It.IsAny<Guid>(),
+            SeatId = It.IsAny<Guid>()
+        };
         var flightReservationHarness =
             harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(
                 _ => flightReservationActivity,
                 _ => flightReservationActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync(new FlightReservation
-            {
-                Id = It.IsAny<Guid>().ToString(),
-                FlightId = It.IsAny<Guid>(),
-                SeatId = It.IsAny<Guid>()
-            })
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Mediator.Response<FlightReservation>(flightReservation))
             .Verifiable();
 
         //Act
@@ -80,8 +82,8 @@ public class FlightReservationActivityTest
             harness.Activity<FlightReservationActivity, FlightReservationArgument, FlightReservationLog>(
                 _ => rentCarActivity,
                 _ => rentCarActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync((FlightReservation?)null)
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationCommand>(), CancellationToken.None))
+            .ReturnsAsync(new Mediator.Response<FlightReservation>(ResponseCode.Conflict, new []{ "FlightReservation already exists." }))
             .Verifiable();
 
         //Act
@@ -127,17 +129,18 @@ public class FlightReservationActivityTest
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync(new FlightReservation
-            {
-                Id = It.IsAny<Guid>().ToString(),
-                FlightId = It.IsAny<Guid>(),
-                SeatId = It.IsAny<Guid>()
-            })
+        var flightReservation = new FlightReservation
+        {
+            Id = It.IsAny<Guid>().ToString(),
+            FlightId = It.IsAny<Guid>(),
+            SeatId = It.IsAny<Guid>()
+        };
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationCommand>(), CancellationToken.None))
+            .ReturnsAsync(new Mediator.Response<FlightReservation>(flightReservation))
             .Verifiable();
 
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteFlightReservationRequest>(), CancellationToken.None))
-            .ReturnsAsync(Unit.Value)
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteFlightReservationCommand>(), CancellationToken.None))
+            .ReturnsAsync(new Mediator.Response<Unit>(ResponseCode.NotFound, new []{ "FlightReservation does not exist." }))
             .Verifiable();
 
         //Act

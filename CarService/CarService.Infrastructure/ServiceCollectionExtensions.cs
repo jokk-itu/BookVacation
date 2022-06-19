@@ -1,6 +1,5 @@
+using System.Reflection;
 using CarService.Infrastructure.CourierActivities;
-using CarService.Infrastructure.Requests;
-using CarService.Infrastructure.Validators;
 using DocumentClient;
 using EventDispatcher;
 using FluentValidation;
@@ -16,9 +15,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddMediator(typeof(InfrastructureRegistration).Assembly);
+        services.AddMediator(Assembly.GetExecutingAssembly());
         services.AddRavenDb(configuration.GetSection("RavenSettings"));
-        services.AddValidatorsFromAssembly(typeof(InfrastructureRegistration).Assembly);
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddEventBus(configuration,
             configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
         return services;

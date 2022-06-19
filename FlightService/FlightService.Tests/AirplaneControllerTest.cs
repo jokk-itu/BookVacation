@@ -10,6 +10,7 @@ using FlightService.Contracts.Flight;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
 using FlightService.Infrastructure.Requests.CreateFlight;
+using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -43,8 +44,8 @@ public class AirplaneControllerTest
         };
         
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<CreateAirplaneRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(airplane)
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateAirplaneCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Airplane>(airplane))
             .Verifiable();
         
         var controller = new AirplaneController(fakeMediator.Object);

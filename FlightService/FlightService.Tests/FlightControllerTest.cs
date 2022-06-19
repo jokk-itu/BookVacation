@@ -9,6 +9,7 @@ using FlightService.Contracts.Airplane;
 using FlightService.Contracts.Flight;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateFlight;
+using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -46,8 +47,8 @@ public class FlightControllerTest
         };
         
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(flight)
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Flight>(flight))
             .Verifiable();
         
         var controller = new FlightController(fakeMediator.Object);
@@ -76,8 +77,8 @@ public class FlightControllerTest
         };
 
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(It.IsAny<Flight?>())
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Flight>(ResponseCode.Conflict, new []{ "Flight already exists." }))
             .Verifiable();
         
         var controller = new FlightController(fakeMediator.Object);
@@ -88,5 +89,35 @@ public class FlightControllerTest
         //Assert
         fakeMediator.Verify();
         Assert.True(response is ConflictResult);
+    }
+    
+    [Trait("Category", "Unit")]
+    [Fact]
+    public async Task Post_ExpectNotFound()
+    {
+        //Arrange
+        var postFlightRequest = new PostFlightRequest
+        {
+            AirplaneId = Guid.NewGuid(),
+            Price = 0,
+            From = DateTimeOffset.Now,
+            To = DateTimeOffset.Now,
+            FromAirport = string.Empty,
+            ToAirport = string.Empty
+        };
+
+        var fakeMediator = new Mock<IMediator>();
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateFlightCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Flight>(ResponseCode.NotFound, new [] { "Flight does not exist." }))
+            .Verifiable();
+        
+        var controller = new FlightController(fakeMediator.Object);
+
+        //Act
+        var response = await controller.PostAsync(postFlightRequest);
+
+        //Assert
+        fakeMediator.Verify();
+        Assert.True(response is NotFoundResult);
     }
 }

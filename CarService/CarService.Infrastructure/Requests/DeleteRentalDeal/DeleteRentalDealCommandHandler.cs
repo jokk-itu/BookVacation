@@ -18,9 +18,9 @@ public class DeleteRentalDealCommandHandler : ICommandHandler<DeleteRentalDealCo
 
     public async Task<Response<Unit>> Handle(DeleteRentalDealCommand command, CancellationToken cancellationToken)
     {
-        var deleted = await _client.DeleteAsync(command.RentalDealId.ToString(), cancellationToken);
+        var isDeleted = await _client.DeleteAsync(command.RentalDealId.ToString(), cancellationToken);
 
-        if (deleted) return new Response<Unit>();
+        if (isDeleted) return new Response<Unit>();
         
         _logger.LogDebug("RentalDeal does not exist from given identifier {Identifier}", command.RentalDealId);
         return new Response<Unit>
