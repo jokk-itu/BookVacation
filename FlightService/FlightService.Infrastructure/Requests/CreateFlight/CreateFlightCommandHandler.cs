@@ -30,7 +30,7 @@ public class CreateFlightCommandHandler : ICommandHandler<CreateFlightCommand, F
             _logger.LogDebug("Airplane with identifier {Identifier}, does not exist",
                 command.AirplaneId);
             return new Response<Flight>(ResponseCode.NotFound,
-                new[] { "Airplane does not exist." });
+                new[] { "Airplane does not exist" });
         }
 
         var conflictingFlight = await _client.QueryAsync<Flight>(query => query
@@ -44,7 +44,7 @@ public class CreateFlightCommandHandler : ICommandHandler<CreateFlightCommand, F
             _logger.LogDebug("Airplane is in use by identifier {Identifier}",
                 conflictingFlight.Id);
             return new Response<Flight>(ResponseCode.Conflict,
-                new[] { "Airplane is in use." });
+                new[] { "Airplane is in use" });
         }
 
         var flight = new Flight

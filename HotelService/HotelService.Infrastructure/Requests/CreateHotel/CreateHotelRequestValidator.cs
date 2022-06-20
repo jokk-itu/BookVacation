@@ -3,7 +3,7 @@ using HotelService.Infrastructure.Requests.CreateHotel;
 
 namespace HotelService.Infrastructure.Validators;
 
-public class CreateHotelRequestValidator : AbstractValidator<CreateHotelRequest>
+public class CreateHotelRequestValidator : AbstractValidator<CreateHotelCommand>
 {
     public CreateHotelRequestValidator()
     {

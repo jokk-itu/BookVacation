@@ -27,7 +27,7 @@ public class BookHotelActivityTest
             harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
                 _ => bookHotelActivity,
                 _ => bookHotelActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationCommand>(), CancellationToken.None))
             .ReturnsAsync(new HotelRoomReservation
             {
                 Id = It.IsAny<Guid>().ToString(),
@@ -81,7 +81,7 @@ public class BookHotelActivityTest
             harness.Activity<HotelRoomReservationActivity, HotelRoomReservationArgument, HotelRoomReservationLog>(
                 _ => rentCarActivity,
                 _ => rentCarActivity);
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationCommand>(), CancellationToken.None))
             .ReturnsAsync((HotelRoomReservation?)null)
             .Verifiable();
 
@@ -130,7 +130,7 @@ public class BookHotelActivityTest
                 _ => rentCarActivity);
         var testActivityHarness =
             harness.Activity<TestActivity, TestArgument, TestLog>();
-        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationCommand>(), CancellationToken.None))
             .ReturnsAsync(new HotelRoomReservation
             {
                 Id = It.IsAny<Guid>().ToString(),
@@ -141,7 +141,7 @@ public class BookHotelActivityTest
             })
             .Verifiable();
 
-        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteHotelRoomReservationRequest>(), CancellationToken.None))
+        fakeMediator.Setup(m => m.Send(It.IsAny<DeleteHotelRoomReservationCommand>(), CancellationToken.None))
             .ReturnsAsync(Unit.Value)
             .Verifiable();
 

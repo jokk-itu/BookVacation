@@ -20,22 +20,22 @@ public class DeleteHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var createHotelRequest = new CreateHotelRequest(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelRequestHandler(client);
+        var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
+        var createHotelRequestHandler = new CreateHotelCommandHandler(client);
         var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationRequest(Guid.Parse(hotel!.Id),
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotel!.Id),
             Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationRequestHandler(client);
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client);
         var hotelRoomReservation =
             await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
                 CancellationToken.None);
         WaitForIndexing(store);
 
         var deleteHotelRoomReservationRequest =
-            new DeleteHotelRoomReservationRequest(Guid.Parse(hotelRoomReservation!.Id));
-        var deleteHotelRoomReservationRequestHandler = new DeleteHotelRoomReservationRequestHandler(client);
+            new DeleteHotelRoomReservationCommand(Guid.Parse(hotelRoomReservation!.Id));
+        var deleteHotelRoomReservationRequestHandler = new DeleteHotelRoomReservationCommandHandler(client);
 
         //Act
         await deleteHotelRoomReservationRequestHandler.Handle(deleteHotelRoomReservationRequest,

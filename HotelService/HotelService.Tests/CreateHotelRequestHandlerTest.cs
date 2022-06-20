@@ -18,8 +18,8 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new CreateHotelRequest(30, "Denmark", "Copenhagen", "Rue");
-        var handler = new CreateHotelRequestHandler(client);
+        var request = new CreateHotelCommand(30, "Denmark", "Copenhagen", "Rue");
+        var handler = new CreateHotelCommandHandler(client);
 
         //Act
         var expect = await handler.Handle(request, CancellationToken.None);
@@ -38,8 +38,8 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new CreateHotelRequest(30, "Denmark", "Copenhagen", "Rue");
-        var handler = new CreateHotelRequestHandler(client);
+        var request = new CreateHotelCommand(30, "Denmark", "Copenhagen", "Rue");
+        var handler = new CreateHotelCommandHandler(client);
         await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
 

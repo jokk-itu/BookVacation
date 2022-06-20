@@ -24,7 +24,7 @@ public class HotelController : ControllerBase
     public async Task<IActionResult> PostHotelAsync(PostHotelRequest request, CancellationToken cancellationToken)
     {
         var hotel = await _mediator.Send(
-            new CreateHotelRequest(request.Rooms, request.Country, request.City, request.Address),
+            new CreateHotelCommand(request.Rooms, request.Country, request.City, request.Address),
             cancellationToken);
 
         if (hotel is null)

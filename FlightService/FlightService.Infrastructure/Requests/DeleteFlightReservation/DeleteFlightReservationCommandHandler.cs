@@ -24,6 +24,6 @@ public class DeleteFlightReservationCommandHandler : ICommandHandler<DeleteFligh
             return new Response<Unit>();
         
         _logger.LogError("FlightReservation with identifier {Identifier} does not exist", command.ReservationId);
-        return new Response<Unit>(ResponseCode.NotFound, new []{ "FlightReservation does not exist." });
+        return new Response<Unit>(ResponseCode.NotFound, new []{ "FlightReservation does not exist" });
     }
 }

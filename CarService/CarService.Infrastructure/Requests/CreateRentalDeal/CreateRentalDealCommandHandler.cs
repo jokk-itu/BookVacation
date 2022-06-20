@@ -47,7 +47,7 @@ public class CreateRentalDealCommandHandler : ICommandHandler<CreateRentalDealCo
             _logger.LogDebug("RentalCar with identifier {Identifier}, is already booked from {From} to {To}",
                 command.RentalCarId, command.RentFrom, command.RentTo);
             return new Response<RentalDeal>(ResponseCode.Conflict,
-                new[] { "RentalDeal already exists in the given timeframe." });
+                new[] { "RentalDeal already exists in the given timeframe" });
         }
 
         var rentalDeal = new RentalDeal

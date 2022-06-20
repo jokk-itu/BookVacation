@@ -17,7 +17,7 @@ public class HotelRoomReservationActivity : IActivity<HotelRoomReservationArgume
 
     public async Task<ExecutionResult> Execute(ExecuteContext<HotelRoomReservationArgument> context)
     {
-        var hotelRoomReservation = await _mediator.Send(new CreateHotelRoomReservationRequest(context.Arguments.HotelId,
+        var hotelRoomReservation = await _mediator.Send(new CreateHotelRoomReservationCommand(context.Arguments.HotelId,
             context.Arguments.RoomId, context.Arguments.From, context.Arguments.To));
         return hotelRoomReservation is null
             ? context.Faulted()
@@ -27,7 +27,7 @@ public class HotelRoomReservationActivity : IActivity<HotelRoomReservationArgume
 
     public async Task<CompensationResult> Compensate(CompensateContext<HotelRoomReservationLog> context)
     {
-        await _mediator.Send(new DeleteHotelRoomReservationRequest(context.Log.HotelRoomReservationId));
+        await _mediator.Send(new DeleteHotelRoomReservationCommand(context.Log.HotelRoomReservationId));
         return context.Compensated();
     }
 }
