@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureAdvancedLogger(logConfiguration, serviceProvider);
+    configuration.ConfigureAdvancedLogger(new LoggingConfiguration(context.Configuration.GetRequiredSection("Logging")), serviceProvider);
 });
 
 builder.WebHost.ConfigureServices(services =>

@@ -63,7 +63,7 @@ public class CreateVacationRequestHandler : ICommandHandler<CreateVacationComman
 
         builder.AddSubscription(
             new Uri("exchange:routing-slip-event"),
-            RoutingSlipEvents.All, RoutingSlipEventContents.None);
+            RoutingSlipEvents.All, RoutingSlipEventContents.Itinerary);
 
         var routingSlip = builder.Build();
 
