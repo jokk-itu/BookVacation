@@ -12,7 +12,7 @@ public class CreateVacationRequestHandlerTest
     {
         //Arrange
         var harness = new InMemoryTestHarness();
-        var request = new CreateVacationRequest(
+        var request = new CreateVacationCommand(
             Guid.NewGuid(),
             Guid.NewGuid(), 
             Guid.NewGuid(),

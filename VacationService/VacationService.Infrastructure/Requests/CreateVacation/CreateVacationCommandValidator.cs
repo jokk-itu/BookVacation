@@ -3,9 +3,9 @@ using VacationService.Infrastructure.Requests.CreateVacation;
 
 namespace VacationService.Infrastructure.Validators;
 
-public class CreateVacationRequestValidator : AbstractValidator<CreateVacationRequest>
+public class CreateVacationCommandValidator : AbstractValidator<CreateVacationCommand>
 {
-    public CreateVacationRequestValidator()
+    public CreateVacationCommandValidator()
     {
         RuleFor(x => x.FlightId).NotEmpty();
         RuleFor(x => x.FlightSeatId).NotEmpty();

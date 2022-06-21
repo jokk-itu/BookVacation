@@ -3,12 +3,13 @@ using FlightService.Contracts.FlightReservation;
 using HotelService.Contracts.HotelRoomReservationActivity;
 using MassTransit;
 using MassTransit.Courier.Contracts;
+using Mediator;
 using MediatR;
 using TicketService.Contracts.CreateVacationTickets;
 
 namespace VacationService.Infrastructure.Requests.CreateVacation;
 
-public class CreateVacationRequestHandler : IRequestHandler<CreateVacationRequest>
+public class CreateVacationRequestHandler : ICommandHandler<CreateVacationCommand, Unit>
 {
     private readonly IBusControl _busControl;
 
@@ -17,7 +18,7 @@ public class CreateVacationRequestHandler : IRequestHandler<CreateVacationReques
         _busControl = busControl;
     }
     
-    public async Task<Unit> Handle(CreateVacationRequest request, CancellationToken cancellationToken)
+    public async Task<Mediator.Response<Unit>> Handle(CreateVacationCommand command, CancellationToken cancellationToken)
     {
         var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
@@ -25,38 +26,38 @@ public class CreateVacationRequestHandler : IRequestHandler<CreateVacationReques
             new Uri("exchange:flight-reservation_execute"),
             new FlightReservationArgument
             {
-                FlightId = request.FlightId,
-                SeatId = request.FlightSeatId
+                FlightId = command.FlightId,
+                SeatId = command.FlightSeatId
             });
 
         builder.AddActivity("BookHotel",
             new Uri("exchange:hotel-room-reservation_execute"),
             new HotelRoomReservationArgument
             {
-                HotelId = request.HotelId,
-                From = request.HotelFrom,
-                To = request.HotelTo,
-                RoomId = request.HotelRoomId
+                HotelId = command.HotelId,
+                From = command.HotelFrom,
+                To = command.HotelTo,
+                RoomId = command.HotelRoomId
             });
 
         builder.AddActivity("RentCar",
             new Uri("exchange:rental-deal_execute"),
             new RentalDealArgument
             {
-                RentalCarId = request.RentalCarId,
-                RentFrom = request.RentalCarFrom,
-                RentTo = request.RentalCarTo
+                RentalCarId = command.RentalCarId,
+                RentFrom = command.RentalCarFrom,
+                RentTo = command.RentalCarTo
             });
 
         builder.AddActivity("CreateVacationTicket",
             new Uri("exchange:create-vacation-ticket_execute"),
             new CreateVacationTicketArgument
             {
-                FlightId = request.FlightId,
-                HotelId = request.HotelId,
-                RoomId = request.HotelRoomId,
-                CarId = request.RentalCarId,
-                RentingCompanyName = request.RentingCompanyName
+                FlightId = command.FlightId,
+                HotelId = command.HotelId,
+                RoomId = command.HotelRoomId,
+                CarId = command.RentalCarId,
+                RentingCompanyName = command.RentingCompanyName
             });
 
         builder.AddSubscription(
@@ -66,7 +67,7 @@ public class CreateVacationRequestHandler : IRequestHandler<CreateVacationReques
         var routingSlip = builder.Build();
 
         await _busControl.Execute(routingSlip);
-        
-        return Unit.Value;
+
+        return new Mediator.Response<Unit>();
     }
 }

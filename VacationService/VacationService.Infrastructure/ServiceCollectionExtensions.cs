@@ -1,10 +1,9 @@
+using System.Reflection;
 using EventDispatcher;
 using FluentValidation;
 using Mediator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VacationService.Infrastructure.Requests;
-using VacationService.Infrastructure.Validators;
 
 namespace VacationService.Infrastructure;
 
@@ -14,7 +13,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddEventBus(configuration)
-            .AddValidatorsFromAssembly(typeof(FluentValidatorRegistration).Assembly)
-            .AddMediator(typeof(MediatorRegistration).Assembly);
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
+            .AddMediator(Assembly.GetExecutingAssembly());
     }
 }
