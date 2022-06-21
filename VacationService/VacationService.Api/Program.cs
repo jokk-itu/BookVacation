@@ -60,7 +60,6 @@ StartupLogger.Run(() =>
     app.UseSwaggerUI();
 
     app.UseLogging();
-    app.UseSerilogRequestLogging();
     app.UseHttpMetrics();
 
     app.MapControllers();
