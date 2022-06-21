@@ -20,18 +20,20 @@ public class RentalCarController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(PostRentalCarResponse), StatusCodes.Status201Created)]
-    public async Task<IActionResult> PostAsync([FromBody] PostRentalCarRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> PostAsync([FromBody] PostRentalCarRequest request,
+        CancellationToken cancellationToken = default)
     {
-        var rentalCar = await _mediator.Send(new CreateRentalCarRequest(request.CarModelNumber, request.CarCompanyName,
+        var response = await _mediator.Send(new CreateRentalCarCommand(request.CarModelNumber, request.CarCompanyName,
             request.RentingCompanyName, request.DayPrice, request.Color), cancellationToken);
+
         return Created("", new PostRentalCarResponse
         {
-            Id = Guid.Parse(rentalCar.Id),
-            CarModelNumber = rentalCar.CarModelNumber,
-            CarCompanyName = rentalCar.CarCompanyName,
-            RentingCompanyName = rentalCar.RentalCompanyName,
-            DayPrice = rentalCar.DayPrice,
-            Color = rentalCar.Color
+            Id = Guid.Parse(response.Body!.Id),
+            CarModelNumber = response.Body!.CarModelNumber,
+            CarCompanyName = response.Body!.CarCompanyName,
+            RentingCompanyName = response.Body!.RentalCompanyName,
+            DayPrice = response.Body!.DayPrice,
+            Color = response.Body!.Color
         });
     }
 }

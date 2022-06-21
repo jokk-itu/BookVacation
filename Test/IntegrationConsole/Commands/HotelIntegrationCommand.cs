@@ -1,14 +1,14 @@
+using IntegrationConsole.Settings;
 using Spectre.Console;
 using Spectre.Console.Cli;
-using TestConsole.Settings;
 
-namespace TestConsole.Commands;
+namespace IntegrationConsole.Commands;
 
 public class HotelIntegrationCommand : Command<TestSettings>
 {
     public override int Execute(CommandContext context, TestSettings settings)
     {
-        var hotelService = new Services.HotelService(settings.HotelUri);
+        var hotelService = new Core.Services.HotelService(settings.HotelUri);
         hotelService.PostHotel().GetAwaiter().GetResult();
         AnsiConsole.MarkupLine("[green]Hotel test completed[/]");
         return 0;

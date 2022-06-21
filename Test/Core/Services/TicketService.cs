@@ -1,6 +1,5 @@
-namespace TestConsole.Services;
+namespace Core.Services;
 
 public class TicketService
 {
-    
 }

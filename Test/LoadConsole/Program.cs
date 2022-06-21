@@ -8,4 +8,4 @@ Parser.Default.ParseArguments<Options>(args)
         if (options.VacationLoad)
             VacationLoad.Execute(options);
     })
-    .WithNotParsed(errors => { errors.Output();});
+    .WithNotParsed(errors => { errors.Output(); });

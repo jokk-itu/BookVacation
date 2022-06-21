@@ -1,8 +1,7 @@
+using System.Reflection;
 using DocumentClient;
 using EventDispatcher;
 using FlightService.Infrastructure.CourierActivities;
-using FlightService.Infrastructure.Requests;
-using FlightService.Infrastructure.Validators;
 using FluentValidation;
 using MassTransit;
 using Mediator;
@@ -16,9 +15,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddMediator(typeof(MediatorRegistration).Assembly);
+        services.AddMediator(Assembly.GetExecutingAssembly());
         services.AddRavenDb(configuration.GetSection("RavenSettings"));
-        services.AddValidatorsFromAssembly(typeof(FluentValidatorRegistration).Assembly);
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddEventBus(configuration,
             configurator => { configurator.AddActivitiesFromNamespaceContaining<CourierActivitiesRegistration>(); });
         return services;

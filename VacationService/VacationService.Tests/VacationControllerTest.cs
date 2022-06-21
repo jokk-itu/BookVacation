@@ -1,7 +1,7 @@
+using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using VacationService.Api.Controllers;
 using VacationService.Api.Controllers.v1;
 using VacationService.Contracts.Vacation;
 using VacationService.Infrastructure.Requests.CreateVacation;
@@ -18,8 +18,8 @@ public class VacationControllerTest
         //Arrange
         var request = new PostVacationRequest();
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<CreateVacationRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Unit.Value)
+        fakeMediator.Setup(x => x.Send(It.IsAny<CreateVacationCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Unit>())
             .Verifiable();
         var controller = new VacationController(fakeMediator.Object);
 

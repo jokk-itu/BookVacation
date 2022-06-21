@@ -8,11 +8,10 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: vacationservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
+      - ./EnvironmentFiles/dotnet.env
     ports:
       - 5000:80
     depends_on:
@@ -26,14 +25,13 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: flightservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5001:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/ravendb.env
+      - ./EnvironmentFiles/dotnet.env
     depends_on:
       - eventbus
       - logger
@@ -46,14 +44,13 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: hotelservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5002:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/ravendb.env
+      - ./EnvironmentFiles/dotnet.env
     depends_on:
       - eventbus
       - logger
@@ -66,14 +63,13 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: carservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5003:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/ravendb.env
+      - ./EnvironmentFiles/dotnet.env
     depends_on:
       - eventbus
       - logger
@@ -86,14 +82,13 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: trackingservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5004:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/ravendb.env
+      - ./EnvironmentFiles/dotnet.env
     depends_on:
       - eventbus
       - logger
@@ -106,14 +101,13 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: ticketservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5005:80
     env_file:
       - ./EnvironmentFiles/eventbus.env
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/minio.env
+      - ./EnvironmentFiles/dotnet.env
     depends_on:
       - eventbus
       - logger
@@ -126,14 +120,13 @@ services:
       args:
         - GithubToken=${NUGET_API}
     container_name: gatewayservice
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - 5006:80
       - 5007:443
     env_file:
       - ./EnvironmentFiles/logging.env
       - ./EnvironmentFiles/gateway.env
+      - ./EnvironmentFiles/dotnet.env
     depends_on:
       - logger
 

@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 using CarService.Contracts.RentalCar;
-using TestConsole.Fakes;
+using Core.Fakes;
 
 namespace Core.Services;
 

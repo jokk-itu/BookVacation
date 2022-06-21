@@ -1,7 +1,7 @@
 using Bogus;
 using HotelService.Contracts.CreateHotel;
 
-namespace TestConsole.Fakes;
+namespace Core.Fakes;
 
 public static class HotelFaker
 {

@@ -6,6 +6,7 @@ using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
 using FlightService.Infrastructure.Requests.CreateFlight;
 using FlightService.Infrastructure.Requests.CreateFlightReservation;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;
@@ -18,22 +19,24 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
 {
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_InvalidFlightId_ExpectNull()
+    public async Task Handle_InvalidFlightId_ExpectNotFound()
     {
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createFlightReservationRequest =
-            new CreateFlightReservationRequest(Guid.Empty, Guid.Empty);
-        var createFlightReservationHandler = new CreateFlightReservationRequestHandler(client);
+            new CreateFlightReservationCommand(Guid.NewGuid(), Guid.NewGuid());
+        var createFlightReservationHandler =
+            new CreateFlightReservationCommandHandler(client,
+                Mock.Of<ILogger<CreateFlightReservationCommandHandler>>());
 
         //Act
-        var invalidFlight =
+        var flightResponse =
             await createFlightReservationHandler.Handle(createFlightReservationRequest, CancellationToken.None);
 
         //Assert
-        Assert.Null(invalidFlight);
+        Assert.Equal(ResponseCode.NotFound, flightResponse.ResponseCode);
     }
 
     [Trait("Category", "Unit")]
@@ -44,25 +47,33 @@ public class CreateFlightReservationRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var createAirplaneRequest = new CreateAirplaneRequest(Guid.NewGuid(), "Boeing", "SAS", 3);
-        var createAirplaneHandler = new CreateAirplaneRequestHandler(client);
-        var airplane = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
+        var createAirplaneRequest = new CreateAirplaneCommand(Guid.NewGuid(), "Boeing", "SAS", 3);
+        var createAirplaneHandler = new CreateAirplaneCommandHandler(client);
+        var airplaneResponse = await createAirplaneHandler.Handle(createAirplaneRequest, CancellationToken.None);
 
-        var createFlightRequest = new CreateFlightRequest(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
-            "Karup", "Kastrup", Guid.Parse(airplane.Id), 1200);
-        var createFlightHandler = new CreateFlightRequestHandler(client);
-        var flight = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
+        var createFlightRequest = new CreateFlightCommand(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
+            "Karup", "Kastrup", Guid.Parse(airplaneResponse.Body!.Id), 1200);
+        var createFlightHandler =
+            new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
+        var flightResponse = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
 
         var createFlightReservationRequest =
-            new CreateFlightReservationRequest(Guid.Parse(airplane.Seats.First().Id), Guid.Parse(flight!.Id));
-        var createFlightReservationHandler = new CreateFlightReservationRequestHandler(client);
+            new CreateFlightReservationCommand(Guid.Parse(airplaneResponse.Body!.Seats.First().Id),
+                Guid.Parse(flightResponse.Body!.Id));
+        var createFlightReservationHandler =
+            new CreateFlightReservationCommandHandler(client,
+                Mock.Of<ILogger<CreateFlightReservationCommandHandler>>());
 
         //Act
-        var expected =
+        var flightReservationResponse =
             await createFlightReservationHandler.Handle(createFlightReservationRequest, CancellationToken.None);
-        var actual = await session.Query<FlightReservation>().Where(x => x.Id == expected!.Id).FirstOrDefaultAsync();
+        WaitForIndexing(store);
+        var actual = await session.Query<FlightReservation>().Where(x => x.Id == flightReservationResponse.Body!.Id)
+            .FirstOrDefaultAsync();
 
         //Assert
         Assert.NotNull(actual);
+        Assert.Equal(ResponseCode.Ok, flightReservationResponse.ResponseCode);
+        Assert.NotNull(flightReservationResponse.Body);
     }
 }

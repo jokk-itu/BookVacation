@@ -1,5 +1,4 @@
 using FluentValidation;
-using FluentValidation.AspNetCore;
 using VacationService.Contracts.Vacation;
 
 namespace VacationService.Api.Validators;

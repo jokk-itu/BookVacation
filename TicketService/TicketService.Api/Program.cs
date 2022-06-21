@@ -1,16 +1,13 @@
 using HealthCheck.Core;
 using Logging;
+using Logging.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Minio;
-using Minio.Exceptions;
-using Polly;
 using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using TicketService.Api;
 using TicketService.Infrastructure;
-using TicketService.Infrastructure.Services;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -24,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogger(new LoggingConfiguration(context.Configuration.GetRequiredSection("Logging")), serviceProvider);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -42,26 +39,7 @@ builder.WebHost.ConfigureServices(services =>
     services.AddSwaggerGen();
     services.ConfigureOptions<ConfigureSwaggerOptions>();
     services.AddSystemMetrics();
-
-    services.AddTransient(sp =>
-        new MinioConfiguration(sp.GetRequiredService<IConfiguration>().GetSection("Minio")));
-    services.AddTransient(sp => new MinioLogger(sp.GetRequiredService<ILogger<MinioLogger>>()));
-    services.AddTransient<IMinioService, MinioService>();
-    services.AddSingleton(sp =>
-    {
-        var configuration = sp.GetRequiredService<MinioConfiguration>();
-        var minioClient = new MinioClient()
-            .WithEndpoint(configuration.Uri)
-            .WithCredentials(configuration.Username, configuration.Password)
-            .Build();
-        minioClient.WithTimeout(5000);
-        minioClient.SetTraceOn(sp.GetRequiredService<MinioLogger>());
-        minioClient.WithRetryPolicy(async callback => await Policy
-            .Handle<ConnectionException>()
-            .WaitAndRetryAsync(3, retryCount => TimeSpan.FromSeconds(retryCount * 2))
-            .ExecuteAsync(async () => await callback()));
-        return minioClient;
-    });
+    services.AddLoggingServices();
 });
 
 StartupLogger.Run(() =>
@@ -71,7 +49,7 @@ StartupLogger.Run(() =>
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    app.UseSerilogRequestLogging();
+    app.UseLogging();
     app.UseHttpMetrics();
 
     app.MapControllers();
@@ -98,4 +76,4 @@ StartupLogger.Run(() =>
     ReadyHealthCheck.IsReady = true;
 
     app.Run();
-}, new LoggerConfiguration().ConfigureLogging(logConfiguration));
+}, logConfiguration);

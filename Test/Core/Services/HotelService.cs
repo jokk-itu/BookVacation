@@ -1,8 +1,8 @@
 using System.Net.Http.Json;
+using Core.Fakes;
 using HotelService.Contracts.CreateHotel;
-using TestConsole.Fakes;
 
-namespace TestConsole.Services;
+namespace Core.Services;
 
 public class HotelService
 {

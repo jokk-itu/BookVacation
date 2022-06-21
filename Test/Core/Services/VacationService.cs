@@ -1,15 +1,15 @@
 using System.Net.Http.Json;
 using VacationService.Contracts.Vacation;
 
-namespace TestConsole.Services;
+namespace Core.Services;
 
 public class VacationService
 {
+    private readonly string _carUri;
     private readonly string _flightUri;
     private readonly string _hotelUri;
-    private readonly string _carUri;
     private readonly HttpClient _httpClient;
-    
+
     public VacationService(string vacationUri, string flightUri, string hotelUri, string carUri)
     {
         _flightUri = flightUri;
@@ -25,7 +25,7 @@ public class VacationService
     {
         var flightService = new FlightService(_flightUri);
         var hotelService = new HotelService(_hotelUri);
-        var carService = new Core.Services.CarService(_carUri);
+        var carService = new CarService(_carUri);
 
         var airplane = await flightService.PostAirplaneAsync();
         var flight = await flightService.PostFlightAsync(airplane.Id);
@@ -35,7 +35,7 @@ public class VacationService
         var request = new PostVacationRequest
         {
             FlightId = flight.Id,
-            FlightSeatId = Guid.NewGuid(),
+            FlightSeatId = airplane.Seats.First().Id,
             HotelId = hotel.Id,
             HotelFrom = DateTimeOffset.Now,
             HotelTo = DateTimeOffset.Now.AddDays(2),

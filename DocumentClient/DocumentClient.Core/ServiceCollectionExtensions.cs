@@ -22,7 +22,6 @@ public static class ServiceCollectionExtensions
             {
                 Urls = configuration.GetSection("Urls").Get<string[]>()
             };
-            documentStore.Conventions.UseOptimisticConcurrency = true;
 
             documentStore.OnAfterSaveChanges += (sender, args) =>
             {
@@ -82,8 +81,10 @@ public static class ServiceCollectionExtensions
 
             return documentStore;
         });
+
         services.AddTransient<IAsyncDocumentSession>(sp =>
             sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
+
         services.AddTransient<IDocumentClient, DocumentClient>();
         return services;
     }

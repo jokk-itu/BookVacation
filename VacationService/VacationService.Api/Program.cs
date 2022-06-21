@@ -1,6 +1,6 @@
-using EventDispatcher;
 using FluentValidation.AspNetCore;
 using Logging;
+using Logging.Configuration;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Prometheus;
@@ -22,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogger(new LoggingConfiguration(context.Configuration.GetRequiredSection("Logging")), serviceProvider);
 });
 
 builder.WebHost.ConfigureServices(services =>
@@ -49,6 +49,7 @@ builder.WebHost.ConfigureServices(services =>
     services.AddSwaggerGen();
     services.ConfigureOptions<ConfigureSwaggerOptions>();
     services.AddSystemMetrics();
+    services.AddLoggingServices();
 });
 
 StartupLogger.Run(() =>
@@ -58,7 +59,7 @@ StartupLogger.Run(() =>
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    app.UseSerilogRequestLogging();
+    app.UseLogging();
     app.UseHttpMetrics();
 
     app.MapControllers();
@@ -84,4 +85,4 @@ StartupLogger.Run(() =>
     });
 
     app.Run();
-}, new LoggerConfiguration().ConfigureLogging(logConfiguration));
+}, logConfiguration);

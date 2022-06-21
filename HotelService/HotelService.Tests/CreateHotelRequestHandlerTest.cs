@@ -1,8 +1,7 @@
-using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
 
@@ -18,16 +17,15 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new CreateHotelRequest(30, "Denmark", "Copenhagen", "Rue");
-        var handler = new CreateHotelRequestHandler(client);
+        var request = new CreateHotelCommand(30, "Denmark", "Copenhagen", "Rue");
+        var handler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
 
         //Act
-        var expect = await handler.Handle(request, CancellationToken.None);
-        WaitForIndexing(store);
-        var actual = await session.Query<Hotel>().Where(x => x.Id == expect!.Id).FirstOrDefaultAsync();
+        var hotelResponse = await handler.Handle(request, CancellationToken.None);
 
         //Assert
-        Assert.NotNull(actual);
+        Assert.Equal(ResponseCode.Ok, hotelResponse.ResponseCode);
+        Assert.NotNull(hotelResponse.Body);
     }
 
     [Trait("Category", "Unit")]
@@ -38,15 +36,16 @@ public class CreateHotelRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new CreateHotelRequest(30, "Denmark", "Copenhagen", "Rue");
-        var handler = new CreateHotelRequestHandler(client);
+        var request = new CreateHotelCommand(30, "Denmark", "Copenhagen", "Rue");
+        var handler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
         await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
 
         //Act
-        var conflictingHotel = await handler.Handle(request, CancellationToken.None);
+        var hotelResponse = await handler.Handle(request, CancellationToken.None);
 
         //Assert
-        Assert.Null(conflictingHotel);
+        Assert.Equal(ResponseCode.Conflict, hotelResponse.ResponseCode);
+        Assert.Null(hotelResponse.Body);
     }
 }

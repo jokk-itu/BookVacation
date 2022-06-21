@@ -1,4 +1,5 @@
 using Logging;
+using Logging.Configuration;
 using Serilog;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
@@ -13,11 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, serviceProvider, configuration) =>
 {
-    configuration.ConfigureLogging(logConfiguration);
+    configuration.ConfigureAdvancedLogger(logConfiguration, serviceProvider);
 });
 
 builder.WebHost.ConfigureServices(services =>
 {
+    services.AddLoggingServices();
     services.AddReverseProxy()
         .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
     services.AddCors(options =>
@@ -35,9 +37,10 @@ builder.WebHost.ConfigureServices(services =>
 StartupLogger.Run(() =>
 {
     var app = builder.Build();
+    app.UseLogging();
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
     app.UseCors();
     app.MapReverseProxy();
     app.Run();
-}, new LoggerConfiguration().ConfigureLogging(logConfiguration));
+}, logConfiguration);

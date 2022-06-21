@@ -1,9 +1,8 @@
-using EventDispatcher.Filters;
-using EventDispatcher.Observers;
+using EventDispatcher.Filters.Log;
+using EventDispatcher.Filters.Meta;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace EventDispatcher;
 
@@ -38,22 +37,17 @@ public static class ServiceCollectionExtensions
 
                 factoryConfigurator.UsePrometheusMetrics(serviceName: configuration["ServiceName"]);
 
+                factoryConfigurator.UseConsumeFilter(typeof(MetaConsumerFilter<>), busContext);
+                factoryConfigurator.UseSendFilter(typeof(MetaSendFilter<>), busContext);
+                factoryConfigurator.UsePublishFilter(typeof(MetaPublishFilter<>), busContext);
+                factoryConfigurator.UseCompensateActivityFilter(typeof(MetaCompensateFilter<>), busContext);
+                factoryConfigurator.UseExecuteActivityFilter(typeof(MetaExecuteFilter<>), busContext);
+
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);
                 factoryConfigurator.UseExecuteActivityFilter(typeof(LogExecuteFilter<>), busContext);
                 factoryConfigurator.UseCompensateActivityFilter(typeof(LogCompensateFilter<>), busContext);
-
-                factoryConfigurator.ConnectBusObserver(
-                    new BusObserver(busContext.GetRequiredService<ILogger<BusObserver>>()));
-                factoryConfigurator.ConnectSendObserver(
-                    new SendObserver(busContext.GetRequiredService<ILogger<SendObserver>>()));
-                factoryConfigurator.ConnectPublishObserver(
-                    new PublishObserver(busContext.GetRequiredService<ILogger<PublishObserver>>()));
-                factoryConfigurator.ConnectConsumeObserver(
-                    new ConsumeObserver(busContext.GetRequiredService<ILogger<ConsumeObserver>>()));
-                factoryConfigurator.ConnectReceiveObserver(
-                    new ReceiveObserver(busContext.GetRequiredService<ILogger<ReceiveObserver>>()));
 
                 var hostname = configuration["EventBus:Hostname"];
                 var port = configuration["EventBus:Port"];

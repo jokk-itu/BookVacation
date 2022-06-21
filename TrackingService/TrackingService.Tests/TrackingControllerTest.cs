@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -25,8 +25,8 @@ public class TrackingControllerTest
             Statuses = new[] { new Status { Result = "Completed", OccuredAt = DateTimeOffset.Now } }
         };
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<ReadTrackingRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(tracking)
+        fakeMediator.Setup(x => x.Send(It.IsAny<ReadTrackingCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Tracking>(tracking))
             .Verifiable();
 
         //Act
@@ -44,8 +44,8 @@ public class TrackingControllerTest
     {
         //Arrange
         var fakeMediator = new Mock<IMediator>();
-        fakeMediator.Setup(x => x.Send(It.IsAny<ReadTrackingRequest>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(It.IsAny<Tracking?>())
+        fakeMediator.Setup(x => x.Send(It.IsAny<ReadTrackingCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Response<Tracking>(ResponseCode.NotFound, new[] { "Tracking does not exist" }))
             .Verifiable();
 
         //Act

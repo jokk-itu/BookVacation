@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="NBomber" Version="2.1.5" />
-      <PackageReference Include="NBomber.Http" Version="2.0.1" />
-      <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
+        <PackageReference Include="NBomber" Version="2.1.5"/>
+        <PackageReference Include="NBomber.Http" Version="2.0.1"/>
+        <PackageReference Include="Serilog.Sinks.Seq" Version="5.1.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Core\Core.csproj"/>
     </ItemGroup>
 
 </Project>
