@@ -1,8 +1,10 @@
-namespace TicketService.Api;
+using Microsoft.Extensions.Configuration;
 
-public class MinioConfiguration
+namespace BlobStorage;
+
+public class BlobStorageConfiguration : IBlobStorageConfiguration
 {
-    public MinioConfiguration(IConfiguration configuration)
+    public BlobStorageConfiguration(IConfiguration configuration)
     {
         Uri = configuration["Uri"];
         Username = configuration["Username"];

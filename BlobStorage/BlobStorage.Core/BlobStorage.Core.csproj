@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>BlobStorage</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>BlobStorage</PackageId>
+        <AssemblyName>BlobStorage</AssemblyName>
+        <Title>BlobStorage</Title>
+        <Authors>Joachim Køcher Kelsen</Authors>
+        <Company>jokk-itu</Company>
+        <PackageDescription>A client to abstract simple functions away when requesting Minio</PackageDescription>
+        <PackageProjectUrl>https://github.com/jokk-itu/BookVacation</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/jokk-itu/BookVacation</RepositoryUrl>
+        <VersionPrefix Condition="$(CI) != ''">$([System.DateTime]::UtcNow.ToString("yyyyMMdd").Insert(4, ".").Insert(7, ".").Insert(10, "."))$(BuildNumber)</VersionPrefix>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <Product>BlobStorage</Product>
+        <LangVersion>latestMajor</LangVersion>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+      <PackageReference Include="Minio.AspNetCore.HealthChecks" Version="4.0.2" />
+      <PackageReference Include="Polly" Version="7.2.3" />
+    </ItemGroup>
+
+</Project>
