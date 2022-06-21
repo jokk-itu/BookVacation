@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;
@@ -31,16 +32,15 @@ public class UpdateTrackingRequestHandlerTest : RavenTestDriver
         await session.SaveChangesAsync();
         WaitForIndexing(store);
 
-        var request = new UpdateTrackingRequest(tracking.Id, "Success", DateTimeOffset.Now);
-        var handler = new UpdateTrackingRequestHandler(client);
+        var request = new UpdateTrackingCommand(tracking.Id, "Success", DateTimeOffset.Now);
+        var handler = new UpdateTrackingCommandHandler(client);
 
         //Act
-        var actual = await handler.Handle(request, CancellationToken.None);
-        WaitForIndexing(store);
-        var expected = await session.Query<Tracking>().Where(x => x.Id == actual.Id).FirstOrDefaultAsync();
+        var trackingResponse = await handler.Handle(request, CancellationToken.None);
 
         //Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(ResponseCode.Ok, trackingResponse.ResponseCode);
+        Assert.NotNull(trackingResponse.Body);
     }
 
     [Trait("Category", "Unit")]
@@ -51,15 +51,14 @@ public class UpdateTrackingRequestHandlerTest : RavenTestDriver
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new UpdateTrackingRequest(Guid.NewGuid().ToString(), "Success", DateTimeOffset.Now);
-        var handler = new UpdateTrackingRequestHandler(client);
+        var request = new UpdateTrackingCommand(Guid.NewGuid().ToString(), "Success", DateTimeOffset.Now);
+        var handler = new UpdateTrackingCommandHandler(client);
 
         //Act
-        var actual = await handler.Handle(request, CancellationToken.None);
-        WaitForIndexing(store);
-        var expected = await session.Query<Tracking>().Where(x => x.Id == actual.Id).FirstOrDefaultAsync();
+        var trackingResponse = await handler.Handle(request, CancellationToken.None);
 
         //Assert
-        Assert.Equal(expected, actual);
+        Assert.Equal(ResponseCode.Ok, trackingResponse.ResponseCode);
+        Assert.NotNull(trackingResponse.Body);
     }
 }

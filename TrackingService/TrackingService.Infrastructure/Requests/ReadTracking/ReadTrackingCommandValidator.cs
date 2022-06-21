@@ -3,9 +3,9 @@ using TrackingService.Infrastructure.Requests.ReadTracking;
 
 namespace TrackingService.Infrastructure.Validators;
 
-public class ReadTrackingRequestValidator : AbstractValidator<ReadTrackingRequest>
+public class ReadTrackingCommandValidator : AbstractValidator<ReadTrackingCommand>
 {
-    public ReadTrackingRequestValidator()
+    public ReadTrackingCommandValidator()
     {
         RuleFor(x => x.TrackingNumber).NotEmpty();
     }

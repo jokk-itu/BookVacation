@@ -1,6 +1,6 @@
-using MediatR;
+using Mediator;
 using TrackingService.Domain;
 
 namespace TrackingService.Infrastructure.Requests.ReadTracking;
 
-public record ReadTrackingRequest(string TrackingNumber) : IRequest<Tracking?>;
+public record ReadTrackingCommand(string TrackingNumber) : ICommand<Tracking>;

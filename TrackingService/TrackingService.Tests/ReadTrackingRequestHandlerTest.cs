@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.TestDriver;
@@ -15,25 +16,26 @@ public class ReadTrackingRequestHandlerTest : RavenTestDriver
 {
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_GivenNotExisting_ExpectNull()
+    public async Task Handle_GivenNotExisting_ExpectNotFound()
     {
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var request = new ReadTrackingRequest(Guid.NewGuid().ToString());
-        var handler = new ReadTrackingRequestHandler(client);
+        var request = new ReadTrackingCommand(Guid.NewGuid().ToString());
+        var handler = new ReadTrackingCommandHandler(client, Mock.Of<ILogger<ReadTrackingCommandHandler>>());
 
         //Act
-        var actual = await handler.Handle(request, CancellationToken.None);
+        var trackingResponse = await handler.Handle(request, CancellationToken.None);
 
         //Assert
-        Assert.Null(actual);
+        Assert.Equal(ResponseCode.NotFound, trackingResponse.ResponseCode);
+        Assert.Null(trackingResponse.Body);
     }
 
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_GivenExisting_ExpectTracking()
+    public async Task Handle_GivenExisting_ExpectOk()
     {
         //Arrange
         var store = GetDocumentStore();
@@ -47,14 +49,14 @@ public class ReadTrackingRequestHandlerTest : RavenTestDriver
         await session.SaveChangesAsync();
         WaitForIndexing(store);
 
-        var request = new ReadTrackingRequest(tracking.Id);
-        var handler = new ReadTrackingRequestHandler(client);
+        var request = new ReadTrackingCommand(tracking.Id);
+        var handler = new ReadTrackingCommandHandler(client, Mock.Of<ILogger<ReadTrackingCommandHandler>>());
 
         //Act
-        var actual = await handler.Handle(request, CancellationToken.None);
+        var trackingResponse = await handler.Handle(request, CancellationToken.None);
 
         //Assert
-        Assert.NotNull(actual);
-        Assert.Equal(tracking.Id, actual!.Id);
+        Assert.Equal(ResponseCode.Ok, trackingResponse.ResponseCode);
+        Assert.NotNull(trackingResponse.Body);
     }
 }

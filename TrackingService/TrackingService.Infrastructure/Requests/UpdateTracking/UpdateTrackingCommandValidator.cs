@@ -3,9 +3,9 @@ using TrackingService.Infrastructure.Requests.UpdateTracking;
 
 namespace TrackingService.Infrastructure.Validators;
 
-public class UpdateTrackingRequestValidator : AbstractValidator<UpdateTrackingRequest>
+public class UpdateTrackingCommandValidator : AbstractValidator<UpdateTrackingCommand>
 {
-    public UpdateTrackingRequestValidator()
+    public UpdateTrackingCommandValidator()
     {
         RuleFor(x => x.TrackingNumber).NotEmpty();
         RuleFor(x => x.OccuredAt).NotEmpty();

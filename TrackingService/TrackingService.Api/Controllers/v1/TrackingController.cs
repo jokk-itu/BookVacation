@@ -1,3 +1,4 @@
+using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TrackingService.Contracts;
@@ -24,15 +25,15 @@ public class TrackingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAsync(Guid trackingId, CancellationToken cancellationToken = default)
     {
-        var tracking = await _mediator.Send(new ReadTrackingRequest(trackingId.ToString()), cancellationToken);
+        var trackingResponse = await _mediator.Send(new ReadTrackingCommand(trackingId.ToString()), cancellationToken);
 
-        if (tracking is null)
+        if (trackingResponse.ResponseCode == ResponseCode.NotFound)
             return NotFound();
 
         return Ok(new GetTrackingResponse
         {
-            Id = tracking.Id,
-            Statuses = tracking.Statuses.Select(x => new StatusDto
+            Id = trackingResponse.Body!.Id,
+            Statuses = trackingResponse.Body!.Statuses.Select(x => new StatusDto
             {
                 Result = x.Result,
                 OccuredAt = x.OccuredAt

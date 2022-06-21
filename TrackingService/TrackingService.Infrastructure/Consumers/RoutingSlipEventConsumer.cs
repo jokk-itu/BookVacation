@@ -65,6 +65,6 @@ public class RoutingSlipEventConsumer :
 
     private async Task UpdateTracking(string trackingNumber, string result, DateTimeOffset occuredAt)
     {
-        await _mediator.Send(new UpdateTrackingRequest(trackingNumber, result, occuredAt));
+        await _mediator.Send(new UpdateTrackingCommand(trackingNumber, result, occuredAt));
     }
 }
