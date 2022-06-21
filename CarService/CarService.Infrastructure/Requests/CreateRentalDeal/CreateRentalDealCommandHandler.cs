@@ -28,7 +28,7 @@ public class CreateRentalDealCommandHandler : ICommandHandler<CreateRentalDealCo
 
         if (rentalCar is null)
         {
-            _logger.LogDebug("RentalCar does not exist from given identifier {Identifier}", command.RentalCarId);
+            _logger.LogDebug("RentalCar does not exist from given identifier {}", command.RentalCarId);
             return new Response<RentalDeal>(ResponseCode.NotFound,
                 new[] { "RentalCar does not exist from the given identifier" });
         }
@@ -44,7 +44,7 @@ public class CreateRentalDealCommandHandler : ICommandHandler<CreateRentalDealCo
 
         if (conflictingRentDeal is not null)
         {
-            _logger.LogDebug("RentalCar with identifier {Identifier}, is already booked from {From} to {To}",
+            _logger.LogDebug("RentalCar with identifier {}, is already booked from {From} to {To}",
                 command.RentalCarId, command.RentFrom, command.RentTo);
             return new Response<RentalDeal>(ResponseCode.Conflict,
                 new[] { "RentalDeal already exists in the given timeframe" });

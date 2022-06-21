@@ -23,7 +23,7 @@ public class DeleteHotelRoomReservationCommandHandler : ICommandHandler<DeleteHo
         if (isDeleted)
             return new Response<Unit>();
         
-        _logger.LogError("HotelRoomReservation with identifier {Identifier} does not exist", command.HotelRoomReservationId);
+        _logger.LogError("HotelRoomReservation with identifier {} does not exist", command.HotelRoomReservationId);
         return new Response<Unit>(ResponseCode.NotFound, new []{ "HotelRoomReservation does not exist" });
     }
 }

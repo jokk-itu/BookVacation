@@ -29,7 +29,7 @@ public class
 
         if (hotel is null)
         {
-            _logger.LogDebug("Hotel with identifier {Identifier} or room {} does not exist", command.HotelId,
+            _logger.LogDebug("Hotel with identifier {} or room {} does not exist", command.HotelId,
                 command.RoomId);
             return new Response<HotelRoomReservation>(ResponseCode.NotFound, new []
             {

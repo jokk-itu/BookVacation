@@ -27,7 +27,7 @@ public class CreateFlightCommandHandler : ICommandHandler<CreateFlightCommand, F
 
         if (airplane is null)
         {
-            _logger.LogDebug("Airplane with identifier {Identifier}, does not exist",
+            _logger.LogDebug("Airplane with identifier {}, does not exist",
                 command.AirplaneId);
             return new Response<Flight>(ResponseCode.NotFound,
                 new[] { "Airplane does not exist" });
@@ -41,7 +41,7 @@ public class CreateFlightCommandHandler : ICommandHandler<CreateFlightCommand, F
 
         if (conflictingFlight is not null)
         {
-            _logger.LogDebug("Airplane is in use by identifier {Identifier}",
+            _logger.LogDebug("Airplane is in use by identifier {}",
                 conflictingFlight.Id);
             return new Response<Flight>(ResponseCode.Conflict,
                 new[] { "Airplane is in use" });

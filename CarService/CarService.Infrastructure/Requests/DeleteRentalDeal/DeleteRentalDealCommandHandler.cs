@@ -22,7 +22,7 @@ public class DeleteRentalDealCommandHandler : ICommandHandler<DeleteRentalDealCo
 
         if (isDeleted) return new Response<Unit>();
         
-        _logger.LogDebug("RentalDeal does not exist from given identifier {Identifier}", command.RentalDealId);
+        _logger.LogDebug("RentalDeal does not exist from given identifier {}", command.RentalDealId);
         return new Response<Unit>
         {
             ResponseCode = ResponseCode.NotFound

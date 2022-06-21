@@ -26,7 +26,7 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Hot
 
         if (conflictingHotel is not null)
         {
-            _logger.LogDebug("Hotel on address {Address} in city {City} in country {Country} already exists",
+            _logger.LogDebug("Hotel on address {} in city {} in country {} already exists",
                 command.Address, command.City, command.Country);
             return new Response<Hotel>(ResponseCode.Conflict, new []{ "Hotel already exists" });
         }

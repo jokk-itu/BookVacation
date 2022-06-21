@@ -25,7 +25,7 @@ public class CreateFlightReservationCommandHandler : ICommandHandler<CreateFligh
 
         if (flight is null)
         {
-            _logger.LogDebug("Flight with identifier {Identifier} does not exist", request.FlightId);
+            _logger.LogDebug("Flight with identifier {} does not exist", request.FlightId);
             return new Response<FlightReservation>(ResponseCode.NotFound, new []{ "Flight does not exist" });
         }
 
@@ -35,7 +35,7 @@ public class CreateFlightReservationCommandHandler : ICommandHandler<CreateFligh
 
         if (conflictingReservation is not null)
         {
-            _logger.LogDebug("Seat with identifier {Identifier} is already booked", request.SeatId);
+            _logger.LogDebug("Seat with identifier {} is already booked", request.SeatId);
             return new Response<FlightReservation>(ResponseCode.Conflict, new []{ "Seat is already booked" });
         }
 
