@@ -1,12 +1,13 @@
+<script>
+    import PageTitle from "../../components/PageTitle.svelte";
+</script>
+
 <svelte:head>
     <title>Mediator</title>
 </svelte:head>
 
-<div class="py-4">
-    <h2 class="text-3xl" id="title">
-        <a class="text-blue-400 header-anchor" href="#title">#</a>Mediator
-    </h2>
-    <hr class="border-blue-400"/>
-</div>
-
-<!-- Mediator pattern, PipelineBehaviours, ICommandHandler, IQueryHandler, CQRS Pattern -->
+<PageTitle title="Mediator">
+    Project to abstract away usage of the MediatR nuget package, by adjusting the mediator pipeline with logging and parameter validation using fluentvalidation.
+    It also exposes the CQRS pattern by using Commands and Queries instead of the generic Request objects.
+    Commands and Queries also return a Response object containing a generic type, a responsecode and a list of possible errors.
+</PageTitle>

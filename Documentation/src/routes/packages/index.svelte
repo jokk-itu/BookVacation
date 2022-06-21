@@ -1,10 +1,11 @@
+<script>
+    import PageTitle from "../../components/PageTitle.svelte";
+</script>
+
 <svelte:head>
     <title>Packages</title>
 </svelte:head>
 
-<div class="py-4">
-    <h2 class="text-3xl" id="title">
-        <a class="text-blue-400 header-anchor" href="#title">#</a>Packages
-    </h2>
-    <hr class="border-blue-400"/>
-</div>
+<PageTitle title="Packages">
+    All package projects are packed and published to the projects nuget repository in githun.
+</PageTitle>

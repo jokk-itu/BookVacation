@@ -1,12 +1,12 @@
+<script>
+    import PageTitle from "../../components/PageTitle.svelte";
+</script>
+
 <svelte:head>
     <title>Healthcheck</title>
 </svelte:head>
 
-<div class="py-4">
-    <h2 class="text-3xl" id="title">
-        <a class="text-blue-400 header-anchor" href="#title">#</a>Healthcheck
-    </h2>
-    <hr class="border-blue-400"/>
-</div>
-
-<!-- Ready, Live, RabbitMQ, RavenDB -->
+<PageTitle title="HealthCheck">
+    Project to setup a ready healthcheck to be used by orchestrators such as kubernetes.
+    Therefore, it can be used to check when the microservice is ready process requests.
+</PageTitle>

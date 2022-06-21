@@ -1,12 +1,11 @@
+<script>
+    import PageTitle from "../../components/PageTitle.svelte";
+</script>
+
 <svelte:head>
     <title>DocumentClient</title>
 </svelte:head>
 
-<div class="py-4">
-    <h2 class="text-3xl" id="title">
-        <a class="text-blue-400 header-anchor" href="#title">#</a>DocumentClient
-    </h2>
-    <hr class="border-blue-400"/>
-</div>
-
-<!-- Polly, Concurrency -->
+<PageTitle title="DocumentClient">
+    Project to abstract away communication with RavenDB. For example retrys for transient error handling, logs during database events and configuration.
+</PageTitle>

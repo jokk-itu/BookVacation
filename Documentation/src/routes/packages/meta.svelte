@@ -1,12 +1,13 @@
+<script>
+    import PageTitle from "../../components/PageTitle.svelte";
+</script>
+
 <svelte:head>
     <title>Meta</title>
 </svelte:head>
 
-<div class="py-4">
-    <h2 class="text-3xl" id="meta">
-        <a class="text-blue-400 header-anchor" href="#meta">#</a>Meta
-    </h2>
-    <hr class="border-blue-400"/>
-</div>
-
-<!-- Fields, Usage in Logging -->
+<PageTitle title="Meta">
+    Meta is used to contain meta data which is shown as properties in all log statements.
+    It is instantiated upon requests and messages being received and it transfers information when communicating with other services.
+    For example a CorrelationId used to correlate an entire request through all services.
+</PageTitle>

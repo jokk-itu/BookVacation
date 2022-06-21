@@ -1,12 +1,13 @@
+<script>
+    import PageTitle from "../../components/PageTitle.svelte";
+</script>
+
 <svelte:head>
     <title>EventDispatcher</title>
 </svelte:head>
 
-<div class="py-4">
-    <h2 class="text-3xl" id="title">
-        <a class="text-blue-400 header-anchor" href="#title">#</a>EventDispatcher
-    </h2>
-    <hr class="border-blue-400"/>
-</div>
-
-<!-- Masstransit setup -->
+<PageTitle title="EventDispatcher">
+    Project to abstract away the setup of MassTransit.
+    There is setup of the bus, rabbitmq transport, filters for logging and metadata, as well as message retries,
+    killswitch, circuit breaker, and metrics for prometheus.
+</PageTitle>

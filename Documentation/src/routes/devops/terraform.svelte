@@ -48,6 +48,6 @@
     All microservices are created as deployment, service, horizontal pod autoscaler, ingress rule and a configmap.
 </Section>
 
-<Section title="records">
+<Section title="Records">
     Two A-records are created to point the loadbalancer to the domainname. It is seq.DOMAINNAME and DOMAINNAME.
 </Section>
