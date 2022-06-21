@@ -25,4 +25,8 @@
         <ProjectReference Include="..\TrackingService.Infrastructure\TrackingService.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Validators" />
+    </ItemGroup>
+
 </Project>

@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation.AspNetCore;
 using HealthCheck.Core;
 using Logging;
@@ -8,7 +9,6 @@ using Prometheus;
 using Prometheus.SystemMetrics;
 using Serilog;
 using TrackingService.Api;
-using TrackingService.Api.Validators;
 using TrackingService.Infrastructure;
 
 var logConfiguration = new LoggingConfiguration(new ConfigurationBuilder()
@@ -39,7 +39,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(FluentValidatorRegistration).Assembly
+            Assembly.GetExecutingAssembly()
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);
