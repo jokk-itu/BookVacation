@@ -1,6 +1,5 @@
 using CarService.Domain;
 using Mediator;
-using MediatR;
 
 namespace CarService.Infrastructure.Requests.CreateRentalCar;
 

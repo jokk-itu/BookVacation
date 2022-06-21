@@ -42,7 +42,7 @@ public class TestCommandHandlerTest
         //Act
         var query = new TestCommand(1, -1);
         var mediator = serviceProvider.GetRequiredService<IMediator>();
-        
+
         //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await mediator.Send(query));
     }

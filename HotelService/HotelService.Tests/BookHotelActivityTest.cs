@@ -11,7 +11,6 @@ using Mediator;
 using MediatR;
 using Moq;
 using Xunit;
-using CancellationToken = System.Threading.CancellationToken;
 
 namespace HotelService.Tests;
 
@@ -85,7 +84,8 @@ public class BookHotelActivityTest
                 _ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateHotelRoomReservationCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Mediator.Response<HotelRoomReservation>(ResponseCode.NotFound, new []{ "Hotel does not exist" }))
+            .ReturnsAsync(
+                new Mediator.Response<HotelRoomReservation>(ResponseCode.NotFound, new[] { "Hotel does not exist" }))
             .Verifiable();
 
         //Act
@@ -185,7 +185,7 @@ public class BookHotelActivityTest
             await harness.Stop();
         }
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Compensate_ExpectFailed()
@@ -213,7 +213,8 @@ public class BookHotelActivityTest
             .Verifiable();
 
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteHotelRoomReservationCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Mediator.Response<Unit>(ResponseCode.NotFound, new []{ "HotelRoomReservation does not exist" }))
+            .ReturnsAsync(new Mediator.Response<Unit>(ResponseCode.NotFound,
+                new[] { "HotelRoomReservation does not exist" }))
             .Verifiable();
 
         //Act

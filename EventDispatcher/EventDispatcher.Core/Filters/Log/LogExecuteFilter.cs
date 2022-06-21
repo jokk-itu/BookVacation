@@ -19,15 +19,15 @@ public class LogExecuteFilter<T> : IFilter<ExecuteContext<T>> where T : class
         var watch = Stopwatch.StartNew();
         await next.Send(context);
         watch.Stop();
-        
+
         var scope = new Dictionary<string, object>
         {
             { "TrackingNumber", context.TrackingNumber },
             { "ActivityName", context.ActivityName }
         };
-        if(context.MessageId is not null)
+        if (context.MessageId is not null)
             scope.Add("MessageId", context.MessageId);
-        
+
         using (_logger.BeginScope(scope))
         {
             _logger.LogInformation("Executed {Message}, took {Elapsed} ms",

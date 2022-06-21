@@ -27,7 +27,8 @@ public class CreateRentalDealTest : RavenTestDriver
 
         WaitForIndexing(store);
 
-        var createDentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
+        var createDentalDealHandler =
+            new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
 
         //Act
         var rentalDealResponse = await createDentalDealHandler.Handle(
@@ -51,7 +52,8 @@ public class CreateRentalDealTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
 
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
-        var createDentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
+        var createDentalDealHandler =
+            new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
 
         //Act
         var responseRentalDeal = await createDentalDealHandler.Handle(
@@ -79,7 +81,8 @@ public class CreateRentalDealTest : RavenTestDriver
 
         WaitForIndexing(store);
 
-        var createRentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
+        var createRentalDealHandler =
+            new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
 
         //Act
         await createRentalDealHandler.Handle(

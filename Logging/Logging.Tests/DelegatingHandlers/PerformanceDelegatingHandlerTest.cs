@@ -34,7 +34,7 @@ public class PerformanceDelegatingHandlerTest
             InnerHandler = innerHandlerMock.Object
         };
         var invoker = new HttpMessageInvoker(handler);
-        
+
         using (TestCorrelator.CreateContext())
         {
             //Act
@@ -46,7 +46,7 @@ public class PerformanceDelegatingHandlerTest
             innerHandlerMock.Verify();
         }
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Send_ExpectStatusError()
@@ -68,11 +68,12 @@ public class PerformanceDelegatingHandlerTest
             InnerHandler = innerHandlerMock.Object
         };
         var invoker = new HttpMessageInvoker(handler);
-        
+
         using (TestCorrelator.CreateContext())
         {
             //Act
-            await Assert.ThrowsAsync<HttpRequestException>(async () => await invoker.SendAsync(request, CancellationToken.None));
+            await Assert.ThrowsAsync<HttpRequestException>(async () =>
+                await invoker.SendAsync(request, CancellationToken.None));
 
             //Assert
             Assert.True(TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.Level ==

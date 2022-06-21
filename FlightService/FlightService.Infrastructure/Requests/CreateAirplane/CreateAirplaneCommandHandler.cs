@@ -1,7 +1,6 @@
 using DocumentClient;
 using FlightService.Domain;
 using Mediator;
-using MediatR;
 
 namespace FlightService.Infrastructure.Requests.CreateAirplane;
 

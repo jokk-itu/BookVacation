@@ -1,7 +1,6 @@
 using Logging.Constants;
 using Meta;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Logging.Middlewares;
 
@@ -19,10 +18,8 @@ public class RequestIdMiddleware
         metaContextAccessor.MetaContext ??= new MetaContext();
         if (httpContext.Request.Headers.TryGetValue(Header.RequestId, out var requestId) &&
             Guid.TryParse(requestId, out var parsedRequestId))
-        {
             metaContextAccessor.MetaContext.RequestId = parsedRequestId;
-        }
-        
+
         await _next(httpContext);
     }
 }

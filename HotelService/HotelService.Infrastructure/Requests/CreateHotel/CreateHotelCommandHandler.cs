@@ -1,7 +1,6 @@
 using DocumentClient;
 using HotelService.Domain;
 using Mediator;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 
@@ -28,7 +27,7 @@ public class CreateHotelCommandHandler : ICommandHandler<CreateHotelCommand, Hot
         {
             _logger.LogDebug("Hotel on address {} in city {} in country {} already exists",
                 command.Address, command.City, command.Country);
-            return new Response<Hotel>(ResponseCode.Conflict, new []{ "Hotel already exists" });
+            return new Response<Hotel>(ResponseCode.Conflict, new[] { "Hotel already exists" });
         }
 
         var hotel = new Hotel

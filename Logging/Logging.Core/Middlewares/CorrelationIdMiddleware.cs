@@ -19,9 +19,7 @@ public class CorrelationIdMiddleware
 
         if (httpContext.Request.Headers.TryGetValue(Header.CorrelationId, out var correlationId) &&
             Guid.TryParse(correlationId, out var parsedCorrelationId))
-        {
             metaContextAccessor.MetaContext.CorrelationId = parsedCorrelationId;
-        }
 
         await _next(httpContext);
     }

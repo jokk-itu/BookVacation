@@ -1,19 +1,13 @@
 using System;
-using System.Net;
-using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using FlightService.Api;
 using FlightService.Api.Controllers.v1;
 using FlightService.Contracts.Airplane;
-using FlightService.Contracts.Flight;
 using FlightService.Domain;
 using FlightService.Infrastructure.Requests.CreateAirplane;
-using FlightService.Infrastructure.Requests.CreateFlight;
 using Mediator;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Moq;
 using Xunit;
 
@@ -26,28 +20,28 @@ public class AirplaneControllerTest
     public async Task Post_ExpectCreated()
     {
         //Arrange
-        var postAirplaneRequest = new PostAirplaneRequest()
+        var postAirplaneRequest = new PostAirplaneRequest
         {
             ModelNumber = Guid.NewGuid(),
             Seats = 0,
             AirlineName = string.Empty,
             AirplaneMakerName = string.Empty
         };
-        
-        var airplane = new Airplane()
+
+        var airplane = new Airplane
         {
             Id = Guid.NewGuid().ToString(),
-            Seats = new [] { new Seat {Id = Guid.NewGuid().ToString()} },
+            Seats = new[] { new Seat { Id = Guid.NewGuid().ToString() } },
             AirlineName = string.Empty,
             ModelNumber = Guid.NewGuid(),
             AirplaneMakerName = string.Empty
         };
-        
+
         var fakeMediator = new Mock<IMediator>();
         fakeMediator.Setup(x => x.Send(It.IsAny<CreateAirplaneCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Response<Airplane>(airplane))
             .Verifiable();
-        
+
         var controller = new AirplaneController(fakeMediator.Object);
 
         //Act

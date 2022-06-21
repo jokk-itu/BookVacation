@@ -1,7 +1,6 @@
 using DocumentClient;
 using HotelService.Domain;
 using Mediator;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 
@@ -31,7 +30,7 @@ public class
         {
             _logger.LogDebug("Hotel with identifier {} or room {} does not exist", command.HotelId,
                 command.RoomId);
-            return new Response<HotelRoomReservation>(ResponseCode.NotFound, new []
+            return new Response<HotelRoomReservation>(ResponseCode.NotFound, new[]
             {
                 "Hotel or Room does not exist"
             });
@@ -47,7 +46,7 @@ public class
         if (conflictingReservation is not null)
         {
             _logger.LogDebug("Room {} is already booked", command.RoomId);
-            return new Response<HotelRoomReservation>(ResponseCode.Conflict, new []
+            return new Response<HotelRoomReservation>(ResponseCode.Conflict, new[]
             {
                 "Room is already booked"
             });

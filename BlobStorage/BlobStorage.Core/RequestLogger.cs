@@ -23,12 +23,14 @@ public class RequestLogger : IRequestLogger
             _logger.LogDebug("Request started");
 
             if (string.IsNullOrWhiteSpace(responseToLog.errorMessage))
-                _logger.LogInformation("Request to {Resource} completed with statuscode {StatusCode}, took {Elapsed} ms",
+                _logger.LogInformation(
+                    "Request to {Resource} completed with statuscode {StatusCode}, took {Elapsed} ms",
                     requestToLog.resource, responseToLog.statusCode, responseToLog.durationMs);
             else
                 _logger.LogError(
                     "Request to {Resource} completed with statuscode {StatusCode}, took {Elapsed} ms, with error {Error}",
-                    requestToLog.resource, responseToLog.statusCode, responseToLog.durationMs, responseToLog.errorMessage);
+                    requestToLog.resource, responseToLog.statusCode, responseToLog.durationMs,
+                    responseToLog.errorMessage);
         }
     }
 }

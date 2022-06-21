@@ -2,15 +2,8 @@ namespace Mediator;
 
 public class Response<T>
 {
-    public ResponseCode ResponseCode { get; }
-
-    public IEnumerable<string> Errors { get; } = new List<string>();
-
-    public T? Body { get; }
-
     public Response()
     {
-        
     }
 
     public Response(T body)
@@ -35,4 +28,10 @@ public class Response<T>
         ResponseCode = responseCode;
         Errors = errors;
     }
+
+    public ResponseCode ResponseCode { get; }
+
+    public IEnumerable<string> Errors { get; } = new List<string>();
+
+    public T? Body { get; }
 }

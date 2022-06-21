@@ -20,7 +20,12 @@ public class CorrelationIdMiddlewareTest
         {
             MetaContext = new MetaContext()
         };
-        Task Next(HttpContext _) => Task.CompletedTask;
+
+        Task Next(HttpContext _)
+        {
+            return Task.CompletedTask;
+        }
+
         var correlationIdMiddleware = new CorrelationIdMiddleware(Next);
 
         //Act

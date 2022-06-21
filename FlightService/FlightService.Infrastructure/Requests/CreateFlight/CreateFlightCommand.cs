@@ -1,6 +1,5 @@
 using FlightService.Domain;
 using Mediator;
-using MediatR;
 
 namespace FlightService.Infrastructure.Requests.CreateFlight;
 

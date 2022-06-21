@@ -29,7 +29,7 @@ public class PerformanceDelegatingHandler : DelegatingHandler
             _logger.LogError(e, "HTTP Request to {Service} completed with {Statuscode}, took {Elapsed} ms",
                 request.RequestUri?.Authority, response.StatusCode, time);
             throw;
-        } 
+        }
 
         return response;
     }

@@ -1,4 +1,3 @@
-using EventDispatcher.Filters;
 using EventDispatcher.Filters.Log;
 using EventDispatcher.Filters.Meta;
 using MassTransit;
@@ -43,7 +42,7 @@ public static class ServiceCollectionExtensions
                 factoryConfigurator.UsePublishFilter(typeof(MetaPublishFilter<>), busContext);
                 factoryConfigurator.UseCompensateActivityFilter(typeof(MetaCompensateFilter<>), busContext);
                 factoryConfigurator.UseExecuteActivityFilter(typeof(MetaExecuteFilter<>), busContext);
-                
+
                 factoryConfigurator.UseConsumeFilter(typeof(LogConsumeFilter<>), busContext);
                 factoryConfigurator.UseSendFilter(typeof(LogSendFilter<>), busContext);
                 factoryConfigurator.UsePublishFilter(typeof(LogPublishFilter<>), busContext);

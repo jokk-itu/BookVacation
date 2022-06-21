@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 .header-anchor {
-  opacity: 0;
+    opacity: 0;
 }
 
 .header-anchor:hover {
-  opacity: 1;
+    opacity: 1;
 }
 
 .ref-link:hover {
-  color: #2196f3;
+    color: #2196f3;
 }

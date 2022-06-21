@@ -17,12 +17,10 @@ public class SeqSink : ISink
 
         loggerConfiguration
             .WriteTo.Seq(loggingConfiguration.SeqUri,
-                restrictedToMinimumLevel: loggingConfiguration.SeqMinimumLogLevel);
+                loggingConfiguration.SeqMinimumLogLevel);
 
         foreach (var pair in loggingConfiguration.SeqOverrides)
-        {
             loggerConfiguration.Filter.ByExcluding(logEvent =>
                 Matching.FromSource(pair.Key).Invoke(logEvent) && logEvent.Level <= pair.Value);
-        }
     }
 }

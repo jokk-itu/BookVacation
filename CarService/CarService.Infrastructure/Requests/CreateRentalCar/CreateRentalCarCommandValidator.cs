@@ -1,7 +1,6 @@
-using CarService.Infrastructure.Requests.CreateRentalCar;
 using FluentValidation;
 
-namespace CarService.Infrastructure.Validators;
+namespace CarService.Infrastructure.Requests.CreateRentalCar;
 
 public class CreateRentalCarCommandValidator : AbstractValidator<CreateRentalCarCommand>
 {

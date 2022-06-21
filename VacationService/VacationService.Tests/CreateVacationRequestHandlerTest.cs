@@ -14,10 +14,10 @@ public class CreateVacationRequestHandlerTest
         var harness = new InMemoryTestHarness();
         var request = new CreateVacationCommand(
             Guid.NewGuid(),
-            Guid.NewGuid(), 
+            Guid.NewGuid(),
             Guid.NewGuid(),
             DateTimeOffset.Now,
-            DateTimeOffset.Now, 
+            DateTimeOffset.Now,
             Guid.NewGuid(),
             Guid.NewGuid(),
             string.Empty,
@@ -30,7 +30,7 @@ public class CreateVacationRequestHandlerTest
         {
             var requestHandler = new CreateVacationRequestHandler(harness.BusControl);
             await requestHandler.Handle(request, CancellationToken.None);
-            
+
             //Assert
             Assert.True(await harness.Sent.Any());
         }

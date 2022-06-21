@@ -18,7 +18,8 @@ public class CreateFlightTicketCommandHandler : ICommandHandler<CreateFlightTick
 
     public async Task<Response<Unit>> Handle(CreateFlightTicketCommand command, CancellationToken cancellationToken)
     {
-        var html = "<!DOCTYPE html><html><head><title>FlightTicket</title></head><body><h1>FlightTicket</h1></body></html>";
+        var html =
+            "<!DOCTYPE html><html><head><title>FlightTicket</title></head><body><h1>FlightTicket</h1></body></html>";
 
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);
@@ -28,6 +29,6 @@ public class CreateFlightTicketCommandHandler : ICommandHandler<CreateFlightTick
             pdf.ToArray(),
             cancellationToken);
 
-        return isSent ? new Response<Unit>() : new Response<Unit>(ResponseCode.Ok, new []{ "Unknown error occured" });
+        return isSent ? new Response<Unit>() : new Response<Unit>(ResponseCode.Ok, new[] { "Unknown error occured" });
     }
 }

@@ -20,7 +20,7 @@ public class RequestIdDelegatingHandlerTest
             .Setup<Task<HttpResponseMessage>>("SendAsync", request, ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
             .Verifiable();
-        
+
         var handler = new RequestIdDelegatingHandler
         {
             InnerHandler = innerHandlerMock.Object

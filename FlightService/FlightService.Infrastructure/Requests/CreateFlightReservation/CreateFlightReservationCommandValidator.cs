@@ -1,7 +1,6 @@
-using FlightService.Infrastructure.Requests.CreateFlightReservation;
 using FluentValidation;
 
-namespace FlightService.Infrastructure.Validators;
+namespace FlightService.Infrastructure.Requests.CreateFlightReservation;
 
 public class CreateFlightReservationCommandValidator : AbstractValidator<CreateFlightReservationCommand>
 {

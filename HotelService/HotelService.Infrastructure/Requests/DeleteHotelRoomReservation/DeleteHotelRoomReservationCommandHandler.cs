@@ -10,20 +10,22 @@ public class DeleteHotelRoomReservationCommandHandler : ICommandHandler<DeleteHo
     private readonly IDocumentClient _client;
     private readonly ILogger<DeleteHotelRoomReservationCommandHandler> _logger;
 
-    public DeleteHotelRoomReservationCommandHandler(IDocumentClient client, ILogger<DeleteHotelRoomReservationCommandHandler> logger)
+    public DeleteHotelRoomReservationCommandHandler(IDocumentClient client,
+        ILogger<DeleteHotelRoomReservationCommandHandler> logger)
     {
         _client = client;
         _logger = logger;
     }
 
-    public async Task<Response<Unit>> Handle(DeleteHotelRoomReservationCommand command, CancellationToken cancellationToken)
+    public async Task<Response<Unit>> Handle(DeleteHotelRoomReservationCommand command,
+        CancellationToken cancellationToken)
     {
         var isDeleted = await _client.DeleteAsync(command.HotelRoomReservationId.ToString(), cancellationToken);
 
         if (isDeleted)
             return new Response<Unit>();
-        
+
         _logger.LogError("HotelRoomReservation with identifier {} does not exist", command.HotelRoomReservationId);
-        return new Response<Unit>(ResponseCode.NotFound, new []{ "HotelRoomReservation does not exist" });
+        return new Response<Unit>(ResponseCode.NotFound, new[] { "HotelRoomReservation does not exist" });
     }
 }

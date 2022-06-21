@@ -1,7 +1,6 @@
 using FluentValidation;
-using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 
-namespace HotelService.Infrastructure.Validators;
+namespace HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 
 public class CreateHotelRoomReservationRequestValidator : AbstractValidator<CreateHotelRoomReservationCommand>
 {

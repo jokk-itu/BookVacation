@@ -5,11 +5,11 @@ namespace Core.Services;
 
 public class VacationService
 {
+    private readonly string _carUri;
     private readonly string _flightUri;
     private readonly string _hotelUri;
-    private readonly string _carUri;
     private readonly HttpClient _httpClient;
-    
+
     public VacationService(string vacationUri, string flightUri, string hotelUri, string carUri)
     {
         _flightUri = flightUri;

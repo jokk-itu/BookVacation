@@ -11,7 +11,7 @@ public class MetaConsumerFilter<T> : IFilter<ConsumeContext<T>> where T : class
     {
         _metaContextAccessor = metaContextAccessor;
     }
-    
+
     public async Task Send(ConsumeContext<T> context, IPipe<ConsumeContext<T>> next)
     {
         _metaContextAccessor.MetaContext ??= new MetaContext();

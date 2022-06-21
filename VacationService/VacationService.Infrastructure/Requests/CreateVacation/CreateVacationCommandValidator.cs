@@ -1,7 +1,6 @@
 using FluentValidation;
-using VacationService.Infrastructure.Requests.CreateVacation;
 
-namespace VacationService.Infrastructure.Validators;
+namespace VacationService.Infrastructure.Requests.CreateVacation;
 
 public class CreateVacationCommandValidator : AbstractValidator<CreateVacationCommand>
 {

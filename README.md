@@ -15,6 +15,7 @@ A project to buy a vacation, consisting of a flight ticket, hotel room reservati
 ## Architecture
 
 Made up of microservices, and utilizes the routingslip pattern for distributed transactions.
+Each microservice is build on the principles of clean architecture.
 
 ## Microservice Technologies
 
@@ -39,7 +40,17 @@ Made up of microservices, and utilizes the routingslip pattern for distributed t
 
 ## Documentation
 
-Link to [Documentation](https://jokk-itu.github.io/BookVacation/)
+All documentation can be found in the Documentation/ folder.
+It contains a SvelteKit project, which is run by this command: 
+```
+npm run dev
+```
+
+It can also be built in run in production
+```
+npm run build
+npm run preview
+```
 
 ## Setup
 

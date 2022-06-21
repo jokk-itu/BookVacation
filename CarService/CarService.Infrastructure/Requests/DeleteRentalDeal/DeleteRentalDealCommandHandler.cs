@@ -21,12 +21,11 @@ public class DeleteRentalDealCommandHandler : ICommandHandler<DeleteRentalDealCo
         var isDeleted = await _client.DeleteAsync(command.RentalDealId.ToString(), cancellationToken);
 
         if (isDeleted) return new Response<Unit>();
-        
+
         _logger.LogDebug("RentalDeal does not exist from given identifier {}", command.RentalDealId);
         return new Response<Unit>
         {
             ResponseCode = ResponseCode.NotFound
         };
-
     }
 }

@@ -17,8 +17,9 @@ public class CreateVacationRequestHandler : ICommandHandler<CreateVacationComman
     {
         _busControl = busControl;
     }
-    
-    public async Task<Mediator.Response<Unit>> Handle(CreateVacationCommand command, CancellationToken cancellationToken)
+
+    public async Task<Mediator.Response<Unit>> Handle(CreateVacationCommand command,
+        CancellationToken cancellationToken)
     {
         var builder = new RoutingSlipBuilder(NewId.NextGuid());
 

@@ -1,7 +1,6 @@
-using CarService.Infrastructure.Requests.DeleteRentalDeal;
 using FluentValidation;
 
-namespace CarService.Infrastructure.Validators;
+namespace CarService.Infrastructure.Requests.DeleteRentalDeal;
 
 public class DeleteRentalDealCommandValidator : AbstractValidator<DeleteRentalDealCommand>
 {

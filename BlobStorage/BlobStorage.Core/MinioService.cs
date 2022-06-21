@@ -6,26 +6,26 @@ namespace BlobStorage;
 
 public class MinioService : IMinioService
 {
-    private readonly MinioClient _minioClient;
     private readonly ILogger<MinioService> _logger;
+    private readonly MinioClient _minioClient;
 
     public MinioService(MinioClient minioClient, ILogger<MinioService> logger)
     {
         _minioClient = minioClient;
         _logger = logger;
     }
-    
+
     public async Task<Stream?> ReadAsync(string bucket, string id, CancellationToken cancellationToken = default)
     {
         try
         {
             await _minioClient.StatObjectAsync(new StatObjectArgs().WithBucket(bucket).WithObject(id),
-                cancellationToken: cancellationToken);
+                cancellationToken);
             var output = new MemoryStream();
             await _minioClient.GetObjectAsync(
                 new GetObjectArgs().WithBucket(bucket).WithObject(id)
                     .WithCallbackStream(stream => { stream.CopyTo(output); }),
-                cancellationToken: cancellationToken);
+                cancellationToken);
             return output;
         }
         catch (BucketNotFoundException)
@@ -45,18 +45,19 @@ public class MinioService : IMinioService
         }
     }
 
-    public async Task<bool> CreateAsync(string bucket, string id, byte[] data, CancellationToken cancellationToken = default)
+    public async Task<bool> CreateAsync(string bucket, string id, byte[] data,
+        CancellationToken cancellationToken = default)
     {
         try
         {
             if (!await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucket), cancellationToken))
                 await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucket),
-                    cancellationToken: cancellationToken);
+                    cancellationToken);
 
             var stream = new MemoryStream(data);
             await _minioClient.PutObjectAsync(
                 new PutObjectArgs().WithBucket(bucket).WithObject(id).WithObjectSize(data.Length)
-                    .WithStreamData(stream), cancellationToken: cancellationToken);
+                    .WithStreamData(stream), cancellationToken);
             await stream.DisposeAsync();
             return true;
         }

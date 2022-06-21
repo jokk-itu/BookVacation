@@ -1,6 +1,5 @@
 using HotelService.Domain;
 using Mediator;
-using MediatR;
 
 namespace HotelService.Infrastructure.Requests.CreateHotel;
 

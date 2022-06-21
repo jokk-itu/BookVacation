@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<CorrelationIdDelegatingHandler>();
         services.AddTransient<RequestIdDelegatingHandler>();
         services.AddTransient<PerformanceDelegatingHandler>();
-        
+
         services.AddTransient<CorrelationIdEnricher>();
         services.AddTransient<RequestIdEnricher>();
 

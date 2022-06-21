@@ -17,9 +17,7 @@ public class ConsoleSink : ISink
                 "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}");
 
         foreach (var pair in loggingConfiguration.ConsoleOverrides)
-        {
             loggerConfiguration.Filter.ByExcluding(logEvent =>
                 Matching.FromSource(pair.Key).Invoke(logEvent) && logEvent.Level <= pair.Value);
-        }
     }
 }

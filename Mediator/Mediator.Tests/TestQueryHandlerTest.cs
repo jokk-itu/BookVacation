@@ -27,7 +27,7 @@ public class TestQueryHandlerTest
         //Assert
         Assert.Equal(ResponseCode.Ok, response.ResponseCode);
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Handle_ExpectThrowValidationException()
@@ -42,7 +42,7 @@ public class TestQueryHandlerTest
         //Act
         var query = new TestQuery(1, -1);
         var mediator = serviceProvider.GetRequiredService<IMediator>();
-        
+
         //Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await mediator.Send(query));
     }

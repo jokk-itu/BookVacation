@@ -12,10 +12,11 @@ public class CorrelationIdDelegatingHandler : DelegatingHandler
         _metaContextAccessor = metaContextAccessor;
     }
 
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
     {
         _metaContextAccessor.MetaContext ??= new MetaContext();
-        
+
         request.Headers.Add(Header.CorrelationId, _metaContextAccessor.MetaContext.CorrelationId.ToString());
         return await base.SendAsync(request, cancellationToken);
     }

@@ -1,11 +1,8 @@
-using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes.TimeSeries;
 using Raven.TestDriver;
 using Xunit;
 
@@ -22,13 +19,18 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var createHotelRequestHandler =
+            new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
         var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotelResponse.Body!.Id),
-            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(
+            Guid.Parse(hotelResponse.Body!.Id),
+            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1),
+            DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequestHandler =
+            new CreateHotelRoomReservationCommandHandler(client,
+                Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
 
         //Act
         var hotelRoomReservationResponse =
@@ -49,13 +51,17 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var createHotelRequestHandler =
+            new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
         var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Empty,
-            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
+            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1),
+            DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequestHandler =
+            new CreateHotelRoomReservationCommandHandler(client,
+                Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
 
         //Act
         var hotelRoomReservationResponse =
@@ -76,13 +82,17 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var createHotelRequestHandler =
+            new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
         var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotelResponse.Body!.Id), Guid.Empty,
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(
+            Guid.Parse(hotelResponse.Body!.Id), Guid.Empty,
             DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
+        var createHotelRoomReservationRequestHandler =
+            new CreateHotelRoomReservationCommandHandler(client,
+                Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
 
         //Act
         var hotelRoomReservationResponse =
@@ -103,13 +113,18 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var createHotelRequestHandler =
+            new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
         var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotelResponse.Body!.Id),
-            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(
+            Guid.Parse(hotelResponse.Body!.Id),
+            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1),
+            DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequestHandler =
+            new CreateHotelRoomReservationCommandHandler(client,
+                Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
         await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
             CancellationToken.None);
         WaitForIndexing(store);

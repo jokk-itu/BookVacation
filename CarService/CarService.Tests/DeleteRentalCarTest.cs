@@ -22,8 +22,10 @@ public class DeleteRentalCarTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
 
-        var deleteRentalDealHandler = new DeleteRentalDealCommandHandler(client, Mock.Of<ILogger<DeleteRentalDealCommandHandler>>());
-        var createRentalDealHandler = new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
+        var deleteRentalDealHandler =
+            new DeleteRentalDealCommandHandler(client, Mock.Of<ILogger<DeleteRentalDealCommandHandler>>());
+        var createRentalDealHandler =
+            new CreateRentalDealCommandHandler(client, Mock.Of<ILogger<CreateRentalDealCommandHandler>>());
         var rentalCarHandler = new CreateRentalCarCommandHandler(client);
 
         var rentalCarResponse =
@@ -61,7 +63,8 @@ public class DeleteRentalCarTest : RavenTestDriver
         using var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
 
-        var deleteRentalDealHandler = new DeleteRentalDealCommandHandler(client, Mock.Of<ILogger<DeleteRentalDealCommandHandler>>());
+        var deleteRentalDealHandler =
+            new DeleteRentalDealCommandHandler(client, Mock.Of<ILogger<DeleteRentalDealCommandHandler>>());
 
         WaitForIndexing(store);
 

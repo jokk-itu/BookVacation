@@ -1,7 +1,6 @@
 using FluentValidation;
-using TrackingService.Infrastructure.Requests.UpdateTracking;
 
-namespace TrackingService.Infrastructure.Validators;
+namespace TrackingService.Infrastructure.Requests.UpdateTracking;
 
 public class UpdateTrackingCommandValidator : AbstractValidator<UpdateTrackingCommand>
 {

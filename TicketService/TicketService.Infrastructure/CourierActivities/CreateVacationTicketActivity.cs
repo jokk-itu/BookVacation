@@ -2,7 +2,6 @@ using MassTransit;
 using Mediator;
 using MediatR;
 using TicketService.Contracts.CreateVacationTickets;
-using TicketService.Infrastructure.Requests;
 using TicketService.Infrastructure.Requests.CreateCarTicket;
 using TicketService.Infrastructure.Requests.CreateFlightTicket;
 using TicketService.Infrastructure.Requests.CreateHotelTicket;
@@ -26,7 +25,7 @@ public class CreateVacationTicketActivity : IActivity<CreateVacationTicketArgume
         var hotelTicketResponse =
             await _mediator.Send(new CreateHotelTicketCommand(context.Arguments.HotelId, context.Arguments.RoomId));
         var flightTicketResponse = await _mediator.Send(new CreateFlightTicketCommand(context.Arguments.FlightId));
-        
+
         if (carTicketResponse.ResponseCode == ResponseCode.Ok
             && hotelTicketResponse.ResponseCode == ResponseCode.Ok
             && flightTicketResponse.ResponseCode == ResponseCode.Ok)

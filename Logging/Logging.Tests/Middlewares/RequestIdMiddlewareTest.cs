@@ -20,7 +20,12 @@ public class RequestIdMiddlewareTest
         {
             MetaContext = new MetaContext()
         };
-        Task Next(HttpContext _) => Task.CompletedTask;
+
+        Task Next(HttpContext _)
+        {
+            return Task.CompletedTask;
+        }
+
         var requestIdMiddleware = new RequestIdMiddleware(Next);
 
         //Act

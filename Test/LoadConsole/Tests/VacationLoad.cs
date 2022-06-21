@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using NBomber.Contracts;
 using NBomber.CSharp;
-using Serilog;
 
 namespace LoadConsole.Tests;
 
@@ -14,8 +13,8 @@ public class VacationLoad
             clientCount: 10,
             initClient: (_, _) => Task.FromResult(new HttpClient()));
 
-        var vacation = Step.Create("post_vacation", clientFactory: httpFactory,
-            execute: async context =>
+        var vacation = Step.Create("post_vacation", httpFactory,
+            async context =>
             {
                 var watch = Stopwatch.StartNew();
                 await new Core.Services.VacationService(options.VacationUri, options.FlightUri, options.HotelUri,

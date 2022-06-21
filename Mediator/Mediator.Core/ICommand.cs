@@ -4,5 +4,4 @@ namespace Mediator;
 
 public interface ICommand<T> : IRequest<Response<T>>
 {
-    
 }

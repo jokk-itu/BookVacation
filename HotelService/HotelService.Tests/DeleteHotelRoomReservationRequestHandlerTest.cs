@@ -1,11 +1,9 @@
-using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Raven.Client.Documents;
 using Raven.TestDriver;
 using Xunit;
 

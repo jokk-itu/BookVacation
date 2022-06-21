@@ -129,9 +129,7 @@ public static class LoggerConfigurationExtensions
         LoggingConfiguration configuration)
     {
         foreach (var pair in configuration.GlobalOverrides)
-        {
             loggerConfiguration.MinimumLevel.Override(pair.Key, pair.Value);
-        }
 
         return loggerConfiguration;
     }

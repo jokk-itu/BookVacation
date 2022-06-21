@@ -1,6 +1,5 @@
 using System.Reflection;
 using CarService.Api;
-using CarService.Api.Validators;
 using CarService.Infrastructure;
 using FluentValidation.AspNetCore;
 using HealthCheck.Core;

@@ -1,12 +1,12 @@
 <svelte:head>
-	<title>Continous Integration</title>
+    <title>Continous Integration</title>
 </svelte:head>
 
 <div class="py-4">
-	<h2 id="title" class="text-3xl">
-		<a class="text-blue-400 header-anchor" href="#title">#</a>Contionus Integration
-	</h2>
-	<hr class="border-blue-400" />
+    <h2 class="text-3xl" id="title">
+        <a class="text-blue-400 header-anchor" href="#title">#</a>Contionus Integration
+    </h2>
+    <hr class="border-blue-400"/>
 </div>
 
 <!-- Restore, Build, Test -->

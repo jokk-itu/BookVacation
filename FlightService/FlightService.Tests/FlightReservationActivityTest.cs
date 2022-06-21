@@ -83,7 +83,8 @@ public class FlightReservationActivityTest
                 _ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateFlightReservationCommand>(), CancellationToken.None))
-            .ReturnsAsync(new Mediator.Response<FlightReservation>(ResponseCode.Conflict, new []{ "FlightReservation already exists." }))
+            .ReturnsAsync(new Mediator.Response<FlightReservation>(ResponseCode.Conflict,
+                new[] { "FlightReservation already exists." }))
             .Verifiable();
 
         //Act
@@ -140,7 +141,8 @@ public class FlightReservationActivityTest
             .Verifiable();
 
         fakeMediator.Setup(m => m.Send(It.IsAny<DeleteFlightReservationCommand>(), CancellationToken.None))
-            .ReturnsAsync(new Mediator.Response<Unit>(ResponseCode.NotFound, new []{ "FlightReservation does not exist." }))
+            .ReturnsAsync(new Mediator.Response<Unit>(ResponseCode.NotFound,
+                new[] { "FlightReservation does not exist." }))
             .Verifiable();
 
         //Act

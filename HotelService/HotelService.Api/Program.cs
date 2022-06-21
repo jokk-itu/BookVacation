@@ -39,7 +39,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            Assembly.GetExecutingAssembly(), 
+            Assembly.GetExecutingAssembly()
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);

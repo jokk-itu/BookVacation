@@ -17,7 +17,8 @@ public class CreateHotelTicketCommandHandler : ICommandHandler<CreateHotelTicket
 
     public async Task<Response<Unit>> Handle(CreateHotelTicketCommand command, CancellationToken cancellationToken)
     {
-        var html = "<!DOCTYPE html><html><head><title>HotelTicket</title></head><body><h1>HotelTicket</h1></body></html>";
+        var html =
+            "<!DOCTYPE html><html><head><title>HotelTicket</title></head><body><h1>HotelTicket</h1></body></html>";
 
         await using var pdf = new MemoryStream();
         HtmlConverter.ConvertToPdf(html, pdf);
@@ -27,6 +28,8 @@ public class CreateHotelTicketCommandHandler : ICommandHandler<CreateHotelTicket
             pdf.ToArray(),
             cancellationToken);
 
-        return isSent ? new Response<Unit>() : new Response<Unit>(ResponseCode.Error, new[] { "Unknown error ocurred" });
+        return isSent
+            ? new Response<Unit>()
+            : new Response<Unit>(ResponseCode.Error, new[] { "Unknown error ocurred" });
     }
 }

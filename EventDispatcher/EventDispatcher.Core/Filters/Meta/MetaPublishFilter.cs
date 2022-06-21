@@ -11,7 +11,7 @@ public class MetaPublishFilter<T> : IFilter<PublishContext<T>> where T : class
     {
         _metaContextAccessor = metaContextAccessor;
     }
-    
+
     public async Task Send(PublishContext<T> context, IPipe<PublishContext<T>> next)
     {
         _metaContextAccessor.MetaContext ??= new MetaContext();

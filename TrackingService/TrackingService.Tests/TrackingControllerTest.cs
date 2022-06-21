@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator;
@@ -46,7 +45,7 @@ public class TrackingControllerTest
         //Arrange
         var fakeMediator = new Mock<IMediator>();
         fakeMediator.Setup(x => x.Send(It.IsAny<ReadTrackingCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Response<Tracking>(ResponseCode.NotFound, new []{ "Tracking does not exist" }))
+            .ReturnsAsync(new Response<Tracking>(ResponseCode.NotFound, new[] { "Tracking does not exist" }))
             .Verifiable();
 
         //Act

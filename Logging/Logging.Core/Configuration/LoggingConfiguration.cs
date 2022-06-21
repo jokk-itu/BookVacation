@@ -26,14 +26,14 @@ public class LoggingConfiguration
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToSeq), LogToSeq);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(LogToConsole),
             LogToConsole);
-        
+
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(GlobalOverrides),
             JsonSerializer.Serialize(GlobalOverrides, new JsonSerializerOptions { WriteIndented = true }));
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(ConsoleOverrides),
             JsonSerializer.Serialize(ConsoleOverrides, new JsonSerializerOptions { WriteIndented = true }));
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqOverrides),
             JsonSerializer.Serialize(SeqOverrides, new JsonSerializerOptions { WriteIndented = true }));
-        
+
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(ServiceName),
             ServiceName);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(SeqMinimumLogLevel),
@@ -43,6 +43,21 @@ public class LoggingConfiguration
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(PodName), PodName);
         logger.Information("Configuration: {ConfigurationKey} = {ConfigurationValue}", nameof(NodeName), NodeName);
     }
+
+    public string SeqUri { get; }
+    public bool LogToSeq { get; }
+    public bool LogToConsole { get; }
+    public string ServiceName { get; }
+
+    public IDictionary<string, LogEventLevel> GlobalOverrides { get; }
+    public IDictionary<string, LogEventLevel> ConsoleOverrides { get; }
+    public IDictionary<string, LogEventLevel> SeqOverrides { get; }
+
+    public LogEventLevel SeqMinimumLogLevel { get; }
+    public LogEventLevel ConsoleMinimumLogLevel { get; }
+
+    public string PodName { get; }
+    public string NodeName { get; }
 
     private IDictionary<string, LogEventLevel> GetOverrides(IConfiguration configuration, string key)
     {
@@ -57,21 +72,6 @@ public class LoggingConfiguration
                 return acc;
             }) ?? new Dictionary<string, LogEventLevel>();
     }
-
-    public string SeqUri { get; }
-    public bool LogToSeq { get; }
-    public bool LogToConsole { get; }
-    public string ServiceName { get; }
-    
-    public IDictionary<string, LogEventLevel> GlobalOverrides { get; }
-    public IDictionary<string, LogEventLevel> ConsoleOverrides { get; }
-    public IDictionary<string, LogEventLevel> SeqOverrides { get; }
-
-    public LogEventLevel SeqMinimumLogLevel { get; }
-    public LogEventLevel ConsoleMinimumLogLevel { get; }
-    
-    public string PodName { get; }
-    public string NodeName { get; }
 
     private LogEventLevel GetLogLevel(string value)
     {

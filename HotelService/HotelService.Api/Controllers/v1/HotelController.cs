@@ -28,10 +28,7 @@ public class HotelController : ControllerBase
             new CreateHotelCommand(request.Rooms, request.Country, request.City, request.Address),
             cancellationToken);
 
-        if (response.ResponseCode != ResponseCode.Ok)
-        {
-            return Conflict();
-        }
+        if (response.ResponseCode != ResponseCode.Ok) return Conflict();
 
         return Created("", new PostHotelResponse
         {

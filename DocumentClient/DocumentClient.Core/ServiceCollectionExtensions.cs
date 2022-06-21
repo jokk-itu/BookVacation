@@ -81,10 +81,10 @@ public static class ServiceCollectionExtensions
 
             return documentStore;
         });
-        
+
         services.AddTransient<IAsyncDocumentSession>(sp =>
             sp.GetRequiredService<IDocumentStore>().OpenAsyncSession(database));
-        
+
         services.AddTransient<IDocumentClient, DocumentClient>();
         return services;
     }

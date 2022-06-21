@@ -30,7 +30,8 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
 
         var createFlightRequest = new CreateFlightCommand(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
             "Kastrup", "Karup", Guid.Parse(airplaneResponse.Body!.Id), 1200);
-        var createFlightHandler = new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
+        var createFlightHandler =
+            new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
 
         //Act
         var flightResponse = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
@@ -51,7 +52,8 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createFlightRequest = new CreateFlightCommand(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
             "Kastrup", "Karup", Guid.NewGuid(), 1200);
-        var createFlightHandler = new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
+        var createFlightHandler =
+            new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
 
         //Act
         var flightResponse = await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);
@@ -75,7 +77,8 @@ public class CreateFlightRequestHandlerTest : RavenTestDriver
 
         var createFlightRequest = new CreateFlightCommand(DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2),
             "Kastrup", "Karup", Guid.Parse(airplaneResponse.Body!.Id), 1200);
-        var createFlightHandler = new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
+        var createFlightHandler =
+            new CreateFlightCommandHandler(client, Mock.Of<ILogger<CreateFlightCommandHandler>>());
 
         //Act
         await createFlightHandler.Handle(createFlightRequest, CancellationToken.None);

@@ -30,7 +30,7 @@ public class CorrelationIdDelegatingHandlerTest
                 RequestId = Guid.NewGuid()
             }
         };
-        
+
         var handler = new CorrelationIdDelegatingHandler(metaContextAccessor)
         {
             InnerHandler = innerHandlerMock.Object

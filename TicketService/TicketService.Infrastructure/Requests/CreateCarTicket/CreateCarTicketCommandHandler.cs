@@ -27,6 +27,8 @@ public class CreateCarTicketCommandHandler : ICommandHandler<CreateCarTicketComm
             pdf.ToArray(),
             cancellationToken);
 
-        return isSent ? new Response<Unit>() : new Response<Unit>(ResponseCode.Error, new []{ "Unknown error occured" });
+        return isSent
+            ? new Response<Unit>()
+            : new Response<Unit>(ResponseCode.Error, new[] { "Unknown error occured" });
     }
 }

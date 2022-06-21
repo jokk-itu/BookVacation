@@ -1,7 +1,6 @@
 using CarService.Domain;
 using DocumentClient;
 using Mediator;
-using MediatR;
 
 namespace CarService.Infrastructure.Requests.CreateRentalCar;
 

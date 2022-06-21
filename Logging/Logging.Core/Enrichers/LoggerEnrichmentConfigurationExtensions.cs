@@ -11,7 +11,7 @@ public static class LoggerEnrichmentConfigurationExtensions
     {
         return loggerEnrichmentConfiguration.With(serviceProvider.GetRequiredService<RequestIdEnricher>());
     }
-    
+
     public static LoggerConfiguration WithCorrelationId(
         this LoggerEnrichmentConfiguration loggerEnrichmentConfiguration, IServiceProvider serviceProvider)
     {

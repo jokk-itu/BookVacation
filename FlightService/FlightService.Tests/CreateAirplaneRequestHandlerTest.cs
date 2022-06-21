@@ -28,7 +28,8 @@ public class CreateAirplaneRequestHandlerTest : RavenTestDriver
         //Act
         var airplaneResponse = await handler.Handle(request, CancellationToken.None);
         WaitForIndexing(store);
-        var actual = await session.Query<Airplane>().Where(x => x.Id == airplaneResponse.Body!.Id).FirstOrDefaultAsync();
+        var actual = await session.Query<Airplane>().Where(x => x.Id == airplaneResponse.Body!.Id)
+            .FirstOrDefaultAsync();
 
         //Assert
         Assert.NotNull(actual);

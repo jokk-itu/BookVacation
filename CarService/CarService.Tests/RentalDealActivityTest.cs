@@ -82,7 +82,7 @@ public class RentalDealActivityTest
             harness.Activity<RentalDealActivity, RentalDealArgument, RentalDealLog>(_ => rentCarActivity,
                 _ => rentCarActivity);
         fakeMediator.Setup(m => m.Send(It.IsAny<CreateRentalDealCommand>(), CancellationToken.None))
-            .ReturnsAsync(new Mediator.Response<RentalDeal> {ResponseCode = ResponseCode.NotFound})
+            .ReturnsAsync(new Mediator.Response<RentalDeal> { ResponseCode = ResponseCode.NotFound })
             .Verifiable();
 
         //Act
@@ -180,7 +180,7 @@ public class RentalDealActivityTest
             await harness.Stop();
         }
     }
-    
+
     [Trait("Category", "Unit")]
     [Fact]
     public async Task Compensate_ExpectFailed()

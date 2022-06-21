@@ -25,9 +25,9 @@ public class LogCompensateFilter<T> : IFilter<CompensateContext<T>> where T : cl
             { "TrackingNumber", context.TrackingNumber },
             { "ActivityName", context.ActivityName }
         };
-        if(context.MessageId is not null)
+        if (context.MessageId is not null)
             scope.Add("MessageId", context.MessageId);
-        
+
         using (_logger.BeginScope(scope))
         {
             _logger.LogInformation("Compensated {Message}, took {Elapsed} ms",

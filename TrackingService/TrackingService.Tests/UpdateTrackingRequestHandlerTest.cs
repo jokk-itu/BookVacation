@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Raven.Client.Documents;
 using Raven.TestDriver;
 using TrackingService.Domain;
 using TrackingService.Infrastructure.Requests.UpdateTracking;

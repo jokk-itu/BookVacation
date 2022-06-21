@@ -11,7 +11,8 @@ public class CreateFlightReservationCommandHandler : ICommandHandler<CreateFligh
     private readonly IDocumentClient _client;
     private readonly ILogger<CreateFlightReservationCommandHandler> _logger;
 
-    public CreateFlightReservationCommandHandler(IDocumentClient client, ILogger<CreateFlightReservationCommandHandler> logger)
+    public CreateFlightReservationCommandHandler(IDocumentClient client,
+        ILogger<CreateFlightReservationCommandHandler> logger)
     {
         _client = client;
         _logger = logger;
@@ -26,7 +27,7 @@ public class CreateFlightReservationCommandHandler : ICommandHandler<CreateFligh
         if (flight is null)
         {
             _logger.LogDebug("Flight with identifier {} does not exist", request.FlightId);
-            return new Response<FlightReservation>(ResponseCode.NotFound, new []{ "Flight does not exist" });
+            return new Response<FlightReservation>(ResponseCode.NotFound, new[] { "Flight does not exist" });
         }
 
         var conflictingReservation = await _client.QueryAsync<FlightReservation>(query => query
@@ -36,7 +37,7 @@ public class CreateFlightReservationCommandHandler : ICommandHandler<CreateFligh
         if (conflictingReservation is not null)
         {
             _logger.LogDebug("Seat with identifier {} is already booked", request.SeatId);
-            return new Response<FlightReservation>(ResponseCode.Conflict, new []{ "Seat is already booked" });
+            return new Response<FlightReservation>(ResponseCode.Conflict, new[] { "Seat is already booked" });
         }
 
         var flightReservation = new FlightReservation

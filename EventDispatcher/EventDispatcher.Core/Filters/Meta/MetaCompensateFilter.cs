@@ -11,7 +11,7 @@ public class MetaCompensateFilter<T> : IFilter<CompensateContext<T>> where T : c
     {
         _metaContextAccessor = metaContextAccessor;
     }
-    
+
     public async Task Send(CompensateContext<T> context, IPipe<CompensateContext<T>> next)
     {
         _metaContextAccessor.MetaContext ??= new MetaContext();

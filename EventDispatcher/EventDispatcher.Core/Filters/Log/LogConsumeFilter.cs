@@ -19,11 +19,11 @@ public class LogConsumeFilter<T> : IFilter<ConsumeContext<T>> where T : class
         var watch = Stopwatch.StartNew();
         await next.Send(context);
         watch.Stop();
-        
+
         var scope = new Dictionary<string, object>();
-        if(context.MessageId is not null)
+        if (context.MessageId is not null)
             scope.Add("MessageId", context.MessageId);
-        
+
         using (_logger.BeginScope(scope))
         {
             _logger.LogInformation("Consumed {Message}, took {Elapsed} ms", context.Message.GetType().Name,

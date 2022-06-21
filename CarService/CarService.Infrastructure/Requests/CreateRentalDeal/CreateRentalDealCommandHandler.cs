@@ -1,7 +1,6 @@
 using CarService.Domain;
 using DocumentClient;
 using Mediator;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;

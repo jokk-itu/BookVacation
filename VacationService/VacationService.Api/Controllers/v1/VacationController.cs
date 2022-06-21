@@ -21,7 +21,8 @@ public class VacationController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostAsync([FromBody] PostVacationRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> PostAsync([FromBody] PostVacationRequest request,
+        CancellationToken cancellationToken = default)
     {
         await _mediator.Send(new CreateVacationCommand(request.FlightId, request.FlightSeatId, request.HotelId,
             request.HotelFrom, request.HotelTo, request.HotelRoomId, request.RentalCarId, request.RentingCompanyName,

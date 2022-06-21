@@ -1,7 +1,6 @@
-using FlightService.Infrastructure.Requests.CreateFlight;
 using FluentValidation;
 
-namespace FlightService.Infrastructure.Validators;
+namespace FlightService.Infrastructure.Requests.CreateFlight;
 
 public class CreateFlightCommandValidator : AbstractValidator<CreateFlightCommand>
 {
