@@ -1,9 +1,11 @@
 using HotelService.Domain;
 using HotelService.Infrastructure.Requests.CreateHotel;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
+using Mediator;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes.TimeSeries;
 using Raven.TestDriver;
 using Xunit;
 
@@ -20,103 +22,105 @@ public class CreateHotelRoomReservationRequestHandlerTest : RavenTestDriver
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client);
-        var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
+        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotel!.Id),
-            Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client);
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotelResponse.Body!.Id),
+            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
 
         //Act
-        var expected =
+        var hotelRoomReservationResponse =
             await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
                 CancellationToken.None);
-        WaitForIndexing(store);
-        var actual = await session.Query<HotelRoomReservation>().Where(x => x.Id == expected!.Id).FirstOrDefaultAsync();
 
         //Assert
-        Assert.NotNull(actual);
+        Assert.Equal(ResponseCode.Ok, hotelRoomReservationResponse.ResponseCode);
+        Assert.NotNull(hotelRoomReservationResponse.Body);
     }
 
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_GivenInvalidHotel_ExpectNull()
+    public async Task Handle_GivenInvalidHotel_ExpectNotFound()
     {
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client);
-        var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
+        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
         var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Empty,
-            Guid.Parse(hotel!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client);
+            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
 
         //Act
-        var conflictingHotelRoomReservation =
+        var hotelRoomReservationResponse =
             await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
                 CancellationToken.None);
 
         //Assert
-        Assert.Null(conflictingHotelRoomReservation);
+        Assert.Equal(ResponseCode.NotFound, hotelRoomReservationResponse.ResponseCode);
+        Assert.Null(hotelRoomReservationResponse.Body);
     }
 
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_GivenInvalidRoomId_ExpectNull()
+    public async Task Handle_GivenInvalidRoomId_ExpectNotFound()
     {
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client);
-        var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
+        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotel!.Id), Guid.Empty,
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotelResponse.Body!.Id), Guid.Empty,
             DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client);
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
 
         //Act
-        var conflictingHotelRoomReservation =
+        var hotelRoomReservationResponse =
             await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
                 CancellationToken.None);
 
         //Assert
-        Assert.Null(conflictingHotelRoomReservation);
+        Assert.Equal(ResponseCode.NotFound, hotelRoomReservationResponse.ResponseCode);
+        Assert.Null(hotelRoomReservationResponse.Body);
     }
 
     [Trait("Category", "Unit")]
     [Fact]
-    public async Task Handle_DoConflictingHotelRoomReservation_ExpectNull()
+    public async Task Handle_GivenConflictingHotelRoomReservation_ExpectConflict()
     {
         //Arrange
         var store = GetDocumentStore();
         var session = store.OpenAsyncSession();
         var client = new DocumentClient.DocumentClient(session, Mock.Of<ILogger<DocumentClient.DocumentClient>>());
         var createHotelRequest = new CreateHotelCommand(3, "Denmark", "Copenhagen", "Rue");
-        var createHotelRequestHandler = new CreateHotelCommandHandler(client);
-        var hotel = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
+        var createHotelRequestHandler = new CreateHotelCommandHandler(client, Mock.Of<ILogger<CreateHotelCommandHandler>>());
+        var hotelResponse = await createHotelRequestHandler.Handle(createHotelRequest, CancellationToken.None);
         WaitForIndexing(store);
 
-        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotel!.Id),
-            Guid.Parse(hotel.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
-        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client);
+        var createHotelRoomReservationRequest = new CreateHotelRoomReservationCommand(Guid.Parse(hotelResponse.Body!.Id),
+            Guid.Parse(hotelResponse.Body!.HotelRooms.First().Id), DateTimeOffset.Now.AddDays(1), DateTimeOffset.Now.AddDays(2));
+        var createHotelRoomReservationRequestHandler = new CreateHotelRoomReservationCommandHandler(client, Mock.Of<ILogger<CreateHotelRoomReservationCommandHandler>>());
         await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
             CancellationToken.None);
         WaitForIndexing(store);
 
         //Act
-        var conflictingHotelRoomReservation =
+        var hotelRoomReservationResponse =
             await createHotelRoomReservationRequestHandler.Handle(createHotelRoomReservationRequest,
                 CancellationToken.None);
 
         //Assert
-        Assert.Null(conflictingHotelRoomReservation);
+        Assert.Equal(ResponseCode.Conflict, hotelRoomReservationResponse.ResponseCode);
+        Assert.Null(hotelRoomReservationResponse.Body);
     }
 }

@@ -1,7 +1,7 @@
+using System.Reflection;
 using FluentValidation.AspNetCore;
 using HealthCheck.Core;
 using HotelService.Api;
-using HotelService.Api.Validators;
 using HotelService.Infrastructure;
 using Logging;
 using Logging.Configuration;
@@ -39,7 +39,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(FluentValidatorRegistration).Assembly
+            Assembly.GetExecutingAssembly(), 
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);

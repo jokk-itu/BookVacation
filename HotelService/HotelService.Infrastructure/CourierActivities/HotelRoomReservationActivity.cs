@@ -2,6 +2,8 @@ using HotelService.Contracts.HotelRoomReservationActivity;
 using HotelService.Infrastructure.Requests.CreateHotelRoomReservation;
 using HotelService.Infrastructure.Requests.DeleteHotelRoomReservation;
 using MassTransit;
+using MassTransit.Courier.Results;
+using Mediator;
 using MediatR;
 
 namespace HotelService.Infrastructure.CourierActivities;
@@ -17,17 +19,21 @@ public class HotelRoomReservationActivity : IActivity<HotelRoomReservationArgume
 
     public async Task<ExecutionResult> Execute(ExecuteContext<HotelRoomReservationArgument> context)
     {
-        var hotelRoomReservation = await _mediator.Send(new CreateHotelRoomReservationCommand(context.Arguments.HotelId,
+        var response = await _mediator.Send(new CreateHotelRoomReservationCommand(context.Arguments.HotelId,
             context.Arguments.RoomId, context.Arguments.From, context.Arguments.To));
-        return hotelRoomReservation is null
-            ? context.Faulted()
-            : context.Completed(new HotelRoomReservationLog
-                { HotelRoomReservationId = Guid.Parse(hotelRoomReservation.Id) });
+
+        if (response.ResponseCode != ResponseCode.Ok)
+            return context.Faulted();
+
+        return context.Completed(new HotelRoomReservationLog
+        {
+            HotelRoomReservationId = Guid.Parse(response.Body!.Id)
+        });
     }
 
     public async Task<CompensationResult> Compensate(CompensateContext<HotelRoomReservationLog> context)
     {
-        await _mediator.Send(new DeleteHotelRoomReservationCommand(context.Log.HotelRoomReservationId));
-        return context.Compensated();
+        var response = await _mediator.Send(new DeleteHotelRoomReservationCommand(context.Log.HotelRoomReservationId));
+        return response.ResponseCode != ResponseCode.Ok ? context.Failed() : context.Compensated();
     }
 }

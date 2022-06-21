@@ -1,3 +1,4 @@
+using System.Reflection;
 using CarService.Api;
 using CarService.Api.Validators;
 using CarService.Infrastructure;
@@ -39,7 +40,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(FluentValidatorRegistration).Assembly
+            Assembly.GetExecutingAssembly()
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);

@@ -1,5 +1,5 @@
+using System.Reflection;
 using FlightService.Api;
-using FlightService.Api.Validators;
 using FlightService.Infrastructure;
 using FluentValidation.AspNetCore;
 using HealthCheck.Core;
@@ -39,7 +39,7 @@ builder.WebHost.ConfigureServices(services =>
         options.AutomaticValidationEnabled = true;
         options.RegisterValidatorsFromAssemblies(new[]
         {
-            typeof(FluentValidatorRegistration).Assembly
+            Assembly.GetExecutingAssembly()
         });
     });
     services.AddRouting(options => options.LowercaseUrls = true);
