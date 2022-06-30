@@ -12,4 +12,5 @@ terraform.tfstate.*
 terraform.tfstate
 Terraform/kubeconfig
 Test/LoadConsole/reports/*
-BookVacation.sln.DotSettings.user
+/BookVacation.sln.DotSettings.user
+.vs
